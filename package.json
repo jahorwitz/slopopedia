@@ -1,0 +1,10 @@
+{
+  "name": "slopopedia",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.5.0",
+    "husky": "^8.0.0"
+  }
+}
