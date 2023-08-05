@@ -1,0 +1,25 @@
+name: PR Linting process
+
+# Run this workflow on PR creation and on PR pushes
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+#on: workflow_dispatch
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run lint
