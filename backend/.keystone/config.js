@@ -50,6 +50,8 @@ var lists = {
     access: import_access.allowAll,
     // this is the fields for our User list
     fields: {
+      // user creates gobbid like unqiue username that is used to login
+      gobbid: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique" }),
       // by adding isRequired, we enforce that every User should have a name
       //   if no name is provided, an error will be displayed
       name: (0, import_fields.text)({ validation: { isRequired: true } }),
@@ -63,6 +65,15 @@ var lists = {
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
       posts: (0, import_fields.relationship)({ ref: "Post.author", many: true }),
+      // we can use this field to see what Movies the User has added
+      // to their wishlist
+      //wishlist: relationship({ ref: "Movie.title", many: true }),
+      // we can use this field to see what Movies the User has watched
+      //watched: relationship({ ref: "Movie.title", many: true }),
+      // give the user the ability to edit - yes/no
+      isPrivileged: (0, import_fields.checkbox)({ defaultValue: false }),
+      // not sure what this field is used for is part of the database design
+      green: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_integer " } }),
       createdAt: (0, import_fields.timestamp)({
         // this sets the timestamp to Date.now() when the user is first created
         defaultValue: { kind: "now" }
@@ -184,11 +195,11 @@ import_dotenv.default.config();
 var keystone_default = withAuth(
   (0, import_core2.config)({
     server: {
-      port: 8080
+      port: 5432
     },
     db: {
-      provider: "mysql",
-      url: `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:3306/${process.env.DB_NAME}`,
+      provider: "postgresql",
+      url: `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_NAME}`,
       onConnect: async (context) => {
       },
       // Optional advanced configuration

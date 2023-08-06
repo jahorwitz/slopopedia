@@ -3,11 +3,14 @@
 
 type User {
   id: ID!
+  gobbid: String
   name: String
   email: String
   password: PasswordState
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
+  isPrivileged: Boolean
+  green: Int
   createdAt: DateTime
 }
 
@@ -19,6 +22,7 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 
 input UserWhereUniqueInput {
   id: ID
+  gobbid: String
   email: String
 }
 
@@ -27,9 +31,12 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
   id: IDFilter
+  gobbid: StringFilter
   name: StringFilter
   email: StringFilter
   posts: PostManyRelationFilter
+  isPrivileged: BooleanFilter
+  green: IntNullableFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -55,7 +62,13 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NestedStringFilter {
@@ -78,6 +91,22 @@ input PostManyRelationFilter {
   none: PostWhereInput
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -91,8 +120,11 @@ input DateTimeNullableFilter {
 
 input UserOrderByInput {
   id: OrderDirection
+  gobbid: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  isPrivileged: OrderDirection
+  green: OrderDirection
   createdAt: OrderDirection
 }
 
@@ -102,10 +134,13 @@ enum OrderDirection {
 }
 
 input UserUpdateInput {
+  gobbid: String
   name: String
   email: String
   password: String
   posts: PostRelateToManyForUpdateInput
+  isPrivileged: Boolean
+  green: Int
   createdAt: DateTime
 }
 
@@ -122,10 +157,13 @@ input UserUpdateArgs {
 }
 
 input UserCreateInput {
+  gobbid: String
   name: String
   email: String
   password: String
   posts: PostRelateToManyForCreateInput
+  isPrivileged: Boolean
+  green: Int
   createdAt: DateTime
 }
 
@@ -400,11 +438,6 @@ enum KeystoneAdminUIFieldMetaItemViewFieldMode {
 enum KeystoneAdminUIFieldMetaItemViewFieldPosition {
   form
   sidebar
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 type KeystoneAdminUIFieldGroupMeta {

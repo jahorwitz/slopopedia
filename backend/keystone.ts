@@ -19,11 +19,11 @@ import { withAuth, session } from "./auth";
 export default withAuth(
   config({
     server: {
-      port: 8080,
+      port: 5432,
     },
     db: {
-      provider: "mysql",
-      url: `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:3306/${process.env.DB_NAME}`,
+      provider: "postgresql",
+      url: `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_NAME}`,
       onConnect: async (context) => {
         /* ... */
       },

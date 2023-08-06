@@ -5,8 +5,8 @@
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
 
-import { list } from '@keystone-6/core';
-import { allowAll } from '@keystone-6/core/access';
+import { list } from "@keystone-6/core";
+import { allowAll } from "@keystone-6/core/access";
 
 // see https://keystonejs.com/docs/fields/overview for the full list of fields
 //   this is a few common fields for an example
@@ -15,16 +15,17 @@ import {
   relationship,
   password,
   timestamp,
-  select,
-} from '@keystone-6/core/fields';
+  integer,
+  checkbox,
+} from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
-import { document } from '@keystone-6/fields-document';
+import { document } from "@keystone-6/fields-document";
 // if you want to make your own fields, see https://keystonejs.com/docs/guides/custom-fields
 
 // when using Typescript, you can refine your types to a stricter subset by importing
 // the generated types from '.keystone/types'
-import type { Lists } from '.keystone/types';
+import type { Lists } from ".keystone/types";
 
 export const lists: Lists = {
   User: list({
@@ -36,6 +37,8 @@ export const lists: Lists = {
 
     // this is the fields for our User list
     fields: {
+      // user creates gobbid like unqiue username that is used to login
+      gobbid: text({ validation: { isRequired: true }, isIndexed: "unique" }),
       // by adding isRequired, we enforce that every User should have a name
       //   if no name is provided, an error will be displayed
       name: text({ validation: { isRequired: true } }),
@@ -44,18 +47,28 @@ export const lists: Lists = {
         validation: { isRequired: true },
         // by adding isIndexed: 'unique', we're saying that no user can have the same
         // email as another user - this may or may not be a good idea for your project
-        isIndexed: 'unique',
+        isIndexed: "unique",
       }),
 
       password: password({ validation: { isRequired: true } }),
 
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
-      posts: relationship({ ref: 'Post.author', many: true }),
+      posts: relationship({ ref: "Post.author", many: true }),
+
+      // we can use this field to see what Movies the User has added
+      // to their wishlist
+      //wishlist: relationship({ ref: "Movie.title", many: true }),
+      // we can use this field to see what Movies the User has watched
+      //watched: relationship({ ref: "Movie.title", many: true }),
+      // give the user the ability to edit - yes/no
+      isPrivileged: checkbox({ defaultValue: false }),
+      // not sure what this field is used for is part of the database design
+      green: integer({ defaultValue: 0, db: { map: "my_integer " } }),
 
       createdAt: timestamp({
         // this sets the timestamp to Date.now() when the user is first created
-        defaultValue: { kind: 'now' },
+        defaultValue: { kind: "now" },
       }),
     },
   }),
@@ -89,13 +102,13 @@ export const lists: Lists = {
       // with this field, you can set a User as the author for a Post
       author: relationship({
         // we could have used 'User', but then the relationship would only be 1-way
-        ref: 'User.posts',
+        ref: "User.posts",
 
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
-          displayMode: 'cards',
-          cardFields: ['name', 'email'],
-          inlineEdit: { fields: ['name', 'email'] },
+          displayMode: "cards",
+          cardFields: ["name", "email"],
+          inlineEdit: { fields: ["name", "email"] },
           linkToItem: true,
           inlineConnect: true,
         },
@@ -108,19 +121,19 @@ export const lists: Lists = {
       // with this field, you can add some Tags to Posts
       tags: relationship({
         // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: 'Tag.posts',
+        ref: "Tag.posts",
 
         // a Post can have many Tags, not just one
         many: true,
 
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
-          displayMode: 'cards',
-          cardFields: ['name'],
-          inlineEdit: { fields: ['name'] },
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
           linkToItem: true,
           inlineConnect: true,
-          inlineCreate: { fields: ['name'] },
+          inlineCreate: { fields: ["name"] },
         },
       }),
     },
@@ -143,7 +156,7 @@ export const lists: Lists = {
     fields: {
       name: text(),
       // this can be helpful to find out all the Posts associated with a Tag
-      posts: relationship({ ref: 'Post.tags', many: true }),
+      posts: relationship({ ref: "Post.tags", many: true }),
     },
   }),
 };
