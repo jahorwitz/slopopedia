@@ -51,7 +51,7 @@ var lists = {
     // this is the fields for our User list
     fields: {
       // user creates gobbid like unqiue username that is used to login
-      gobbid: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique" }),
+      gobbid: (0, import_fields.text)({ validation: { isRequired: false }, isIndexed: "unique" }),
       // by adding isRequired, we enforce that every User should have a name
       //   if no name is provided, an error will be displayed
       name: (0, import_fields.text)({ validation: { isRequired: true } }),
@@ -195,7 +195,7 @@ import_dotenv.default.config();
 var keystone_default = withAuth(
   (0, import_core2.config)({
     server: {
-      port: 5432
+      port: 8080
     },
     db: {
       provider: "postgresql",

@@ -38,7 +38,7 @@ export const lists: Lists = {
     // this is the fields for our User list
     fields: {
       // user creates gobbid like unqiue username that is used to login
-      gobbid: text({ validation: { isRequired: true }, isIndexed: "unique" }),
+      gobbid: text({ validation: { isRequired: false }, isIndexed: "unique" }),
       // by adding isRequired, we enforce that every User should have a name
       //   if no name is provided, an error will be displayed
       name: text({ validation: { isRequired: true } }),

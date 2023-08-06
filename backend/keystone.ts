@@ -19,7 +19,7 @@ import { withAuth, session } from "./auth";
 export default withAuth(
   config({
     server: {
-      port: 5432,
+      port: 8080,
     },
     db: {
       provider: "postgresql",
