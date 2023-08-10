@@ -22,8 +22,10 @@
     "**/*.js": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.17",
     "classnames": "^2.3.2",
     "framer-motion": "^8.5.5",
+    "graphql": "^16.7.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
@@ -53,9 +55,9 @@
     "autoprefixer": "^10.4.14",
     "babel-loader": "^8.3.0",
     "git-commit-msg-linter": "^4.5.0",
-    "husky": "^8.0.0",
     "jsdom": "^21.0.0",
     "lint-staged": "^13.1.0",
+    "msw": "^1.2.3",
     "postcss": "^8.4.24",
     "prettier": "^2.8.3",
     "prettier-plugin-organize-imports": "^3.2.2",
