@@ -12,15 +12,17 @@ generator client {
 }
 
 model User {
-  id           String    @id @default(uuid()) @postgresql.Uuid
-  gobbid       String    @unique @default("")
-  name         String    @default("")
-  email        String    @unique @default("")
-  password     String
-  posts        Post[]    @relation("Post_author")
-  isPrivileged Boolean   @default(false)
-  green        Int?      @default(0) @map("my_integer ")
-  createdAt    DateTime? @default(now())
+  id            String       @id @default(uuid()) @postgresql.Uuid
+  name          String       @unique @default("")
+  email         String       @unique @default("")
+  password      String
+  role          UserRoleType @default(user)
+  status        String?      @default("active")
+  isPrivileged  Boolean      @default(false)
+  green         Int?         @default(0) @map("my_integer ")
+  posts         Post[]       @relation("Post_author")
+  createdAt     DateTime?    @default(now())
+  lastLoginDate DateTime?    @default(now())
 }
 
 model Post {
@@ -38,4 +40,9 @@ model Tag {
   id    String @id @default(uuid()) @postgresql.Uuid
   name  String @default("")
   posts Post[] @relation("Post_tags")
+}
+
+enum UserRoleType {
+  admin
+  user
 }

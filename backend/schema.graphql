@@ -3,26 +3,33 @@
 
 type User {
   id: ID!
-  gobbid: String
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  role: UserRoleType
+  status: String
   isPrivileged: Boolean
   green: Int
+  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
+  postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 type PasswordState {
   isSet: Boolean!
 }
 
+enum UserRoleType {
+  admin
+  user
+}
+
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input UserWhereUniqueInput {
   id: ID
-  gobbid: String
+  name: String
   email: String
 }
 
@@ -31,13 +38,15 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
   id: IDFilter
-  gobbid: StringFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
+  role: UserRoleTypeNullableFilter
+  status: StringNullableFilter
   isPrivileged: BooleanFilter
   green: IntNullableFilter
+  posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
+  lastLoginDate: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -85,10 +94,26 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
+input UserRoleTypeNullableFilter {
+  equals: UserRoleType
+  in: [UserRoleType!]
+  notIn: [UserRoleType!]
+  not: UserRoleTypeNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilter
 }
 
 input BooleanFilter {
@@ -107,6 +132,12 @@ input IntNullableFilter {
   not: IntNullableFilter
 }
 
+input PostManyRelationFilter {
+  every: PostWhereInput
+  some: PostWhereInput
+  none: PostWhereInput
+}
+
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -120,12 +151,14 @@ input DateTimeNullableFilter {
 
 input UserOrderByInput {
   id: OrderDirection
-  gobbid: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  role: OrderDirection
+  status: OrderDirection
   isPrivileged: OrderDirection
   green: OrderDirection
   createdAt: OrderDirection
+  lastLoginDate: OrderDirection
 }
 
 enum OrderDirection {
@@ -134,14 +167,16 @@ enum OrderDirection {
 }
 
 input UserUpdateInput {
-  gobbid: String
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForUpdateInput
+  role: UserRoleType
+  status: String
   isPrivileged: Boolean
   green: Int
+  posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForUpdateInput {
@@ -157,14 +192,16 @@ input UserUpdateArgs {
 }
 
 input UserCreateInput {
-  gobbid: String
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForCreateInput
+  role: UserRoleType
+  status: String
   isPrivileged: Boolean
   green: Int
+  posts: PostRelateToManyForCreateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForCreateInput {

@@ -6,6 +6,8 @@
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
+    "generate": "keystone prisma migrate dev",
+    "deploy": "keystone build && keystone prisma migrate deploy",
     "postinstall": "keystone build --no-ui --frozen"
   },
   "dependencies": {
