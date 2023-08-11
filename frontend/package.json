@@ -57,7 +57,6 @@
     "git-commit-msg-linter": "^4.5.0",
     "jsdom": "^21.0.0",
     "lint-staged": "^13.1.0",
-    "msw": "^1.2.3",
     "postcss": "^8.4.24",
     "prettier": "^2.8.3",
     "prettier-plugin-organize-imports": "^3.2.2",

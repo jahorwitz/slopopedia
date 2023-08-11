@@ -5,8 +5,10 @@ import "./default.css";
 
 const client = new ApolloClient({
   uri:
+    //in Vite, use special object `import.meta.env` to access enviroment variables
     import.meta.env.MODE === "production"
-      ? import.meta.env.VITE_API_URI
+      ? //created environment variables must be prefixed by VITE
+        import.meta.env.VITE_API_URI
       : "http://localhost:8080/api/graphql",
   cache: new InMemoryCache(),
 });
