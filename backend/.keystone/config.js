@@ -184,7 +184,8 @@ import_dotenv.default.config();
 var keystone_default = withAuth(
   (0, import_core2.config)({
     server: {
-      port: 8080
+      port: 8080,
+      cors: { origin: ["http://localhost:3000"] }
     },
     db: {
       provider: "mysql",
