@@ -51,8 +51,8 @@ var lists = {
     // this is the fields for our User list
     fields: {
       // by adding isRequired, we enforce that every User should have a name
-      //   if no name is provided, an error will be displayed
-      name: (0, import_fields.text)({ validation: { isRequired: true } }),
+      //   if no name is provided, an error will be displayed GobbID
+      name: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique" }),
       email: (0, import_fields.text)({
         validation: { isRequired: true },
         // by adding isIndexed: 'unique', we're saying that no user can have the same
@@ -60,11 +60,50 @@ var lists = {
         isIndexed: "unique"
       }),
       password: (0, import_fields.password)({ validation: { isRequired: true } }),
+      // Role based user access.
+      role: (0, import_fields.select)({
+        type: "enum",
+        options: [
+          { label: "Admin", value: "admin" },
+          { label: "User", value: "user" }
+        ],
+        defaultValue: "user",
+        // db: { map: "my_select" },
+        validation: { isRequired: true },
+        ui: { displayMode: "select" }
+      }),
+      // User account status
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Active", value: "active" },
+          { label: "Inactive", value: "inactive" },
+          { label: "Suspended", value: "suspended" }
+        ],
+        defaultValue: "active"
+      }),
+      // https://keystonejs.com/docs/config/config#storage-images-and-files
+      // a User has a profile image
+      //avatar: image({ storage: "" }),
+      // give the user the ability to edit - yes/no
+      isPrivileged: (0, import_fields.checkbox)({ defaultValue: false }),
+      // Green threshold allows the user to see what kinds of scores movies end up with once their preferences are set
+      // and choose a lowest score for the movie to receive the green tag on the movie details
+      slopRating: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_integer" } }),
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
       posts: (0, import_fields.relationship)({ ref: "Post.author", many: true }),
+      // a User can add many movies to a wishlist
+      //wishlist: relationship({ ref: "Movie.title", many: true }),
+      // a User can watch many movies
+      //watched: relationship({ ref: "Movie.title", many: true }),
+      // UserPreference to personalize a Slop experience
+      // preference: relationship({ ref: "Preference.id", many: true}),
       createdAt: (0, import_fields.timestamp)({
         // this sets the timestamp to Date.now() when the user is first created
+        defaultValue: { kind: "now" }
+      }),
+      lastLoginDate: (0, import_fields.timestamp)({
+        // this sets the timestamp to Date.now() when the user was last active
         defaultValue: { kind: "now" }
       })
     }
@@ -196,6 +235,8 @@ var keystone_default = withAuth(
       enableLogging: true,
       idField: { kind: "uuid" }
     },
+    // https://keystonejs.com/docs/config/config#storage-images-and-files
+    storage: {},
     lists,
     session
   })

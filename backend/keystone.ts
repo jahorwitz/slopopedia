@@ -32,6 +32,8 @@ export default withAuth(
       enableLogging: true,
       idField: { kind: 'uuid' },
     },
+    // https://keystonejs.com/docs/config/config#storage-images-and-files
+    storage: {},
     lists,
     session,
   })
