@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "husky install",
     "lint": "npx prettier --check --ignore-unknown \"src/**/*.{js,jsx}\"",
     "lint:fix": "npx prettier --write --ignore-unknown \"src/**/*.{js,jsx}\"",
     "test": "vitest run",
@@ -28,6 +27,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "react-router-dom": "^6.6.2",
     "styled-components": "^5.3.6",
     "vite-plugin-babel-macros": "^1.0.6"
@@ -53,7 +53,6 @@
     "autoprefixer": "^10.4.14",
     "babel-loader": "^8.3.0",
     "git-commit-msg-linter": "^4.5.0",
-    "husky": "^8.0.0",
     "jsdom": "^21.0.0",
     "lint-staged": "^13.1.0",
     "postcss": "^8.4.24",
