@@ -81,8 +81,10 @@ export const lists: Lists = {
 
       // give the user the ability to edit - yes/no
       isPrivileged: checkbox({ defaultValue: false }),
-      // not sure what this field is used for is part of the database design
-      green: integer({ defaultValue: 0, db: { map: "my_integer " } }),
+
+      // Green threshold allows the user to see what kinds of scores movies end up with once their preferences are set
+      // and choose a lowest score for the movie to receive the green tag on the movie details
+      slopRating: integer({ defaultValue: 0, db: { map: "my_integer" } }),
 
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below

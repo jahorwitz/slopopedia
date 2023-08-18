@@ -86,8 +86,9 @@ var lists = {
       //avatar: image({ storage: "" }),
       // give the user the ability to edit - yes/no
       isPrivileged: (0, import_fields.checkbox)({ defaultValue: false }),
-      // not sure what this field is used for is part of the database design
-      green: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_integer " } }),
+      // Green threshold allows the user to see what kinds of scores movies end up with once their preferences are set
+      // and choose a lowest score for the movie to receive the green tag on the movie details
+      slopRating: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_integer" } }),
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
       posts: (0, import_fields.relationship)({ ref: "Post.author", many: true }),
@@ -225,8 +226,8 @@ var keystone_default = withAuth(
       port: 8080
     },
     db: {
-      provider: "postgresql",
-      url: `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_NAME}`,
+      provider: "mysql",
+      url: `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:3306/${process.env.DB_NAME}`,
       onConnect: async (context) => {
       },
       // Optional advanced configuration

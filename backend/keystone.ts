@@ -22,8 +22,8 @@ export default withAuth(
       port: 8080,
     },
     db: {
-      provider: "postgresql",
-      url: `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_NAME}`,
+      provider: "mysql",
+      url: `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:3306/${process.env.DB_NAME}`,
       onConnect: async (context) => {
         /* ... */
       },

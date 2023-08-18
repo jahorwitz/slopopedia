@@ -9,7 +9,7 @@ type User {
   role: UserRoleType
   status: String
   isPrivileged: Boolean
-  green: Int
+  slopRating: Int
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
@@ -43,7 +43,7 @@ input UserWhereInput {
   role: UserRoleTypeNullableFilter
   status: StringNullableFilter
   isPrivileged: BooleanFilter
-  green: IntNullableFilter
+  slopRating: IntNullableFilter
   posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
   lastLoginDate: DateTimeNullableFilter
@@ -71,13 +71,7 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
-  mode: QueryMode
   not: NestedStringFilter
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 input NestedStringFilter {
@@ -112,7 +106,6 @@ input StringNullableFilter {
   contains: String
   startsWith: String
   endsWith: String
-  mode: QueryMode
   not: StringNullableFilter
 }
 
@@ -156,7 +149,7 @@ input UserOrderByInput {
   role: OrderDirection
   status: OrderDirection
   isPrivileged: OrderDirection
-  green: OrderDirection
+  slopRating: OrderDirection
   createdAt: OrderDirection
   lastLoginDate: OrderDirection
 }
@@ -173,7 +166,7 @@ input UserUpdateInput {
   role: UserRoleType
   status: String
   isPrivileged: Boolean
-  green: Int
+  slopRating: Int
   posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
   lastLoginDate: DateTime
@@ -198,7 +191,7 @@ input UserCreateInput {
   role: UserRoleType
   status: String
   isPrivileged: Boolean
-  green: Int
+  slopRating: Int
   posts: PostRelateToManyForCreateInput
   createdAt: DateTime
   lastLoginDate: DateTime
@@ -475,6 +468,11 @@ enum KeystoneAdminUIFieldMetaItemViewFieldMode {
 enum KeystoneAdminUIFieldMetaItemViewFieldPosition {
   form
   sidebar
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 type KeystoneAdminUIFieldGroupMeta {
