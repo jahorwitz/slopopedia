@@ -207,6 +207,7 @@ type Post {
   title: String
   content: Post_content_Document
   author: User
+  status: String
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keywordsCount(where: KeywordWhereInput! = {}): Int
   slops(where: SlopWhereInput! = {}, orderBy: [SlopOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SlopWhereUniqueInput): [Slop!]
@@ -228,6 +229,7 @@ input PostWhereInput {
   id: IDFilter
   title: StringFilter
   author: UserWhereInput
+  status: StringNullableFilter
   keywords: KeywordManyRelationFilter
   slops: SlopManyRelationFilter
 }
@@ -247,12 +249,14 @@ input SlopManyRelationFilter {
 input PostOrderByInput {
   id: OrderDirection
   title: OrderDirection
+  status: OrderDirection
 }
 
 input PostUpdateInput {
   title: String
   content: JSON
   author: UserRelateToOneForUpdateInput
+  status: String
   keywords: KeywordRelateToManyForUpdateInput
   slops: SlopRelateToManyForUpdateInput
 }
@@ -286,6 +290,7 @@ input PostCreateInput {
   title: String
   content: JSON
   author: UserRelateToOneForCreateInput
+  status: String
   keywords: KeywordRelateToManyForCreateInput
   slops: SlopRelateToManyForCreateInput
 }

@@ -11,6 +11,9 @@ ALTER TABLE `_Post_tags` DROP FOREIGN KEY `_Post_tags_A_fkey`;
 -- DropForeignKey
 ALTER TABLE `_Post_tags` DROP FOREIGN KEY `_Post_tags_B_fkey`;
 
+-- AlterTable
+ALTER TABLE `Post` ADD COLUMN `status` VARCHAR(191) NULL;
+
 -- DropTable
 DROP TABLE `Tag`;
 

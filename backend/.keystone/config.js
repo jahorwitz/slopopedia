@@ -147,6 +147,12 @@ var lists = {
         //   this is the default, but we show it here for verbosity
         many: false
       }),
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Published", value: "published" },
+          { label: "Draft", value: "draft" }
+        ]
+      }),
       // with this field, you can add some Keywords to Posts
       keywords: (0, import_fields.relationship)({
         // we could have used 'Keyword', but then the relationship would only be 1-way

@@ -31,6 +31,7 @@ model Post {
   content  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   author   User?     @relation("Post_author", fields: [authorId], references: [id])
   authorId String?   @map("author")
+  status   String?
   keywords Keyword[] @relation("Keyword_posts")
   slops    Slop[]    @relation("Post_slops")
 
