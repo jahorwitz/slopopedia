@@ -28,15 +28,3 @@ LargeMovieCard.args = {
   movieInfo: movieInfo,
   className: "",
 };
-
-// export const SmallMovieCard = () => (
-//   <MovieCard size={sizes.small} movieInfo={movieInfo} className="" />
-// );
-
-// export const MediumMovieCard = () => (
-//   <MovieCard size={sizes.medium} movieInfo={movieInfo} className="" />
-// );
-
-// export const LargeMovieCard = () => (
-//   <MovieCard size={sizes.medium} movieInfo={movieInfo} className="" />
-// );

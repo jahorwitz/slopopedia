@@ -2,7 +2,6 @@ import plusIconBlack from "../images/plusIconBlack.svg";
 import Keyword from "./Keyword";
 
 export function MovieCard({ size, onClick, className, movieInfo, ...rest }) {
-  console.log(movieInfo);
   const card = {
     img: movieInfo.img,
     title: movieInfo.title,
@@ -17,7 +16,6 @@ export function MovieCard({ size, onClick, className, movieInfo, ...rest }) {
     peopleWantIt: movieInfo.peopleWantIt,
   };
 
-  console.log(size);
   return (
     <div
       className={
