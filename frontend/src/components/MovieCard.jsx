@@ -1,7 +1,14 @@
 import plusIconBlack from "../images/plusIconBlack.svg";
 import Keyword from "./Keyword";
 
-export function MovieCard({ size, onClick, className, movieInfo, ...rest }) {
+export function MovieCard({
+  children,
+  size,
+  onClick,
+  className,
+  movieInfo,
+  ...rest
+}) {
   const card = {
     img: movieInfo.img,
     title: movieInfo.title,
@@ -90,6 +97,7 @@ export function MovieCard({ size, onClick, className, movieInfo, ...rest }) {
           * {card.peopleWantIt} goblins here want it
         </p>
       )}
+      {children}
     </div>
   );
 }
