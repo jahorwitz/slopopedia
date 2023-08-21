@@ -1,4 +1,3 @@
-import plusIconBlack from "../images/plusIconBlack.svg";
 import Keyword from "./Keyword";
 
 export function MovieCard({
@@ -10,17 +9,14 @@ export function MovieCard({
   ...rest
 }) {
   const card = {
-    img: movieInfo.img,
+    image: movieInfo.image,
     title: movieInfo.title,
-    keyword: movieInfo.keyword,
-    year: movieInfo.year,
-    runTime: movieInfo.runTime,
-    rotTomScore: movieInfo.rotTomScore,
-    watchOn: movieInfo.watchOn,
-    watchedWantIt: movieInfo.watchedWantIt,
-    threshold: movieInfo.threshold,
-    votes: movieInfo.votes,
-    peopleWantIt: movieInfo.peopleWantIt,
+    keywords: movieInfo.keywords,
+    releaseYear: movieInfo.releaseYear,
+    runtimeInMinutes: movieInfo.runtimeInMinutes,
+    rottenTomatoesScore: movieInfo.rottenTomatoesScore,
+    howToWatch: movieInfo.howToWatch,
+    decription: movieInfo.description,
   };
 
   return (
@@ -34,14 +30,14 @@ export function MovieCard({
       onClick={onClick}
       {...rest}
     >
-      <img className="mb-2.5 " src={card.img}></img>
+      <img className="mb-2.5 " src={card.image}></img>
       {size >= 2 ? (
         <div className="flex flex-row justify-between">
           <h2 className="text-movie-card-captions mb-2.5 font-bold font-arial">
             {card.title}
           </h2>
           <p className="text-movie-card-captions mb-2.5 text-gray-400 font-arial">
-            {card.year}, {card.runTime}
+            {card.releaseYear}, {card.runtimeInMinutes}
           </p>
         </div>
       ) : (
@@ -49,14 +45,14 @@ export function MovieCard({
           <h2 className="text-movie-card-captions mb-2.5 font-bold font-arial">
             {card.title}
           </h2>
-          {card.runTime && (
+          {card.runtimeInMinutes && (
             <p className="text-movie-card-captions mb-2.5 text-gray-400 font-arial">
-              {card.year}, {card.runTime}
+              {card.releaseYear}, {card.runtimeInMinutes}
             </p>
           )}
         </>
       )}
-      {!!card.keyword && (
+      {!!card.keywords && (
         <div
           className={
             "flex flex-wrap gap-2 " +
@@ -65,7 +61,7 @@ export function MovieCard({
               : "w-full")
           }
         >
-          {card.keyword.map((keyword, index) => (
+          {card.keywords.map((keyword, index) => (
             <Keyword
               keyword={keyword}
               className={
@@ -78,24 +74,6 @@ export function MovieCard({
             />
           ))}
         </div>
-      )}
-      {!!card.threshold && (
-        <p className="text-movie-card-captions font-arial">
-          Threshold: {card.threshold}
-        </p>
-      )}
-      {!!card.votes && (
-        <div className="flex-row flex h-5 mt-2.5">
-          <p className="mr-5 flex items-center font-arial font-bold text-movie-card-captions">
-            Votes: {card.votes}
-          </p>
-          <img className="w-5 h-5" src={plusIconBlack} />
-        </div>
-      )}
-      {!!card.peopleWantIt && (
-        <p className="text-goblins-want-it font-bold font-arial mt-5">
-          * {card.peopleWantIt} goblins here want it
-        </p>
       )}
       {children}
     </div>

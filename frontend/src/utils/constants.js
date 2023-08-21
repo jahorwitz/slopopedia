@@ -1,15 +1,13 @@
 export const movieInfo = {
-  img: "https://images.squarespace-cdn.com/content/v1/51cdafc4e4b09eb676a64e68/1618602532707-3OAII3QVHYKCW3KJ1HJU/cars_boast.jpg",
+  image:
+    "https://images.squarespace-cdn.com/content/v1/51cdafc4e4b09eb676a64e68/1618602532707-3OAII3QVHYKCW3KJ1HJU/cars_boast.jpg",
   title: "Cars",
-  keyword: ["pixar", "cars", "family friendly", "classic", "heartwarming"],
-  year: "2006",
-  runTime: "117 minutes",
-  rotTomScore: undefined,
-  watchOn: undefined,
-  watchedWantIt: undefined,
-  threshold: undefined,
-  votes: undefined,
-  peopleWantIt: undefined,
+  keywords: ["pixar", "cars", "family friendly", "classic", "heartwarming"],
+  releaseYear: "2006",
+  runtimeInMinutes: "117 minutes",
+  rottenTomatoesScore: undefined,
+  howToWatch: undefined,
+  description: undefined,
 };
 
 export const sizes = {
