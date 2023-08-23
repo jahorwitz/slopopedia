@@ -21,6 +21,7 @@ export function MovieCard({
 
   return (
     <div
+      // Parent div is relative to allow for elements and children to be positioned absolutely
       className={
         "flex flex-col relative " +
         className +
@@ -31,6 +32,7 @@ export function MovieCard({
       {...rest}
     >
       <img className="mb-2.5 " src={card.image}></img>
+      {/* title and year + runtime are beside each other if the size is equal or greater than two */}
       {size >= 2 ? (
         <div className="flex flex-row justify-between">
           <h2 className="text-movie-card-captions mb-2.5 font-bold font-arial">
@@ -54,6 +56,7 @@ export function MovieCard({
       )}
       {!!card.keywords && (
         <div
+          // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
           className={
             "flex flex-wrap gap-2 " +
             (size >= 2
