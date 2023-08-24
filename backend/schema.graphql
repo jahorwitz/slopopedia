@@ -6,19 +6,30 @@ type User {
   name: String
   email: String
   password: PasswordState
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 type PasswordState {
   isSet: Boolean!
 }
 
+enum UserRoleType {
+  admin
+  user
+}
+
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input UserWhereUniqueInput {
   id: ID
+  name: String
   email: String
 }
 
@@ -29,8 +40,13 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  role: UserRoleTypeNullableFilter
+  status: StringNullableFilter
+  isPrivileged: BooleanFilter
+  slopRating: IntNullableFilter
   posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
+  lastLoginDate: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -72,6 +88,43 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input UserRoleTypeNullableFilter {
+  equals: UserRoleType
+  in: [UserRoleType!]
+  notIn: [UserRoleType!]
+  not: UserRoleTypeNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
 input PostManyRelationFilter {
   every: PostWhereInput
   some: PostWhereInput
@@ -93,7 +146,12 @@ input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  role: OrderDirection
+  status: OrderDirection
+  isPrivileged: OrderDirection
+  slopRating: OrderDirection
   createdAt: OrderDirection
+  lastLoginDate: OrderDirection
 }
 
 enum OrderDirection {
@@ -105,8 +163,13 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForUpdateInput {
@@ -125,8 +188,13 @@ input UserCreateInput {
   name: String
   email: String
   password: String
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts: PostRelateToManyForCreateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForCreateInput {
