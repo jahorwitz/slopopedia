@@ -1,15 +1,14 @@
-
-import { Header } from './index';
+import { Header } from "./index";
 
 export default {
-    title: 'Components/Header',
-    component: Header,
-} 
+  title: "Components/Header",
+  component: Header,
+};
 
 export const ExampleHeader = () => (
-    <Header>
-        <Header.Logo />
-        <Header.NavLinks />
-        <Header.Profile />
-    </Header>
+  <Header>
+    <Header.Logo />
+    <Header.NavLinks />
+    <Header.Profile />
+  </Header>
 );
