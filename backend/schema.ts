@@ -196,4 +196,31 @@ export const lists: Lists = {
       posts: relationship({ ref: "Post.tags", many: true }),
     },
   }),
+
+  Movie: list({
+    access: allowAll,
+
+    fields: {
+      // author: relationship({ ref: "User.movies", many: false }), //should this be false or true?
+      title: text({ validation: { isRequired: true } }),
+      sortTitle: text({ validation: { isRequired: true } }), //is this needed? Can we sort by title?
+      tomatoScore: integer({
+        defaultValue: 0,
+        db: { map: "my_tomatoScore" },
+        validation: {
+          isRequired: true,
+        },
+        isIndexed: "unique",
+      }), //are all these fields needed?
+      runtime: integer({ defaultValue: 0, db: { map: "my_runtime" } }),
+      releaseYear: integer({ defaultValue: 0, db: { map: "my_releaseYear" } }),
+      handicap: integer({ defaultValue: 0, db: { map: "my_handicap" } }),
+      description: text({ validation: { isRequired: true } }),
+      decade: integer({ defaultValue: 0, db: { map: "my_decade" } }),
+      // images: image({ storage: 'local' }),
+      //need keywords to hold an array of strings
+      //could have used keyword but then the relationship would only be 1-way
+      // keywords: relationship({ ref: "Keyword.keywords", many: true }),
+    },
+  }),
 };

@@ -182,6 +182,33 @@ var lists = {
       // this can be helpful to find out all the Posts associated with a Tag
       posts: (0, import_fields.relationship)({ ref: "Post.tags", many: true })
     }
+  }),
+  Movie: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      // author: relationship({ ref: "User.movies", many: false }), //should this be false or true?
+      title: (0, import_fields.text)({ validation: { isRequired: true } }),
+      sortTitle: (0, import_fields.text)({ validation: { isRequired: true } }),
+      //is this needed? Can we sort by title?
+      tomatoScore: (0, import_fields.integer)({
+        defaultValue: 0,
+        db: { map: "my_tomatoScore" },
+        validation: {
+          isRequired: true
+        },
+        isIndexed: "unique"
+      }),
+      //are all these fields needed?
+      runtime: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_runtime" } }),
+      releaseYear: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_releaseYear" } }),
+      handicap: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_handicap" } }),
+      description: (0, import_fields.text)({ validation: { isRequired: true } }),
+      decade: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_decade" } })
+      // images: image({ storage: 'local' }),
+      //need keywords to hold an array of strings
+      //could have used keyword but then the relationship would only be 1-way
+      // keywords: relationship({ ref: "Keyword.keywords", many: true }),
+    }
   })
 };
 
