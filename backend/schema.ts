@@ -136,6 +136,9 @@ export const lists: Lists = {
         dividers: true,
       }),
 
+      // a user can post image(s) on their blog
+      //photo: image({ storage: "my_S3_images" }),
+
       // with this field, you can set a User as the author for a Post
       author: relationship({
         // we could have used 'User', but then the relationship would only be 1-way

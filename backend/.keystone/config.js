@@ -131,6 +131,8 @@ var lists = {
         links: true,
         dividers: true
       }),
+      // a user can post image(s) on their blog
+      //photo: image({ storage: "my_S3_images" }),
       // with this field, you can set a User as the author for a Post
       author: (0, import_fields.relationship)({
         // we could have used 'User', but then the relationship would only be 1-way
@@ -276,7 +278,19 @@ var keystone_default = withAuth(
       idField: { kind: "uuid" }
     },
     // https://keystonejs.com/docs/config/config#storage-images-and-files
-    storage: {},
+    // amazone s3 or digital ocean as an option
+    storage: {
+      // my_S3_images: {
+      //   kind: "s3",
+      //   type: "image",
+      //   bucketName,
+      //   region,
+      //   accessKeyId,
+      //   secretAccessKey,
+      //   signed: { expiry: 5000 },
+      //   endpoint: "http://localhost:3000",
+      // },
+    },
     lists,
     session
   })
