@@ -217,8 +217,8 @@ export const lists: Lists = {
       handicap: integer({ defaultValue: 0, db: { map: "my_handicap" } }),
       description: text({ validation: { isRequired: true } }),
       decade: integer({ defaultValue: 0, db: { map: "my_decade" } }),
-      // images: image({ storage: 'local' }),
-      //need keywords to hold an array of strings
+      // images: image({ storage: 'local' }), //question about this, how will this work?
+      //need keywords to hold an array of strings 
       //could have used keyword but then the relationship would only be 1-way
       // keywords: relationship({ ref: "Keyword.keywords", many: true }),
     },
