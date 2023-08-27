@@ -6,19 +6,30 @@ type User {
   name: String
   email: String
   password: PasswordState
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 type PasswordState {
   isSet: Boolean!
 }
 
+enum UserRoleType {
+  admin
+  user
+}
+
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input UserWhereUniqueInput {
   id: ID
+  name: String
   email: String
 }
 
@@ -29,8 +40,13 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  role: UserRoleTypeNullableFilter
+  status: StringNullableFilter
+  isPrivileged: BooleanFilter
+  slopRating: IntNullableFilter
   posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
+  lastLoginDate: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -72,6 +88,43 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input UserRoleTypeNullableFilter {
+  equals: UserRoleType
+  in: [UserRoleType!]
+  notIn: [UserRoleType!]
+  not: UserRoleTypeNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
 input PostManyRelationFilter {
   every: PostWhereInput
   some: PostWhereInput
@@ -93,7 +146,12 @@ input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  role: OrderDirection
+  status: OrderDirection
+  isPrivileged: OrderDirection
+  slopRating: OrderDirection
   createdAt: OrderDirection
+  lastLoginDate: OrderDirection
 }
 
 enum OrderDirection {
@@ -105,8 +163,13 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForUpdateInput {
@@ -125,8 +188,13 @@ input UserCreateInput {
   name: String
   email: String
   password: String
+  role: UserRoleType
+  status: String
+  isPrivileged: Boolean
+  slopRating: Int
   posts: PostRelateToManyForCreateInput
   createdAt: DateTime
+  lastLoginDate: DateTime
 }
 
 input PostRelateToManyForCreateInput {
@@ -139,8 +207,11 @@ type Post {
   title: String
   content: Post_content_Document
   author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  status: String
+  keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
+  keywordsCount(where: KeywordWhereInput! = {}): Int
+  slops(where: SlopWhereInput! = {}, orderBy: [SlopOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SlopWhereUniqueInput): [Slop!]
+  slopsCount(where: SlopWhereInput! = {}): Int
 }
 
 type Post_content_Document {
@@ -158,25 +229,36 @@ input PostWhereInput {
   id: IDFilter
   title: StringFilter
   author: UserWhereInput
-  tags: TagManyRelationFilter
+  status: StringNullableFilter
+  keywords: KeywordManyRelationFilter
+  slops: SlopManyRelationFilter
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
+input KeywordManyRelationFilter {
+  every: KeywordWhereInput
+  some: KeywordWhereInput
+  none: KeywordWhereInput
+}
+
+input SlopManyRelationFilter {
+  every: SlopWhereInput
+  some: SlopWhereInput
+  none: SlopWhereInput
 }
 
 input PostOrderByInput {
   id: OrderDirection
   title: OrderDirection
+  status: OrderDirection
 }
 
 input PostUpdateInput {
   title: String
   content: JSON
   author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+  status: String
+  keywords: KeywordRelateToManyForUpdateInput
+  slops: SlopRelateToManyForUpdateInput
 }
 
 input UserRelateToOneForUpdateInput {
@@ -185,11 +267,18 @@ input UserRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input KeywordRelateToManyForUpdateInput {
+  disconnect: [KeywordWhereUniqueInput!]
+  set: [KeywordWhereUniqueInput!]
+  create: [KeywordCreateInput!]
+  connect: [KeywordWhereUniqueInput!]
+}
+
+input SlopRelateToManyForUpdateInput {
+  disconnect: [SlopWhereUniqueInput!]
+  set: [SlopWhereUniqueInput!]
+  create: [SlopCreateInput!]
+  connect: [SlopWhereUniqueInput!]
 }
 
 input PostUpdateArgs {
@@ -201,7 +290,9 @@ input PostCreateInput {
   title: String
   content: JSON
   author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+  status: String
+  keywords: KeywordRelateToManyForCreateInput
+  slops: SlopRelateToManyForCreateInput
 }
 
 input UserRelateToOneForCreateInput {
@@ -209,47 +300,92 @@ input UserRelateToOneForCreateInput {
   connect: UserWhereUniqueInput
 }
 
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input KeywordRelateToManyForCreateInput {
+  create: [KeywordCreateInput!]
+  connect: [KeywordWhereUniqueInput!]
 }
 
-type Tag {
+input SlopRelateToManyForCreateInput {
+  create: [SlopCreateInput!]
+  connect: [SlopWhereUniqueInput!]
+}
+
+type Keyword {
   id: ID!
   name: String
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   postsCount(where: PostWhereInput! = {}): Int
 }
 
-input TagWhereUniqueInput {
+input KeywordWhereUniqueInput {
   id: ID
 }
 
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
+input KeywordWhereInput {
+  AND: [KeywordWhereInput!]
+  OR: [KeywordWhereInput!]
+  NOT: [KeywordWhereInput!]
   id: IDFilter
   name: StringFilter
   posts: PostManyRelationFilter
 }
 
-input TagOrderByInput {
+input KeywordOrderByInput {
   id: OrderDirection
   name: OrderDirection
 }
 
-input TagUpdateInput {
+input KeywordUpdateInput {
   name: String
   posts: PostRelateToManyForUpdateInput
 }
 
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
+input KeywordUpdateArgs {
+  where: KeywordWhereUniqueInput!
+  data: KeywordUpdateInput!
 }
 
-input TagCreateInput {
+input KeywordCreateInput {
+  name: String
+  posts: PostRelateToManyForCreateInput
+}
+
+type Slop {
+  id: ID!
+  name: String
+  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
+  postsCount(where: PostWhereInput! = {}): Int
+}
+
+input SlopWhereUniqueInput {
+  id: ID
+}
+
+input SlopWhereInput {
+  AND: [SlopWhereInput!]
+  OR: [SlopWhereInput!]
+  NOT: [SlopWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  posts: PostManyRelationFilter
+}
+
+input SlopOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input SlopUpdateInput {
+  name: String
+  posts: PostRelateToManyForUpdateInput
+}
+
+input SlopUpdateArgs {
+  where: SlopWhereUniqueInput!
+  data: SlopUpdateInput!
+}
+
+input SlopCreateInput {
   name: String
   posts: PostRelateToManyForCreateInput
 }
@@ -272,12 +408,18 @@ type Mutation {
   updatePosts(data: [PostUpdateArgs!]!): [Post]
   deletePost(where: PostWhereUniqueInput!): Post
   deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createKeyword(data: KeywordCreateInput!): Keyword
+  createKeywords(data: [KeywordCreateInput!]!): [Keyword]
+  updateKeyword(where: KeywordWhereUniqueInput!, data: KeywordUpdateInput!): Keyword
+  updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
+  deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
+  deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
+  createSlop(data: SlopCreateInput!): Slop
+  createSlops(data: [SlopCreateInput!]!): [Slop]
+  updateSlop(where: SlopWhereUniqueInput!, data: SlopUpdateInput!): Slop
+  updateSlops(data: [SlopUpdateArgs!]!): [Slop]
+  deleteSlop(where: SlopWhereUniqueInput!): Slop
+  deleteSlops(where: [SlopWhereUniqueInput!]!): [Slop]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -307,9 +449,12 @@ type Query {
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   post(where: PostWhereUniqueInput!): Post
   postsCount(where: PostWhereInput! = {}): Int
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tag(where: TagWhereUniqueInput!): Tag
-  tagsCount(where: TagWhereInput! = {}): Int
+  keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
+  keyword(where: KeywordWhereUniqueInput!): Keyword
+  keywordsCount(where: KeywordWhereInput! = {}): Int
+  slops(where: SlopWhereInput! = {}, orderBy: [SlopOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SlopWhereUniqueInput): [Slop!]
+  slop(where: SlopWhereUniqueInput!): Slop
+  slopsCount(where: SlopWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

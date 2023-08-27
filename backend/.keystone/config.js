@@ -51,8 +51,8 @@ var lists = {
     // this is the fields for our User list
     fields: {
       // by adding isRequired, we enforce that every User should have a name
-      //   if no name is provided, an error will be displayed
-      name: (0, import_fields.text)({ validation: { isRequired: true } }),
+      //   if no name is provided, an error will be displayed GobbID
+      name: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique" }),
       email: (0, import_fields.text)({
         validation: { isRequired: true },
         // by adding isIndexed: 'unique', we're saying that no user can have the same
@@ -60,11 +60,50 @@ var lists = {
         isIndexed: "unique"
       }),
       password: (0, import_fields.password)({ validation: { isRequired: true } }),
+      // Role based user access.
+      role: (0, import_fields.select)({
+        type: "enum",
+        options: [
+          { label: "Admin", value: "admin" },
+          { label: "User", value: "user" }
+        ],
+        defaultValue: "user",
+        // db: { map: "my_select" },
+        validation: { isRequired: true },
+        ui: { displayMode: "select" }
+      }),
+      // User account status
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Active", value: "active" },
+          { label: "Inactive", value: "inactive" },
+          { label: "Suspended", value: "suspended" }
+        ],
+        defaultValue: "active"
+      }),
+      // https://keystonejs.com/docs/config/config#storage-images-and-files
+      // a User has a profile image
+      //avatar: image({ storage: "" }),
+      // give the user the ability to edit - yes/no
+      isPrivileged: (0, import_fields.checkbox)({ defaultValue: false }),
+      // Green threshold allows the user to see what kinds of scores movies end up with once their preferences are set
+      // and choose a lowest score for the movie to receive the green tag on the movie details
+      slopRating: (0, import_fields.integer)({ defaultValue: 0, db: { map: "my_integer" } }),
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
       posts: (0, import_fields.relationship)({ ref: "Post.author", many: true }),
+      // a User can add many movies to a wishlist
+      //wishlist: relationship({ ref: "Movie.title", many: true }),
+      // a User can watch many movies
+      //watched: relationship({ ref: "Movie.title", many: true }),
+      // UserPreference to personalize a Slop experience
+      // preference: relationship({ ref: "Preference.id", many: true}),
       createdAt: (0, import_fields.timestamp)({
         // this sets the timestamp to Date.now() when the user is first created
+        defaultValue: { kind: "now" }
+      }),
+      lastLoginDate: (0, import_fields.timestamp)({
+        // this sets the timestamp to Date.now() when the user was last active
         defaultValue: { kind: "now" }
       })
     }
@@ -92,6 +131,8 @@ var lists = {
         links: true,
         dividers: true
       }),
+      // a user can post image(s) on their blog
+      //photo: image({ storage: "my_S3_images" }),
       // with this field, you can set a User as the author for a Post
       author: (0, import_fields.relationship)({
         // we could have used 'User', but then the relationship would only be 1-way
@@ -108,11 +149,33 @@ var lists = {
         //   this is the default, but we show it here for verbosity
         many: false
       }),
-      // with this field, you can add some Tags to Posts
-      tags: (0, import_fields.relationship)({
-        // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: "Tag.posts",
-        // a Post can have many Tags, not just one
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Published", value: "published" },
+          { label: "Draft", value: "draft" }
+        ]
+      }),
+      // with this field, you can add some Keywords to Posts
+      keywords: (0, import_fields.relationship)({
+        // we could have used 'Keyword', but then the relationship would only be 1-way
+        ref: "Keyword.posts",
+        // a Post can have many Keywords, not just one
+        many: true,
+        // this is some customisations for changing how this will look in the AdminUI
+        ui: {
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
+          linkToItem: true,
+          inlineConnect: true,
+          inlineCreate: { fields: ["name"] }
+        }
+      }),
+      // with this field, you can add some Slops to Posts
+      slops: (0, import_fields.relationship)({
+        // we could have used 'Slop', but then the relationship would only be 1-way
+        ref: "Slop.posts",
+        // a Post can have many Slops, not just one
         many: true,
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
@@ -126,8 +189,8 @@ var lists = {
       })
     }
   }),
-  // this last list is our Tag list, it only has a name field for now
-  Tag: (0, import_core.list)({
+  // this last list is our Keyword list, it only has a name field for now
+  Keyword: (0, import_core.list)({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
@@ -141,7 +204,25 @@ var lists = {
     fields: {
       name: (0, import_fields.text)(),
       // this can be helpful to find out all the Posts associated with a Tag
-      posts: (0, import_fields.relationship)({ ref: "Post.tags", many: true })
+      posts: (0, import_fields.relationship)({ ref: "Post.keywords", many: true })
+    }
+  }),
+  // this last list is our Slop list, it only has a name field for now
+  Slop: (0, import_core.list)({
+    // WARNING
+    //   for this starter project, anyone can create, query, update and delete anything
+    //   if you want to prevent random people on the internet from accessing your data,
+    //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
+    access: import_access.allowAll,
+    // setting this to isHidden for the user interface prevents this list being visible in the Admin UI
+    ui: {
+      isHidden: true
+    },
+    // this is the fields for our Slop list
+    fields: {
+      name: (0, import_fields.text)(),
+      // this can be helpful to find out all the Posts associated with a Slop
+      posts: (0, import_fields.relationship)({ ref: "Post.slops", many: true })
     }
   })
 };
@@ -184,7 +265,8 @@ import_dotenv.default.config();
 var keystone_default = withAuth(
   (0, import_core2.config)({
     server: {
-      port: 8080
+      port: 8080,
+      cors: { origin: ["http://localhost:3000"] }
     },
     db: {
       provider: "mysql",
@@ -194,6 +276,20 @@ var keystone_default = withAuth(
       // Optional advanced configuration
       enableLogging: true,
       idField: { kind: "uuid" }
+    },
+    // https://keystonejs.com/docs/config/config#storage-images-and-files
+    // amazone s3 or digital ocean as an option
+    storage: {
+      // my_S3_images: {
+      //   kind: "s3",
+      //   type: "image",
+      //   bucketName,
+      //   region,
+      //   accessKeyId,
+      //   secretAccessKey,
+      //   signed: { expiry: 5000 },
+      //   endpoint: "http://localhost:3000",
+      // },
     },
     lists,
     session
