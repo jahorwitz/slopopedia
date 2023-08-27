@@ -131,6 +131,8 @@ var lists = {
         links: true,
         dividers: true
       }),
+      // a user can post image(s) on their blog
+      //photo: image({ storage: "my_S3_images" }),
       // with this field, you can set a User as the author for a Post
       author: (0, import_fields.relationship)({
         // we could have used 'User', but then the relationship would only be 1-way
@@ -147,11 +149,33 @@ var lists = {
         //   this is the default, but we show it here for verbosity
         many: false
       }),
-      // with this field, you can add some Tags to Posts
-      tags: (0, import_fields.relationship)({
-        // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: "Tag.posts",
-        // a Post can have many Tags, not just one
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Published", value: "published" },
+          { label: "Draft", value: "draft" }
+        ]
+      }),
+      // with this field, you can add some Keywords to Posts
+      keywords: (0, import_fields.relationship)({
+        // we could have used 'Keyword', but then the relationship would only be 1-way
+        ref: "Keyword.posts",
+        // a Post can have many Keywords, not just one
+        many: true,
+        // this is some customisations for changing how this will look in the AdminUI
+        ui: {
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
+          linkToItem: true,
+          inlineConnect: true,
+          inlineCreate: { fields: ["name"] }
+        }
+      }),
+      // with this field, you can add some Slops to Posts
+      slops: (0, import_fields.relationship)({
+        // we could have used 'Slop', but then the relationship would only be 1-way
+        ref: "Slop.posts",
+        // a Post can have many Slops, not just one
         many: true,
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
@@ -165,8 +189,8 @@ var lists = {
       })
     }
   }),
-  // this last list is our Tag list, it only has a name field for now
-  Tag: (0, import_core.list)({
+  // this last list is our Keyword list, it only has a name field for now
+  Keyword: (0, import_core.list)({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
@@ -180,7 +204,25 @@ var lists = {
     fields: {
       name: (0, import_fields.text)(),
       // this can be helpful to find out all the Posts associated with a Tag
-      posts: (0, import_fields.relationship)({ ref: "Post.tags", many: true })
+      posts: (0, import_fields.relationship)({ ref: "Post.keywords", many: true })
+    }
+  }),
+  // this last list is our Slop list, it only has a name field for now
+  Slop: (0, import_core.list)({
+    // WARNING
+    //   for this starter project, anyone can create, query, update and delete anything
+    //   if you want to prevent random people on the internet from accessing your data,
+    //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
+    access: import_access.allowAll,
+    // setting this to isHidden for the user interface prevents this list being visible in the Admin UI
+    ui: {
+      isHidden: true
+    },
+    // this is the fields for our Slop list
+    fields: {
+      name: (0, import_fields.text)(),
+      // this can be helpful to find out all the Posts associated with a Slop
+      posts: (0, import_fields.relationship)({ ref: "Post.slops", many: true })
     }
   })
 };
@@ -236,7 +278,19 @@ var keystone_default = withAuth(
       idField: { kind: "uuid" }
     },
     // https://keystonejs.com/docs/config/config#storage-images-and-files
-    storage: {},
+    // amazone s3 or digital ocean as an option
+    storage: {
+      // my_S3_images: {
+      //   kind: "s3",
+      //   type: "image",
+      //   bucketName,
+      //   region,
+      //   accessKeyId,
+      //   secretAccessKey,
+      //   signed: { expiry: 5000 },
+      //   endpoint: "http://localhost:3000",
+      // },
+    },
     lists,
     session
   })
