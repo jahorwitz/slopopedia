@@ -52,6 +52,7 @@ model Movie {
   handicap    Int?   @default(0) @map("my_handicap")
   description String @default("")
   decade      Int?   @default(0) @map("my_decade")
+  howToWatch  String @default("")
 }
 
 enum UserRoleType {

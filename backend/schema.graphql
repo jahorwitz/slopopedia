@@ -332,6 +332,7 @@ type Movie {
   handicap: Int
   description: String
   decade: Int
+  howToWatch: String
 }
 
 input MovieWhereUniqueInput {
@@ -352,6 +353,7 @@ input MovieWhereInput {
   handicap: IntNullableFilter
   description: StringFilter
   decade: IntNullableFilter
+  howToWatch: StringFilter
 }
 
 input IntFilter {
@@ -375,6 +377,7 @@ input MovieOrderByInput {
   handicap: OrderDirection
   description: OrderDirection
   decade: OrderDirection
+  howToWatch: OrderDirection
 }
 
 input MovieUpdateInput {
@@ -386,6 +389,7 @@ input MovieUpdateInput {
   handicap: Int
   description: String
   decade: Int
+  howToWatch: String
 }
 
 input MovieUpdateArgs {
@@ -402,6 +406,7 @@ input MovieCreateInput {
   handicap: Int
   description: String
   decade: Int
+  howToWatch: String
 }
 
 """

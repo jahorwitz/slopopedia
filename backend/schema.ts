@@ -221,6 +221,7 @@ export const lists: Lists = {
       //need keywords to hold an array of strings 
       //could have used keyword but then the relationship would only be 1-way
       // keywords: relationship({ ref: "Keyword.keywords", many: true }),
+    howToWatch: text({ validation: { isRequired: true } }),
     },
   }),
 };
