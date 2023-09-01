@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Arial-Regular';
+    src: url("../src/vendor/fonts/ARIAL.woff");
+}
+
+@font-face {
+    font-family: "Arial-Bold";
+    src: url("../src/vendor/fonts/ARIALBD.woff");
+}
+
+@font-face {
+    font-family: "Arial-NarrowBold";
+    src: url("../src/vendor/fonts/ARIALNB.woff");
+}
