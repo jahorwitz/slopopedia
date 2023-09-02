@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import closeButton from "../images/close-button.png";
 
-export function ModalWithForm({ children, title }) {
+export function Modal({ children, title }) {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -55,7 +55,7 @@ export function ModalWithForm({ children, title }) {
                     </button>
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-medium text-grey-900"
+                      className="text-xl font-medium text-grey-900 text-center my-4"
                     >
                       {title}
                     </Dialog.Title>
