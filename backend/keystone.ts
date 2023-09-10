@@ -9,6 +9,14 @@ import { config } from "@keystone-6/core";
 
 dotenv.config();
 
+// found this implementation here => https://github.com/keystonejs/keystone/blob/main/examples/assets-s3/keystone.ts
+// const {
+//   S3_BUCKET_NAME: bucketName = 'slop-keystonejs',
+//   S3_REGION: region = 'us-east-2',
+//   S3_ACCESS_KEY_ID: accessKeyId = 'keystone',
+//   S3_SECRET_ACCESS_KEY: secretAccessKey = 'keystone',
+// } = process.env;
+
 // to keep this file tidy, we define our schema in a different file
 import { lists } from "./schema";
 
@@ -33,7 +41,19 @@ export default withAuth(
       idField: { kind: "uuid" },
     },
     // https://keystonejs.com/docs/config/config#storage-images-and-files
-    storage: {},
+    // amazone s3 or digital ocean as an option
+    storage: {
+      // my_S3_images: {
+      //   kind: "s3",
+      //   type: "image",
+      //   bucketName,
+      //   region,
+      //   accessKeyId,
+      //   secretAccessKey,
+      //   signed: { expiry: 5000 },
+      //   endpoint: "http://localhost:3000",
+      // },
+    },
     lists,
     session,
   }),

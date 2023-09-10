@@ -9,5 +9,9 @@
   },
   "scripts": {
     "prepare": "husky install"
+  },
+  "dependencies": {
+    "node": "^20.5.1",
+    "storybook": "^7.3.2"
   }
 }

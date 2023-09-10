@@ -26,20 +26,28 @@ model User {
 }
 
 model Post {
-  id       String  @id @default(uuid())
-  title    String  @default("")
-  content  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  author   User?   @relation("Post_author", fields: [authorId], references: [id])
-  authorId String? @map("author")
-  tags     Tag[]   @relation("Post_tags")
+  id       String    @id @default(uuid())
+  title    String    @default("")
+  content  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  author   User?     @relation("Post_author", fields: [authorId], references: [id])
+  authorId String?   @map("author")
+  status   String?
+  keywords Keyword[] @relation("Keyword_posts")
+  slops    Slop[]    @relation("Post_slops")
 
   @@index([authorId])
 }
 
-model Tag {
+model Keyword {
   id    String @id @default(uuid())
   name  String @default("")
-  posts Post[] @relation("Post_tags")
+  posts Post[] @relation("Keyword_posts")
+}
+
+model Slop {
+  id    String @id @default(uuid())
+  name  String @default("")
+  posts Post[] @relation("Post_slops")
 }
 
 model Movie {

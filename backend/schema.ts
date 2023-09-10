@@ -136,6 +136,9 @@ export const lists: Lists = {
         dividers: true,
       }),
 
+      // a user can post image(s) on their blog
+      //photo: image({ storage: "my_S3_images" }),
+
       // with this field, you can set a User as the author for a Post
       author: relationship({
         // we could have used 'User', but then the relationship would only be 1-way
@@ -155,12 +158,38 @@ export const lists: Lists = {
         many: false,
       }),
 
-      // with this field, you can add some Tags to Posts
-      tags: relationship({
-        // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: "Tag.posts",
+      status: select({
+        options: [
+          { label: "Published", value: "published" },
+          { label: "Draft", value: "draft" },
+        ],
+      }),
 
-        // a Post can have many Tags, not just one
+      // with this field, you can add some Keywords to Posts
+      keywords: relationship({
+        // we could have used 'Keyword', but then the relationship would only be 1-way
+        ref: "Keyword.posts",
+
+        // a Post can have many Keywords, not just one
+        many: true,
+
+        // this is some customisations for changing how this will look in the AdminUI
+        ui: {
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
+          linkToItem: true,
+          inlineConnect: true,
+          inlineCreate: { fields: ["name"] },
+        },
+      }),
+
+      // with this field, you can add some Slops to Posts
+      slops: relationship({
+        // we could have used 'Slop', but then the relationship would only be 1-way
+        ref: "Slop.posts",
+
+        // a Post can have many Slops, not just one
         many: true,
 
         // this is some customisations for changing how this will look in the AdminUI
@@ -176,8 +205,8 @@ export const lists: Lists = {
     },
   }),
 
-  // this last list is our Tag list, it only has a name field for now
-  Tag: list({
+  // this last list is our Keyword list, it only has a name field for now
+  Keyword: list({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
@@ -193,7 +222,28 @@ export const lists: Lists = {
     fields: {
       name: text(),
       // this can be helpful to find out all the Posts associated with a Tag
-      posts: relationship({ ref: "Post.tags", many: true }),
+      posts: relationship({ ref: "Post.keywords", many: true }),
+    },
+  }),
+
+  // this last list is our Slop list, it only has a name field for now
+  Slop: list({
+    // WARNING
+    //   for this starter project, anyone can create, query, update and delete anything
+    //   if you want to prevent random people on the internet from accessing your data,
+    //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
+    access: allowAll,
+
+    // setting this to isHidden for the user interface prevents this list being visible in the Admin UI
+    ui: {
+      isHidden: true,
+    },
+
+    // this is the fields for our Slop list
+    fields: {
+      name: text(),
+      // this can be helpful to find out all the Posts associated with a Slop
+      posts: relationship({ ref: "Post.slops", many: true }),
     },
   }),
 
