@@ -8,3 +8,5 @@ export const TabPanels = ({ children = "content 1" }) => {
     </Tab.Panels>
   );
 };
+
+TabPanels.displayName = "TabPanels";

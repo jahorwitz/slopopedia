@@ -70,3 +70,5 @@ export function Modal({ children, title }) {
     </>
   );
 }
+
+Modal.displayName = "Modal";
