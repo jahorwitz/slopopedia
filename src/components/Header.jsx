@@ -4,7 +4,7 @@ import headerArrow from "../images/global-header-arrow.svg";
 import headerBook from "../images/global-header-book.svg";
 import headerDoor from "../images/global-header-door.svg";
 import headerLogo from "../images/global-header-logo.svg";
-import headerMagnifyglass from "../images/global-header-Magnifyglass.svg";
+import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
 import headerNew from "../images/global-header-new.svg";
 import headerSmile from "../images/global-header-smile.svg";
 import headerStar from "../images/global-header-star.svg";
@@ -140,3 +140,8 @@ Header.Profile = () => {
     // </div>
   );
 };
+
+Header.displayName = "Header";
+Header.Logo.displayName = "Header.Logo";
+Header.NavLinks.displayName = "Header.NavLinks";
+Header.Profile.displayName = "Header.Profile";

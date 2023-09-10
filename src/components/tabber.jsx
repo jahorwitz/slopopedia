@@ -10,3 +10,5 @@ export const Tabber = () => {
     </Tab.Group>
   );
 };
+
+Tabber.displayName = "Tabber";

@@ -12,3 +12,5 @@ function Keyword({ keyword, className }) {
 }
 
 export default Keyword;
+
+Keyword.displayName = "Keyword";
