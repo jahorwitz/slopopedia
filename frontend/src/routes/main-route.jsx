@@ -1,8 +1,21 @@
+import { Header } from "../components/index";
+import MovieCardList from "../components/MovieCardList";
+
 export function MainRoute() {
   return (
     <>
-      {/* <Main /> */}
-      This is the Main page
+      <Header>
+        <Header.Logo />
+        <Header.NavLinks />
+        <Header.Profile />
+      </Header>
+      {/* Display list of movies */}
+      <div className="w-full  max-w-[1440px] mx-auto">
+        <p className="px-5 py-2">RECENTLY ADDED</p>
+        <div className="flex flex-wrap px-16 py-5 gap-4 md:flex-wrap-reverse">
+          <MovieCardList />
+        </div>
+      </div>
     </>
   );
 }
