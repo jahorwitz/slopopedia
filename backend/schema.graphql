@@ -390,6 +390,93 @@ input SlopCreateInput {
   posts: PostRelateToManyForCreateInput
 }
 
+type Movie {
+  id: ID!
+  title: String
+  sortTitle: String
+  tomatoScore: Int
+  runtime: Int
+  releaseYear: Int
+  handicap: Int
+  description: String
+  decade: Int
+  howToWatch: String
+}
+
+input MovieWhereUniqueInput {
+  id: ID
+  tomatoScore: Int
+}
+
+input MovieWhereInput {
+  AND: [MovieWhereInput!]
+  OR: [MovieWhereInput!]
+  NOT: [MovieWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  sortTitle: StringFilter
+  tomatoScore: IntFilter
+  runtime: IntNullableFilter
+  releaseYear: IntNullableFilter
+  handicap: IntNullableFilter
+  description: StringFilter
+  decade: IntNullableFilter
+  howToWatch: StringFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input MovieOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  sortTitle: OrderDirection
+  tomatoScore: OrderDirection
+  runtime: OrderDirection
+  releaseYear: OrderDirection
+  handicap: OrderDirection
+  description: OrderDirection
+  decade: OrderDirection
+  howToWatch: OrderDirection
+}
+
+input MovieUpdateInput {
+  title: String
+  sortTitle: String
+  tomatoScore: Int
+  runtime: Int
+  releaseYear: Int
+  handicap: Int
+  description: String
+  decade: Int
+  howToWatch: String
+}
+
+input MovieUpdateArgs {
+  where: MovieWhereUniqueInput!
+  data: MovieUpdateInput!
+}
+
+input MovieCreateInput {
+  title: String
+  sortTitle: String
+  tomatoScore: Int
+  runtime: Int
+  releaseYear: Int
+  handicap: Int
+  description: String
+  decade: Int
+  howToWatch: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -408,6 +495,18 @@ type Mutation {
   updatePosts(data: [PostUpdateArgs!]!): [Post]
   deletePost(where: PostWhereUniqueInput!): Post
   deletePosts(where: [PostWhereUniqueInput!]!): [Post]
+  createTag(data: TagCreateInput!): Tag
+  createTags(data: [TagCreateInput!]!): [Tag]
+  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
+  updateTags(data: [TagUpdateArgs!]!): [Tag]
+  deleteTag(where: TagWhereUniqueInput!): Tag
+  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createMovie(data: MovieCreateInput!): Movie
+  createMovies(data: [MovieCreateInput!]!): [Movie]
+  updateMovie(where: MovieWhereUniqueInput!, data: MovieUpdateInput!): Movie
+  updateMovies(data: [MovieUpdateArgs!]!): [Movie]
+  deleteMovie(where: MovieWhereUniqueInput!): Movie
+  deleteMovies(where: [MovieWhereUniqueInput!]!): [Movie]
   createKeyword(data: KeywordCreateInput!): Keyword
   createKeywords(data: [KeywordCreateInput!]!): [Keyword]
   updateKeyword(where: KeywordWhereUniqueInput!, data: KeywordUpdateInput!): Keyword
@@ -449,6 +548,12 @@ type Query {
   posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
   post(where: PostWhereUniqueInput!): Post
   postsCount(where: PostWhereInput! = {}): Int
+  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
+  tag(where: TagWhereUniqueInput!): Tag
+  tagsCount(where: TagWhereInput! = {}): Int
+  movies(where: MovieWhereInput! = {}, orderBy: [MovieOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: MovieWhereUniqueInput): [Movie!]
+  movie(where: MovieWhereUniqueInput!): Movie
+  moviesCount(where: MovieWhereInput! = {}): Int
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keyword(where: KeywordWhereUniqueInput!): Keyword
   keywordsCount(where: KeywordWhereInput! = {}): Int

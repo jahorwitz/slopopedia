@@ -50,6 +50,19 @@ model Slop {
   posts Post[] @relation("Post_slops")
 }
 
+model Movie {
+  id          String @id @default(uuid())
+  title       String @default("")
+  sortTitle   String @default("")
+  tomatoScore Int    @unique @default(0) @map("my_tomatoScore")
+  runtime     Int?   @default(0) @map("my_runtime")
+  releaseYear Int?   @default(0) @map("my_releaseYear")
+  handicap    Int?   @default(0) @map("my_handicap")
+  description String @default("")
+  decade      Int?   @default(0) @map("my_decade")
+  howToWatch  String @default("")
+}
+
 enum UserRoleType {
   admin
   user
