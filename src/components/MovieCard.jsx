@@ -84,3 +84,5 @@ export function MovieCard({
 }
 
 export default MovieCard;
+
+MovieCard.displayName = "MovieCard";

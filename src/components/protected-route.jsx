@@ -6,3 +6,5 @@ export function ProtectedRoute({ children, user }) {
   }
   return children;
 }
+
+ProtectedRoute.displayName = "ProtectedRoute";

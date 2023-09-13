@@ -30,7 +30,8 @@ npm run test
 
 ## Deployments
 
-- [Storybook](http://storybook.<BUCKET_NAME>.s3-website-us-east-1.amazonaws.com/)
+- [Production](http://slopopedia.s3-website-us-east-1.amazonaws.com/)
+- [Storybook](http://storybook.slopopedia.s3-website-us-east-1.amazonaws.com/)
 
 ## Contributing
 
@@ -91,4 +92,4 @@ This project uses the following key libraries
 
 ## Deployment
 
-The project is configured to deploy automatically using GitHub Actions whenever a commit is made to `main`. This workflow is triggered by merging a Pull Request. After the workflow runs, you can visit the deployed site here: http://<BUCKET_NAME>.s3-website-us-east-1.amazonaws.com/
+The project is configured to deploy automatically using GitHub Actions whenever a commit is made to `main`. This workflow is triggered by merging a Pull Request. After the workflow runs, you can visit the deployed site here: http://slopopedia.s3-website-us-east-1.amazonaws.com/

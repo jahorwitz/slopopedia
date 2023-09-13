@@ -12,3 +12,5 @@ function MovieCardList() {
 }
 
 export default MovieCardList;
+
+MovieCardList.displayName = "MovieCardList";
