@@ -1,23 +1,19 @@
-import { dummyData, sizes } from "../utils/constants";
+import { dummyData } from "../utils/constants";
 import MovieCard from "./MovieCard";
-
-function getRandomSize() {
-  const sizeKeys = Object.keys(sizes);
-  const randomIdx = Math.floor(Math.random() * sizeKeys.length);
-  return sizeKeys[randomIdx];
-}
 
 function MovieCardList() {
   return (
     <>
-      {dummyData.map((movie, idx) => (
-        <MovieCard
-          key={idx}
-          movieInfo={{ ...movie, size: getRandomSize() }}
-          size={movie.size}
-          className={""}
-        />
-      ))}
+      <div className="grid grid-cols-5 md:grid-cols-3 gap-3">
+        {dummyData.map((movie, idx) => (
+          <MovieCard
+            key={idx}
+            movieInfo={movie}
+            size={movie.size}
+            className={""}
+          />
+        ))}
+      </div>
     </>
   );
 }
