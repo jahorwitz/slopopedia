@@ -1,3 +1,4 @@
+import { getRandomColumnsChecks } from "../utils/constants";
 import Keyword from "./Keyword";
 
 export function MovieCard({
@@ -19,15 +20,8 @@ export function MovieCard({
     decription: movieInfo.description,
   };
 
-  const colSizes = ["col-span-1", "col-span-2", "col-span-3"];
-
-  const randIdx = Math.floor(Math.random() * colSizes.length);
-  const randSize = colSizes[randIdx];
-
-  const cardClass = `${randSize}`;
-
   return (
-    <div className={cardClass}>
+    <div className={getRandomColumnsChecks()}>
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
         className={
