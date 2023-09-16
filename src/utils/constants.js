@@ -246,24 +246,3 @@ export const getRandomColumns = () => {
 
   return cardClass;
 };
-
-export const getRandomColumnsChecks = () => {
-  const totalColumns = 5;
-  const colSizes = ["col-span-1", "col-span-2", "col-span-3"];
-  const randColumns = [];
-
-  while (randColumns.length < totalColumns) {
-    const randIdx = Math.floor(Math.random() * colSizes.length);
-    const randSize = colSizes[randIdx];
-
-    // Check if adding this column size exceeds the total columns limit
-    if (
-      randColumns.length + parseInt(randSize.split("-").pop()) <=
-      totalColumns
-    ) {
-      randColumns.push(randSize);
-    }
-  }
-
-  return randColumns.join(" ");
-};

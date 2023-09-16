@@ -2,6 +2,7 @@ import { dummyData } from "../utils/constants";
 import MovieCard from "./MovieCard";
 
 function MovieCardList() {
+  dummyData.i;
   return (
     <>
       <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-3 xs:grid-cols-3 gap-5">
