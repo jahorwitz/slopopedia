@@ -236,6 +236,11 @@ export const dummyData = [
   },
 ];
 
+// col-span-3 is the possible column span size that
+// can be applied to the cards. This is used to specify basically
+// that a card should span three columns in a grid layout.
+// the goal is to create a variation in the appearance of cards
+// within the grid since we are visually randomizing the cards.
 export const getRandomColumns = () => {
   const colSizes = ["col-span-1", "col-span-2", "col-span-3"];
 
