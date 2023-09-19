@@ -28,7 +28,7 @@ export function MovieCard({
           "flex flex-col relative " +
           className +
           (size === 1 && "col-span-1 ") +
-          (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
+          (size >= 2 && (size == 2 ? " col-span-2" : " col-span-3"))
         }
         onClick={onClick}
         {...rest}

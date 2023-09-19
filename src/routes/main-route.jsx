@@ -1,3 +1,4 @@
+import Image from "../components/Image/Image";
 import { Header } from "../components/index";
 import MovieCardList from "../components/MovieCardList";
 import PageTitle from "../components/PageTitle/PageTitle";
@@ -12,9 +13,9 @@ export function MainRoute() {
           <Header.NavLinks />
           <Header.Profile />
         </Header>
-        <div className="flex flex-row w-full max-w-[1440px] mb-20 mx-auto items-center content-center xs:pl-2 xs:pr-2  md:text-md md:pr-2 md:pl-2 ">
-          <img
-            className="absolute pt-11 xs:pt-5 sm:pt-9"
+        <div className="flex flex-row w-full max-w-[1440px] mb-20 mx-auto items-center content-center xs:pr-2  md:text-md md:pr-2">
+          <Image
+            className={"absolute w-full  max-w-[1440px] pt-11 xs:pt-5 sm:pt-9"}
             src={image}
             alt="actors"
           />
