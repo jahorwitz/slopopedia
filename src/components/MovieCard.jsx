@@ -27,8 +27,8 @@ export function MovieCard({
         className={
           "flex flex-col relative " +
           className +
-          (size === 1 && "col-span-1 ") +
-          (size >= 2 && (size == 2 ? " col-span-2" : " col-span-3"))
+          // (size == 1 && "col-span-1 ") +
+          (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
         }
         onClick={onClick}
         {...rest}
@@ -61,6 +61,9 @@ export function MovieCard({
             // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
             className={
               "flex flex-wrap gap-2 " +
+              (size === 1
+                ? "flex flex-row relative col-span-1 justify-around"
+                : "flex flex-row flex-wrap w-64") +
               (size >= 2
                 ? "absolute top-2 left-2 max-w-[calc(100%-24px)]"
                 : "w-full")
@@ -72,7 +75,7 @@ export function MovieCard({
                 className={
                   size >= 2
                     ? "bg-yellow-300 col-span-2"
-                    : "h-31px space-x-2 space-y-2 bg-gray-button"
+                    : "h-31px space-x-2 space-y-2 bg-gray-button xs:space-x-2 xs:space-y-2"
                 }
                 index={index}
                 key={index}
