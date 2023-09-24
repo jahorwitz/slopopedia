@@ -1,27 +1,3 @@
-// import { Form } from "./form";
-
-// export default {
-//   title: "Components/Form",
-//   component: Form,
-// };
-
-// const Template = (args) => <Form {...args} />;
-
-// export const TextInput = Template.bind({});
-// TextInput.args = {
-//   className: "h-20 text-black font-arialRegular rounded-lg",
-//   id: "Title",
-//   labelText: "Title",
-//   placeholder: "Type",
-// };
-
-// export const TextArea = Template.bind({});
-// TextArea.args = {
-//   className: "h-20 text-black font-arialRegular rounded-lg",
-//   id: "Title",
-//   labelText: "Description",
-//   placeholder: "Type",
-// };
 import { Form } from "./form";
 
 export default {
@@ -30,7 +6,7 @@ export default {
 };
 
 export const Default = () => (
-  <Form>
+  <Form className={"w-full max-w-lg mx-auto p-4 bg-white"}>
     <Form.TextInput className="" id="username" labelText="Title" />
 
     <Form.TextArea className="" id="comment" labelText="Description" />

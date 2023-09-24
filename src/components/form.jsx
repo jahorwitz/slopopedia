@@ -11,15 +11,14 @@ export const Form = ({ className, children, onSubmit, ...rest }) => {
 Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col">
-        <label htmlFor={id} className="">
+      <div className="flex font-bold font-arial flex-col py-3">
+        <label htmlFor={id} className="mb-1.5">
           {labelText}
         </label>
-      </div>
-      <div className="flex flex-col border-solid rounded-none border-black-500">
+
         <input
           id={id}
-          className="flex font-normal font-arial flex-col border-solid rounded-none border-black-500"
+          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -32,13 +31,14 @@ Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
 Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col border-solid rounded-none border-black-500">
-        <label htmlFor={id} className="">
+      <div className="flex font-bold font-arial flex-col py-3">
+        <label htmlFor={id} className="mb-1.5">
           {labelText}
         </label>
+
         <textarea
           id={id}
-          className="font-normal"
+          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -50,13 +50,13 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
 Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col border-solid rounded-none border-black-500">
-        <label htmlFor={id} className="">
+      <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black-500">
+        <label htmlFor={id} className="mb-1.5">
           {labelText}
         </label>
         <input
           id={id}
-          className="font-normal"
+          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
           type="number"
           placeholder="Type"
           {...rest}
@@ -68,13 +68,13 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
 Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col border-solid rounded-none border-black-500">
-        <label htmlFor={id} className="">
+      <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
+        <label htmlFor={id} className="mb-1.5">
           {labelText}
         </label>
         <select
           id={id}
-          className=""
+          className="py-4 px-4 border-solid rounded-none border-2 border-black"
           type="dropdown"
           placeholder="Dropdown"
           {...rest}
