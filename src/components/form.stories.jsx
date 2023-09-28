@@ -13,6 +13,6 @@ export const Default = () => (
 
     <Form.TextNumber className="" id="number" labelText="Number" />
     <Form.Dropdown className="" id="dropdown" labelText="Dropdown" />
-    <Form.Submit>Yeah!</Form.Submit>
+    <Form.Submit className="" title="" />
   </Form>
 );

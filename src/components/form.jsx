@@ -83,6 +83,14 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-Form.Submit = ({ children }) => {
-  return <Button type="submit">{children}</Button>;
+Form.Submit = ({ title, className }) => {
+  return (
+    <div className="flex justify-center py-3">
+      <Button
+        title="Yeah!"
+        className="bg-yellow-400 h-12 text-black w-80 border py-4 px-4"
+        type="submit"
+      />
+    </div>
+  );
 };
