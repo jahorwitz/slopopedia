@@ -1,7 +1,4 @@
-import Image from "../components/Image/Image";
-import { Header } from "../components/index";
-import MovieCardList from "../components/MovieCardList";
-import PageTitle from "../components/PageTitle/PageTitle";
+import { Header, Image, MovieCardList, PageTitle } from "../components";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {

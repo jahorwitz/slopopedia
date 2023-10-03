@@ -1,4 +1,4 @@
-export default function PageTitle({ title, className }) {
+export const PageTitle = ({ title, className }) => {
   return (
     <div>
       <h1 className={className}>
@@ -6,4 +6,4 @@ export default function PageTitle({ title, className }) {
       </h1>
     </div>
   );
-}
+};

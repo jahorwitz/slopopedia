@@ -1,7 +1,7 @@
 import { dummyData } from "../utils/constants";
 import MovieCard from "./MovieCard";
 
-function MovieCardList() {
+export const MovieCardList = () => {
   dummyData.i;
   return (
     <>
@@ -17,8 +17,6 @@ function MovieCardList() {
       </div>
     </>
   );
-}
-
-export default MovieCardList;
+};
 
 MovieCardList.displayName = "MovieCardList";
