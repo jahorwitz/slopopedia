@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         "gray-button": "#CBCBCB",
+        "yellow-button": "#FFD913",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

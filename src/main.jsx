@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import { ProtectedRoute } from "./components/index";
 import {
+  BlogRoute,
   BrowseRoute,
   FestsRoute,
   MainRoute,
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/browse" element={<MovieRoute />} />
           <Route path="/browse" element={<SearchRoute />} />
           <Route path="/browse" element={<SoundsRoute />} />
+          <Route path="/blog" element={<BlogRoute />} />
           <Route
             path="/profile-settings"
             element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
@@ -53,10 +55,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route
             path="/recommend"
             element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/blog"
-            element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
           />
         </Routes>
       </BrowserRouter>

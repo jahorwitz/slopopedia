@@ -1,5 +1,6 @@
 // Ex:
 // export * from './my-component'
+export * from "./Blog/Post";
 export * from "./Button/Button";
 export * from "./Header";
 export * from "./Image/Image";
