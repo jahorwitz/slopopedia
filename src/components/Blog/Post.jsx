@@ -1,7 +1,6 @@
-import image from "../../images/image17.png";
-import { Button, Image } from "../index";
+import { Button } from "../index";
 
-export const Post = ({ title, content, date, author, btnTitle }) => {
+export const Post = ({ className, title, content, date, author, btnTitle }) => {
   return (
     <>
       <div className="w-96 -top-14 relative">
@@ -17,9 +16,6 @@ export const Post = ({ title, content, date, author, btnTitle }) => {
           <small className="text-gray-500">{date}</small>
           <small className="text-gray-500">{`By ${author}`}</small>
         </div>
-      </div>
-      <div className="w-1/4 pl-4 float-right relative left-2/4">
-        <Image className={"h-18 w-22"} src={image} alt="Post Image" />
       </div>
     </>
   );

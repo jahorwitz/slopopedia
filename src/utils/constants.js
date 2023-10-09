@@ -251,3 +251,39 @@ export const getRandomColumns = () => {
 
   return cardClass;
 };
+
+function getDate() {
+  const date = new Date();
+  const month = date.getMonth();
+  const day = date.getUTCDay();
+  const year = date.getFullYear();
+
+  const completeDate = month + "/" + day + "/" + year;
+  return completeDate;
+}
+
+// Draft data
+export const dummyDraftData = [
+  {
+    title: "Another draft so we can what this looks like",
+    author: "Sean",
+    date: getDate(),
+  },
+  {
+    title:
+      "Film Nerdery and the Slippage of Disbelief: Towards a Unified Theory of Slop",
+    author: "Teri",
+    date: getDate(),
+  },
+  {
+    title: "Another draft so we can what this looks like",
+    author: "Sean",
+    date: getDate(),
+  },
+  {
+    title:
+      "Film Nerdery and the Slippage of Disbelief: Towards a Unified Theory of Slop",
+    author: "Teri",
+    date: getDate(),
+  },
+];

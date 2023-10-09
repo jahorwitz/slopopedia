@@ -13,6 +13,7 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
+import DraftRoute from "./routes/draft-route";
 
 const client = new ApolloClient({
   uri:
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/browse" element={<SearchRoute />} />
           <Route path="/browse" element={<SoundsRoute />} />
           <Route path="/blog" element={<BlogRoute />} />
+          <Route path="/draft" element={<DraftRoute />} />
           <Route
             path="/profile-settings"
             element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
