@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute } from "./components/index";
+import { ModalContextProvider, ProtectedRoute } from "./components/index";
 import {
   BrowseRoute,
   FestsRoute,
@@ -26,40 +26,42 @@ const client = new ApolloClient({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
     <React.StrictMode>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainRoute />} />
-          <Route path="/browse" element={<BrowseRoute />} />
-          <Route path="/browse" element={<FestsRoute />} />
-          <Route path="/browse" element={<MovieRoute />} />
-          <Route path="/browse" element={<SearchRoute />} />
-          <Route path="/browse" element={<SoundsRoute />} />
-          <Route
-            path="/profile-settings"
-            element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/preferences"
-            element={<ProtectedRoute>{/* <Preferences /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/submit"
-            element={<ProtectedRoute>{/* <Submit /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/submit-list"
-            element={<ProtectedRoute>{/* <SubmitList /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/recommend"
-            element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
-          />
-          <Route
-            path="/blog"
-            element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
-          />
-        </Routes>
-      </BrowserRouter>
+      <ModalContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainRoute />} />
+            <Route path="/browse" element={<BrowseRoute />} />
+            <Route path="/browse" element={<FestsRoute />} />
+            <Route path="/browse" element={<MovieRoute />} />
+            <Route path="/browse" element={<SearchRoute />} />
+            <Route path="/browse" element={<SoundsRoute />} />
+            <Route
+              path="/profile-settings"
+              element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
+            />
+            <Route
+              path="/preferences"
+              element={<ProtectedRoute>{/* <Preferences /> */}</ProtectedRoute>}
+            />
+            <Route
+              path="/submit"
+              element={<ProtectedRoute>{/* <Submit /> */}</ProtectedRoute>}
+            />
+            <Route
+              path="/submit-list"
+              element={<ProtectedRoute>{/* <SubmitList /> */}</ProtectedRoute>}
+            />
+            <Route
+              path="/recommend"
+              element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
+            />
+            <Route
+              path="/blog"
+              element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+            />
+          </Routes>
+        </BrowserRouter>
+      </ModalContextProvider>
     </React.StrictMode>
   </ApolloProvider>
 );
