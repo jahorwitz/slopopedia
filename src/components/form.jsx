@@ -12,13 +12,13 @@ Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
-        <label htmlFor={id} className="mb-1.5">
+        <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
 
         <input
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
+          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -32,13 +32,13 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
-        <label htmlFor={id} className="mb-1.5">
+        <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
 
         <textarea
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
+          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -51,12 +51,12 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black-500">
-        <label htmlFor={id} className="mb-1.5">
+        <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
         <input
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border-2 border-black"
+          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
           type="number"
           placeholder="Type"
           {...rest}
@@ -69,12 +69,12 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
-        <label htmlFor={id} className="mb-1.5">
+        <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
         <select
           id={id}
-          className="py-4 px-4 border-solid rounded-none border-2 border-black"
+          className="py-4 px-4 border-solid rounded-none border border-black"
           type="dropdown"
           placeholder="Dropdown"
           {...rest}
@@ -88,7 +88,7 @@ Form.Submit = ({ title, className }) => {
     <div className="flex justify-center py-3">
       <Button
         title="Yeah!"
-        className="bg-yellow-400 h-12 text-black w-80 border py-4 px-4"
+        className="font-bold font-arial bg-yellow-400 text-lg/4 text-black w-full border py-4 px-4"
         type="submit"
       />
     </div>
