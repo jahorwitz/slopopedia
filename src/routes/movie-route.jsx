@@ -1,3 +1,9 @@
+import { MoviePage } from "../components/index";
+
 export function MovieRoute() {
-  return <>{/* <Movie /> */}</>;
+  return (
+    <div className="flex flex-col">
+      <MoviePage />
+    </div>
+  );
 }
