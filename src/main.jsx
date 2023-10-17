@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute } from "./components/index";
+import { ProtectedRoute, Submit, SubmitList } from "./components/index";
 import {
   BrowseRoute,
   FestsRoute,
@@ -44,11 +44,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           />
           <Route
             path="/submit"
-            element={<ProtectedRoute>{/* <Submit /> */}</ProtectedRoute>}
+            element={<ProtectedRoute>{<Submit />}</ProtectedRoute>}
           />
           <Route
             path="/submit-list"
-            element={<ProtectedRoute>{/* <SubmitList /> */}</ProtectedRoute>}
+            element={<ProtectedRoute>{<SubmitList />}</ProtectedRoute>}
           />
           <Route
             path="/recommend"
