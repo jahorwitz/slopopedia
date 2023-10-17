@@ -7,6 +7,6 @@ export default {
 
 export const GlobalFooter = () => (
   <Footer>
-    <Footer.Content />
+    <Footer.Content className="font-arial text-gray text-base" />
   </Footer>
 );
