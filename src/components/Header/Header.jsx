@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import headerArrow from "../images/global-header-arrow.svg";
-import headerBook from "../images/global-header-book.svg";
-import headerDoor from "../images/global-header-door.svg";
-import headerLogo from "../images/global-header-logo.svg";
-import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
-import headerNew from "../images/global-header-new.svg";
-import headerSmile from "../images/global-header-smile.svg";
-import headerStar from "../images/global-header-star.svg";
+import headerArrow from "../../images/global-header-arrow.svg";
+import headerBook from "../../images/global-header-book.svg";
+import headerDoor from "../../images/global-header-door.svg";
+import headerLogo from "../../images/global-header-logo.svg";
+import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
+import headerNew from "../../images/global-header-new.svg";
+import headerSmile from "../../images/global-header-smile.svg";
+import headerStar from "../../images/global-header-star.svg";
 
 export const Header = ({ children }) => {
   return (

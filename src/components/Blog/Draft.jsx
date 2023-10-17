@@ -1,14 +1,22 @@
-export const Draft = ({ title, author, date }) => {
+export const Draft = ({ title, author, date, additionalInfo, classNames }) => {
+  const containerClass = classNames?.container || "";
+  const titleClass = classNames?.title || "font-semibold text-base";
+  const infoClass = classNames?.info || "flex gap-4";
+  const smallClass = classNames?.small || "text-gray-500";
+  const hrClass =
+    classNames?.hr || "h-px my-3 bg-gray-200 border-0 dark:bg-gray-700";
+
   return (
-    <>
-      <div>
-        <h2 className={"font-semibold text-base"}>{title}</h2>
-        <div className={"flex gap-4"}>
-          <small className={"text-gray-500"}>{`By ${author}`}</small>
-          <small className={"text-gray-500"}>{date}</small>
-        </div>
-        <hr className="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+    <div className={containerClass}>
+      <h2 className={titleClass}>{title}</h2>
+      <div className={infoClass}>
+        <small className={smallClass}>{`By ${author}`}</small>
+        <small className={smallClass}>{date}</small>
+        {additionalInfo && (
+          <small className={smallClass}>{additionalInfo}</small>
+        )}
       </div>
-    </>
+      <hr className={hrClass} />
+    </div>
   );
 };

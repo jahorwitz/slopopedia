@@ -1,4 +1,4 @@
-import { Header } from "./index";
+import { Header } from "../index";
 
 export default {
   title: "Components/Header",
