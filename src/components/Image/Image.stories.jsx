@@ -1,5 +1,5 @@
 import image from "../../images/main_image.svg";
-import Image from "./Image";
+import { Image } from "./Image";
 
 export default {
   title: "Components/Image",
