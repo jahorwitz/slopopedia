@@ -12,10 +12,10 @@ export function BlogRoute() {
         </Header>
       </div>
       <div className="float-right mr-32 mt-10 flex">
-        <a href="#" className="underline">
+        <a href="/draft" className="underline">
           Drafts
         </a>
-        <a href="#" className="underline ml-5">
+        <a href="/article" className="underline ml-5">
           + New Entry
         </a>
       </div>

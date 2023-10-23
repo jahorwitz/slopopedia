@@ -82,10 +82,15 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-Form.Submit = ({ title, className }) => {
+Form.Submit = ({ title, className, onClick }) => {
   return (
     <div className="flex justify-center py-3">
-      <Button title={title} className={className} type="submit" />
+      <Button
+        onClick={onClick}
+        title={title}
+        className={className}
+        type="submit"
+      />
     </div>
   );
 };
