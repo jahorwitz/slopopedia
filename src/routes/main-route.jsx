@@ -1,4 +1,4 @@
-import { Header, Image, MovieCardList, PageTitle } from "../components";
+import { Footer, Header, Image, MovieCardList, PageTitle } from "../components";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {
@@ -24,6 +24,11 @@ export function MainRoute() {
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
           <MovieCardList />
         </div>
+      </div>
+      <div className="w-full max-w-[989] mx-auto p-20">
+        <Footer>
+          <Footer.Content></Footer.Content>{" "}
+        </Footer>
       </div>
     </>
   );

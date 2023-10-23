@@ -1,7 +1,7 @@
-import { Header } from "../components/index";
+import { Footer, Header } from "../components/index";
 import DraftPage from "../page/blog/DraftPage";
 
-export default function DraftRoute() {
+export function DraftRoute() {
   return (
     <>
       <div className="relative">
@@ -21,6 +21,11 @@ export default function DraftRoute() {
       </div>
       <div className="w-full max-w-[1440px] -top-5 mx-auto p-20 flex flex-row relative">
         <DraftPage />
+      </div>
+      <div className="w-full max-w-[989] mx-auto p-20">
+        <Footer>
+          <Footer.Content></Footer.Content>{" "}
+        </Footer>
       </div>
     </>
   );

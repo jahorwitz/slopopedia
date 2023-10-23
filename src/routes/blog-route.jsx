@@ -1,4 +1,4 @@
-import { Header, Image, Post } from "../components";
+import { Footer, Header, Image, Post } from "../components";
 import image from "../images/image17.png";
 
 export function BlogRoute() {
@@ -86,6 +86,11 @@ export function BlogRoute() {
       </div>
 
       {/* <Drafts /> */}
+      <div className="w-full max-w-[989] mx-auto p-20">
+        <Footer>
+          <Footer.Content></Footer.Content>{" "}
+        </Footer>
+      </div>
     </>
   );
 }

@@ -1,3 +1,4 @@
+export * from "./article-route";
 export * from "./blog-route";
 export * from "./browse-route";
 export * from "./draft-route";
