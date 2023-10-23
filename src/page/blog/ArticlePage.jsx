@@ -1,15 +1,31 @@
+import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { Form } from "../../components/form.jsx";
 
 export const Article = () => {
-  const notifyPublish = () =>
-    toast.info("Published article!", {
+  const router = useNavigate();
+  const publish = () => {
+    const notify = toast.info("Published article!", {
       theme: "dark",
     });
-  const notifyDrafts = () =>
-    toast("Saved to Drafts!", {
+    if (notify) {
+      setTimeout(() => {
+        router("/blog");
+      }, 7000);
+    }
+  };
+
+  const drafts = () => {
+    const notify = toast("Saved to Drafts!", {
       theme: "dark",
     });
+
+    if (notify) {
+      setTimeout(() => {
+        router("/draft");
+      }, 7000);
+    }
+  };
 
   return (
     <>
@@ -40,12 +56,12 @@ export const Article = () => {
         <Form.Submit
           className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
           title={"Save to drafts"}
-          onClick={notifyDrafts}
+          onClick={drafts}
         />
         <Form.Submit
           className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
           title={"Publish! "}
-          onClick={notifyPublish}
+          onClick={publish}
         />
       </div>
     </>
