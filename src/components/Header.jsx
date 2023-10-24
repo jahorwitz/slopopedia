@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { SignupModal } from "../components/SignupModal";
 import headerArrow from "../images/global-header-arrow.svg";
 import headerBook from "../images/global-header-book.svg";
 import headerDoor from "../images/global-header-door.svg";
@@ -8,6 +9,7 @@ import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
 import headerNew from "../images/global-header-new.svg";
 import headerSmile from "../images/global-header-smile.svg";
 import headerStar from "../images/global-header-star.svg";
+import { useModals } from "../store/useModals";
 
 export const Header = ({ children }) => {
   return (
@@ -28,7 +30,12 @@ Header.Logo = () => {
 };
 
 Header.NavLinks = () => {
+  const { registerModal, closeModal, openModal } = useModals();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    registerModal("signup", <SignupModal closeModal={closeModal} />);
+  }, []);
 
   const handleMenu = () => {
     setOpen((prev) => !prev);
@@ -78,6 +85,13 @@ Header.NavLinks = () => {
           </div>
         ))}
         <img src={headerNew} className="absolute right-[200px] bottom-[6px]" />
+        <button
+          onClick={() => {
+            openModal("signup");
+          }}
+        >
+          click me
+        </button>
       </div>
       {/* hamburger button */}
       <div className="xs: block sm:block  relative"></div>

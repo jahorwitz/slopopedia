@@ -8,19 +8,28 @@ export const Form = ({ className, children, onSubmit, ...rest }) => {
   );
 };
 
-Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
+Form.TextInput = ({
+  className,
+  labelText,
+  id,
+  email,
+  password,
+  register,
+  ...rest
+}) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col py-3">
-        <label htmlFor={id} className="mb-1.5 text-lg">
+      <div className="flex font-bold font-arial flex-col py-2">
+        <label htmlFor={id} className="mb-1.5 text-lg text-left">
           {labelText}
         </label>
 
         <input
+          register={register}
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className="font-normal py-3 px-4 border-solid rounded-none border border-black"
           type="text"
-          placeholder="Type"
+          placeholder="Type here"
           {...rest}
         />
       </div>
@@ -85,11 +94,11 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
 };
 Form.Submit = ({ title, className }) => {
   return (
-    <div className="flex justify-center py-3">
+    <div className="flex justify-center pt-8 pb-10">
       <Button
-        title="Yeah!"
+        title={title}
         className="font-bold font-arial bg-yellow-400 text-lg/4 text-black w-full border py-4 px-4"
-        type="submit"
+        type="button"
       />
     </div>
   );
