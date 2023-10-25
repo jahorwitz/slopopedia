@@ -15,6 +15,7 @@ Form.TextInput = ({
   email,
   password,
   register,
+  onChange,
   ...rest
 }) => {
   return (
@@ -27,9 +28,10 @@ Form.TextInput = ({
         <input
           register={register}
           id={id}
-          className="font-normal py-3 px-4 border-solid rounded-none border border-black"
+          className={`font-normal py-3 px-4 border-solid rounded-none border border-black ${className}`}
           type="text"
           placeholder="Type here"
+          onChange={onChange}
           {...rest}
         />
       </div>
@@ -97,7 +99,7 @@ Form.Submit = ({ title, className }) => {
     <div className="flex justify-center pt-8 pb-10">
       <Button
         title={title}
-        className="font-bold font-arial bg-yellow-400 text-lg/4 text-black w-full border py-4 px-4"
+        className={`font-bold font-arial text-lg/4 text-black w-full border py-4 px-4 bg-yellow-button ${className}`}
         type="button"
       />
     </div>
