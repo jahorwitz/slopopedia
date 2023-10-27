@@ -3,7 +3,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute, Submit, SubmitList } from "./components/index";
+import {
+  Preferences,
+  Profile,
+  ProtectedRoute,
+  Submit,
+  SubmitList,
+} from "./components/index";
 import {
   BrowseRoute,
   FestsRoute,
@@ -29,6 +35,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainRoute />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/preferences" element={<Preferences />} />
           <Route path="/browse" element={<BrowseRoute />} />
           <Route path="/fests" element={<FestsRoute />} />
           <Route path="/movie" element={<MovieRoute />} />
