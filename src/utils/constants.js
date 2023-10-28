@@ -252,6 +252,24 @@ export const getRandomColumns = () => {
   return cardClass;
 };
 
+export function formatDateTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    millisecond: "numeric",
+    timeZoneName: "short",
+  };
+
+  const formattedDateTime = date.toLocaleDateString("en-US", options);
+  return formattedDateTime;
+}
+
 function getDate() {
   const date = new Date();
   const month = date.getMonth();

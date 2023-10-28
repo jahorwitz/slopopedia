@@ -27,7 +27,7 @@ Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-
+// think about rich text entry keystone {content}
 Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
   return (
     <>
