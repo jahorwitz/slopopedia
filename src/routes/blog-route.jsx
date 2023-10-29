@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { Footer, Header, Post } from "../components";
-import { GET_BLOG_POSTS } from "../graphql/queries/blog/get-posts.js";
+import { GET_BLOG_POSTS } from "../graphql/queries/blog/posts.js";
 import { formatDateTime } from "../utils/constants.js";
 
 export function BlogRoute() {
   const { data, loading, error } = useQuery(GET_BLOG_POSTS);
-
+  console.log(data);
   if (loading) return "Loading...";
   if (error) return <pre>{error.message}</pre>;
 
@@ -43,8 +43,8 @@ export function BlogRoute() {
                 title={title}
                 btnTitle={"Not Slop"}
                 content={body}
-                author={post.author.name}
-                date={formatDateTime(post.author.createdAt)}
+                author={post.author?.name}
+                date={formatDateTime(post.author?.createdAt)}
               />
             );
           })}

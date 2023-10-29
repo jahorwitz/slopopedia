@@ -48,7 +48,7 @@ Header.NavLinks = () => {
     {
       title: "Slop Blog",
       src: headerBook,
-      link: "#",
+      link: "/blog",
     },
     {
       title: "I'm Feeling Sloppy",
