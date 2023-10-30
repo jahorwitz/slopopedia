@@ -105,3 +105,10 @@ Form.Submit = ({ title, className }) => {
     </div>
   );
 };
+Form.Feedback = ({ message }) => {
+  return (
+    <>
+      <p className="text-left text-error-message">{message}</p>
+    </>
+  );
+};

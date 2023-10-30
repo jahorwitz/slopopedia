@@ -35,11 +35,7 @@ export const SignupModal = ({ closeModal }) => {
           }}
           className={errors.gobbId ? "border-error-message" : ""}
         />
-        {errors.gobbId && (
-          <span className={"text-left text-error-message"}>
-            {errors.gobbId.message}
-          </span>
-        )}
+        {errors.gobbId && <Form.Feedback message={errors.gobbId.message} />}
         <Form.TextInput
           register={register("email", {
             required: "Email is required",
@@ -56,11 +52,7 @@ export const SignupModal = ({ closeModal }) => {
           }}
           className={errors.email ? "border-error-message" : ""}
         />
-        {errors.email && (
-          <span className={"text-left text-error-message"}>
-            {errors.email.message}
-          </span>
-        )}
+        {errors.email && <Form.Feedback message={errors.email.message} />}
         <Form.TextInput
           register={register("password", {
             required: "Password is required",
@@ -71,11 +63,7 @@ export const SignupModal = ({ closeModal }) => {
           }}
           className={errors.password ? "border-error-message" : ""}
         />
-        {errors.password && (
-          <span className={"text-left text-error-message"}>
-            {errors.password.message}
-          </span>
-        )}
+        {errors.password && <Form.Feedback message={errors.password.message} />}
         <Form.TextInput
           register={register("confirmPassword", {
             required: "You must confirm the password",
@@ -91,9 +79,7 @@ export const SignupModal = ({ closeModal }) => {
           className={errors.confirmPassword ? "border-error-message" : ""}
         />
         {errors.confirmPassword && (
-          <span className={"text-left text-error-message"}>
-            {errors.confirmPassword.message}
-          </span>
+          <Form.Feedback message={errors.confirmPassword.message} />
         )}
         <Form.Submit
           className={isValid ? "" : "bg-gray-button"}
