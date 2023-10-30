@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { SignupModal } from "../components/SignupModal";
+import { Link } from "react-router-dom";
 import headerArrow from "../images/global-header-arrow.svg";
 import headerBook from "../images/global-header-book.svg";
 import headerDoor from "../images/global-header-door.svg";
@@ -10,6 +10,8 @@ import headerNew from "../images/global-header-new.svg";
 import headerSmile from "../images/global-header-smile.svg";
 import headerStar from "../images/global-header-star.svg";
 import { useModals } from "../store/useModals";
+import { Button } from "./index";
+import { SignupModal } from "./SignupModal";
 
 export const Header = ({ children }) => {
   return (
@@ -30,8 +32,8 @@ Header.Logo = () => {
 };
 
 Header.NavLinks = () => {
-  const { registerModal, closeModal, openModal } = useModals();
   const [open, setOpen] = useState(false);
+  const { registerModal, openModal, closeModal } = useModals();
 
   useEffect(() => {
     registerModal("signup", <SignupModal closeModal={closeModal} />);
@@ -45,53 +47,55 @@ Header.NavLinks = () => {
     {
       title: "Slop Search",
       src: headerMagnifyglass,
-      link: "#",
+      link: "/search",
     },
     {
       title: "Submit Slop",
       src: headerArrow,
-      link: "#",
+      link: "/submit",
     },
     {
       title: "Slop Blog",
       src: headerBook,
-      link: "#",
+      link: "/blog",
     },
     {
       title: "I'm Feeling Sloppy",
       src: headerStar,
-      link: "#",
+      link: "/sounds",
     },
+  ];
+
+  const buttons = [
     {
       title: "Log In",
       src: headerSmile,
-      link: "#",
     },
     {
       title: "Sign Up",
       src: headerDoor,
-      link: "#",
+      onClick: () => {
+        openModal("signup");
+      },
+    },
+    {
+      title: "Danila Ting",
+      src: headerSmile,
     },
   ];
+
   return (
     <div className="h-[24px] ">
       <div className="flex flex-row h-[24px] gap-8 md:gap-4 xs:hidden sm:hidden relative ">
-        {navLinks.slice(0, navLinks.length - 2).map((link, index) => (
+        {navLinks.map((link, index) => (
           <div key={index} className="flex flex-row gap-2.5 ">
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <a className="border-b-2 " href={link.link}>
+            <Link to={link.link} className="border-b-2 ">
               {link.title}
-            </a>
+            </Link>
           </div>
         ))}
         <img src={headerNew} className="absolute right-[200px] bottom-[6px]" />
-        <button
-          onClick={() => {
-            openModal("signup");
-          }}
-        >
-          click me
-        </button>
       </div>
       {/* hamburger button */}
       <div className="xs: block sm:block  relative"></div>
@@ -112,11 +116,11 @@ Header.NavLinks = () => {
         <div className="pt-5 right-0.5 absolute  xs:block sm:block  lg: hidden xl: hidden">
           <div className=" space-y-1  ">
             {navLinks.map((link, index) => (
-              <a
+              <Link
                 key={index}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
                                 block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
-                href={link.link}
+                to={link.link}
               >
                 <img
                   className="w-5 h-5 inline-block mr-1 "
@@ -124,8 +128,33 @@ Header.NavLinks = () => {
                   alt={link.title}
                 />
                 {link.title}
-              </a>
+              </Link>
             ))}
+            {buttons.slice(0, buttons.length - 1).map((button, index) => (
+              <div
+                key={index}
+                className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+              >
+                <img
+                  className="w-5 h-5  mt-2 ml-1  "
+                  src={button.src}
+                  alt={button.title}
+                />
+                <Button
+                  variant="link"
+                  title={button.title}
+                  onClick={button.onClick}
+                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
+                />
+              </div>
+            ))}
+            {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
+            {/* {buttons.slice(2, 3).map((button, index) => (
+                <div key={index} className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
+                <img className="w-5 h-5  mt-2 ml-1  " src={button.src} alt={button.title} />
+                <Button variant="link" title={button.title}  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] " />
+              </div>
+              ))} */}
           </div>
         </div>
       ) : null}
@@ -134,22 +163,29 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
+  const { registerModal, openModal, closeModal } = useModals();
+
+  useEffect(() => {
+    registerModal("signup", <SignupModal closeModal={closeModal} />);
+  }, []);
   return (
-    <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden ">
-      <a href="#" className=" border-b-2  ">
-        Log in
-      </a>
+    <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
+      <Button variant="link" title="Log In"></Button>
       <p>/</p>
-      <a href="#" className=" border-b-2 ">
-        Sign Up
-      </a>
+      <Button
+        variant="link"
+        title="Sign Up"
+        onClick={() => {
+          openModal("signup");
+        }}
+      ></Button>
       <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
     </div>
 
     // Functionality needs to be added, this will be for when a user logs in. This will take user to profile. It will replace the Log in/Sign up part of the header
 
     // <div className="flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden">
-    // <a href="#" className="border-b-2 ">DanilaTing</a>
+    // <Link to="/profile" className="border-b-2">DanilaTing</Link>
     // <img className="w-6 h-6 mt-0.5" src={headerSmile} />
     // </div>
   );
