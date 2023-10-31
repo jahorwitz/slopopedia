@@ -1,41 +1,68 @@
+import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import { CREATE_USER } from "../graphql/create-user";
 import { Form } from "./form";
 import { Modal } from "./Modal";
 
 export const SignupModal = ({ closeModal }) => {
+  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
+    getValues,
   } = useForm({
     defaultValues: {
-      gobbId: "",
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (data) => console.log(`data: ${data}`);
+  if (error) console.log(error);
+
+  const onSubmit = () => {
+    const { name, email, password } = getValues();
+    createUser({
+      variables: { data: { name, email, password } },
+    });
+  };
+
+  if (data) {
+    return (
+      <Modal closeModal={closeModal} title="HEY YOU GOBLIN">
+        <div className="pt-28">
+          <p className="font-arial text-lg/4 pt-0.5 pb-40 text-center">
+            Awesome! You have successfully created an account.{" "}
+            <button className="underline">Login!</button>
+          </p>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal closeModal={closeModal} title="HEY YOU GOBLIN">
+      <div className="text-center">
+        {error && <Form.Feedback message={error.message} />}
+      </div>
       <Form
         onSubmit={handleSubmit(onSubmit)}
         className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
       >
         <Form.TextInput
-          register={register("gobbId", {
+          register={register("name", {
             required: "Gobb ID is required",
             pattern: { value: /^\S/, message: "Must not start with a space" },
           })}
           labelText={"Gobb ID"}
           onChange={(evt) => {
-            setValue("gobbId", evt.target.value, { shouldValidate: true });
+            setValue("name", evt.target.value, { shouldValidate: true });
           }}
-          className={errors.gobbId ? "border-error-message" : ""}
+          isValid={!errors.name}
         />
-        {errors.gobbId && <Form.Feedback message={errors.gobbId.message} />}
+        {errors.name && <Form.Feedback message={errors.name.message} />}
         <Form.TextInput
           register={register("email", {
             required: "Email is required",
@@ -50,18 +77,22 @@ export const SignupModal = ({ closeModal }) => {
               shouldValidate: true,
             });
           }}
-          className={errors.email ? "border-error-message" : ""}
+          isValid={!errors.email}
         />
         {errors.email && <Form.Feedback message={errors.email.message} />}
         <Form.TextInput
           register={register("password", {
             required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Passwords must be at least 8 characters",
+            },
           })}
           labelText={"Password"}
           onChange={(evt) => {
             setValue("password", evt.target.value, { shouldValidate: true });
           }}
-          className={errors.password ? "border-error-message" : ""}
+          isValid={!errors.password}
         />
         {errors.password && <Form.Feedback message={errors.password.message} />}
         <Form.TextInput
@@ -76,15 +107,12 @@ export const SignupModal = ({ closeModal }) => {
               shouldValidate: true,
             });
           }}
-          className={errors.confirmPassword ? "border-error-message" : ""}
+          isValid={!errors.confirmPassword}
         />
         {errors.confirmPassword && (
           <Form.Feedback message={errors.confirmPassword.message} />
         )}
-        <Form.Submit
-          className={isValid ? "" : "bg-gray-button"}
-          title={"Get to Sloppin'"}
-        />
+        <Form.Submit disabled={!isValid} title={"Get to Sloppin'"} />
       </Form>
       <p className="font-arial text-lg/4 pt-0.5 pb-9 text-center">
         Already have an account? <button className="underline">Login!</button>

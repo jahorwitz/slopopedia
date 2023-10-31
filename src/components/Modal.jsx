@@ -9,22 +9,12 @@ export function Modal({ children, title, closeModal }) {
     setIsOpen(false);
     setTimeout(() => {
       closeModal();
-    }, 150);
+    }, 250);
   }
-
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
 
   return (
     <>
       <div className="fixed inset-0 flex justify-center items-center">
-        {/* <button
-          className="w-36 h-16 bg-red-700 bg-opacity-70 rounded-md"
-          onClick={openModal}
-        >
-          Open Modal
-        </button> */}
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog as="div" className="relative z-10" onClose={closeThisModal}>
             <Transition.Child
@@ -49,7 +39,7 @@ export function Modal({ children, title, closeModal }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white p-6 align-middle shadow-xl transition-all box-border ">
+                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white p-6 align-middle shadow-xl transition-all box-border">
                     <button
                       className="w-5 h-5 absolute top-10 right-10 z-50"
                       onClick={closeThisModal}

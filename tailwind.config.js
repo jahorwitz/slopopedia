@@ -7,6 +7,7 @@ export default {
         "gray-button": "#CBCBCB",
         "yellow-button": "#FFD913",
         "error-message": "#FF4040",
+        "gray-text": "#10101099",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",
