@@ -6,6 +6,7 @@ export default {
       colors: {
         "gray-button": "#CBCBCB",
         "yellow-button": "#FFD913",
+        "gray-background": "#EFEFEF",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

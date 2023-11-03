@@ -77,8 +77,8 @@ Header.NavLinks = () => {
   return (
     <div className="h-[24px] ">
       <div className="flex flex-row h-[24px] gap-8 md:gap-4 xs:hidden sm:hidden relative ">
-        {navLinks.map((link, index) => (
-          <div key={index} className="flex flex-row gap-2.5 ">
+        {navLinks.map((link, key) => (
+          <div key={key} className="flex flex-row gap-2.5 ">
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
             <Link to={link.link} className="border-b-2 ">
               {link.title}
@@ -105,9 +105,9 @@ Header.NavLinks = () => {
       {open ? (
         <div className="pt-5 right-0.5 absolute  xs:block sm:block  lg: hidden xl: hidden">
           <div className=" space-y-1  ">
-            {navLinks.map((link, index) => (
+            {navLinks.map((link, key) => (
               <Link
-                key={index}
+                key={key}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
                                 block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
                 to={link.link}

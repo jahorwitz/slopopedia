@@ -6,6 +6,7 @@ import "../src/global/default.css";
 import {
   Preferences,
   Profile,
+  ProfileSettings,
   ProtectedRoute,
   Submit,
   SubmitList,
@@ -35,8 +36,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainRoute />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/preferences" element={<Preferences />} />
           <Route path="/browse" element={<BrowseRoute />} />
           <Route path="/fests" element={<FestsRoute />} />
           <Route path="/movie" element={<MovieRoute />} />
@@ -44,11 +43,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/sounds" element={<SoundsRoute />} />
           <Route
             path="/profile-settings"
-            element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
+            element={<ProtectedRoute>{<ProfileSettings />}</ProtectedRoute>}
           />
           <Route
-            path="/preferences"
-            element={<ProtectedRoute>{/* <Preferences /> */}</ProtectedRoute>}
+            path="/profile"
+            element={<ProtectedRoute>{<Profile />}</ProtectedRoute>}
+          />
+          <Route
+            path="/preferences/:value"
+            element={<ProtectedRoute>{<Preferences />}</ProtectedRoute>}
           />
           <Route
             path="/submit"
