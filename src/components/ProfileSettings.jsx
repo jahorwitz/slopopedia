@@ -1,22 +1,21 @@
-import { Header, ProfileSidebar, Footer, ProfileHorizontalMenu } from "./index";
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from "react";
+import { Footer, Header, ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettings = () => {
-
-    const [screenSize, setScreenSize] = useState(window.innerWidth);
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
-        setScreenSize(window.innerWidth);
-    }
+      setScreenSize(window.innerWidth);
+    };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-        window.removeEventListener('resize', handleResize);
-    }
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
-  
+
   const sidebar = () => {
     return (
       <div className="flex flex-row mt-10">
@@ -25,35 +24,31 @@ export const ProfileSettings = () => {
         </div>
         {/*insert form component here*/}
       </div>
-    )
-  }
+    );
+  };
 
   const horizontalmenu = () => {
     return (
       <div>
-          <ProfileHorizontalMenu />
-          <div className="mt-8 ml-5">
-            {/*insert form component here*/}
-          </div>
+        <ProfileHorizontalMenu />
+        <div className="mt-8 ml-5">{/*insert form component here*/}</div>
       </div>
-    )
-  }
+    );
+  };
 
-    return (
-        <div className="max-w-[1440px] min-h-[1023px] bg-gray-background mx-auto">
-            <Header>
-                <Header.Logo />
-                <Header.NavLinks />
-                <Header.Profile />
-            </Header>
-            {screenSize < 1170 ? (horizontalmenu()) : (sidebar())}
-            <div className="mt-32">
-              <Footer >
-                <Footer.Content />
-              </Footer>
-            </div>
-        </div>
-        
-        
-    )
-}
+  return (
+    <div className="max-w-[1440px] min-h-[1023px] bg-gray-background mx-auto">
+      <Header>
+        <Header.Logo />
+        <Header.NavLinks />
+        <Header.Profile />
+      </Header>
+      {screenSize < 1170 ? horizontalmenu() : sidebar()}
+      <div className="mt-32">
+        <Footer>
+          <Footer.Content />
+        </Footer>
+      </div>
+    </div>
+  );
+};

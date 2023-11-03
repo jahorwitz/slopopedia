@@ -1,31 +1,30 @@
 import { HorizontalMenu, HorizontalMenuItem } from "./index";
 
-
 export const PreferencesHorizontalMenu = () => {
   const menuItems = [
     {
       title: "People",
-      link: "#",
+      value: 1,
     },
     {
       title: "Production",
-      link: "#",
+      value: 2,
     },
     {
       title: "Critters & Characters",
-      link: "#",
+      value: 3,
     },
     {
       title: "Writing",
-      link: "#",
+      value: 4,
     },
     {
       title: "Hairstyles",
-      link: "Other Preferences",
+      value: 5,
     },
     {
       title: "Green Threshold",
-      link: "#",
+      value: 6,
     },
   ];
 
