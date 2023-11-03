@@ -5,7 +5,7 @@ export const CREATE_USER = gql`
     createUser(data: $data) {
       email
       id
-      name
+      username
     }
   }
 `;

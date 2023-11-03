@@ -14,18 +14,16 @@ export const SignupModal = ({ closeModal }) => {
     getValues,
   } = useForm({
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
     },
   });
 
-  if (error) console.log(error);
-
   const onSubmit = () => {
-    const { name, email, password } = getValues();
+    const { username, email, password } = getValues();
     createUser({
-      variables: { data: { name, email, password } },
+      variables: { data: { username, email, password } },
     });
   };
 
@@ -52,17 +50,17 @@ export const SignupModal = ({ closeModal }) => {
         className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
       >
         <Form.TextInput
-          register={register("name", {
+          register={register("username", {
             required: "Gobb ID is required",
             pattern: { value: /^\S/, message: "Must not start with a space" },
           })}
           labelText={"Gobb ID"}
           onChange={(evt) => {
-            setValue("name", evt.target.value, { shouldValidate: true });
+            setValue("username", evt.target.value, { shouldValidate: true });
           }}
-          isValid={!errors.name}
+          isValid={!errors.username}
         />
-        {errors.name && <Form.Feedback message={errors.name.message} />}
+        {errors.username && <Form.Feedback message={errors.username.message} />}
         <Form.TextInput
           register={register("email", {
             required: "Email is required",
