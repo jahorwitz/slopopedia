@@ -82,8 +82,8 @@ export const SignupModal = ({ closeModal }) => {
           register={register("password", {
             required: "Password is required",
             minLength: {
-              value: 8,
-              message: "Passwords must be at least 8 characters",
+              value: 10,
+              message: "Passwords must be at least 10 characters",
             },
           })}
           labelText={"Password"}
