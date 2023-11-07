@@ -44,7 +44,7 @@ Small.args = {
 export const variantLink = Template.bind({});
 variantLink.args = {
   title: "Variant Link",
-  className:"border-b-2 border-black text-white-400 font-arialRegular",
+  className: "border-b-2 border-black text-white-400 font-arialRegular",
   onClick: {
     action: "clicked",
   },
