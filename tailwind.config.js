@@ -26,6 +26,9 @@ export default {
           },
         ],
       },
+      lineHeight: {
+        3.5: "0.93rem",
+      },
       height: {
         keyword: "31px",
       },

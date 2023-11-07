@@ -17,41 +17,51 @@ export const MoviePreview = ({ closeModal }) => {
     tomatoScore: 56,
     howToWatch: ["Netflix"],
   };
+
+  console.log(movie.keywords);
   return (
     <Modal closeModal={closeModal}>
       {/* movie.photo. should be blurred */}
-      <Image src={movie.photo} alt={movie.title} />
+      <div className="outline">
+        <Image src={movie.photo} alt={movie.title} className="mx-auto my-0" />
+      </div>
       {/* all information about movie */}
-      <div>
-        <div>
+      <div className="max-w-[590px] pl-10 pt-5 pb-9 flex flex-col gap-y-5 font-arial">
+        <div className="flex flex-col gap-y-2.5 text-movie-card-captions">
           {/* movie.title, movie.releaseYear, movie.runtime */}
-          <h1>{movie.title}</h1>
+          <h1 className="font-bold ">{movie.title}</h1>
           <p>
             {movie.releaseYear}, {movie.runtime} minutes
           </p>
         </div>
         <div>
           {/* movie.description */}
-          <p>{movie.description}</p>
+          <p className="text-lg/5">{movie.description}</p>
         </div>
-        <div>
+        <div className="flex gap-x-2">
           {/* movie.keywords */}
-          {movie.keywords.map((keyword, index) => {
-            <Keyword key={index} keyword={keyword} />;
-          })}
+          {movie.keywords.map((keyword, index) => (
+            <Keyword
+              className={"bg-yellow-300"}
+              key={index}
+              keyword={keyword}
+            />
+          ))}
         </div>
-        <div className="flex">
+        <div className="flex gap-x-2.5">
           {/* movie.tomatoScore */}
-          <Image src={rottenTomato} />
-          <p>Rotten Tomatoes score: {movie.tomatoScore}%</p>
+          <Image src={rottenTomato} alt={"rotten tomato"} />
+          <p className="text-lg/5">
+            Rotten Tomatoes score: {movie.tomatoScore}%
+          </p>
         </div>
-        <div className="flex">
+        <div className="flex gap-x-2.5">
           {/* movie.howToWatch */}
-          <Image src={camera} />
-          <p>Watch on:</p>
-          {movie.howToWatch.map((method, index) => {
-            <p key={index}>{method}</p>;
-          })}
+          <Image src={camera} alt={"camera"} />
+          <p className="text-lg/5">Watch on: </p>
+          {movie.howToWatch.map((method, index) => (
+            <p key={index}>{method}</p>
+          ))}
         </div>
       </div>
     </Modal>
