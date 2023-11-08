@@ -2,8 +2,10 @@
 // export * from './my-component'
 export * from "../store/ModalContextProvider";
 export * from "./Button/Button";
+export * from "./form";
 export * from "./Header";
 export * from "./Image/Image";
+export * from "./LoginModal";
 export * from "./Modal";
 export * from "./MovieCardList";
 export * from "./MoviePage";

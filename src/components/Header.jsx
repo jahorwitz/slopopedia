@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { GET_USER_AUTHENTICATION } from "../graphql/get-user-authentication";
 import headerArrow from "../images/global-header-arrow.svg";
 import headerBook from "../images/global-header-book.svg";
 import headerDoor from "../images/global-header-door.svg";
@@ -8,6 +10,9 @@ import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
 import headerNew from "../images/global-header-new.svg";
 import headerSmile from "../images/global-header-smile.svg";
 import headerStar from "../images/global-header-star.svg";
+import { CurrentUserContext } from "../store/CurrentUserContext";
+import { useModals } from "../store/useModals";
+import { Button, LoginModal } from "./index";
 
 export const Header = ({ children }) => {
   return (
@@ -120,24 +125,76 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState("");
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
+  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
+
+  const { registerModal, openModal, closeModal } = useModals();
+
+  // useEffect(() => {
+  //   registerModal(
+  //     "signup",
+  //     <SignupModal onClose={() => closeModal("signup")} />
+  //   );
+  // }, []);
+
+  // if (loading) console.log("Loading");
+  // if (error) console.error(`Error! ${error.message}`);
+
+  useEffect(() => {
+    registerModal(
+      "signin",
+      <LoginModal onClose={() => closeModal("signin")} />
+    );
+  }, []);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      setToken(jwt);
+      setIsLoggedIn(token ? true : false);
+    }
+    if (data) {
+      setCurrentUser(data.authenticatedItem);
+    }
+  }, [token, data]);
+
   return (
-    <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden ">
-      <a href="#" className=" border-b-2  ">
-        Log in
-      </a>
-      <p>/</p>
-      <a href="#" className=" border-b-2 ">
-        Sign Up
-      </a>
-      <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
-    </div>
+    <>
+      {isLoggedIn === false ? (
+        <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
+          <Button
+            className={"border-b-2"}
+            variant="link"
+            title="Log In"
+            onClick={() => {
+              openModal("signin");
+            }}
+          ></Button>
+          <p>/</p>
+          <Button
+            className={"border-b-2"}
+            variant="link"
+            title="Sign Up"
+            onClick={() => {
+              openModal("signup");
+            }}
+          ></Button>
+          <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
+        </div>
+      ) : (
+        <div className="flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden">
+          <a href="#" className="border-b-2 ">
+            {currentUser.username}
+          </a>
+          <img className="w-6 h-6 mt-0.5" src={headerSmile} />
+        </div>
+      )}
+    </>
 
     // Functionality needs to be added, this will be for when a user logs in. This will take user to profile. It will replace the Log in/Sign up part of the header
-
-    // <div className="flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden">
-    // <a href="#" className="border-b-2 ">DanilaTing</a>
-    // <img className="w-6 h-6 mt-0.5" src={headerSmile} />
-    // </div>
   );
 };
 

@@ -1,5 +1,9 @@
-export const Button = ({ title, className }) => {
-  return <button className={className}>{title} </button>;
+export const Button = ({ title, className, onClick, disabled = false }) => {
+  return (
+    <button disabled={disabled} className={className} onClick={onClick}>
+      {title}
+    </button>
+  );
 };
 
 Button.displayName = "Button";
