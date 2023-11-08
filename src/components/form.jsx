@@ -116,9 +116,5 @@ Form.Submit = ({ title, disabled }) => {
   );
 };
 Form.Feedback = ({ message }) => {
-  return (
-    <>
-      <p className="font-arial text-error-message text-lg/4">{message}</p>
-    </>
-  );
+  return <p className="font-arial text-error-message text-lg/4">{message}</p>;
 };
