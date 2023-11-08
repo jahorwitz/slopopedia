@@ -1,11 +1,14 @@
 import camera from "../images/camera.svg";
+import checkMarkDark from "../images/check-mark-dark.svg";
 import drCal from "../images/drcaligari.png";
+import heartDark from "../images/heart-dark.svg";
 import rottenTomato from "../images/rotten-tomatoes.svg";
+import { Button } from "./Button/Button";
 import { Image } from "./Image/Image";
 import Keyword from "./Keyword";
 import { Modal } from "./Modal";
 
-export const MoviePreview = ({ closeModal }) => {
+export const MoviePreview = ({ closeModal, route }) => {
   const movie = {
     photo: drCal,
     title: "Dr. Caligari",
@@ -18,7 +21,6 @@ export const MoviePreview = ({ closeModal }) => {
     howToWatch: ["Netflix"],
   };
 
-  console.log(movie.keywords);
   return (
     <Modal closeModal={closeModal}>
       {/* movie.photo. should be blurred */}
@@ -50,19 +52,37 @@ export const MoviePreview = ({ closeModal }) => {
         </div>
         <div className="flex gap-x-2.5">
           {/* movie.tomatoScore */}
-          <Image src={rottenTomato} alt={"rotten tomato"} />
+          <Image src={rottenTomato} alt={"rotten tomato"} className="w-5 h-5" />
           <p className="text-lg/5">
             Rotten Tomatoes score: {movie.tomatoScore}%
           </p>
         </div>
         <div className="flex gap-x-2.5">
           {/* movie.howToWatch */}
-          <Image src={camera} alt={"camera"} />
+          <Image src={camera} alt={"camera"} className="w-5 h-5" />
           <p className="text-lg/5">Watch on: </p>
           {movie.howToWatch.map((method, index) => (
-            <p key={index}>{method}</p>
+            <p className="text-lg/5" key={index}>
+              {method}
+            </p>
           ))}
         </div>
+        {route === "fests" && (
+          <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
+            <Button
+              title="I watched it!"
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+            >
+              <Image src={checkMarkDark} className="w-4 h-3" />
+            </Button>
+            <Button
+              title="I want it!"
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+            >
+              <Image src={heartDark} className="w-4 h-3" />
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

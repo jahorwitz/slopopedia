@@ -7,7 +7,10 @@ export function FestsRoute() {
   const { registerModal, closeModal, openModal } = useModals();
 
   useEffect(() => {
-    registerModal("preview", <MoviePreview closeModal={closeModal} />);
+    registerModal(
+      "preview",
+      <MoviePreview closeModal={closeModal} route={"fests"} />
+    );
   }, []);
 
   return (
