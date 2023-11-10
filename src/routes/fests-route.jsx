@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Button } from "../components";
-import { MoviePreview } from "../components/MoviePreviewModal";
+import { MoviePreviewModal } from "../components/MoviePreviewModal";
 import { useModals } from "../store/useModals";
 
 export function FestsRoute() {
@@ -9,7 +9,7 @@ export function FestsRoute() {
   useEffect(() => {
     registerModal(
       "preview",
-      <MoviePreview closeModal={closeModal} route={"fests"} />
+      <MoviePreviewModal closeModal={closeModal} route={"fests"} />
     );
   }, []);
 

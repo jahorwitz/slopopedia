@@ -1,3 +1,5 @@
+import { useState } from "react";
+import styled from "styled-components";
 import camera from "../images/camera.svg";
 import checkMarkDark from "../images/check-mark-dark.svg";
 import drCal from "../images/drcaligari.png";
@@ -7,8 +9,38 @@ import { Button } from "./Button/Button";
 import { Image } from "./Image/Image";
 import Keyword from "./Keyword";
 import { Modal } from "./Modal";
+import { RecommendBadge } from "./RecommendBadge";
 
-export const MoviePreview = ({ closeModal, route }) => {
+const BlurredImage = styled.div`
+  background: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .blur {
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    position: absolute;
+    z-index: 0;
+  }
+`;
+
+export const MoviePreviewModal = ({ closeModal, route }) => {
+  const [isWatchedClicked, setIsWatchedClicked] = useState(false);
+  const [isWantClicked, setIsWantClicked] = useState(false);
+
+  const handleWatchedClick = () => {
+    setIsWatchedClicked(!isWatchedClicked);
+  };
+
+  const handleWantClick = () => {
+    setIsWantClicked(!isWantClicked);
+  };
+
   const movie = {
     photo: drCal,
     title: "Dr. Caligari",
@@ -24,11 +56,23 @@ export const MoviePreview = ({ closeModal, route }) => {
   return (
     <Modal closeModal={closeModal}>
       {/* movie.photo. should be blurred */}
-      <div className="outline">
-        <Image src={movie.photo} alt={movie.title} className="mx-auto my-0" />
-      </div>
+      <BlurredImage image={movie.photo}>
+        {route === "fests" && (
+          <RecommendBadge
+            text="You'll like this!"
+            className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial"
+          />
+        )}
+
+        <div className="blur"></div>
+        <Image
+          src={movie.photo}
+          alt={movie.title}
+          className="mx-auto my-0 py-2.5 z-50"
+        />
+      </BlurredImage>
       {/* all information about movie */}
-      <div className="max-w-[590px] pl-10 pt-5 pb-9 flex flex-col gap-y-5 font-arial">
+      <div className="max-w-[590px] pl-[60px] pt-5 pb-[60px] flex flex-col gap-y-5 font-arial">
         <div className="flex flex-col gap-y-2.5 text-movie-card-captions">
           {/* movie.title, movie.releaseYear, movie.runtime */}
           <h1 className="font-bold ">{movie.title}</h1>
@@ -71,13 +115,19 @@ export const MoviePreview = ({ closeModal, route }) => {
           <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
             <Button
               title="I watched it!"
-              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              className={`flex items-center gap-x-2.5 border border-solid border-black p-2.5 ${
+                isWatchedClicked ? "bg-yellow-button" : ""
+              }`}
+              onClick={handleWatchedClick}
             >
               <Image src={checkMarkDark} className="w-4 h-3" />
             </Button>
             <Button
               title="I want it!"
-              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              className={`flex items-center gap-x-2.5 border border-solid border-black p-2.5 active:bg-yellow-button ${
+                isWantClicked ? "bg-yellow-button" : ""
+              }`}
+              onClick={handleWantClick}
             >
               <Image src={heartDark} className="w-4 h-3" />
             </Button>

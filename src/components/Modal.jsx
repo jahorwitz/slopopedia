@@ -39,7 +39,7 @@ export function Modal({ children, title, closeModal }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white p-6 align-middle shadow-xl transition-all box-border">
+                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white align-middle shadow-xl transition-all box-border">
                     <button
                       className="w-5 h-5 absolute top-10 right-10 z-50"
                       onClick={closeThisModal}
@@ -48,7 +48,7 @@ export function Modal({ children, title, closeModal }) {
                     </button>
                     <Dialog.Title
                       as="h3"
-                      className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center my-3.5"
+                      className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center"
                     >
                       {title}
                     </Dialog.Title>

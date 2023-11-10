@@ -53,6 +53,9 @@ export default {
     scale: {
       2: "2.0",
     },
+    // padding: {
+    //   15: "60px",
+    // },
   },
   plugins: [],
 };

@@ -1,7 +1,17 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useModals } from "../store/useModals";
 import { Button, Header } from "./index";
+import { MoviePreviewModal } from "./MoviePreviewModal";
 
 export const Submit = ({ children }) => {
+  const { registerModal, closeModal, openModal } = useModals();
+  useEffect(() => {
+    registerModal(
+      "preview",
+      <MoviePreviewModal closeModal={closeModal} route={"submission"} />
+    );
+  }, []);
   return (
     <>
       <Header>
@@ -12,6 +22,13 @@ export const Submit = ({ children }) => {
       //insert function here - this function should show either the form
       function or submitForm function based off of the state of whether or not
       the form was submitted.//
+      <Button
+        title="CLICK ME"
+        className="bg-yellow-200 h-12 text-black text-center items-center w-80 border py-2 px-4"
+        onClick={() => {
+          openModal("preview");
+        }}
+      />
     </>
   );
 };
