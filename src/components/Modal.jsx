@@ -48,19 +48,21 @@ export function Modal({ children, title, onClose }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-[712px] h-auto transform overflow-hidden bg-white p-6 text-center align-middle shadow-xl transition-all ">
+                  <Dialog.Panel className="w-[712px] h-auto transform overflow-hidden bg-white text-center align-middle shadow-xl transition-all">
                     <button
                       className="w-5 h-5 absolute top-10 right-10 z-50"
                       onClick={closeThisModal}
                     >
                       <img src={closeButton} alt="close-button" />
                     </button>
-                    <Dialog.Title
-                      as="h3"
-                      className="text-xl font-medium text-grey-900 text-center my-4"
-                    >
-                      {title}
-                    </Dialog.Title>
+                    {title && (
+                      <Dialog.Title
+                        as="h3"
+                        className="text-xl scale-y-2 pt-6 my-4 font-medium text-grey-900 text-center"
+                      >
+                        {title}
+                      </Dialog.Title>
+                    )}
                     {children}
                   </Dialog.Panel>
                 </Transition.Child>

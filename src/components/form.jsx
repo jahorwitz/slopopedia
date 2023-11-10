@@ -94,17 +94,24 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-Form.Submit = ({ title, className }) => {
+
+Form.Submit = ({ title, className, disabled }) => {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center pt-8 pb-10">
       <Button
+        disabled={disabled}
         title={title}
-        className={`font-bold font-arial bg-yellow-400 text-lg/4 text-black border py-4 px-4 ${className}`}
-        type="submit"
+        className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className} ${
+          disabled
+            ? "bg-gray-button text-gray-text"
+            : "bg-yellow-button text-black"
+        }`}
+        type="button"
       />
     </div>
   );
 };
+
 Form.Feedback = ({ className, message }) => {
   return (
     <>

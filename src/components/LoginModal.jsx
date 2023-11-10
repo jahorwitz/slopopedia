@@ -1,13 +1,16 @@
 import { useMutation } from "@apollo/client";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
 import checkMark from "../images/check-mark-dark.svg";
+import { CurrentUserContext } from "../store/CurrentUserContext";
 import { useModals } from "../store/useModals";
 import { Form, Modal } from "./index";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
     useMutation(SIGNIN);
+  const { setCurrentUser } = useContext(CurrentUserContext);
 
   const { registerModal, openModal, closeModal } = useModals();
 
@@ -16,7 +19,7 @@ export function LoginModal({ onClose }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isValid, errors },
     setValue,
     getValues,
   } = useForm({
@@ -34,8 +37,10 @@ export function LoginModal({ onClose }) {
       }).then(({ data }) => {
         const typename = data.authenticateUserWithPassword.__typename;
         if (typename === "UserAuthenticationWithPasswordSuccess") {
+          const userData = data.authenticateUserWithPassword.item;
           const sessionToken = data.authenticateUserWithPassword.sessionToken;
           localStorage.setItem("jwt", sessionToken);
+          setCurrentUser(userData);
           closeModal("signin");
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
           console.log("Something went wrong");
@@ -52,7 +57,7 @@ export function LoginModal({ onClose }) {
     <Modal title="OH HEY GOBLIN">
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"flex flex-col items-center"}
+        className={"flex flex-col items-center p-6"}
       >
         <div className="flex flex-col">
           <Form.TextInput
@@ -89,7 +94,7 @@ export function LoginModal({ onClose }) {
           />
           {errors.password && <Form.Feedback message={"Incorrect Password"} />}
         </div>
-        <div className="flex ml-auto mr-auto w-[373px] mb-[40px] justify-between">
+        <div className="flex ml-auto mr-auto w-[373px] justify-between">
           <div className="flex">
             {/* Specific design for checkbox including checkMark */}
             {/* Logic for remembering user */}
@@ -108,6 +113,7 @@ export function LoginModal({ onClose }) {
           <Form.Submit
             title={"Get to Sloppin'"}
             className="w-[373px] h-[49px]"
+            disabled={!isValid}
           />
           {(errors.gobbId || errors.password) && (
             <Form.Feedback
@@ -115,7 +121,7 @@ export function LoginModal({ onClose }) {
               className="mt-[20px]"
             />
           )}
-          <h3 className="font-arialRegular text-lg mb-[40px] mt-[40px]">
+          <h3 className="font-arialRegular text-lg mb-[40px]">
             Don't have an account? {""}
             <button
               type="button"

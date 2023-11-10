@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { GET_USER_AUTHENTICATION } from "../graphql/get-user-authentication";
 import headerArrow from "../images/global-header-arrow.svg";
@@ -125,13 +125,11 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
-
   const { registerModal, openModal, closeModal } = useModals();
+  const jwt = localStorage.getItem("jwt");
 
   // useEffect(() => {
   //   registerModal(
@@ -143,6 +141,10 @@ Header.Profile = () => {
   // if (loading) console.log("Loading");
   // if (error) console.error(`Error! ${error.message}`);
 
+  const isLoggedIn = useMemo(() => {
+    return true ? token !== "" : false;
+  }, [token]);
+
   useEffect(() => {
     registerModal(
       "signin",
@@ -151,15 +153,13 @@ Header.Profile = () => {
   }, []);
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
     if (jwt) {
       setToken(jwt);
-      setIsLoggedIn(token ? true : false);
     }
-    if (data) {
+    if (data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
     }
-  }, [token, data]);
+  }, [jwt, data]);
 
   return (
     <>
@@ -193,8 +193,6 @@ Header.Profile = () => {
         </div>
       )}
     </>
-
-    // Functionality needs to be added, this will be for when a user logs in. This will take user to profile. It will replace the Log in/Sign up part of the header
   );
 };
 

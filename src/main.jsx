@@ -25,8 +25,6 @@ import {
 } from "./routes";
 import { CurrentUserContextProvider } from "./store/CurrentUserContextProvider";
 
-// const [token, setToken] = useState("");
-
 const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
@@ -54,13 +52,6 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
-// useEffect(() => {
-//   const jwt = localStorage.getItem("jwt");
-//   if (jwt !== "") {
-//     setToken(jwt);
-//   }
-// });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
