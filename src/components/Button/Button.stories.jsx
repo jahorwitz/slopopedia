@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { Button } from "./button";
 
 export default {
   title: "Component/Button",
@@ -9,34 +9,65 @@ const Template = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  title: "Primary",
-  className:
-    "bg-yellow-200 h-12 text-black text-center items-center w-80 border py-2 px-4",
+  children: "Primary",
+  variant: "primary",
   onClick: {
     action: "clicked",
   },
 };
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  children: "Disabled",
+  variant: "primary",
+  disabled: true,
+  onClick: {
+    action: "clicked",
+  },
+};
+
 export const Secondary = Template.bind({});
 Secondary.args = {
-  title: "Secondary Button",
-  className: "bg-yellow-200 w-96 h-12 text-black w-80 border py-2 px-4",
+  children: "Secondary Button",
+  variant: "secondary",
   onClick: {
     action: "clicked",
   },
 };
+
+export const OutlineSecondary = Template.bind({});
+OutlineSecondary.args = {
+  children: "Outline Secondary Button",
+  variant: "outline-secondary",
+  onClick: {
+    action: "clicked",
+  },
+};
+
+export const OutlineDanger = Template.bind({});
+OutlineDanger.args = {
+  children: "Outline Danger Button",
+  variant: "outline-danger",
+  onClick: {
+    action: "clicked",
+  },
+};
+
 export const Large = Template.bind({});
 Large.args = {
-  title: "Large Button",
-  className:
-    "bg-yellow-200 h-10 text-black text-lg w-36 h-10 p-2.border py-2 px-4 ",
+  children: "Large Button",
+  variant: "primary",
+  size: "lg",
   onClick: {
     action: "clicked",
   },
 };
+
 export const Small = Template.bind({});
 Small.args = {
-  title: "Small Button",
-  className: "bg-yellow-200 h-10 text-black text-lg w-36 h-10 py-2",
+  children: "Small Button",
+  variant: "secondary",
+  size: "sm",
   onClick: {
     action: "clicked",
   },

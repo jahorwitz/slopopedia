@@ -1,8 +1,8 @@
-import { RecommendBadge } from "./RecommendBadge";
+import { Badge } from "./badge";
 
 export const GreenBadge = () => {
   return (
-    <RecommendBadge
+    <Badge
       className="absolute top-[55px] left-[88px]"
       text="You'll like this!"
       variant="positive"
@@ -12,7 +12,7 @@ export const GreenBadge = () => {
 
 export const YellowBadge = () => {
   return (
-    <RecommendBadge
+    <Badge
       className="absolute top-[83px] left-[67px]"
       text="Give it a try..."
       variant="neutral"
@@ -22,7 +22,7 @@ export const YellowBadge = () => {
 
 export const RedBadge = () => {
   return (
-    <RecommendBadge
+    <Badge
       className="absolute top-[118px] left-[72px]"
       text="You'll hate this for sure"
       variant="negative"
@@ -32,5 +32,5 @@ export const RedBadge = () => {
 
 export default {
   title: "Components/Badge",
-  component: RecommendBadge,
+  component: Badge,
 };

@@ -1,4 +1,4 @@
-import { Header, Image, MovieCardList, PageTitle } from "../components";
+import { Header, MovieCardList } from "../components";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {
@@ -11,7 +11,7 @@ export function MainRoute() {
           <Header.Profile />
         </Header>
         <div className="flex flex-row w-full max-w-[1440px] mb-20 mx-auto items-center content-center xs:pr-2  md:text-md md:pr-2">
-          <Image
+          <img
             className={"absolute w-full  max-w-[1440px] pt-11 xs:pt-5 sm:pt-9"}
             src={image}
             alt="actors"
@@ -20,7 +20,7 @@ export function MainRoute() {
       </div>
 
       <div className="w-full max-w-[1440px] mx-auto p-20">
-        <PageTitle className="h-6 w-36 font-bold" title="RECENTLY ADDED" />
+        <h1 className="h-6 w-36 font-bold">RECENTLY ADDED</h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
           <MovieCardList />
         </div>
