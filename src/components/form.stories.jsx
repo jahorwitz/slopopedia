@@ -37,7 +37,7 @@ export const Default = () => {
         labelText="Dropdown"
         register={register}
       />
-      <Form.Submit className="" title="" handleSubmit={handleSubmit} />
+      <Form.Submit className="" title="Yeah!" handleSubmit={handleSubmit} />
     </Form>
   );
 };

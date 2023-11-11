@@ -8,19 +8,35 @@ export const Form = ({ className, children, onSubmit, ...rest }) => {
   );
 };
 
-Form.TextInput = ({ className, labelText, id, email, password, ...rest }) => {
+Form.TextInput = ({
+  className,
+  labelText,
+  id,
+  email,
+  password,
+  register,
+  onChange,
+  isValid,
+  ...rest
+}) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col py-3">
-        <label htmlFor={id} className="mb-1.5 text-lg">
+      <div className="flex font-bold font-arial flex-col py-2">
+        <label htmlFor={id} className="mb-1.5 text-lg text-left">
           {labelText}
         </label>
 
         <input
+          register={register}
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className={`font-normal py-3 px-4 border-solid rounded-none border ${
+            isValid
+              ? "border-black"
+              : "border-error-message focus:outline-error-message"
+          } `}
           type="text"
-          placeholder="Type"
+          placeholder="Type here"
+          onChange={onChange}
           {...rest}
         />
       </div>
@@ -83,14 +99,22 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-Form.Submit = ({ title, className }) => {
+Form.Submit = ({ title, disabled }) => {
   return (
-    <div className="flex justify-center py-3">
+    <div className="flex justify-center pt-8 pb-10">
       <Button
-        title="Yeah!"
-        className="font-bold font-arial bg-yellow-400 text-lg/4 text-black w-full border py-4 px-4"
-        type="submit"
+        disabled={disabled}
+        title={title}
+        className={`font-bold font-arial text-lg/4 w-full border py-4 px-4 ${
+          disabled
+            ? "bg-gray-button text-gray-text"
+            : "bg-yellow-button text-black"
+        }`}
+        type="button"
       />
     </div>
   );
+};
+Form.Feedback = ({ message }) => {
+  return <p className="font-arial text-error-message text-lg/4">{message}</p>;
 };

@@ -6,6 +6,8 @@ export default {
       colors: {
         "gray-button": "#CBCBCB",
         "yellow-button": "#FFD913",
+        "error-message": "#FF4040",
+        "gray-text": "#10101099",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",
@@ -44,6 +46,9 @@ export default {
       md: { min: "1170px", max: "1304px" },
       lg: { min: "1305px", max: "1440px" },
       xl: { min: "1441px", max: "1600px" },
+    },
+    scale: {
+      2: "2.0",
     },
   },
   plugins: [],
