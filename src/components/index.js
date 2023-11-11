@@ -11,5 +11,6 @@ export * from "./MovieCardList";
 export * from "./MoviePage";
 export * from "./PageTitle/PageTitle";
 export * from "./protected-route";
+export * from "./SignupModal";
 export * from "./Submit";
 export * from "./SubmitList";

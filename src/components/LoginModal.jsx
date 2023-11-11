@@ -1,11 +1,11 @@
 import { useMutation } from "@apollo/client";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
 import checkMark from "../images/check-mark-dark.svg";
 import { CurrentUserContext } from "../store/CurrentUserContext";
 import { useModals } from "../store/useModals";
-import { Form, Modal } from "./index";
+import { Form, Modal, SignupModal } from "./index";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
@@ -49,9 +49,9 @@ export function LoginModal({ onClose }) {
     }
   };
 
-  // useEffect(() => {
-  //   registerModal("signup", <SignupModal onClose={() => onClose} />);
-  // });
+  useEffect(() => {
+    registerModal("signup", <SignupModal onClose={() => onClose} />);
+  });
 
   return (
     <Modal title="OH HEY GOBLIN">
@@ -67,32 +67,24 @@ export function LoginModal({ onClose }) {
             })}
             id={"gobb-id"}
             labelText={"Gobb ID"}
-            className={`text-start w-[373px] ${
-              errors.gobbId
-                ? "border-[#FF4040] focus:outline-[#FF4040]"
-                : "border-black focus:outline-black"
-            }`}
+            isValid={!errors.gobbId}
+            className={`text-start w-[373px]`}
             onChange={(evt) => {
               setValue("gobbId", evt.target.value, { shouldValidate: true });
             }}
           />
-          {errors.gobbId && <Form.Feedback message={"Incorrect Username"} />}
           <Form.TextInput
             register={register("password", {
               required: true,
             })}
             id={"password"}
             labelText={"Password"}
-            className={`text-start w-[373px] ${
-              errors.password
-                ? "border-[#FF4040] focus:outline-[#FF4040]"
-                : "border-black focus:outline-black"
-            }`}
+            isValid={!errors.password}
+            className={`text-start w-[373px]`}
             onChange={(evt) => {
               setValue("password", evt.target.value, { shouldValidate: true });
             }}
           />
-          {errors.password && <Form.Feedback message={"Incorrect Password"} />}
         </div>
         <div className="flex ml-auto mr-auto w-[373px] justify-between">
           <div className="flex">
@@ -118,15 +110,15 @@ export function LoginModal({ onClose }) {
           {(errors.gobbId || errors.password) && (
             <Form.Feedback
               message={"Incorrect Username or Password"}
-              className="mt-[20px]"
+              className="mb-5"
             />
           )}
-          <h3 className="font-arialRegular text-lg mb-[40px]">
+          <h3 className="font-arialRegular text-lg mt-5 mb-10">
             Don't have an account? {""}
             <button
               type="button"
               className="underline"
-              // onClick={() => openModal("signup")}
+              onClick={() => openModal("signup")}
               onClose={() => onClose}
             >
               Sign Up!

@@ -16,6 +16,7 @@ Form.TextInput = ({
   password,
   register,
   onChange,
+  isValid,
   ...rest
 }) => {
   return (
@@ -28,7 +29,11 @@ Form.TextInput = ({
         <input
           register={register}
           id={id}
-          className={`font-normal py-4 px-4 border-solid rounded-none border ${className}`}
+          className={`font-normal py-3 px-4 border-solid rounded-none border ${
+            isValid
+              ? "border-black"
+              : "border-error-message focus:outline-error-message"
+          } `}
           type="text"
           placeholder={"Type here"}
           onChange={onChange}
@@ -97,7 +102,7 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
 
 Form.Submit = ({ title, className, disabled }) => {
   return (
-    <div className="flex justify-center pt-8 pb-10">
+    <div className="flex justify-center pt-8 pb-5">
       <Button
         disabled={disabled}
         title={title}
@@ -111,7 +116,6 @@ Form.Submit = ({ title, className, disabled }) => {
     </div>
   );
 };
-
 Form.Feedback = ({ className, message }) => {
   return (
     <>
