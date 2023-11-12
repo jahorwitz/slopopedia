@@ -46,12 +46,15 @@ export function Modal({ children, title, closeModal }) {
                     >
                       <img src={closeButton} alt="close-button" />
                     </button>
-                    <Dialog.Title
-                      as="h3"
-                      className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center"
-                    >
-                      {title}
-                    </Dialog.Title>
+                    {title && (
+                      <Dialog.Title
+                        as="h3"
+                        className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center my-3.5"
+                      >
+                        {title}
+                      </Dialog.Title>
+                    )}
+
                     {children}
                   </Dialog.Panel>
                 </Transition.Child>
