@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import headerArrow from "../images/global-header-arrow.svg";
-import headerBook from "../images/global-header-book.svg";
-import headerDoor from "../images/global-header-door.svg";
-import headerLogo from "../images/global-header-logo.svg";
-import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
-import headerNew from "../images/global-header-new.svg";
-import headerSmile from "../images/global-header-smile.svg";
-import headerStar from "../images/global-header-star.svg";
-import { useModals } from "../store/useModals";
-import { Button } from "./index";
-import { SignupModal } from "./SignupModal";
+import headerArrow from "../../images/global-header-arrow.svg";
+import headerBook from "../../images/global-header-book.svg";
+import headerDoor from "../../images/global-header-door.svg";
+import headerLogo from "../../images/global-header-logo.svg";
+import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
+import headerNew from "../../images/global-header-new.svg";
+import headerSmile from "../../images/global-header-smile.svg";
+import headerStar from "../../images/global-header-star.svg";
+import { useModals } from "../../store/useModals";
+import { Button } from "../button";
+import { SignupModal } from "../SignupModal";
 
 export const Header = ({ children }) => {
   return (
