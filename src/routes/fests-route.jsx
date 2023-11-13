@@ -9,7 +9,7 @@ export function FestsRoute() {
   useEffect(() => {
     registerModal(
       "preview",
-      <MoviePreviewModal closeModal={closeModal} route={"fests"} />
+      <MoviePreviewModal closeModal={closeModal} buttons whiteButton />
     );
   }, []);
 

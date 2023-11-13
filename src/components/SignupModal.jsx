@@ -112,7 +112,7 @@ export const SignupModal = ({ closeModal }) => {
         )}
         <Form.Submit disabled={!isValid} title={"Get to Sloppin'"} />
       </Form>
-      <p className="font-arial text-lg/4 pt-0.5 pb-9 text-center">
+      <p className="font-arial text-lg/4 pt-0.5 pb-15 text-center">
         Already have an account? <button className="underline">Login!</button>
       </p>
     </Modal>

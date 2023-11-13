@@ -37,6 +37,12 @@ export default {
         "md-card": "468px",
         "lg-card": "712px",
       },
+      scale: {
+        2: "2.0",
+      },
+      padding: {
+        15: "60px",
+      },
     },
     fontFamily: {
       arialBold: ["Arial-Bold", "sans-serif"],
@@ -50,12 +56,6 @@ export default {
       lg: { min: "1305px", max: "1440px" },
       xl: { min: "1441px", max: "1600px" },
     },
-    scale: {
-      2: "2.0",
-    },
-    // padding: {
-    //   15: "60px",
-    // },
   },
   plugins: [],
 };

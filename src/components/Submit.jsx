@@ -9,7 +9,7 @@ export const Submit = ({ children }) => {
   useEffect(() => {
     registerModal(
       "preview",
-      <MoviePreviewModal closeModal={closeModal} route={"submission"} />
+      <MoviePreviewModal closeModal={closeModal} howToWatch whiteButton />
     );
   }, []);
   return (
