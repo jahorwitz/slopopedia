@@ -4,7 +4,7 @@ export * from "./footer";
 export * from "./form";
 export * from "./header";
 export * from "./keyword";
-export * from "./modal";
+export * from "./Modal";
 export * from "./MovieCardList";
 export * from "./MoviePage";
 export * from "./protected-route";
