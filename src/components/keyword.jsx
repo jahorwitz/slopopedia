@@ -1,4 +1,4 @@
-function Keyword({ keyword, className }) {
+export const Keyword = ({ keyword, className }) => {
   return (
     <p
       className={
@@ -9,8 +9,6 @@ function Keyword({ keyword, className }) {
       {keyword}
     </p>
   );
-}
-
-export default Keyword;
+};
 
 Keyword.displayName = "Keyword";

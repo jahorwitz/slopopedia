@@ -1,5 +1,5 @@
-import MovieCard from "../components/MovieCard";
 import { movieInfo, sizes } from "../utils/constants";
+import MovieCard from "./MovieCard";
 
 export default {
   title: "Movie Card",

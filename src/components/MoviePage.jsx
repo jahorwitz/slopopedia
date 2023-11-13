@@ -7,7 +7,7 @@ import DrCaligari from "../images/drcaligari.png";
 import heartDark from "../images/heart-dark.svg";
 import heart from "../images/heart.svg";
 import rottenTomato from "../images/rotten-tomatoes.svg";
-import { RecommendBadge } from "./RecommendBadge";
+import { Badge } from "./badge";
 
 export function MoviePage() {
   const BlurredImage = styled.div`
@@ -61,7 +61,7 @@ export function MoviePage() {
         />
         {/* Left middle has recommended badge */}
         {/* will be determined by preferences and the positioning will change (see badges.stories.jsx for values) */}
-        <RecommendBadge
+        <Badge
           text="You'll like this!"
           className="absolute top-[55px] left-[88px] z-50"
         />

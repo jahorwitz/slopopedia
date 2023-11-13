@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import closeButton from "../images/close-button.png";
 import whiteCloseButton from "../images/whiteCloseButton.svg";
 
-export function Modal({ children, title, closeModal, whiteButton }) {
+export const Modal = ({ children, title, closeModal, whiteButton }) => {
   let [isOpen, setIsOpen] = useState(true);
 
   function closeThisModal() {
@@ -71,6 +71,6 @@ export function Modal({ children, title, closeModal, whiteButton }) {
       </div>
     </>
   );
-}
+};
 
 Modal.displayName = "Modal";

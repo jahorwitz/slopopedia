@@ -1,5 +1,5 @@
 import { getRandomColumns } from "../utils/constants";
-import Keyword from "./Keyword";
+import { Keyword } from "./keyword";
 
 export function MovieCard({
   children,
@@ -75,7 +75,7 @@ export function MovieCard({
                 className={
                   size >= 2
                     ? "bg-yellow-300 col-span-2"
-                    : "h-31px space-x-2 space-y-2 bg-gray-button xs:space-x-2 xs:space-y-2"
+                    : "h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2"
                 }
                 index={index}
                 key={index}

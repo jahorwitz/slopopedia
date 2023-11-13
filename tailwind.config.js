@@ -4,10 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        "gray-button": "#CBCBCB",
-        "yellow-button": "#FFD913",
-        "error-message": "#FF4040",
-        "gray-text": "#10101099",
+        gray: "#CBCBCB",
+        green: "#48FF50",
+        yellow: "#FFD913",
+        danger: "#FF4040",
+        dark: "#101010",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

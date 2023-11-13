@@ -1,13 +1,12 @@
-// Ex:
-// export * from './my-component'
-export * from "../store/ModalContextProvider";
-export * from "./Button/Button";
-export * from "./Header";
-export * from "./Image/Image";
+export * from "./badge";
+export * from "./button";
+export * from "./footer";
+export * from "./form";
+export * from "./header";
+export * from "./keyword";
 export * from "./Modal";
 export * from "./MovieCardList";
 export * from "./MoviePage";
-export * from "./PageTitle/PageTitle";
 export * from "./protected-route";
 export * from "./Submit";
 export * from "./SubmitList";
