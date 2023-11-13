@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import closeButton from "../images/close-button.png";
 
-export function Modal({ children, title, closeModal }) {
+export const Modal = ({ children, title, closeModal }) => {
   let [isOpen, setIsOpen] = useState(true);
 
   function closeThisModal() {
@@ -62,6 +62,6 @@ export function Modal({ children, title, closeModal }) {
       </div>
     </>
   );
-}
+};
 
 Modal.displayName = "Modal";

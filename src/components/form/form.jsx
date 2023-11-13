@@ -1,4 +1,4 @@
-import { Button } from "../components/Button/Button";
+import { Button } from "../button";
 
 export const Form = ({ className, children, onSubmit, ...rest }) => {
   return (
@@ -30,9 +30,7 @@ Form.TextInput = ({
           register={register}
           id={id}
           className={`font-normal py-3 px-4 border-solid rounded-none border ${
-            isValid
-              ? "border-black"
-              : "border-error-message focus:outline-error-message"
+            isValid ? "border-black" : "border-danger focus:outline-danger"
           } `}
           type="text"
           placeholder="Type here"
@@ -99,22 +97,15 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
-Form.Submit = ({ title, disabled }) => {
+Form.Submit = ({ children, ...rest }) => {
   return (
     <div className="flex justify-center pt-8 pb-10">
-      <Button
-        disabled={disabled}
-        title={title}
-        className={`font-bold font-arial text-lg/4 w-full border py-4 px-4 ${
-          disabled
-            ? "bg-gray-button text-gray-text"
-            : "bg-yellow-button text-black"
-        }`}
-        type="button"
-      />
+      <Button variant="primary" type="button" {...rest}>
+        {children}
+      </Button>
     </div>
   );
 };
 Form.Feedback = ({ message }) => {
-  return <p className="font-arial text-error-message text-lg/4">{message}</p>;
+  return <p className="font-arial text-danger text-lg/4">{message}</p>;
 };
