@@ -74,7 +74,7 @@ export function MovieCard({
                 keyword={keyword}
                 className={
                   size >= 2
-                    ? "bg-yellow-300 col-span-2"
+                    ? "bg-yellow col-span-2"
                     : "h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2"
                 }
                 index={index}

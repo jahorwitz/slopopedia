@@ -5,11 +5,10 @@ import checkMarkDark from "../images/check-mark-dark.svg";
 import drCal from "../images/drcaligari.png";
 import heartDark from "../images/heart-dark.svg";
 import rottenTomato from "../images/rotten-tomatoes.svg";
-import { Button } from "./Button/Button";
-import { Image } from "./Image/Image";
-import Keyword from "./Keyword";
+import { Badge } from "./badge/badge";
+import { Button } from "./Button/button";
+import { Keyword } from "./keyword";
 import { Modal } from "./Modal";
-import { RecommendBadge } from "./RecommendBadge";
 
 const BlurredImage = styled.div`
   background: url(${(props) => props.image});
@@ -62,14 +61,14 @@ export const MoviePreviewModal = ({
     <Modal closeModal={closeModal} whiteButton={whiteButton}>
       <BlurredImage image={movie.photo}>
         {buttons && (
-          <RecommendBadge
+          <Badge
             text="You'll like this!"
             className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial"
           />
         )}
 
         <div className="blur"></div>
-        <Image
+        <img
           src={movie.photo}
           alt={movie.title}
           className="mx-auto my-0 py-2.5 z-50"
@@ -87,44 +86,37 @@ export const MoviePreviewModal = ({
         </div>
         <div className="flex gap-x-2">
           {movie.keywords.map((keyword, index) => (
-            <Keyword
-              className={"bg-yellow-300"}
-              key={index}
-              keyword={keyword}
-            />
+            <Keyword className={"bg-yellow"} key={index} keyword={keyword} />
           ))}
         </div>
         <div className="flex gap-x-2.5">
-          <Image src={rottenTomato} alt={"rotten tomato"} className="w-5 h-5" />
+          <img src={rottenTomato} alt={"rotten tomato"} className="w-5 h-5" />
           <p className="text-lg/5">
             Rotten Tomatoes score: {movie.tomatoScore}%
           </p>
         </div>
         {howToWatch && (
           <div className="flex gap-x-2.5">
-            <Image src={camera} alt={"camera"} className="w-5 h-5" />
-            <p className="text-lg/5">Watch on:{movie.howToWatch}</p>
+            <img src={camera} alt={"camera"} className="w-5 h-5" />
+            <p className="text-lg/5">Watch on: {movie.howToWatch}</p>
           </div>
         )}
         {buttons && (
           <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
             <Button
-              title="I watched it!"
-              className={`flex items-center gap-x-2.5 border border-solid border-black p-2.5 ${
-                isWatchedClicked ? "bg-yellow-button" : ""
-              }`}
+              variant={isWatchedClicked ? "primary" : "outline-secondary"}
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
               onClick={handleWatchedClick}
             >
-              <Image src={checkMarkDark} className="w-4 h-3" />
+              <img src={checkMarkDark} className="w-4 h-3" />I watched it!
             </Button>
             <Button
-              title="I want it!"
-              className={`flex items-center gap-x-2.5 border border-solid border-black p-2.5 active:bg-yellow-button ${
-                isWantClicked ? "bg-yellow-button" : ""
-              }`}
+              size="sm"
+              variant={isWantClicked ? "primary" : "outline-secondary"}
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
               onClick={handleWantClick}
             >
-              <Image src={heartDark} className="w-4 h-3" />
+              <img src={heartDark} className="w-4 h-3" />I want it!
             </Button>
           </div>
         )}

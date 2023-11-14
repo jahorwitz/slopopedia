@@ -23,11 +23,13 @@ export const Header = ({ children }) => {
 
 Header.Logo = () => {
   return (
-    <img
-      className="w-80 pt-4 xs:w-60 md:w-70 "
-      src={headerLogo}
-      alt="slopopedia logo"
-    />
+    <Link to="/">
+      <img
+        className="w-80 pt-4 xs:w-60 md:w-70 "
+        src={headerLogo}
+        alt="slopopedia logo"
+      />
+    </Link>
   );
 };
 
@@ -141,11 +143,12 @@ Header.NavLinks = () => {
                   alt={button.title}
                 />
                 <Button
-                  variant="link"
-                  title={button.title}
+                  variant="secondary"
                   onClick={button.onClick}
                   className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
-                />
+                >
+                  {button.title}
+                </Button>
               </div>
             ))}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
@@ -170,15 +173,20 @@ Header.Profile = () => {
   }, []);
   return (
     <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
-      <Button variant="link" title="Log In"></Button>
+      <Button size="sm" className="font-normal" variant="secondary">
+        Log In
+      </Button>
       <p>/</p>
       <Button
-        variant="link"
-        title="Sign Up"
+        size="sm"
+        className="font-normal"
+        variant="secondary"
         onClick={() => {
           openModal("signup");
         }}
-      ></Button>
+      >
+        Sign Up
+      </Button>
       <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
     </div>
 

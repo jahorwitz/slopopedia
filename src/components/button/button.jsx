@@ -1,0 +1,37 @@
+import cx from "classnames";
+
+export const Button = ({
+  variant = "primary",
+  size = "md",
+  children,
+  className,
+  disabled,
+  ...rest
+}) => {
+  return (
+    <button
+      {...rest}
+      disabled={disabled}
+      className={cx(
+        "text-lg font-bold leading-4",
+        !disabled && variant === "primary" && "bg-yellow text-black",
+        !disabled && variant === "secondary" && "bg-dark text-white",
+        !disabled &&
+          variant === "outline-secondary" &&
+          "border-dark border-[1px] text-black",
+        !disabled &&
+          variant === "outline-danger" &&
+          "border-danger border-[1px] text-danger",
+        disabled && "bg-dark/10 text-dark/60 cursor-not-allowed",
+        size === "md" && "p-4",
+        size === "sm" && "p-2",
+        size === "lg" && "py-4 w-full",
+        className
+      )}
+    >
+      {children}
+    </button>
+  );
+};
+
+Button.displayName = "Button";

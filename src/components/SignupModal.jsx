@@ -21,6 +21,7 @@ export const SignupModal = ({ closeModal }) => {
   });
 
   const onSubmit = () => {
+    console.log("submitted");
     const { username, email, password } = getValues();
     createUser({
       variables: { data: { username, email, password } },
@@ -110,7 +111,9 @@ export const SignupModal = ({ closeModal }) => {
         {errors.confirmPassword && (
           <Form.Feedback message={errors.confirmPassword.message} />
         )}
-        <Form.Submit disabled={!isValid} title={"Get to Sloppin'"} />
+        <Form.Submit disabled={!isValid} size={"lg"}>
+          Get to Sloppin'
+        </Form.Submit>
       </Form>
       <p className="font-arial text-lg/4 pt-0.5 pb-15 text-center">
         Already have an account? <button className="underline">Login!</button>

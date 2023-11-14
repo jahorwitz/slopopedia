@@ -18,12 +18,12 @@ export function FestsRoute() {
       {/* <Fests /> */}
       This is the fests page
       <Button
-        title="CLICK ME"
-        className="bg-yellow-200 h-12 text-black text-center items-center w-80 border py-2 px-4"
         onClick={() => {
           openModal("preview");
         }}
-      />
+      >
+        CLICK ME
+      </Button>
     </>
   );
 }

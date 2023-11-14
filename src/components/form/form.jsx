@@ -100,7 +100,7 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
 Form.Submit = ({ children, ...rest }) => {
   return (
     <div className="flex justify-center pt-8 pb-10">
-      <Button variant="primary" type="button" {...rest}>
+      <Button variant="primary" type="submit" {...rest}>
         {children}
       </Button>
     </div>

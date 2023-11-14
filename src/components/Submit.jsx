@@ -23,12 +23,12 @@ export const Submit = ({ children }) => {
       function or submitForm function based off of the state of whether or not
       the form was submitted.//
       <Button
-        title="CLICK ME"
-        className="bg-yellow-200 h-12 text-black text-center items-center w-80 border py-2 px-4"
         onClick={() => {
           openModal("preview");
         }}
-      />
+      >
+        CLICK ME
+      </Button>
     </>
   );
 };
