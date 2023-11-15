@@ -1,13 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { Popover } from "@headlessui/react";
-import { useContext, useEffect } from "react";
+import { Popover, Transition } from "@headlessui/react";
+import { Fragment, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
 import checkMark from "../images/check-mark-dark.svg";
 import { CurrentUserContext } from "../store/CurrentUserContext";
 import { useModals } from "../store/useModals";
 import { Form, Modal, SignupModal } from "./index";
-// import { Fragment } from "react";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
@@ -105,12 +104,36 @@ export function LoginModal({ onClose }) {
           </div>
           {/* Popover to information about who to contact if password forgotten */}
           <Popover className="">
-            <button
-              type="button"
-              className="font-arialRegular text-lg underline"
-            >
-              Forgot Password?
-            </button>
+            {({ open }) => (
+              <>
+                <Popover.Button
+                  type="button"
+                  className={`font-arialRegular text-lg underline ${
+                    open ? "text-grey" : "text-black"
+                  }`}
+                  onClick={open}
+                >
+                  Forgot Password?
+                </Popover.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
+                    <div className="overflow-hidden bg-white rounded-lg shadow-lg ring-1 ring-black/5 border">
+                      <p className="p-5 font-arialRegular text-lg">
+                        Please contact admin to reset password
+                      </p>
+                    </div>
+                  </Popover.Panel>
+                </Transition>
+              </>
+            )}
           </Popover>
         </div>
         <div className="flex flex-col items-center">

@@ -3,16 +3,16 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
+import headerArrow from "../../images/global-header-arrow.svg";
+import headerBook from "../../images/global-header-book.svg";
+import headerDoor from "../../images/global-header-door.svg";
+import headerLogo from "../../images/global-header-logo.svg";
+import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
+import headerNew from "../../images/global-header-new.svg";
+import headerSmile from "../../images/global-header-smile.svg";
+import headerStar from "../../images/global-header-star.svg";
 import { CurrentUserContext } from "../../store/CurrentUserContext";
 import { useModals } from "../../store/useModals";
-import headerArrow from "../images/global-header-arrow.svg";
-import headerBook from "../images/global-header-book.svg";
-import headerDoor from "../images/global-header-door.svg";
-import headerLogo from "../images/global-header-logo.svg";
-import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
-import headerNew from "../images/global-header-new.svg";
-import headerSmile from "../images/global-header-smile.svg";
-import headerStar from "../images/global-header-star.svg";
 import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
@@ -201,11 +201,11 @@ Header.Profile = () => {
   return (
     <>
       {isLoggedIn === false ? (
-        <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
+        <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
           <Button
             className={"border-b-2"}
-            variant="link"
-            title="Log In"
+            variant="secondary"
+            children="Log In"
             onClick={() => {
               openModal("signin");
             }}
@@ -213,8 +213,8 @@ Header.Profile = () => {
           <p>/</p>
           <Button
             className={"border-b-2"}
-            variant="link"
-            title="Sign Up"
+            variant="secondary"
+            children="Sign Up"
             onClick={() => {
               openModal("signup");
             }}
@@ -222,7 +222,7 @@ Header.Profile = () => {
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>
       ) : (
-        <div className="flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden">
+        <div className="flex flex-row h-[24px] gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex xl:flex sm: hidden xs: hidden">
           <a href="#" className="border-b-2 ">
             {currentUser.username}
           </a>

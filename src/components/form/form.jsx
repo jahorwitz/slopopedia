@@ -61,6 +61,7 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
     </>
   );
 };
+
 Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
@@ -79,6 +80,7 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
     </>
   );
 };
+
 Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
   return (
     <>
@@ -103,17 +105,17 @@ Form.Submit = ({ title, className, disabled }) => {
     <div className="flex justify-center pt-8 pb-5">
       <Button
         disabled={disabled}
-        title={title}
-        className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className} ${
-          disabled
-            ? "bg-gray-button text-gray-text"
-            : "bg-yellow-button text-black"
-        }`}
+        variant="primary"
+        children={title}
+        className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className}`}
         type="button"
-      />
+      >
+        {title}
+      </Button>
     </div>
   );
 };
+
 Form.Feedback = ({ className, message }) => {
   return (
     <>
