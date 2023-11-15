@@ -1,4 +1,4 @@
-import { Button } from "../Button/Button";
+import { Button } from "../button";
 
 export const Form = ({ className, children, onSubmit, ...rest }) => {
   return (
@@ -30,9 +30,7 @@ Form.TextInput = ({
           register={register}
           id={id}
           className={`font-normal py-3 px-4 border-solid rounded-none border ${
-            isValid
-              ? "border-black"
-              : "border-error-message focus:outline-error-message"
+            isValid ? "border-black" : "border-danger focus:outline-danger"
           } `}
           type="text"
           placeholder={"Type here"}
