@@ -10,6 +10,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import {
+  CurrentUserContextProvider,
   ModalContextProvider,
   ProtectedRoute,
   Submit,
@@ -23,7 +24,6 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
-import { CurrentUserContextProvider } from "./store/CurrentUserContextProvider";
 
 const httpLink = createHttpLink({
   uri:

@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client";
+import { Popover } from "@headlessui/react";
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
@@ -6,6 +7,7 @@ import checkMark from "../images/check-mark-dark.svg";
 import { CurrentUserContext } from "../store/CurrentUserContext";
 import { useModals } from "../store/useModals";
 import { Form, Modal, SignupModal } from "./index";
+// import { Fragment } from "react";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
@@ -28,6 +30,11 @@ export function LoginModal({ onClose }) {
       password: "",
     },
   });
+
+  const adminInfo = {
+    name: "Contact",
+    description: "Contact an admin to reset your password",
+  };
 
   const onSubmit = () => {
     if (username !== "" || password !== "") {
@@ -96,10 +103,15 @@ export function LoginModal({ onClose }) {
             />
             <h3 className="font-arialRegular text-lg">Remember Me</h3>
           </div>
-          {/* Link to forgot password modal(?) */}
-          <button type="button" className="font-arialRegular text-lg underline">
-            Forgot Password?
-          </button>
+          {/* Popover to information about who to contact if password forgotten */}
+          <Popover className="">
+            <button
+              type="button"
+              className="font-arialRegular text-lg underline"
+            >
+              Forgot Password?
+            </button>
+          </Popover>
         </div>
         <div className="flex flex-col items-center">
           <Form.Submit

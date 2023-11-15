@@ -1,9 +1,10 @@
 // Ex:
 // export * from './my-component'
+export * from "../store/CurrentUserContextProvider";
 export * from "../store/ModalContextProvider";
 export * from "./Button/Button";
-export * from "./form";
-export * from "./Header";
+export * from "./form/form";
+export * from "./header/header";
 export * from "./Image/Image";
 export * from "./LoginModal";
 export * from "./Modal";

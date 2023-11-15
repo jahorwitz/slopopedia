@@ -2,7 +2,9 @@ import { useQuery } from "@apollo/client";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { GET_USER_AUTHENTICATION } from "../graphql/get-user-authentication";
+import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
+import { CurrentUserContext } from "../../store/CurrentUserContext";
+import { useModals } from "../../store/useModals";
 import headerArrow from "../images/global-header-arrow.svg";
 import headerBook from "../images/global-header-book.svg";
 import headerDoor from "../images/global-header-door.svg";
@@ -11,9 +13,7 @@ import headerMagnifyglass from "../images/global-header-magnifyglass.svg";
 import headerNew from "../images/global-header-new.svg";
 import headerSmile from "../images/global-header-smile.svg";
 import headerStar from "../images/global-header-star.svg";
-import { CurrentUserContext } from "../store/CurrentUserContext";
-import { useModals } from "../store/useModals";
-import { Button, LoginModal, SignupModal } from "./index";
+import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
   return (
