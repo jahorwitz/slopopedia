@@ -46,9 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             />
             <Route
               path="/submit"
-              element={
-                <ProtectedRoute user="user">{<Submit />}</ProtectedRoute>
-              }
+              element={<ProtectedRoute>{<Submit />}</ProtectedRoute>}
             />
             <Route
               path="/submit-list"
