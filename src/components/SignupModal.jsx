@@ -21,7 +21,6 @@ export const SignupModal = ({ closeModal }) => {
   });
 
   const onSubmit = () => {
-    console.log("submitted");
     const { username, email, password } = getValues();
     createUser({
       variables: { data: { username, email, password } },
