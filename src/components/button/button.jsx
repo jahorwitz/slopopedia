@@ -15,7 +15,7 @@ export const Button = ({
       className={cx(
         "text-lg font-bold leading-4",
         !disabled && variant === "primary" && "bg-yellow text-black",
-        !disabled && variant === "secondary" && "bg-dark text-white",
+        !disabled && variant === "secondary" && "bg-black text-white",
         !disabled &&
           variant === "outline-secondary" &&
           "border-dark border-[1px] text-black",
