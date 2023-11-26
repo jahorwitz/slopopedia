@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import { ProtectedRoute, Submit, SubmitList } from "./components/index";
+import { ProfileSlopFests } from "./components/ProfileSlopFests";
 import {
   BrowseRoute,
   FestsRoute,
@@ -36,7 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/movie" element={<MovieRoute />} />
             <Route path="/search" element={<SearchRoute />} />
             <Route path="/sounds" element={<SoundsRoute />} />
-            {/* <Route path="/profile-fests" element={<ProfileSlopFests />} /> */}
+            <Route path="/profile-fests" element={<ProfileSlopFests />} />
             <Route
               path="/profile-settings"
               element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
