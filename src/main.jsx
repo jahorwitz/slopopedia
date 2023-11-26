@@ -1,10 +1,15 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import { ProtectedRoute, Submit, SubmitList } from "./components/index";
-import { ProfileSlopFests } from "./components/ProfileSlopFests";
 import {
   BrowseRoute,
   FestsRoute,
@@ -13,7 +18,24 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
-import { ModalContextProvider } from "./store";
+import { CurrentUserContextProvider, ModalContextProvider } from "./store";
+
+const httpLink = createHttpLink({
+  uri:
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_URI
+      : "http://localhost:8080/api/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("jwt");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
 
 const client = new ApolloClient({
   uri:
@@ -22,49 +44,53 @@ const client = new ApolloClient({
       ? //created environment variables must be prefixed by VITE
         import.meta.env.VITE_API_URI
       : "http://localhost:8080/api/graphql",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
     <React.StrictMode>
-      <ModalContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainRoute />} />
-            <Route path="/browse" element={<BrowseRoute />} />
-            <Route path="/fests" element={<FestsRoute />} />
-            <Route path="/movie" element={<MovieRoute />} />
-            <Route path="/search" element={<SearchRoute />} />
-            <Route path="/sounds" element={<SoundsRoute />} />
-            <Route path="/profile-fests" element={<ProfileSlopFests />} />
-            <Route
-              path="/profile-settings"
-              element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
-            />
-            <Route
-              path="/preferences"
-              element={<ProtectedRoute>{/* <Preferences /> */}</ProtectedRoute>}
-            />
-            <Route
-              path="/submit"
-              element={<ProtectedRoute>{<Submit />}</ProtectedRoute>}
-            />
-            <Route
-              path="/submit-list"
-              element={<ProtectedRoute>{<SubmitList />}</ProtectedRoute>}
-            />
-            <Route
-              path="/recommend"
-              element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
-            />
-            <Route
-              path="/blog"
-              element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
-            />
-          </Routes>
-        </BrowserRouter>
-      </ModalContextProvider>
+      <CurrentUserContextProvider>
+        <ModalContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MainRoute />} />
+              <Route path="/browse" element={<BrowseRoute />} />
+              <Route path="/fests" element={<FestsRoute />} />
+              <Route path="/movie" element={<MovieRoute />} />
+              <Route path="/search" element={<SearchRoute />} />
+              <Route path="/sounds" element={<SoundsRoute />} />
+              <Route
+                path="/profile-settings"
+                element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
+              />
+              <Route
+                path="/preferences"
+                element={
+                  <ProtectedRoute>{/* <Preferences /> */}</ProtectedRoute>
+                }
+              />
+              <Route
+                path="/submit"
+                element={<ProtectedRoute>{<Submit />}</ProtectedRoute>}
+              />
+              <Route
+                path="/submit-list"
+                element={<ProtectedRoute>{<SubmitList />}</ProtectedRoute>}
+              />
+              <Route
+                path="/recommend"
+                element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
+              />
+              <Route
+                path="/blog"
+                element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+              />
+            </Routes>
+          </BrowserRouter>
+        </ModalContextProvider>
+      </CurrentUserContextProvider>
     </React.StrictMode>
   </ApolloProvider>
 );
