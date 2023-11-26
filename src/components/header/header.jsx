@@ -148,10 +148,11 @@ Header.NavLinks = () => {
                 />
                 <Button
                   variant="link"
-                  title={button.title}
                   onClick={button.onClick}
-                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
-                />
+                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                >
+                  {button.title}
+                </Button>
               </div>
             ))}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
@@ -219,7 +220,7 @@ Header.Profile = () => {
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>
       ) : (
-        <div className="flex flex-row h-[24px] gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex xl:flex sm: hidden xs: hidden">
+        <div className="hidden flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex">
           <a href="#" className="border-b-2 ">
             {currentUser.username}
           </a>

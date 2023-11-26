@@ -57,7 +57,7 @@ export function LoginModal({ onClose }) {
 
   useEffect(() => {
     registerModal("signup", <SignupModal onClose={onClose} />);
-  });
+  }, []);
 
   return (
     <Modal title="OH HEY GOBLIN">
