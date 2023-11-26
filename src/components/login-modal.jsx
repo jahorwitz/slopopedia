@@ -4,8 +4,8 @@ import { Fragment, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
 import checkMark from "../images/check-mark-dark.svg";
-import { CurrentUserContext } from "../store/CurrentUserContext";
-import { useModals } from "../store/useModals";
+import { useModals } from "../store";
+import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal, SignupModal } from "./index";
 
 export function LoginModal({ onClose }) {
@@ -56,7 +56,7 @@ export function LoginModal({ onClose }) {
   };
 
   useEffect(() => {
-    registerModal("signup", <SignupModal onClose={() => onClose} />);
+    registerModal("signup", <SignupModal onClose={onClose} />);
   });
 
   return (
@@ -74,7 +74,7 @@ export function LoginModal({ onClose }) {
             id={"gobb-id"}
             labelText={"Gobb ID"}
             isValid={!errors.gobbId}
-            className={`text-start w-[373px]`}
+            className={`w-[373px]`}
             onChange={(evt) => {
               setValue("gobbId", evt.target.value, { shouldValidate: true });
             }}
@@ -86,7 +86,7 @@ export function LoginModal({ onClose }) {
             id={"password"}
             labelText={"Password"}
             isValid={!errors.password}
-            className={`text-start w-[373px]`}
+            className={`w-[373px]`}
             onChange={(evt) => {
               setValue("password", evt.target.value, { shouldValidate: true });
             }}
@@ -139,7 +139,7 @@ export function LoginModal({ onClose }) {
         <div className="flex flex-col items-center">
           <Form.Submit
             title={"Get to Sloppin'"}
-            className="w-[373px] h-[49px]"
+            className="w-[373px]"
             disabled={!isValid}
           />
           {(errors.gobbId || errors.password) && (
@@ -154,7 +154,7 @@ export function LoginModal({ onClose }) {
               type="button"
               className="underline"
               onClick={() => openModal("signup")}
-              onClose={() => onClose}
+              onClose={onClose}
             >
               Sign Up!
             </button>

@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
-import { useModals } from "../store/useModals";
+import { useModals } from "../store";
 import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
@@ -30,7 +30,7 @@ export const SignupModal = ({ onClose }) => {
   };
 
   useEffect(() => {
-    registerModal("signup", <LoginModal onClose={() => onclose} />);
+    registerModal("signin", <LoginModal onClose={onClose} />);
   });
 
   if (data) {
@@ -123,7 +123,11 @@ export const SignupModal = ({ onClose }) => {
         {errors.confirmPassword && (
           <Form.Feedback message={errors.confirmPassword.message} />
         )}
-        <Form.Submit disabled={!isValid} title={"Get to Sloppin'"} />
+        <Form.Submit
+          className="w-[373px]"
+          disabled={!isValid}
+          title={"Get to Sloppin'"}
+        />
       </Form>
       <p className="font-arial text-lg/4 pt-0.5 pb-9 text-center">
         Already have an account?{" "}

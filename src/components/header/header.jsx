@@ -11,8 +11,8 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { CurrentUserContext } from "../../store/CurrentUserContext";
-import { useModals } from "../../store/useModals";
+import { useModals } from "../../store";
+import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
@@ -39,6 +39,7 @@ Header.NavLinks = () => {
 
   useEffect(() => {
     registerModal("signup", <SignupModal closeModal={closeModal} />);
+    registerModal("signin", <LoginModal onClose={closeModal} />);
   }, []);
 
   const handleMenu = () => {
@@ -72,6 +73,9 @@ Header.NavLinks = () => {
     {
       title: "Log In",
       src: headerSmile,
+      onClick: () => {
+        openModal("signin");
+      },
     },
     {
       title: "Sign Up",
@@ -171,22 +175,13 @@ Header.Profile = () => {
   const { registerModal, openModal, closeModal } = useModals();
   const jwt = localStorage.getItem("jwt");
 
-  useEffect(() => {
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-  }, []);
-
-  // if (loading) console.log("Loading");
-  // if (error) console.error(`Error! ${error.message}`);
-
   const isLoggedIn = useMemo(() => {
     return true ? token !== "" : false;
   }, [token]);
 
   useEffect(() => {
-    registerModal(
-      "signin",
-      <LoginModal onClose={() => closeModal("signin")} />
-    );
+    registerModal("signin", <LoginModal onClose={closeModal} />);
+    registerModal("signup", <SignupModal closeModal={closeModal} />);
   }, []);
 
   useEffect(() => {

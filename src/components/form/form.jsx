@@ -22,7 +22,10 @@ Form.TextInput = ({
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
-        <label htmlFor={id} className={`mb-1.5 text-lg ${className}`}>
+        <label
+          htmlFor={id}
+          className={`mb-1.5 text-lg text-start ${className}`}
+        >
           {labelText}
         </label>
 

@@ -9,13 +9,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import {
-  CurrentUserContextProvider,
-  ModalContextProvider,
-  ProtectedRoute,
-  Submit,
-  SubmitList,
-} from "./components/index";
+import { ProtectedRoute, Submit, SubmitList } from "./components/index";
 import {
   BrowseRoute,
   FestsRoute,
@@ -24,6 +18,7 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
+import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
 const httpLink = createHttpLink({
   uri:
