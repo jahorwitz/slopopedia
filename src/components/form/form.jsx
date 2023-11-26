@@ -111,7 +111,7 @@ Form.Submit = ({ title, className, disabled }) => {
         variant="primary"
         children={title}
         className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className}`}
-        type="button"
+        type="submit"
       >
         {title}
       </Button>
