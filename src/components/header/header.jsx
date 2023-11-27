@@ -121,9 +121,9 @@ Header.NavLinks = () => {
       {open ? (
         <div className="pt-5 right-0.5 absolute  xs:block sm:block  lg: hidden xl: hidden">
           <div className=" space-y-1  ">
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <Link
-                key={index}
+                key={link.title}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
                                 block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
                 to={link.link}
@@ -136,9 +136,9 @@ Header.NavLinks = () => {
                 {link.title}
               </Link>
             ))}
-            {buttons.slice(0, buttons.length - 1).map((button, index) => (
+            {buttons.slice(0, buttons.length - 1).map((button) => (
               <div
-                key={index}
+                key={button.title}
                 className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
               >
                 <img
