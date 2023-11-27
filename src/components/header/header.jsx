@@ -121,9 +121,9 @@ Header.NavLinks = () => {
       {open ? (
         <div className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden">
           <div className=" space-y-1  ">
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <Link
-                key={index}
+                key={link.title}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
                                 block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
                 to={link.link}
@@ -136,10 +136,10 @@ Header.NavLinks = () => {
                 {link.title}
               </Link>
             ))}
-            {buttons.slice(0, buttons.length - 1).map((button, index) => (
+            {buttons.slice(0, buttons.length - 1).map((button) => (
               <div
-                key={index}
-                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                key={button.title}
+                className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
               >
                 <img
                   className="w-5 h-5 mt-2 ml-1"
@@ -148,10 +148,11 @@ Header.NavLinks = () => {
                 />
                 <Button
                   variant="link"
-                  title={button.title}
                   onClick={button.onClick}
-                  className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
-                />
+                  className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                >
+                  {button.title}
+                </Button>
               </div>
             ))}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}

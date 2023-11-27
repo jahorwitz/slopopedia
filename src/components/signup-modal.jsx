@@ -31,7 +31,7 @@ export const SignupModal = ({ onClose }) => {
 
   useEffect(() => {
     registerModal("signin", <LoginModal onClose={onClose} />);
-  });
+  }, []);
 
   if (data) {
     return (

@@ -9,7 +9,7 @@ export const TabList = ({ tabs }) => {
         {tabs.map((tab) => (
           <Tab
             key={uniqueId(tab)}
-            data-testId={tab}
+            data-testid={tab}
             className={({ selected }) =>
               cx(
                 "font-bold text-3xl uppercase",
