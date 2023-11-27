@@ -22,6 +22,9 @@ export const Button = ({
         !disabled &&
           variant === "outline-danger" &&
           "border-danger border-[1px] text-danger",
+        !disabled &&
+          variant === "link" &&
+          "border-b-2 border-black text-white-400 font-arialRegular",
         disabled && "bg-dark/10 text-dark/60 cursor-not-allowed",
         size === "md" && "p-4",
         size === "sm" && "p-2",
