@@ -219,7 +219,7 @@ Header.Profile = () => {
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>
       ) : (
-        <div className="flex flex-row h-[24px] gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex xl:flex sm: hidden xs: hidden">
+        <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex sm:hidden xs:hidden">
           <a href="#" className="border-b-2 ">
             {currentUser.username}
           </a>
