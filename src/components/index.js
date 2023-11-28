@@ -3,6 +3,7 @@
 export * from "./Button/Button";
 export * from "./Header";
 export * from "./Image/Image";
+export * from "./MeGoblin";
 export * from "./Modal";
 export * from "./MovieCardList";
 export * from "./MoviePage";

@@ -8,6 +8,7 @@ import {
   BrowseRoute,
   FestsRoute,
   MainRoute,
+  MeGoblinRoute,
   MovieRoute,
   SearchRoute,
   SoundsRoute,
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/movie" element={<MovieRoute />} />
           <Route path="/search" element={<SearchRoute />} />
           <Route path="/sounds" element={<SoundsRoute />} />
+          <Route path="/megoblin" element={<MeGoblinRoute />} />
           <Route
             path="/profile-settings"
             element={<ProtectedRoute>{/* <Profile /> */}</ProtectedRoute>}
