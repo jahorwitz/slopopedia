@@ -4,15 +4,11 @@ export const GET_BLOG_POSTS = gql`
   query Query {
     posts {
       title
-      content {
-        document
-      }
+      content
       author {
-        name
+        username
         createdAt
       }
-      id
-      status
     }
   }
 `;
@@ -22,7 +18,7 @@ export const GET_DRAFT_POSTS = gql`
     posts {
       title
       author {
-        name
+        username
         createdAt
       }
     }

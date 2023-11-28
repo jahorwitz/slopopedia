@@ -10,8 +10,15 @@ export const Draft = ({ title, author, date, additionalInfo, classNames }) => {
     <div className={containerClass}>
       <h2 className={titleClass}>{title}</h2>
       <div className={infoClass}>
-        <small className={smallClass}>{`By ${author}`}</small>
-        {date && <small className={smallClass}>{date}</small>}
+        {author === undefined ? (
+          <small>anonymous user</small>
+        ) : (
+          <small className={smallClass}>{`By ${author}`}</small>
+        )}
+
+        {author !== null && author === undefined ? null : (
+          <small className={smallClass}>{date}</small>
+        )}
         {additionalInfo && (
           <small className={smallClass}>{additionalInfo}</small>
         )}

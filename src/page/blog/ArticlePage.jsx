@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { Form } from "../../components/form.jsx";
+import { useCurrentUser } from "../../graphql/hook/useCurrentUser.js";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
 
 export const Article = () => {
@@ -10,16 +11,17 @@ export const Article = () => {
   const [formState, setFormState] = useState({
     title: "",
     content: "",
+    status: "",
+    keywords: [],
+    movies: [],
   });
-  const [createPost, { loading, error }] = useMutation(CREATE_POST, {
-    variables: {
-      title: formState.title,
-      content: formState.content,
-    },
-  });
+  const [createPost, { loading, error }] = useMutation(CREATE_POST);
+  const user = useCurrentUser();
+  console.log(user);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
+
   const notification = () => {
     const notify = toast.info("Post successful!", {
       theme: "dark",
@@ -32,18 +34,32 @@ export const Article = () => {
   };
 
   const onSubmit = async (e) => {
-    // TODO: Render proper document structure.
     e.preventDefault();
-    await createPost({
-      variables: {
-        data: {
-          title: formState.title,
-          content: { document: { type: "paragraph", text: formState.content } },
-        },
-      },
-    });
 
-    notification();
+    try {
+      const response = await createPost({
+        variables: {
+          data: {
+            title: formState.title,
+            content: formState.content,
+            keywords: {
+              create: formState.keywords.map((item) => {
+                return { name: item };
+              }),
+            },
+            movies: {
+              create: formState.movies.map((item) => {
+                return { title: item };
+              }),
+            },
+          },
+        },
+      });
+      console.log(response);
+      notification();
+    } catch (error) {
+      console.error("Error creating post: ", error);
+    }
   };
 
   return (
@@ -72,15 +88,25 @@ export const Article = () => {
           className="max-w-[714] flex font-bold font-arial flex-col py-3"
           labelText={"Slops"}
           placeholder={"Add topical slops"}
-          value={formState.slops}
-          onChange={(e) => setFormState({ ...formState, body: e.target.value })}
+          value={formState.movies.join(", ")}
+          onChange={(e) =>
+            setFormState({
+              ...formState,
+              movies: e.target.value.split(",").map((item) => item.trim()),
+            })
+          }
         />
         <Form.TextInput
           className="max-w-[714] flex font-bold font-arial flex-col py-3"
           labelText={"Keywords"}
           placeholder={"Add topical keywords"}
-          value={formState.keywords}
-          onChange={(e) => setFormState({ ...formState, body: e.target.value })}
+          value={formState.keywords.join(", ")}
+          onChange={(e) =>
+            setFormState({
+              ...formState,
+              keywords: e.target.value.split(",").map((item) => item.trim()),
+            })
+          }
         />
       </Form>
       <div className="relative top-96 right-80 md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
