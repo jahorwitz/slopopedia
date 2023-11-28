@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { ModalContext } from "./ModalContext";
+import { ModalContext } from "./modal-context";
 
 export const ModalContextProvider = ({ children }) => {
   const [modalName, setModalName] = useState(null);
   const [modals, setModals] = useState({});
 
   const registerModal = (modalName, Component) => {
-    if (!modals[modalName]) {
-      setModals({ ...modals, [modalName]: Component });
-    }
+    setModals((prev) => ({ ...prev, [modalName]: Component }));
   };
 
   const openModal = (modalName) => {

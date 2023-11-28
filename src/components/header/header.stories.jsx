@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { ModalContextProvider } from "../../store";
-import { Header } from "./header";
+import { Header } from "./index";
 
 export default {
   title: "Components/Header",

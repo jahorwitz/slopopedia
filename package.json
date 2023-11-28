@@ -34,8 +34,10 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.10.1",
+    "react-responsive": "^9.0.2",
     "react-router": "^6.15.0",
     "react-router-dom": "^6.15.0",
+    "react-spinners": "^0.13.8",
     "storybook": "^7.3.2",
     "styled-components": "^5.3.11",
     "vite-plugin-babel-macros": "^1.0.6"

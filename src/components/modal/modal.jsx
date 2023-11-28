@@ -1,10 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import closeButton from "../images/close-button.png";
-import whiteCloseButton from "../images/whiteCloseButton.svg";
+import closeButton from "../../images/close-button.png";
+import { useModals } from "../../store";
 
-export const Modal = ({ children, title, closeModal, whiteButton }) => {
+export function Modal({ children, title }) {
   let [isOpen, setIsOpen] = useState(true);
+
+  const { closeModal } = useModals();
 
   function closeThisModal() {
     setIsOpen(false);
@@ -29,6 +31,7 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
             >
               <div className="fixed inset-0 bg-black bg-opacity-25" />
             </Transition.Child>
+
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4">
                 <Transition.Child
@@ -40,27 +43,21 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white align-middle shadow-xl transition-all box-border">
+                  <Dialog.Panel className="w-[712px] h-auto transform overflow-hidden bg-white text-center align-middle shadow-xl transition-all">
                     <button
-                      className={`w-5 h-5 absolute z-50 ${
-                        whiteButton ? "top-5 right-5" : "top-10 right-10"
-                      } `}
+                      className="w-5 h-5 absolute top-10 right-10 z-50"
                       onClick={closeThisModal}
                     >
-                      <img
-                        src={whiteButton ? whiteCloseButton : closeButton}
-                        alt="close-button"
-                      />
+                      <img src={closeButton} alt="close-button" />
                     </button>
                     {title && (
                       <Dialog.Title
                         as="h3"
-                        className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4"
+                        className="text-xl scale-y-2 pt-6 my-4 font-medium text-grey-900 text-center"
                       >
                         {title}
                       </Dialog.Title>
                     )}
-
                     {children}
                   </Dialog.Panel>
                 </Transition.Child>
@@ -71,6 +68,6 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
       </div>
     </>
   );
-};
+}
 
 Modal.displayName = "Modal";

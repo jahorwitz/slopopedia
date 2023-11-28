@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -9,9 +11,9 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { useModals } from "../../store/useModals";
-import { Button } from "../button";
-import { SignupModal } from "../SignupModal";
+import { useModals } from "../../store";
+import { CurrentUserContext } from "../../store/current-user-context";
+import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
   return (
@@ -39,6 +41,7 @@ Header.NavLinks = () => {
 
   useEffect(() => {
     registerModal("signup", <SignupModal closeModal={closeModal} />);
+    registerModal("signin", <LoginModal onClose={closeModal} />);
   }, []);
 
   const handleMenu = () => {
@@ -72,6 +75,9 @@ Header.NavLinks = () => {
     {
       title: "Log In",
       src: headerSmile,
+      onClick: () => {
+        openModal("signin");
+      },
     },
     {
       title: "Sign Up",
@@ -117,9 +123,9 @@ Header.NavLinks = () => {
       {open ? (
         <div className="pt-5 right-0.5 absolute  xs:block sm:block  lg: hidden xl: hidden">
           <div className=" space-y-1  ">
-            {navLinks.map((link, index) => (
+            {navLinks.map((link) => (
               <Link
-                key={index}
+                key={link.title}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
                                 block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
                 to={link.link}
@@ -132,9 +138,9 @@ Header.NavLinks = () => {
                 {link.title}
               </Link>
             ))}
-            {buttons.slice(0, buttons.length - 1).map((button, index) => (
+            {buttons.slice(0, buttons.length - 1).map((button) => (
               <div
-                key={index}
+                key={button.title}
                 className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
               >
                 <img
@@ -143,9 +149,9 @@ Header.NavLinks = () => {
                   alt={button.title}
                 />
                 <Button
-                  variant="secondary"
+                  variant="link"
                   onClick={button.onClick}
-                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
+                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
                 >
                   {button.title}
                 </Button>
@@ -166,36 +172,64 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
+  const [token, setToken] = useState("");
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { registerModal, openModal, closeModal } = useModals();
+  const jwt = localStorage.getItem("jwt");
+
+  const isLoggedIn = useMemo(() => {
+    return true ? token !== "" : false;
+  }, [token]);
 
   useEffect(() => {
+    registerModal("signin", <LoginModal onClose={closeModal} />);
     registerModal("signup", <SignupModal closeModal={closeModal} />);
   }, []);
+
+  useEffect(() => {
+    if (jwt) {
+      setToken(jwt);
+    }
+    if (data && data.authenticatedItem) {
+      setCurrentUser(data.authenticatedItem);
+    }
+  }, [jwt, data]);
+
   return (
-    <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
-      <Button size="sm" className="font-normal" variant="secondary">
-        Log In
-      </Button>
-      <p>/</p>
-      <Button
-        size="sm"
-        className="font-normal"
-        variant="secondary"
-        onClick={() => {
-          openModal("signup");
-        }}
-      >
-        Sign Up
-      </Button>
-      <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
-    </div>
-
-    // Functionality needs to be added, this will be for when a user logs in. This will take user to profile. It will replace the Log in/Sign up part of the header
-
-    // <div className="flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex  lg:flex xl:flex sm: hidden xs: hidden">
-    // <Link to="/profile" className="border-b-2">DanilaTing</Link>
-    // <img className="w-6 h-6 mt-0.5" src={headerSmile} />
-    // </div>
+    <>
+      {isLoggedIn === false ? (
+        <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
+          <Button
+            className={"border-b-2"}
+            size="sm"
+            variant="secondary"
+            children="Log In"
+            onClick={() => {
+              openModal("signin");
+            }}
+          ></Button>
+          <p>/</p>
+          <Button
+            className={"border-b-2"}
+            size="sm"
+            variant="secondary"
+            children="Sign Up"
+            onClick={() => {
+              openModal("signup");
+            }}
+          ></Button>
+          <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
+        </div>
+      ) : (
+        <div className="hidden flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex">
+          <a href="#" className="border-b-2 ">
+            {currentUser.username}
+          </a>
+          <img className="w-6 h-6 mt-0.5" src={headerSmile} />
+        </div>
+      )}
+    </>
   );
 };
 
