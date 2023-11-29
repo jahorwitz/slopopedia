@@ -1,5 +1,5 @@
 import { getRandomColumns } from "../utils/constants";
-import Keyword from "./Keyword";
+import { Keyword } from "./keyword";
 
 export function MovieCard({
   children,
@@ -37,20 +37,20 @@ export function MovieCard({
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
           <div className="flex flex-row col-span-2 justify-between">
-            <h2 className="text-movie-card-captions mb-2.5 font-bold font-arial">
+            <h2 className="text-lg mb-2.5 font-bold font-arial">
               {card.title}
             </h2>
-            <p className="text-movie-card-captions mb-2.5 text-gray-400 font-arial">
+            <p className="text-lg mb-2.5 text-gray-400 font-arial">
               {card.releaseYear}, {card.runtimeInMinutes}
             </p>
           </div>
         ) : (
           <>
-            <h2 className="text-movie-card-captions mb-2.5 font-bold font-arial">
+            <h2 className="text-lg mb-2.5 font-bold font-arial">
               {card.title}
             </h2>
             {card.runtimeInMinutes && (
-              <p className="text-movie-card-captions mb-2.5 text-gray-400 font-arial">
+              <p className="text-lg mb-2.5 text-gray-400 font-arial">
                 {card.releaseYear}, {card.runtimeInMinutes}
               </p>
             )}
@@ -75,7 +75,7 @@ export function MovieCard({
                 className={
                   size >= 2
                     ? "bg-yellow-300 col-span-2"
-                    : "h-31px space-x-2 space-y-2 bg-gray-button xs:space-x-2 xs:space-y-2"
+                    : "h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2"
                 }
                 index={index}
                 key={index}

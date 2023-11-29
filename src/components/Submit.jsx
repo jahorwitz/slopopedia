@@ -53,7 +53,7 @@ const submitForm = () => {
         </p>
         <div className="mt-40 xs:mt-16 ">
           <Button
-            className="w-[400px] h-10 bg-yellow-button border text-lg font-arialBold xs:text-sm xs:w-[285px]"
+            className="w-[400px] h-10 bg-yellow border text-lg font-arialBold xs:text-sm xs:w-[285px]"
             title="Submit another one?"
           ></Button>
         </div>

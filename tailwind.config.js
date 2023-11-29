@@ -4,28 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        "gray-button": "#CBCBCB",
-        "yellow-button": "#FFD913",
+        gray: "#CBCBCB",
+        green: "#48FF50",
+        yellow: "#FFD913",
+        danger: "#FF4040",
+        dark: "#101010",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",
-      },
-      fontSize: {
-        "movie-card-captions": [
-          "1.125rem",
-          {
-            lineHeight: "1rem",
-          },
-        ],
-        "goblins-want-it": [
-          "1rem",
-          {
-            lineHeight: "0.875rem",
-          },
-        ],
-      },
-      height: {
-        keyword: "31px",
       },
       maxWidth: {
         "sm-card": "224px",
@@ -43,7 +29,10 @@ export default {
       sm: { min: "501px", max: "1169px" },
       md: { min: "1170px", max: "1304px" },
       lg: { min: "1305px", max: "1440px" },
-      xl: { min: "1441px", max: "1600px" },
+      xl: { min: "1441px" },
+    },
+    scale: {
+      2: "2.0",
     },
   },
   plugins: [],

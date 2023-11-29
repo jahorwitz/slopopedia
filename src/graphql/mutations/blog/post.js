@@ -26,6 +26,9 @@ export const CREATE_POST = gql`
         title
         description
       }
+      author {
+        username
+      }
     }
   }
 `;
