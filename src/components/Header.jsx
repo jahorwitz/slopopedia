@@ -109,7 +109,7 @@ Header.NavLinks = () => {
               <Link
                 key={key}
                 className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
-                                block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
+                                block px-1 py-2 text-base font-medium  gap-2.5"
                 to={link.link}
               >
                 <img
@@ -121,28 +121,27 @@ Header.NavLinks = () => {
               </Link>
             ))}
             {buttons.slice(0, buttons.length - 1).map((button, index) => (
-              <div
+              <Button
+                variant="link"
                 key={index}
-                className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                title={button.title}
+                className=" flex flex-row w-[167px] border-b-2 text-grey-300  bg-black px-1 py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-1"
               >
-                <img
-                  className="w-5 h-5  mt-2 ml-1  "
-                  src={button.src}
-                  alt={button.title}
-                />
-                <Button
-                  variant="link"
-                  title={button.title}
-                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] "
-                />
-              </div>
+                <img src={button.src} alt={button.title} />
+                {button.title}
+              </Button>
             ))}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
             {/* {buttons.slice(2, 3).map((button, index) => (
-                <div key={index} className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
-                <img className="w-5 h-5  mt-2 ml-1  " src={button.src} alt={button.title} />
-                <Button variant="link" title={button.title}  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] " />
-              </div>
+                <Button
+                variant="link"
+                key={index}
+                title={button.title}
+                className=" flex flex-row w-[167px] border-b-2 text-grey-300  bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5"
+              >
+                <img  src={button.src} alt={button.title} />
+                {button.title}
+              </Button>
               ))} */}
           </div>
         </div>
@@ -154,9 +153,13 @@ Header.NavLinks = () => {
 Header.Profile = () => {
   return (
     <div className="  flex flex-row h-[24px]    gap-2.5 md: gap-1 md:pl-4 md:flex lg:flex  sm:hidden xs:hidden ">
-      <Button variant="link" title="Log In"></Button>
+      <Button variant="link" title="Log In">
+        Log In
+      </Button>
       <p>/</p>
-      <Button variant="link" title="Sign Up"></Button>
+      <Button variant="link" title="Sign Up">
+        Sign Up
+      </Button>
       <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
     </div>
 

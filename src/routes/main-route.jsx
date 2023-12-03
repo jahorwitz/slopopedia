@@ -19,7 +19,7 @@ export function MainRoute() {
         </div>
       </div>
 
-      <div className="w-full max-w-[1440px] mx-auto p-20">
+      <div className="w-full max-w-[1440px] mx-auto p-20 xs:p-4 sm:pl-7 sm:pr-7 sm:pt-15">
         <PageTitle className="h-6 w-36 font-bold" title="RECENTLY ADDED" />
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
           <MovieCardList />

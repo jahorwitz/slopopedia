@@ -1,13 +1,17 @@
 function Keyword({ keyword, className }) {
+  const { id, name } = keyword;
+
   return (
-    <p
-      className={
-        "flex flex-wrap content-center p-2 h-keyword w-max text-base font-arial " +
-        className
-      }
-    >
-      {keyword}
-    </p>
+    <div className={className} key={id}>
+      <p
+        className={
+          "flex flex-wrap content-center p-2 h-keyword w-max text-base font-arial " +
+          className
+        }
+      >
+        {name}
+      </p>
+    </div>
   );
 }
 
