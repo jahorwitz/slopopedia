@@ -1,14 +1,16 @@
-import { Sidebar } from "../../components";
+import { useLocation } from "react-router";
+import { Button, Sidebar } from "../../components";
 
 export const FestSidebar = () => {
+  const location = useLocation();
   const sidebarItems = [
     {
       title: "Slops to watch",
-      link: "",
+      link: `${location.pathname}`,
     },
     {
       title: "Discussion",
-      link: "",
+      link: `${location.pathname}/discussion`,
     },
     {
       title: "Edit dates & guests",
@@ -26,7 +28,7 @@ export const FestSidebar = () => {
         </Sidebar>
       </div>
       <div>
-        <Button>Delete</Button>
+        <Button variant="danger">Delete</Button>
       </div>
     </div>
   );

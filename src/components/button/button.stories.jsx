@@ -53,6 +53,15 @@ OutlineDanger.args = {
   },
 };
 
+export const Danger = Template.bind({});
+Danger.args = {
+  children: "Danger Button",
+  variant: "danger",
+  onClick: {
+    action: "clicked",
+  },
+};
+
 export const Large = Template.bind({});
 Large.args = {
   children: "Large Button",
