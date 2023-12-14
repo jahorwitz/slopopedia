@@ -7,7 +7,7 @@ import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
-  const { registerModal, openModal, closeModal } = useModals();
+  const { registerModal, openModal } = useModals();
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export const SignupModal = ({ onClose }) => {
 
   if (data) {
     return (
-      <Modal closeModal={closeModal} title="HEY YOU GOBLIN">
+      <Modal title="HEY YOU GOBLIN">
         <div className="pt-28">
           <p className="font-arial text-lg/4 pt-0.5 pb-40 text-center">
             Awesome! You have successfully created an account.{" "}
@@ -54,7 +54,7 @@ export const SignupModal = ({ onClose }) => {
   }
 
   return (
-    <Modal closeModal={closeModal} title="HEY YOU GOBLIN">
+    <Modal title="HEY YOU GOBLIN">
       <div className="text-center">
         {error && <Form.Feedback message={error.message} />}
       </div>

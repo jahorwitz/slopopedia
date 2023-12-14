@@ -4,7 +4,7 @@ import closeButton from "../../images/close-button.png";
 import whiteCloseButton from "../../images/whiteCloseButton.svg";
 import { useModals } from "../../store";
 
-export function Modal({ children, title, closeModal, whiteButton }) {
+export function Modal({ children, title, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);
 
   const { closeModal } = useModals();

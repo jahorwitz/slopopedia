@@ -5,10 +5,10 @@ import checkMarkDark from "../images/check-mark-dark.svg";
 import drCal from "../images/drcaligari.png";
 import heartDark from "../images/heart-dark.svg";
 import rottenTomato from "../images/rotten-tomatoes.svg";
-import { Badge } from "./badge/badge";
-import { Button } from "./Button/button";
+import { Badge } from "./badge";
+import { Button } from "./button";
 import { Keyword } from "./keyword";
-import { Modal } from "./Modal";
+import { Modal } from "./modal";
 
 const BlurredImage = styled.div`
   background: url(${(props) => props.image});
@@ -28,12 +28,7 @@ const BlurredImage = styled.div`
   }
 `;
 
-export const MoviePreviewModal = ({
-  closeModal,
-  whiteButton,
-  buttons,
-  howToWatch,
-}) => {
+export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
 
@@ -58,7 +53,7 @@ export const MoviePreviewModal = ({
   };
 
   return (
-    <Modal closeModal={closeModal} whiteButton={whiteButton}>
+    <Modal whiteButton={whiteButton}>
       <BlurredImage image={movie.photo}>
         {buttons && (
           <Badge
