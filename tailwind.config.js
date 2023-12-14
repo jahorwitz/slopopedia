@@ -13,26 +13,6 @@ export default {
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",
       },
-      fontSize: {
-        "movie-card-captions": [
-          "1.125rem",
-          {
-            lineHeight: "1rem",
-          },
-        ],
-        "goblins-want-it": [
-          "1rem",
-          {
-            lineHeight: "0.875rem",
-          },
-        ],
-      },
-      lineHeight: {
-        3.5: "0.93rem",
-      },
-      height: {
-        keyword: "31px",
-      },
       maxWidth: {
         "sm-card": "224px",
         "md-card": "468px",
@@ -55,7 +35,7 @@ export default {
       sm: { min: "501px", max: "1169px" },
       md: { min: "1170px", max: "1304px" },
       lg: { min: "1305px", max: "1440px" },
-      xl: { min: "1441px", max: "1600px" },
+      xl: { min: "1441px" },
     },
   },
   plugins: [],

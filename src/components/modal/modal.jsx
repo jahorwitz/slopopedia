@@ -1,10 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import closeButton from "../images/close-button.png";
-import whiteCloseButton from "../images/whiteCloseButton.svg";
+import closeButton from "../../images/close-button.png";
+import whiteCloseButton from "../../images/whiteCloseButton.svg";
+import { useModals } from "../../store";
 
-export const Modal = ({ children, title, closeModal, whiteButton }) => {
+export function Modal({ children, title, closeModal, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);
+
+  const { closeModal } = useModals();
 
   function closeThisModal() {
     setIsOpen(false);
@@ -29,6 +32,7 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
             >
               <div className="fixed inset-0 bg-black bg-opacity-25" />
             </Transition.Child>
+
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4">
                 <Transition.Child
@@ -60,7 +64,6 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
                         {title}
                       </Dialog.Title>
                     )}
-
                     {children}
                   </Dialog.Panel>
                 </Transition.Child>
@@ -71,6 +74,6 @@ export const Modal = ({ children, title, closeModal, whiteButton }) => {
       </div>
     </>
   );
-};
+}
 
 Modal.displayName = "Modal";

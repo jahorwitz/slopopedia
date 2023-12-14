@@ -75,7 +75,7 @@ export const MoviePreviewModal = ({
         />
       </BlurredImage>
       <div className="max-w-[620px] pl-[60px] pt-5 pb-[60px] flex flex-col gap-y-5 font-arial">
-        <div className="flex flex-col gap-y-2.5 text-movie-card-captions">
+        <div className="flex flex-col gap-y-2.5 text-lg">
           <h1 className="font-bold ">{movie.title}</h1>
           <p>
             {movie.releaseYear}, {movie.runtime} minutes

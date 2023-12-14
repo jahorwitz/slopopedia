@@ -1,11 +1,13 @@
 import { useMutation } from "@apollo/client";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
-import { Form } from "./form";
-import { Modal } from "./Modal";
+import { useModals } from "../store";
+import { Form, LoginModal, Modal } from "./index";
 
-export const SignupModal = ({ closeModal }) => {
+export const SignupModal = ({ onClose }) => {
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+  const { registerModal, openModal, closeModal } = useModals();
   const {
     register,
     handleSubmit,
@@ -27,13 +29,24 @@ export const SignupModal = ({ closeModal }) => {
     });
   };
 
+  useEffect(() => {
+    registerModal("signin", <LoginModal onClose={onClose} />);
+  }, []);
+
   if (data) {
     return (
       <Modal closeModal={closeModal} title="HEY YOU GOBLIN">
         <div className="pt-28">
           <p className="font-arial text-lg/4 pt-0.5 pb-40 text-center">
             Awesome! You have successfully created an account.{" "}
-            <button className="underline">Login!</button>
+            <button
+              type="button"
+              className="underline"
+              onClick={() => openModal("signin")}
+              onClose={() => onClose}
+            >
+              Login!
+            </button>
           </p>
         </div>
       </Modal>
@@ -110,12 +123,22 @@ export const SignupModal = ({ closeModal }) => {
         {errors.confirmPassword && (
           <Form.Feedback message={errors.confirmPassword.message} />
         )}
-        <Form.Submit disabled={!isValid} size={"lg"}>
-          Get to Sloppin'
-        </Form.Submit>
+        <Form.Submit
+          className="w-[373px]"
+          disabled={!isValid}
+          title={"Get to Sloppin'"}
+        />
       </Form>
-      <p className="font-arial text-lg/4 pt-0.5 pb-15 text-center">
-        Already have an account? <button className="underline">Login!</button>
+      <p className="font-arial text-lg/4 pt-0.5 pb-9 text-center">
+        Already have an account?{" "}
+        <button
+          type="button"
+          className="underline"
+          onClick={() => openModal("signin")}
+          onClose={() => onClose}
+        >
+          Login!
+        </button>
       </p>
     </Modal>
   );
