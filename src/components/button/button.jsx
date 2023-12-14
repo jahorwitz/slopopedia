@@ -27,7 +27,7 @@ export const Button = ({
           "border-b-2 border-black text-white-400 font-arialRegular",
         disabled && "bg-dark/10 text-dark/60 cursor-not-allowed",
         size === "md" && "p-4",
-        size === "sm" && "p-2",
+        size === "sm" && "p-2.5",
         size === "lg" && "py-4 w-full",
         className
       )}

@@ -25,11 +25,13 @@ export const Header = ({ children }) => {
 
 Header.Logo = () => {
   return (
-    <img
-      className="w-80 pt-4 xs:w-60 md:w-70 "
-      src={headerLogo}
-      alt="slopopedia logo"
-    />
+    <Link to="/">
+      <img
+        className="w-80 pt-4 xs:w-60 md:w-70 "
+        src={headerLogo}
+        alt="slopopedia logo"
+      />
+    </Link>
   );
 };
 
@@ -139,7 +141,7 @@ Header.NavLinks = () => {
             {buttons.slice(0, buttons.length - 1).map((button) => (
               <div
                 key={button.title}
-                className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
               >
                 <img
                   className="w-5 h-5 mt-2 ml-1"
@@ -221,7 +223,7 @@ Header.Profile = () => {
         </div>
       ) : (
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex sm:hidden xs:hidden">
-          <a href="#" className="border-b-2 ">
+          <a href="/profile" className="border-b-2">
             {currentUser.username}
           </a>
           <img className="w-6 h-6 mt-0.5" src={headerSmile} />
