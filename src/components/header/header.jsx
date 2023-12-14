@@ -25,11 +25,13 @@ export const Header = ({ children }) => {
 
 Header.Logo = () => {
   return (
-    <img
-      className="w-80 pt-4 xs:w-60 md:w-70 "
-      src={headerLogo}
-      alt="slopopedia logo"
-    />
+    <Link to="/">
+      <img
+        className="w-80 pt-4 xs:w-60 md:w-70 "
+        src={headerLogo}
+        alt="slopopedia logo"
+      />
+    </Link>
   );
 };
 
