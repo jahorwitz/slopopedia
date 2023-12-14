@@ -11,7 +11,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import { ProtectedRoute, Submit, SubmitList } from "./components/index";
 import {
+  ArticleRoute,
+  BlogRoute,
   BrowseRoute,
+  DraftRoute,
   FestsRoute,
   MainRoute,
   MovieRoute,
@@ -63,6 +66,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />
+              <Route path="/blog" element={<BlogRoute />} />
+              <Route path="/draft" element={<DraftRoute />} />
+              <Route path="/article" element={<ArticleRoute />} />
               <Route
                 path="/profile/:value"
                 element={

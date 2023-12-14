@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useModals } from "../store/useModals";
-import { Button, Header } from "./index";
+import { useModals } from "../store";
+import { Button } from "./button";
+import { Header } from "./header";
 import { MoviePreviewModal } from "./MoviePreviewModal";
 
 export const Submit = ({ children }) => {
