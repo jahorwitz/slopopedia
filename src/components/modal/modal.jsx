@@ -1,9 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import closeButton from "../../images/close-button.svg";
+import closeButton from "../../images/close-button.png";
+import whiteCloseButton from "../../images/whiteCloseButton.svg";
 import { useModals } from "../../store";
 
-export function Modal({ children, title }) {
+export function Modal({ children, title, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);
 
   const { closeModal } = useModals();
@@ -43,17 +44,22 @@ export function Modal({ children, title }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-[712px] h-auto transform overflow-hidden bg-white text-center align-middle shadow-xl transition-all">
+                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white align-middle shadow-xl transition-all box-border">
                     <button
-                      className="w-5 h-5 absolute top-10 right-10 z-50"
+                      className={`w-5 h-5 absolute z-50 ${
+                        whiteButton ? "top-5 right-5" : "top-10 right-10"
+                      } `}
                       onClick={closeThisModal}
                     >
-                      <img src={closeButton} alt="close-button" />
+                      <img
+                        src={whiteButton ? whiteCloseButton : closeButton}
+                        alt="close-button"
+                      />
                     </button>
                     {title && (
                       <Dialog.Title
                         as="h3"
-                        className="text-xl scale-y-2 pt-6 my-4 font-medium text-grey-900 text-center"
+                        className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4"
                       >
                         {title}
                       </Dialog.Title>
