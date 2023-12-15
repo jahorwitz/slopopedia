@@ -1,17 +1,14 @@
 import { useQuery } from "@apollo/client";
+import dayjs from "dayjs";
 import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import { Button } from "../../components/button";
-import { Footer } from "../../components/footer";
-import { Header } from "../../components/header";
-import { Keyword } from "../../components/keyword";
+import { Button, Footer, Header, Keyword } from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
 import { CurrentUserContext } from "../../store/current-user-context";
-import { ProfileHorizontalMenu } from "./profile-horizontal-menu";
-import { ProfileSidebar } from "./profile-sidebar";
+import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -81,7 +78,7 @@ export const ProfileFestsRoute = () => {
                         {startDate + " - " + endDate}
                       </p>
                       <div className="flex flex-row">
-                        {items.attendees.length <= 5
+                        {items.attendees.length <= 4
                           ? items.attendees?.map((attendee, index) => {
                               return (
                                 <Keyword
@@ -91,7 +88,7 @@ export const ProfileFestsRoute = () => {
                                 />
                               );
                             })
-                          : items.slice(0, 5).map((attendee, index) => {
+                          : items.slice(0, 4).map((attendee, index) => {
                               // needs to have {+ attendees.length - 5} to show how many attendees after 5
                               return (
                                 <>
@@ -105,11 +102,20 @@ export const ProfileFestsRoute = () => {
                                 </>
                               );
                             })}
+                        {items.attendees.length > 4 ? (
+                          <Keyword
+                            key={index}
+                            className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                            keyword={items.attendees.length - 4}
+                          />
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
                     {/* Currently going and went states are based off endDate vs currentDate */}
-                    {items.endDate !== currentDate ? (
+                    {dayjs().isAfter(items.endDate) ? (
                       <Button
                         variant={"secondary"}
                         className="flex flex-row mb-5 h-10"
