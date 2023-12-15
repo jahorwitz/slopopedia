@@ -5,7 +5,7 @@ import checkMarkDark from "../images/check-mark-dark.svg";
 import drCal from "../images/drcaligari.png";
 import heartDark from "../images/heart-dark.svg";
 import rottenTomato from "../images/rotten-tomatoes.svg";
-import { Badge } from "./badge/badge";
+import { Badge } from "./badge";
 import { Button } from "./button";
 import { Keyword } from "./keyword";
 import { Modal } from "./modal";
@@ -28,12 +28,7 @@ const BlurredImage = styled.div`
   }
 `;
 
-export const MoviePreviewModal = ({
-  closeModal,
-  whiteButton,
-  buttons,
-  howToWatch,
-}) => {
+export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
 
@@ -58,7 +53,7 @@ export const MoviePreviewModal = ({
   };
 
   return (
-    <Modal closeModal={closeModal} whiteButton={whiteButton}>
+    <Modal whiteButton={whiteButton}>
       <BlurredImage image={movie.photo}>
         {buttons && (
           <Badge
@@ -75,7 +70,7 @@ export const MoviePreviewModal = ({
         />
       </BlurredImage>
       <div className="max-w-[620px] pl-[60px] pt-5 pb-[60px] flex flex-col gap-y-5 font-arial">
-        <div className="flex flex-col gap-y-2.5 text-movie-card-captions">
+        <div className="flex flex-col gap-y-2.5 text-lg">
           <h1 className="font-bold ">{movie.title}</h1>
           <p>
             {movie.releaseYear}, {movie.runtime} minutes

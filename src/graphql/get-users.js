@@ -14,3 +14,15 @@ export const GET_USERS = gql`
     }
   }
 `;
+
+// maybe consider connectiong user's session id
+// for the current user
+export const GET_USER = gql`
+  query Query($where: UserWhereUniqueInput!) {
+    user(where: $where) {
+      id
+      username
+      role
+    }
+  }
+`;

@@ -1,4 +1,7 @@
+// Ex:
+// export * from './my-component'
 export * from "./badge";
+export * from "./blog";
 export * from "./button";
 export * from "./footer";
 export * from "./form";
