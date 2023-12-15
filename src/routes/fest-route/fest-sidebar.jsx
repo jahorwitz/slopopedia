@@ -20,7 +20,7 @@ export const FestSidebar = () => {
 
   return (
     <div>
-      <div>
+      <div className="ml-[-1.25rem]">
         <Sidebar>
           {sidebarItems.map((item, index) => (
             <Sidebar.Item key={index} link={item.link} title={item.title} />
@@ -28,7 +28,9 @@ export const FestSidebar = () => {
         </Sidebar>
       </div>
       <div>
-        <Button variant="danger">Delete</Button>
+        <Button variant="danger" className="pl-0 pt-16">
+          Delete
+        </Button>
       </div>
     </div>
   );

@@ -34,6 +34,10 @@ export default {
     scale: {
       2: "2.0",
     },
+    backgroundImage: {
+      minus: "url('/minus-sign.svg')",
+      plus: "url('/plus-sign.svg')",
+    },
   },
   plugins: [],
 };

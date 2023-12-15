@@ -14,13 +14,13 @@ export const FestHeader = ({ fest }) => {
         <Button
           variant="secondary"
           size="sm"
-          className="flex items-center gap-x-2.5 pb-3"
+          className="flex items-center gap-x-2.5 pb-3 cursor-default"
         >
           <img src={checkMark} className="w-4 h-3" alt="white check mark" />
           I'm going!
         </Button>
       </div>
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-center">
         <div className="flex flex-wrap gap-2.5 max-w-lg">
           {attendees.map((attendee, index) => (
             <Keyword

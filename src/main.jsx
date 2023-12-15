@@ -10,7 +10,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
 import { ProtectedRoute, Submit, SubmitList } from "./components/index";
-import { Test } from "./components/test";
 import {
   BrowseRoute,
   FestsRoute,
@@ -105,8 +104,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 path="/blog"
                 element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
               />
-              <Route path="/fests/:festId" element={<FestRoute />} />
-              <Route path="/fests/:festId/discussion" element={<Test />} />
+              <Route
+                path="/fests/:festId"
+                element={
+                  <ProtectedRoute>
+                    <FestRoute />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </BrowserRouter>
         </ModalContextProvider>

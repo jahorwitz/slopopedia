@@ -1,4 +1,5 @@
 export * from "./browse-route";
+export * from "./fest-route";
 export * from "./fests-route";
 export * from "./main-route";
 export * from "./movie-route";

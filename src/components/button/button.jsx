@@ -26,6 +26,10 @@ export const Button = ({
         !disabled &&
           variant === "link" &&
           "border-b-2 border-black text-white-400 font-arialRegular",
+        !disabled &&
+          variant === "minus" &&
+          "bg-minus absolute top-2.5 right-2.5",
+        !disabled && variant === "plus" && "bg-plus absolute top-2.5 right-2.5",
         disabled && "bg-dark/10 text-dark/60 cursor-not-allowed",
         size === "md" && "p-4",
         size === "sm" && "p-2",
