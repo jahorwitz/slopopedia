@@ -1,4 +1,4 @@
-import { Button, Sidebar, Tabber } from "../../components";
+import { Button, Sidebar } from "../../components";
 import sidebarArrow from "../../images/sidebar-arrow.svg";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
@@ -50,7 +50,6 @@ export const ProfileSidebar = () => {
           })}
         </Sidebar>
       </div>
-      <Tabber />
     </div>
   );
 };

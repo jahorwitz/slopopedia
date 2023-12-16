@@ -1,4 +1,4 @@
-import { HorizontalMenu, Tabber } from "../../components";
+import { HorizontalMenu } from "../../components";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
 import sidebarHeart from "../../images/sidebar-heart.svg";
@@ -41,9 +41,7 @@ export const ProfileHorizontalMenu = () => {
           );
         })}
       </HorizontalMenu>
-      <div className="mt-8 ml-5">
-        <Tabber />
-      </div>
+      <div className="mt-8 ml-5"></div>
     </div>
   );
 };
