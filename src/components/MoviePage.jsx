@@ -76,8 +76,8 @@ export function MoviePage() {
             <button
               className={
                 isWatchedClicked
-                  ? "flex justify-center items-center bg-[#FFD913] text-black flex w-[148px] h-[40px]"
-                  : "flex justify-center items-center border border-solid text-white flex w-[148px] h-[40px]"
+                  ? "flex justify-center items-center bg-[#FFD913] text-black w-[148px] h-[40px]"
+                  : "flex justify-center items-center border border-solid text-white w-[148px] h-[40px]"
               }
               onClick={handleWatchedClick}
             >
@@ -90,8 +90,8 @@ export function MoviePage() {
             <button
               className={
                 isWantClicked
-                  ? "flex justify-center items-center bg-[#FFD913] text-black flex w-[118px] h-[40px]"
-                  : "flex justify-center items-center border border-solid text-white flex w-[118px] h-[40px]"
+                  ? "flex justify-center items-center bg-[#FFD913] text-black w-[118px] h-[40px]"
+                  : "flex justify-center items-center border border-solid text-white w-[118px] h-[40px]"
               }
               onClick={handleWantClick}
             >

@@ -1,9 +1,9 @@
-import { Button, Sidebar, Tabber } from "../../components";
+import { Button, Sidebar } from "../../components";
 import sidebarArrow from "../../images/sidebar-arrow.svg";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
 import sidebarHeart from "../../images/sidebar-heart.svg";
-import sidebarMagnify from "../../images/sidebar-magnify.svg";
+import sidebarWrench from "../../images/sidebar-wrench.svg";
 
 export const ProfileSidebar = () => {
   const menuItems = [
@@ -15,17 +15,22 @@ export const ProfileSidebar = () => {
     {
       title: "Slop fests",
       src: sidebarCamera,
-      link: "/fests",
+      link: "/profile/fests",
     },
     {
       title: "Recommended-A-Slop",
       src: sidebarHeart,
-      link: "/recommend",
+      link: "/profile/recommend",
     },
     {
       title: "Settings",
-      src: sidebarMagnify,
-      link: "/profile-settings",
+      src: sidebarWrench,
+      link: "/profile/settings",
+    },
+    {
+      title: "Logout",
+      src: sidebarArrow,
+      type: Button,
     },
   ];
 
@@ -43,18 +48,8 @@ export const ProfileSidebar = () => {
               </div>
             );
           })}
-          <div className="flex flex-row">
-            <img className="h-8 w-8 mr-4" src={sidebarArrow} />
-            <Button
-              title="Log out"
-              className="hover:border-b-[3px] mb-6 hover:border-black hover:text-black text-gray-500 text-md font-arialBold"
-            >
-              Log out
-            </Button>
-          </div>
         </Sidebar>
       </div>
-      <Tabber />
     </div>
   );
 };

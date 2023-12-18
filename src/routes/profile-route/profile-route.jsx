@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { Footer, Header } from "../../components";
+import { Footer, Header, Tabber } from "../../components";
 import { ProfileHorizontalMenu } from "./profile-horizontal-menu";
 import { ProfileSidebar } from "./profile-sidebar";
 
@@ -15,7 +15,13 @@ export const ProfileRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
+      <div className="flex">
+        {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
+        <div className="mt-10">
+          <Tabber />
+        </div>
+      </div>
+
       <div className="mt-32 ">
         <Footer />
       </div>
