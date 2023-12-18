@@ -18,12 +18,6 @@ export default {
         "md-card": "468px",
         "lg-card": "712px",
       },
-      scale: {
-        2: "2.0",
-      },
-      padding: {
-        15: "60px",
-      },
     },
     fontFamily: {
       arialBold: ["Arial-Bold", "sans-serif"],
@@ -36,6 +30,13 @@ export default {
       md: { min: "1170px", max: "1304px" },
       lg: { min: "1305px", max: "1440px" },
       xl: { min: "1441px" },
+    },
+    scale: {
+      2: "2.0",
+    },
+    backgroundImage: {
+      minus: "url('/minus-sign.svg')",
+      plus: "url('/plus-sign.svg')",
     },
   },
   plugins: [],

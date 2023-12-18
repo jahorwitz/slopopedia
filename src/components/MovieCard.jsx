@@ -1,3 +1,6 @@
+import cx from "classnames";
+import { Button } from "../components";
+import purpleGoblin from "../images/purple-goblin.png";
 import { getRandomColumns } from "../utils/constants";
 import { Keyword } from "./keyword";
 
@@ -7,33 +10,64 @@ export function MovieCard({
   onClick,
   className,
   movieInfo,
+  colSpanOne,
+  minusButton,
+  plusButton,
+  minusButtonClick,
+  plusButtonClick,
   ...rest
 }) {
   const card = {
-    image: movieInfo.image,
+    image: movieInfo.photo,
     title: movieInfo.title,
     keywords: movieInfo.keywords,
     releaseYear: movieInfo.releaseYear,
-    runtimeInMinutes: movieInfo.runtimeInMinutes,
+    runtimeInMinutes: movieInfo.runtime,
     rottenTomatoesScore: movieInfo.rottenTomatoesScore,
     howToWatch: movieInfo.howToWatch,
     decription: movieInfo.description,
   };
 
   return (
-    <div className={getRandomColumns()}>
+    <div className={colSpanOne ? "col-span-1" : getRandomColumns()}>
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
         className={
-          "flex flex-col relative " +
-          className +
-          // (size == 1 && "col-span-1 ") +
-          (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
+          cx(
+            "flex flex-col relative",
+            size === 1 && "col-span-1",
+            size === 2 && "col-span-2",
+            size === 3 && "col-span-3",
+            className
+          )
+          // +
+          // className +
+          // // (size == 1 && "col-span-1 ") +
+          // (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
         }
         onClick={onClick}
         {...rest}
       >
-        <img className="mb-2.5 " src={card.image}></img>
+        {minusButton && (
+          <Button
+            variant="minus"
+            onClick={() => {
+              minusButtonClick(movieInfo.id);
+            }}
+          />
+        )}
+        {plusButton && (
+          <Button
+            variant="plus"
+            onClick={() => {
+              plusButtonClick([movieInfo]);
+            }}
+          />
+        )}
+        <img
+          className="mb-2.5 "
+          src={card.image === null ? purpleGoblin : card.image.url}
+        ></img>
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
           <div className="flex flex-row col-span-2 justify-between">
@@ -51,7 +85,7 @@ export function MovieCard({
             </h2>
             {card.runtimeInMinutes && (
               <p className="text-lg mb-2.5 text-gray-400 font-arial">
-                {card.releaseYear}, {card.runtimeInMinutes}
+                {card.releaseYear}, {card.runtimeInMinutes} minutes
               </p>
             )}
           </>
@@ -71,7 +105,7 @@ export function MovieCard({
           >
             {card.keywords.map((keyword, index) => (
               <Keyword
-                keyword={keyword}
+                keyword={keyword.name}
                 className={
                   size >= 2
                     ? "bg-yellow col-span-2"
