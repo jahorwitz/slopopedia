@@ -22,9 +22,9 @@ export const FestModal = ({
 
   return (
     <Modal title="ADD MORE SLOPS" closeModal={closeModal}>
-      <div className="pb-28 pt-20 px-4">
+      <div className="pb-28 pt-20 px-4 ">
         <Combobox value={selectedMovie}>
-          <div>
+          <div className=" max-w-sm my-0 mx-auto">
             <Combobox.Input
               className="border-2 max-w-sm w-full py-2 px-2"
               onChange={(evt) => setQuery(evt.target.value)}
