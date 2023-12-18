@@ -1,9 +1,16 @@
-import { MoviePage } from "../components/index";
+import { Header, MoviePage } from "../components/index";
 
 export function MovieRoute() {
   return (
-    <div className="flex flex-col">
-      <MoviePage />
-    </div>
+    <>
+      <Header>
+        <Header.Logo />
+        <Header.NavLinks />
+        <Header.Profile />
+      </Header>
+      <div className="flex flex-col">
+        <MoviePage />
+      </div>
+    </>
   );
 }

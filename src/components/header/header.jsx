@@ -17,7 +17,7 @@ import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
   return (
-    <header className="flex flex-row w-full relative z-10  pl-5 pr-5  max-w-[1440px] mx-auto  justify-between items-center  text-lg font-arialRegular x-0   content-center h-20 bg-black text-stone-50  xs:pl-2 xs:pr-2  md: text-md md:pr-2 md:pl-2  ">
+    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 max-w-[1440px] mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
       {children}
     </header>
   );
@@ -113,7 +113,7 @@ Header.NavLinks = () => {
           onClick={handleMenu}
           className=" inline-flex items-center justify-center p-2  
                 text-white-400 hover:text-grey hover:bg-gray-700 focus:ring-2 
-                focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block  lg: hidden xl: hidden "
+                focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block  lg:hidden xl:hidden "
         >
           <span className="sr-only">Open Main Menu</span>
           {open == true ? <FaTimes /> : <FaBars />}
@@ -121,7 +121,7 @@ Header.NavLinks = () => {
       </div>
       {/* hamburger-menu */}
       {open ? (
-        <div className="pt-5 right-0.5 absolute  xs:block sm:block  lg: hidden xl: hidden">
+        <div className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden">
           <div className=" space-y-1  ">
             {navLinks.map((link) => (
               <Link
@@ -141,17 +141,17 @@ Header.NavLinks = () => {
             {buttons.slice(0, buttons.length - 1).map((button) => (
               <div
                 key={button.title}
-                className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
               >
                 <img
-                  className="w-5 h-5  mt-2 ml-1  "
+                  className="w-5 h-5 mt-2 ml-1"
                   src={button.src}
                   alt={button.title}
                 />
                 <Button
                   variant="link"
                   onClick={button.onClick}
-                  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                  className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
                 >
                   {button.title}
                 </Button>
@@ -222,8 +222,8 @@ Header.Profile = () => {
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>
       ) : (
-        <div className="hidden flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex">
-          <a href="#" className="border-b-2 ">
+        <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex sm:hidden xs:hidden">
+          <a href="/profile" className="border-b-2">
             {currentUser.username}
           </a>
           <img className="w-6 h-6 mt-0.5" src={headerSmile} />

@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import closeButton from "../../images/close-button.png";
+import closeButton from "../../images/close-button.svg";
 import whiteCloseButton from "../../images/whiteCloseButton.svg";
 import { useModals } from "../../store";
 

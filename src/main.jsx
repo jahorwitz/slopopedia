@@ -19,6 +19,7 @@ import {
   MainRoute,
   MovieRoute,
   PreferencesRoute,
+  ProfileFestsRoute,
   ProfileRoute,
   SearchRoute,
   SoundsRoute,
@@ -29,7 +30,7 @@ const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
       ? import.meta.env.VITE_API_URI
-      : "http://localhost:8080/api/graphql",
+      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -48,7 +49,7 @@ const client = new ApolloClient({
     import.meta.env.MODE === "production"
       ? //created environment variables must be prefixed by VITE
         import.meta.env.VITE_API_URI
-      : "http://localhost:8080/api/graphql",
+      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
@@ -70,10 +71,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/draft" element={<DraftRoute />} />
               <Route path="/article" element={<ArticleRoute />} />
               <Route
-                path="/profile/:value"
+                path="/profile"
                 element={
                   <ProtectedRoute>
                     <ProfileRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/fests"
+                element={
+                  <ProtectedRoute>
+                    <ProfileFestsRoute />
                   </ProtectedRoute>
                 }
               />

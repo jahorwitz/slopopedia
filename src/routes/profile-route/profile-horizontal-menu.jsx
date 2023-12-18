@@ -1,30 +1,30 @@
-import { HorizontalMenu, Tabber } from "../../components";
+import { HorizontalMenu } from "../../components";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
 import sidebarHeart from "../../images/sidebar-heart.svg";
-import sidebarMagnify from "../../images/sidebar-magnify.svg";
+import sidebarWrench from "../../images/sidebar-wrench.svg";
 
 export const ProfileHorizontalMenu = () => {
   const menuItems = [
     {
       title: "Me goblin",
       src: sidebarCrown,
-      link: "/profile",
+      link: "/profile/me",
     },
     {
       title: "Slop fests",
       src: sidebarCamera,
-      link: "/fests",
+      link: "/profile/fests",
     },
     {
       title: "Recommended-A-Slop",
       src: sidebarHeart,
-      link: "/recommend",
+      link: "/profile/recommend",
     },
     {
       title: "Settings",
-      src: sidebarMagnify,
-      link: "/profile-settings",
+      src: sidebarWrench,
+      link: "/profile/settings",
     },
   ];
 
@@ -41,9 +41,7 @@ export const ProfileHorizontalMenu = () => {
           );
         })}
       </HorizontalMenu>
-      <div className="mt-8 ml-5">
-        <Tabber />
-      </div>
+      <div className="mt-8 ml-5"></div>
     </div>
   );
 };
