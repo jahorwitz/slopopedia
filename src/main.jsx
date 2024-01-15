@@ -24,6 +24,7 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
+import { FestRoute } from "./routes/fest-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
 const httpLink = createHttpLink({
@@ -73,7 +74,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute user={"user"}>
                     <ProfileRoute />
                   </ProtectedRoute>
                 }
@@ -117,6 +118,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route
                 path="/blog"
                 element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+              />
+              <Route
+                path="/fests/:festId"
+                element={
+                  <ProtectedRoute>
+                    <FestRoute />
+                  </ProtectedRoute>
+                }
               />
             </Routes>
           </BrowserRouter>
