@@ -1,5 +1,5 @@
-import { Button, Sidebar } from "../../components";
-import sidebarArrow from "../../images/sidebar-arrow.svg";
+import { useNavigate } from "react-router";
+import { Sidebar } from "../../components";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
 import sidebarHeart from "../../images/sidebar-heart.svg";
@@ -27,12 +27,13 @@ export const ProfileSidebar = () => {
       src: sidebarWrench,
       link: "/profile/settings",
     },
-    {
-      title: "Logout",
-      src: sidebarArrow,
-      type: Button,
-    },
   ];
+
+  const navigate = useNavigate("");
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    navigate("/");
+  };
 
   return (
     <div className="flex flex-row mt-10">
@@ -48,6 +49,19 @@ export const ProfileSidebar = () => {
               </div>
             );
           })}
+          <div className="flex">
+            <img
+              src="/src/images/sidebar-arrow.svg"
+              alt="sidebar arrow"
+              className="h-8 w-8"
+            ></img>
+
+            <button onClick={handleLogout} className="gap-5 ml-5">
+              <span className="font-arialBold text-lg hover:border-b-[3px] hover:border-black">
+                Logout
+              </span>
+            </button>
+          </div>
         </Sidebar>
       </div>
     </div>
