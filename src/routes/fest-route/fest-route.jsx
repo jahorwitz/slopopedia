@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { Header, Loading } from "../../components";
+import { Button, Header, Loading, MovieCardList } from "../../components";
 import { DELETE_FEST, GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
+import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
-import { FestModal, FestSidebar } from "../fest-route";
+import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
   const { festId } = useParams();
