@@ -1,11 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { Button, Header, Loading, MovieCardList } from "../../components";
+import { DeleteConfirmationModal, Header, Loading } from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
-import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
-import { FestHeader, FestModal, FestSidebar } from "../fest-route";
+import { FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
   const { festId } = useParams();
@@ -93,11 +92,12 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className=" max-w-[1200px] my-0 mx-auto box-border">
+      {/* <div className=" max-w-[1200px] my-0 mx-auto box-border">
         {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
-        <div className="flex gap-x-28">
-          <FestSidebar />
-          <div className="flex flex-col gap-y-8">
+        <div className="flex gap-x-28"> */}
+      <FestSidebar />
+      <DeleteConfirmationModal />
+      {/* <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
@@ -156,9 +156,9 @@ export const FestRoute = () => {
                   {"No movies to recommend :("}
                 </h2>
               )}
-          </div>
-        </div>
-      </div>
+          </div> */}
+      {/* </div>
+      </div> */}
     </>
   );
 };
