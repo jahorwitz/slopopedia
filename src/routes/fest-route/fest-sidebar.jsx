@@ -1,7 +1,18 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router";
-import { Button, Sidebar } from "../../components";
+import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
+import { useModals } from "../../store";
 
 export const FestSidebar = () => {
+  const { openModal, closeModal, registerModal } = useModals();
+
+  useEffect(() => {
+    registerModal(
+      "confirmation",
+      <DeleteConfirmationModal closeModal={closeModal} buttons whiteButton />
+    );
+  }, []);
+
   const location = useLocation();
   const sidebarItems = [
     {
@@ -28,7 +39,14 @@ export const FestSidebar = () => {
         </Sidebar>
       </div>
       <div>
-        <Button variant="danger" className="pl-0 pt-16">
+        <Button
+          type="button"
+          variant="danger"
+          className="pl-0 pt-16"
+          onClick={() => {
+            openModal("confirmation");
+          }}
+        >
           Delete
         </Button>
       </div>

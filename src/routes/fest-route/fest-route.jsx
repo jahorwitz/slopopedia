@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { DeleteConfirmationModal, Header, Loading } from "../../components";
+import { Header, Loading } from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
 import { useModals } from "../../store";
 import { FestModal, FestSidebar } from "../fest-route";
@@ -96,7 +96,6 @@ export const FestRoute = () => {
         {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
         <div className="flex gap-x-28"> */}
       <FestSidebar />
-      <DeleteConfirmationModal />
       {/* <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies.length > 0 && (
