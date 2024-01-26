@@ -20,6 +20,11 @@ export const FestRoute = () => {
 
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
 
+  const deleteFest = () => {
+    console.log("clicked");
+    console.log(festId);
+  };
+
   const [
     updateFest,
     { data: updateData, loading: updateLoading, error: updateError },
@@ -95,7 +100,7 @@ export const FestRoute = () => {
       {/* <div className=" max-w-[1200px] my-0 mx-auto box-border">
         {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
         <div className="flex gap-x-28"> */}
-      <FestSidebar />
+      <FestSidebar deleteFest={deleteFest} />
       {/* <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies.length > 0 && (

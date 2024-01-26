@@ -3,13 +3,14 @@ import { useLocation } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
 import { useModals } from "../../store";
 
-export const FestSidebar = () => {
+export const FestSidebar = ({ deleteFest }) => {
   const { openModal, closeModal, registerModal } = useModals();
 
+  //! Pass in
   useEffect(() => {
     registerModal(
       "confirmation",
-      <DeleteConfirmationModal closeModal={closeModal} buttons whiteButton />
+      <DeleteConfirmationModal confirmButtonAction={deleteFest} />
     );
   }, []);
 
