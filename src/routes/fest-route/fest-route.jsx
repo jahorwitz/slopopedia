@@ -21,14 +21,19 @@ export const FestRoute = () => {
 
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
 
-  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
-    refetchQueries: [GET_FEST],
-  });
+  const [
+    deleteFest,
+    {
+      data: deleteFestData,
+      loading: deleteFestLoading,
+      error: deleteFestError,
+    },
+  ] = useMutation(DELETE_FEST);
 
   const removeFest = () => {
-    deleteFest({
-      variables: { where: [{ id: festId }] },
-    });
+    deleteFest({ variables: { where: { id: festId } } });
+    if (deleteFestLoading) return "Submitting...";
+    if (deleteFestError) return `Submission error! ${error.message}`;
   };
 
   const [
