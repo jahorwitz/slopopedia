@@ -6,3 +6,4 @@ export * from "./get-user-fests";
 export * from "./get-users";
 export * from "./signin-users";
 export * from "./update-fest";
+export * from "./update-user";
