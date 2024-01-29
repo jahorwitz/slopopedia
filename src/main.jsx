@@ -21,6 +21,7 @@ import {
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ProfileSettingsRoute,
   SearchRoute,
   SoundsRoute,
 } from "./routes";
@@ -87,6 +88,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/profile/settings"
+                element={
+                  <ProtectedRoute>
+                    <ProfileSettingsRoute />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route
                 path="/preferences/:value"
                 element={
