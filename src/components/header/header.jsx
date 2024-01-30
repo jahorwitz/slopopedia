@@ -183,9 +183,6 @@ Header.Profile = () => {
   //   return true ? token !== "" : false;
   // }, [token]);
 
-  if (loading) console.log("loading");
-  if (!loading) console.log("not loading");
-
   useEffect(() => {
     registerModal("signin", <LoginModal onClose={closeModal} />);
     registerModal("signup", <SignupModal closeModal={closeModal} />);
@@ -196,9 +193,6 @@ Header.Profile = () => {
       setToken(jwt);
     }
 
-    if (data && data.authenticatedItem) {
-      console.log("yes");
-    }
     if (data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
       setIsLoggedIn(true);
