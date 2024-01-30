@@ -1,12 +1,19 @@
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import { Button, Footer, Header, Keyword } from "../../components/index";
+import {
+  Button,
+  Footer,
+  Header,
+  Keyword,
+  SlopFestModal,
+} from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
+import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
@@ -35,6 +42,12 @@ export const ProfileFestsRoute = () => {
     query: "(min-width: 1170px)",
   });
 
+  const { registerModal, openModal, closeModal } = useModals();
+
+  useEffect(() => {
+    registerModal("create", <SlopFestModal onClose={closeModal} />);
+  }, []);
+
   return (
     <div className="max-w-[1440px] mx-auto">
       <Header>
@@ -51,7 +64,13 @@ export const ProfileFestsRoute = () => {
                 ? "YOU HAVE NO FESTS :("
                 : "YOUR FESTS"}
             </h2>
-            <Button variant="primary" className="w-[224px]">
+            <Button
+              variant="primary"
+              className="w-[224px]"
+              onClick={() => {
+                openModal("create");
+              }}
+            >
               New Fest!
             </Button>
           </div>

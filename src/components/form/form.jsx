@@ -1,3 +1,5 @@
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "../button";
 
 export const Form = ({ className, children, onSubmit, ...rest }) => {
@@ -84,10 +86,21 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
   );
 };
 
-Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
+Form.Dropdown = ({
+  className,
+  labelText,
+  id,
+  email,
+  password,
+  children,
+  multiple,
+  ...rest
+}) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
+      <div
+        className={`flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
+      >
         <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
@@ -96,10 +109,33 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
           className="py-4 px-4 border-solid rounded-none border border-black"
           type="dropdown"
           placeholder="Dropdown"
+          multiple={multiple}
           {...rest}
-        />
+        >
+          {children}
+        </select>
       </div>
     </>
+  );
+};
+
+Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
+  return (
+    <div
+      className={`flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
+    >
+      <label htmlFor={id} className="mb-1.5 text-lg">
+        {labelText}
+      </label>
+      <DatePicker
+        className={
+          "py-4 px-4 border-solid rounded-none border border-black w-44 h-12 flex"
+        }
+        onChange={onChange}
+        selected={date}
+        placeholderText="Select"
+      />
+    </div>
   );
 };
 
