@@ -109,17 +109,19 @@ export const FestRoute = () => {
         <Header.Profile />
       </Header>
       <div className=" max-w-[1200px] my-0 mx-auto box-border">
-        {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
+        {!festQuery.loading && festQuery?.data?.fest && (
+          <FestHeader fest={festQuery.data.fest} />
+        )}
         <div className="flex gap-x-28">
           <FestSidebar removeFest={removeFest} />
           <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
-              {!festQuery.loading && movies.length > 0 && (
+              {!festQuery.loading && movies && movies.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   Slops for this fest
                 </h2>
               )}
-              {!festQuery.loading && movies.length === 0 && (
+              {!festQuery.loading && movies && movies.length === 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   {"No slops for this fest yet :("}
                 </h2>

@@ -4,6 +4,7 @@ import checkMark from "../../images/check-mark.svg";
 
 export const FestHeader = ({ fest }) => {
   let { name, attendees, startDate, endDate } = fest;
+  console.log(fest);
   startDate = new Intl.DateTimeFormat("en-US").format(new Date(startDate));
   endDate = new Intl.DateTimeFormat("en-US").format(new Date(endDate));
 
