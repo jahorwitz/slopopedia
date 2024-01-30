@@ -34,6 +34,7 @@ export const FestRoute = () => {
     deleteFest({ variables: { where: { id: festId } } });
     if (deleteFestLoading) return "Submitting...";
     if (deleteFestError) return `Submission error! ${error.message}`;
+    closeModal("confirmation");
   };
 
   const [

@@ -5,16 +5,8 @@ import { useModals } from "../../store";
 
 export const FestSidebar = ({ removeFest }) => {
   const { openModal, closeModal, registerModal } = useModals();
-
-  //! Pass in
-  useEffect(() => {
-    registerModal(
-      "confirmation",
-      <DeleteConfirmationModal confirmButtonAction={removeFest} />
-    );
-  }, []);
-
   const location = useLocation();
+
   const sidebarItems = [
     {
       title: "Slops to watch",
@@ -29,6 +21,13 @@ export const FestSidebar = ({ removeFest }) => {
       link: "",
     },
   ];
+
+  useEffect(() => {
+    registerModal(
+      "confirmation",
+      <DeleteConfirmationModal confirmButtonAction={removeFest} />
+    );
+  }, []);
 
   return (
     <div>
