@@ -121,6 +121,10 @@ export function SlopFestModal() {
                   borderColor: "#000000",
                   borderRadius: "none",
                 }),
+                valueContainer2: (base) => ({
+                  ...base,
+                  overflow: "scroll",
+                }),
                 multiValueLabel: (base) => ({
                   ...base,
                   whiteSpace: "normal",
