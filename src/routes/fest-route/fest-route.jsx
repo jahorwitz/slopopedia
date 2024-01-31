@@ -1,13 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import { DELETE_FEST, GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
+import { CurrentUserContext } from "../../store/current-user-context.js";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
+  const navigate = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
+
   const { festId } = useParams();
   const { openModal, closeModal, registerModal } = useModals();
 
@@ -31,10 +36,17 @@ export const FestRoute = () => {
   ] = useMutation(DELETE_FEST);
 
   const removeFest = () => {
-    deleteFest({ variables: { where: { id: festId } } });
-    if (deleteFestLoading) return "Submitting...";
-    if (deleteFestError) return `Submission error! ${error.message}`;
-    closeModal("confirmation");
+    if (currentUser.id === festQuery.data.fest.creator.id) {
+      deleteFest({ variables: { where: { id: festId } } });
+      if (deleteFestLoading) return "Submitting...";
+      if (deleteFestError) return `Submission error! ${error.message}`;
+      closeModal("confirmation");
+      navigate("/profile/fests");
+      console.log("Ids match; can delete!");
+    } else {
+      console.log("Ids don't match; cannot delete!");
+      closeModal("confirmation");
+    }
   };
 
   const [
@@ -114,7 +126,9 @@ export const FestRoute = () => {
           <FestHeader fest={festQuery.data.fest} />
         )}
         <div className="flex gap-x-28">
-          <FestSidebar removeFest={removeFest} />
+          {!festQuery.loading && festQuery?.data?.fest && (
+            <FestSidebar removeFest={removeFest} />
+          )}
           <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies && movies.length > 0 && (
