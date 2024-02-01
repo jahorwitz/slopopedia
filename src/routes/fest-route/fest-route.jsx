@@ -33,7 +33,7 @@ export const FestRoute = () => {
       loading: deleteFestLoading,
       error: deleteFestError,
     },
-  ] = useMutation(DELETE_FEST);
+  ] = useMutation(DELETE_FEST, { refetchQueries: [GET_FEST] });
 
   const removeFest = () => {
     if (currentUser.id === festQuery.data.fest.creator.id) {
@@ -42,10 +42,6 @@ export const FestRoute = () => {
       if (deleteFestError) return `Submission error! ${error.message}`;
       closeModal("confirmation");
       navigate("/profile/fests");
-      console.log("Ids match; can delete!");
-    } else {
-      console.log("Ids don't match; cannot delete!");
-      closeModal("confirmation");
     }
   };
 
@@ -127,7 +123,7 @@ export const FestRoute = () => {
         )}
         <div className="flex gap-x-28">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar removeFest={removeFest} />
+            <FestSidebar removeFest={removeFest} festQuery={festQuery} />
           )}
           <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
