@@ -3,7 +3,13 @@ import { useContext, useEffect, useMemo } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
-import { DELETE_FEST, GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
+import {
+  DELETE_FEST,
+  GET_FEST,
+  GET_MOVIES,
+  GET_USER_FESTS,
+  UPDATE_FEST,
+} from "../../graphql/";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context.js";
@@ -26,20 +32,15 @@ export const FestRoute = () => {
 
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
 
-  const [
-    deleteFest,
-    {
-      data: deleteFestData,
-      loading: deleteFestLoading,
-      error: deleteFestError,
-    },
-  ] = useMutation(DELETE_FEST, { refetchQueries: [GET_FEST] });
+  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
+    refetchQueries: [GET_USER_FESTS],
+  });
 
   const removeFest = () => {
     if (currentUser.id === festQuery.data.fest.creator.id) {
       deleteFest({ variables: { where: { id: festId } } });
-      if (deleteFestLoading) return "Submitting...";
-      if (deleteFestError) return `Submission error! ${error.message}`;
+      if (loading) return "Submitting...";
+      if (error) return `Submission error! ${error.message}`;
       closeModal("confirmation");
       navigate("/profile/fests");
     }
