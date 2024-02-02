@@ -1,11 +1,17 @@
-import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { GET_USERS } from "../graphql/get-users";
+import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
+import { useModals } from "../store";
+import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
 export function SlopFestModal() {
+  const { data, loading, error } = useQuery(GET_USERS);
+  const [createFest, { loading: createLoading, error: createError }] =
+    useMutation(CREATE_FEST);
   const {
     register,
     handleSubmit,
@@ -15,14 +21,16 @@ export function SlopFestModal() {
   } = useForm({
     defaultValues: {
       name: "",
-      date: "",
+      startDate: "",
+      endDate: "",
+      attendees: [],
     },
   });
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [users, setUsers] = useState([]);
-
-  const { data, loading } = useQuery(GET_USERS);
+  const { currentUser } = useContext(CurrentUserContext);
+  const { closeModal } = useModals();
 
   useEffect(() => {
     if (data && data.users) {
@@ -35,7 +43,31 @@ export function SlopFestModal() {
     label: user.username,
   }));
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    const { name, attendees } = getValues();
+    const startDateISO = startDate.toISOString().substring(0, 10);
+    const endDateISO = endDate.toISOString().substring(0, 10);
+    try {
+      createFest({
+        variables: {
+          data: {
+            name: name,
+            startDate: startDateISO,
+            endDate: endDateISO,
+            // attendees should include creator and other usernames in attendees field
+            attendees: {
+              connect: { username: currentUser.username },
+            },
+            creator: {
+              connect: { id: currentUser.id },
+            },
+          },
+        },
+      }).then(() => closeModal("create"));
+    } catch (error) {
+      console.log(`Error: ${error.message}`);
+    }
+  };
 
   return (
     <Modal title="OH WE FESTIN">
@@ -75,13 +107,17 @@ export function SlopFestModal() {
               <Form.DateDropdown
                 labelText={"Start Date"}
                 className={"w-[176px]"}
+                name="startDate"
                 isValid={isValid}
                 date={startDate}
                 onChange={(date) => {
-                  setStartDate(date), { shouldValidate: true };
+                  setStartDate(date);
+                  setValue("startDate", date, {
+                    shouldValidate: true,
+                  });
                 }}
               />
-              {errors.date ? (
+              {errors.startDate ? (
                 <Form.Feedback message={"Must be a valid date"} />
               ) : (
                 ""
@@ -91,13 +127,17 @@ export function SlopFestModal() {
               <Form.DateDropdown
                 labelText={"End Date"}
                 className={"w-[176px] h-12"}
+                name="endDate"
                 isValid={isValid}
                 date={endDate}
                 onChange={(date) => {
-                  setEndDate(date), { shouldValidate: true };
+                  setEndDate(date);
+                  setValue("endDate", date, {
+                    shouldValidate: true,
+                  });
                 }}
               />
-              {errors.date ? (
+              {errors.endDate ? (
                 <Form.Feedback message={"Must be a valid date"} />
               ) : (
                 ""
@@ -115,6 +155,13 @@ export function SlopFestModal() {
                 control: () =>
                   "w-[373px] max-h-[92px] px-2 py-2 border border-solid rounded-none border-black overflow-scroll",
               }}
+              isMulti
+              name="attendees"
+              isSearchable={true}
+              isClearable={false}
+              // onChange={(evt) => {
+              //   setValue("attendees", evt.target.value);
+              // }}
               styles={{
                 control: (base) => ({
                   ...base,
@@ -145,13 +192,13 @@ export function SlopFestModal() {
                   height: "140px",
                 }),
               }}
-              isMulti
-              name="attending"
-              isSearchable
-              isClearable={false}
             ></Select>
           </div>
-          <Form.Submit title={"Fest On!"} className={"w-[373px] mb-5 mt-5"} />
+          <Form.Submit
+            title={"Fest On!"}
+            className={"w-[373px] mb-5 mt-5"}
+            disabled={!isValid}
+          />
         </div>
       </Form>
     </Modal>
