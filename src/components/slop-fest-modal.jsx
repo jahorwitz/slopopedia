@@ -107,6 +107,7 @@ export function SlopFestModal() {
               <Form.DateDropdown
                 labelText={"Start Date"}
                 className={"w-[176px]"}
+                required
                 name="startDate"
                 isValid={isValid}
                 date={startDate}
@@ -127,6 +128,7 @@ export function SlopFestModal() {
               <Form.DateDropdown
                 labelText={"End Date"}
                 className={"w-[176px] h-12"}
+                required
                 name="endDate"
                 isValid={isValid}
                 date={endDate}
