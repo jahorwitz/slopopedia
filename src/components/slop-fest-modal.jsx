@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
+import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
 import { useModals } from "../store";
@@ -11,7 +12,7 @@ import { Form, Modal } from "./index";
 export function SlopFestModal() {
   const { data, loading, error } = useQuery(GET_USERS);
   const [createFest, { loading: createLoading, error: createError }] =
-    useMutation(CREATE_FEST);
+    useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
   const {
     register,
     handleSubmit,
