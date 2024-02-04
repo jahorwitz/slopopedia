@@ -4,7 +4,7 @@ import { Button } from "../../components/button/index";
 export const FestDiscussion = ({ discussionQuery }) => {
   return (
     <div className="w-3/5">
-      <div className="">
+      <div>
         {!discussionQuery.loading &&
         discussionQuery &&
         discussionQuery?.data?.fest?.festNotes?.length === 0 ? (
@@ -12,16 +12,16 @@ export const FestDiscussion = ({ discussionQuery }) => {
             No notes here yet
           </h2>
         ) : (
-          <div className="overflow-y-scroll">
+          <div className="h-96 overflow-y-scroll">
             {discussionQuery.data.fest.festNotes.map((item) => (
               <DiscussionCard item={item} key={item?.id ?? item._id} />
             ))}
           </div>
         )}
       </div>
-      <div className="flex gap-x-10 mt-5">
+      <div className="flex gap-x-10 mt-10">
         <textarea
-          className="w-5/6 h-11 text-left outline-1 border text-dark px-2.5 py-2"
+          className="w-5/6 h-11 text-left outline-1 border text-dark px-2.5 py-2 border-black/[0.5]"
           placeholder="Type your message here"
         ></textarea>
         <Button variant="secondary" size="sm" className="px-6">
