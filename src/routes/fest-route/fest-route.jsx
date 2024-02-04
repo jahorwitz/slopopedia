@@ -132,7 +132,7 @@ export const FestRoute = () => {
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} />
         )}
-        <div className="flex gap-x-28">
+        <div className="flex gap-x-24">
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestSidebar removeFest={removeFest} festQuery={festQuery} />
           )}
