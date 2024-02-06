@@ -36,7 +36,7 @@ export const SubmittedSlops = () => {
             <p>{slop.score}</p>
             <p>{slop.howToWatch}</p>
             <p>{slop.keyword}</p>
-            <Link to={`/edit-slop/${slop.id}`}>Edit</Link>{" "}
+            <Link to={`/edit-slop/${slop.id}`}>Edit</Link>
           </li>
         ))}
       </ul>

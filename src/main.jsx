@@ -9,7 +9,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute, Submit, SubmitList } from "./components/index";
+import {
+  EditSlop,
+  ProtectedRoute,
+  Submit,
+  SubmitList,
+} from "./components/index";
 import {
   ArticleRoute,
   BlogRoute,
@@ -108,6 +113,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute>
                     <SubmitList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/edit-slop/:slopId"
+                element={
+                  <ProtectedRoute>
+                    <EditSlop />
                   </ProtectedRoute>
                 }
               />

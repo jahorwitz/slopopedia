@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { mockSlops } from "./SubmittedSlops";
 
-const EditSlop = () => {
+export const EditSlop = () => {
   const [slopData, setSlopData] = useState(null);
   const { slopId } = useParams();
   const navigate = useNavigate();
@@ -33,27 +33,27 @@ const EditSlop = () => {
       <input
         type="text"
         value={slopData.title || ""}
-        onChange={handleInputChange}
+        onChange={handleInputChange("title")}
       />
       <input
         type="number"
         value={slopData.releaseYear || ""}
-        onChange={handleInputChange}
+        onChange={handleInputChange("releaseYear")}
       />
       <input
         type="number"
         value={slopData.runtime || ""}
-        onChange={handleInputChange}
+        onChange={handleInputChange("runtime")}
       />
       <input
         type="number"
         value={slopData.score || ""}
-        onChange={handleInputChange}
+        onChange={handleInputChange("score")}
       />
       <input
         type="text"
         value={slopData.howToWatch || ""}
-        onChange={handleInputChange}
+        onChange={handleInputChange("howToWatch")}
       />
 
       <button type="submit">Save Changes</button>
