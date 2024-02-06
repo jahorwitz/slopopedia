@@ -56,7 +56,7 @@ export const FestRoute = () => {
       deleteFest({ variables: { where: { id: festId } } });
       if (loading) return "Submitting...";
       if (error) return `Submission error! ${error.message}`;
-      closeModal("confirmation");
+      closeModal();
       navigate("/profile/fests");
     }
   };
