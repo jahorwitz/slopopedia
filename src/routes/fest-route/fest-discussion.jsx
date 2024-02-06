@@ -9,12 +9,14 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
   const { currentUser } = useContext(CurrentUserContext);
   const userId = currentUser?.id;
   const [discussionContent, setDiscussionContent] = useState("");
+  const isValid = discussionContent.length == 0 ? false : true;
 
   // Create an array of all attendees to later check if the current user is in list
   const attendeesList = festQuery?.data?.fest?.attendees?.map(
     (person) => person?.id
   );
 
+  // Mutation to add discussion to server, and refetch the queries
   const [
     createDiscussion,
     { discussionData, discussionIsLoading, discussionHasError },
@@ -22,6 +24,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
     refetchQueries: [GET_DISCUSSIONS],
   });
 
+  // function to handle clicking of 'send' button; sends API response
   const handleDiscussionSubmit = (evt) => {
     evt.preventDefault();
     createDiscussion({
@@ -35,14 +38,13 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
     });
     if (discussionIsLoading) return "Submitting...";
     else if (discussionHasError) return `Submission error! ${error.message}`;
-    else {
-      setDiscussionContent("");
-    }
+    else setDiscussionContent(""); // reset discussionContent to blank
   };
 
   return (
     <div className="w-3/5">
       <div>
+        {/* If discussionQuery is loading or the length is 0, show "no notes here yet" */}
         {!discussionQuery?.loading &&
         discussionQuery &&
         discussionQuery?.data?.fest?.festNotes?.length === 0 ? (
@@ -50,10 +52,20 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
             No notes here yet
           </h2>
         ) : (
+          // otherwise show the posts coming from the backend
           <div className="h-96 overflow-y-scroll">
-            {discussionQuery?.data?.fest?.festNotes.map((item) => (
-              <DiscussionCard item={item} key={item?.id ?? item._id} />
-            ))}
+            {discussionQuery?.data?.fest?.festNotes
+              .map((item) => (
+                // Map each item onto the DiscussionCard template
+                <DiscussionCard item={item} key={item?.id ?? item._id} />
+              ))
+              .sort((a, b) => {
+                // sort posts based on their time elapsed in milliseconds since 1970, place b first
+                return (
+                  Date.parse(new Date(b.props.item.createdAt)) -
+                  Date.parse(new Date(a.props.item.createdAt))
+                );
+              })}
           </div>
         )}
       </div>
@@ -68,6 +80,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
             onChange={(evt) => setDiscussionContent(evt.target.value)}
           ></textarea>
           <Button
+            disabled={!isValid}
             variant="secondary"
             type="button"
             size="sm"
