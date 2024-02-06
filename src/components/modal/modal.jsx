@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
+import { useModals } from "../../hooks";
 import closeButton from "../../images/close-button.svg";
-import { useModals } from "../../store";
 
 export function Modal({ children, title, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);

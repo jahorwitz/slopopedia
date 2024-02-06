@@ -3,9 +3,9 @@ import { Popover, Transition } from "@headlessui/react";
 import { Fragment, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
+import { useModals } from "../hooks";
 import checkMark from "../images/check-mark-dark.svg";
-import { useModals } from "../store";
-import { CurrentUserContext } from "../store/current-user-context";
+import { CurrentUserContext } from "../store";
 import { Form, Modal, SignupModal } from "./index";
 
 export function LoginModal({ onClose }) {

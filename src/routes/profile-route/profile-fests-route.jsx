@@ -7,7 +7,7 @@ import { Button, Footer, Header, Keyword } from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
-import { CurrentUserContext } from "../../store/current-user-context";
+import { CurrentUserContext } from "../../store";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {

@@ -3,6 +3,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
+import { useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -11,7 +12,6 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
