@@ -32,8 +32,8 @@ Form.TextInput = ({
         <input
           register={register}
           id={id}
-          className={`font-normal py-3 px-4 border-solid rounded-none border ${
-            isValid ? "border-black" : "border-danger focus:outline-danger"
+          className={`font-normal py-4 px-4 border-solid rounded-none border border-black${
+            isValid ? "" : "border-danger focus:outline-danger"
           } `}
           type="text"
           placeholder={"Type here"}
@@ -55,7 +55,7 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
 
         <textarea
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className="font-normal h-[440px] py-4 px-4 border-solid rounded-none border border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -103,7 +103,7 @@ Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
   );
 };
 
-Form.Submit = ({ title, className, disabled }) => {
+Form.Submit = ({ title, className, disabled, onSubmit }) => {
   return (
     <div className="flex justify-center pt-8 pb-5">
       <Button
@@ -112,6 +112,7 @@ Form.Submit = ({ title, className, disabled }) => {
         children={title}
         className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className}`}
         type="submit"
+        onSubmit={onSubmit}
       >
         {title}
       </Button>

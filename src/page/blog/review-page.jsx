@@ -1,34 +1,130 @@
-export const Review = ({ title, date, author, content, onEdit, onDelete }) => {
+import { useMutation, useQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Footer } from "../../components/index.js";
+import { DELETE_POST } from "../../graphql/mutations/blog/post.js";
+import {
+  GET_BLOG_POST,
+  GET_BLOG_POSTS,
+} from "../../graphql/queries/blog/posts.js";
+import { CurrentUserContext } from "../../store/current-user-context.js";
+import { formatDateTime } from "../../utils/constants.js";
+
+export const Review = ({ id }) => {
+  const router = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
+  const [post, setPost] = useState({
+    title: "",
+    username: "",
+    content: "",
+    keywords: [],
+    createdAt: "",
+  });
+  const [deletePost, {}] = useMutation(DELETE_POST, {
+    refetchQueries: [GET_BLOG_POSTS],
+  });
+
+  const { data } = useQuery(GET_BLOG_POST, {
+    variables: {
+      where: {
+        id: id,
+      },
+    },
+  });
+  const [accessGranted, setAccessGranted] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      setPost({
+        title: data.post.title,
+        content: data.post.content,
+        username: data.post.author.username,
+        keywords: data.post.keywords,
+        createdAt: data.post.createdAt,
+      });
+      if (currentUser.id === data.post.author.id) {
+        setAccessGranted(true);
+      }
+    }
+  }, [data]);
+
+  const onEdit = () => {
+    console.log(currentUser, data);
+    if (currentUser.id === data.post.author.id) {
+      router(`/articles/${id}/edit`);
+    }
+  };
+
+  const onDelete = () => {
+    router(`/articles`);
+    if (currentUser.id === data.post.author.id) {
+      deletePost({
+        variables: {
+          where: {
+            id: id,
+          },
+        },
+      });
+    }
+  };
+
+  let keywordsList = [];
+
+  post.keywords.forEach((keyword) => {
+    keywordsList.push(
+      <Button className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center border mb-0 py-0 px-2">
+        {`${keyword?.name}`}
+      </Button>
+    );
+  });
+
   return (
-    <div className="p-6 max-w-xl mx-auto bg-white rounded-xl shadow-md">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">{/* Empty div for spacing */}</div>
-        <div className="flex flex-col space-y-2">
-          <button
-            onClick={onEdit}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Edit
-          </button>
-          <button
-            onClick={onDelete}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Delete
-          </button>
+    <div>
+      <div className="py-10 max-w-xl mx-auto">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">{/* Empty div for spacing */}</div>
+          {accessGranted ? (
+            <div className="flex flex-row relative left-28 gap-5">
+              <button
+                onClick={onEdit}
+                className=" underline underline-offset-2 text-black-500"
+              >
+                Edit
+              </button>
+              <button
+                onClick={onDelete}
+                className=" underline underline-offset-2 text-red-500"
+              >
+                Delete
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="mb-4 flex flex-col gap-4 h-full">
+          <h2 className="text-3xl font-bold ">{post.title}</h2>
+          <div className="my-0">{keywordsList}</div>
+          <div className="flex gap-8">
+            <p className="text-grey-500">
+              {`${formatDateTime(post.createdAt)}`}
+            </p>
+            <p className="text-grey-500">{`By ${post.username}`} </p>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {post.content.split(/(?:\r?\n)+/).map((paragraph, index) => (
+            <p key={index} className="text-black-700 text-base ">
+              {`${paragraph}\n\n`}
+            </p>
+          ))}
         </div>
       </div>
-      <div className="text-center mb-4">
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <p className="text-gray-500">{`By ${author}, ${date}`}</p>
-      </div>
-      <div className="space-y-2">
-        {content.split("\n").map((paragraph, index) => (
-          <p key={index} className="text-gray-700 text-base">
-            {paragraph}
-          </p>
-        ))}
+      <div className="absolute bottom-0 w-full max-w-[989] mx-auto mt-auto p-10">
+        <Footer>{/* <Footer.Content></Footer.Content>{" "} */}</Footer>
       </div>
     </div>
   );
 };
+
+export default Review;

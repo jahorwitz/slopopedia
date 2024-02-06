@@ -12,7 +12,7 @@ import "../src/global/default.css";
 import { ProtectedRoute, Submit, SubmitList } from "./components/index";
 import {
   ArticleRoute,
-  BlogRoute,
+  ArticlesRoute,
   BrowseRoute,
   DraftRoute,
   FestsRoute,
@@ -21,6 +21,7 @@ import {
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ReviewRoute,
   SearchRoute,
   SoundsRoute,
 } from "./routes";
@@ -31,7 +32,7 @@ const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
       ? import.meta.env.VITE_API_URI
-      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      : "http://localhost:8080/api/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -50,7 +51,7 @@ const client = new ApolloClient({
     import.meta.env.MODE === "production"
       ? //created environment variables must be prefixed by VITE
         import.meta.env.VITE_API_URI
-      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      : "http://localhost:8080/api/graphql",
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
@@ -68,9 +69,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />
-              <Route path="/blog" element={<BlogRoute />} />
+              <Route path="/articles" element={<ArticlesRoute />} />
               <Route path="/draft" element={<DraftRoute />} />
-              <Route path="/article" element={<ArticleRoute />} />
+              <Route exact path="/articles/create" element={<ArticleRoute />} />
+              <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
                 path="/profile"
                 element={
@@ -116,8 +118,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
               />
               <Route
-                path="/blog"
-                element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+                path="/articles/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <ArticleRoute />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/fests/:festId"
