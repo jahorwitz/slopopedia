@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import {
   DELETE_FEST,
-  GET_DISCUSSION,
+  GET_DISCUSSIONS,
   GET_FEST,
   GET_MOVIES,
   GET_USER_FESTS,
@@ -28,6 +28,7 @@ export const FestRoute = () => {
   const { currentUser } = useContext(CurrentUserContext);
   const { openModal, closeModal, registerModal } = useModals();
 
+  // Fest Query
   const festQuery = useQuery(GET_FEST, {
     variables: {
       where: {
@@ -36,16 +37,20 @@ export const FestRoute = () => {
     },
   });
 
-  const discussionQuery = useQuery(GET_DISCUSSION, {
+  // Discussion Query
+  const discussionQuery = useQuery(GET_DISCUSSIONS, {
     variables: { where: { id: festId } },
   });
 
+  // Movie Query
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
 
+  // Remove Fest Mutation
   const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
     refetchQueries: [GET_USER_FESTS],
   });
 
+  // Function to remove a Fest
   const removeFest = () => {
     if (currentUser.id === festQuery.data.fest.creator.id) {
       deleteFest({ variables: { where: { id: festId } } });
@@ -202,6 +207,7 @@ export const FestRoute = () => {
             <FestDiscussion
               discussionQuery={discussionQuery}
               festQuery={festQuery}
+              festId={festId}
             />
           )}
         </div>
