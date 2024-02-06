@@ -24,7 +24,7 @@ export function DeleteConfirmationModal({ confirmButtonAction }) {
             variant="primary"
             size="sm"
             className="font-arialBold mr-2"
-            onClick={() => closeModal("")}
+            onClick={() => closeModal()}
           >
             Cancel
           </Button>
