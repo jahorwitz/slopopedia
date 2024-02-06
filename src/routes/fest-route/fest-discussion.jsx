@@ -5,7 +5,7 @@ export const FestDiscussion = ({ discussionQuery }) => {
   return (
     <div className="w-3/5">
       <div>
-        {!discussionQuery.loading &&
+        {!discussionQuery?.loading &&
         discussionQuery &&
         discussionQuery?.data?.fest?.festNotes?.length === 0 ? (
           <h2 className="font-arial text-lg/4 m-auto text-center pb-96">
@@ -13,7 +13,7 @@ export const FestDiscussion = ({ discussionQuery }) => {
           </h2>
         ) : (
           <div className="h-96 overflow-y-scroll">
-            {discussionQuery.data.fest.festNotes.map((item) => (
+            {discussionQuery?.data?.fest?.festNotes.map((item) => (
               <DiscussionCard item={item} key={item?.id ?? item._id} />
             ))}
           </div>
