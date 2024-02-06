@@ -151,6 +151,7 @@ export function SlopFestModal() {
             <label htmlFor="attending" className="mb-1.5 text-lg">
               Goblins Attending
             </label>
+            {/* will change to headless ui component */}
             <Select
               options={userOptions}
               className={"basic-multi-select"}
