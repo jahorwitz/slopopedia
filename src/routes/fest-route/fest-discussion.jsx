@@ -1,7 +1,15 @@
+import { useContext } from "react";
 import { DiscussionCard } from "../../components";
 import { Button } from "../../components/button/index";
+import { CurrentUserContext } from "../../store/current-user-context.js";
 
-export const FestDiscussion = ({ discussionQuery }) => {
+export const FestDiscussion = ({ discussionQuery, festQuery }) => {
+  const { currentUser } = useContext(CurrentUserContext);
+  // Create an array of all attendees to later check if the current user is in list
+  const attendeesList = festQuery?.data?.fest?.attendees?.map(
+    (person) => person?.id
+  );
+
   return (
     <div className="w-3/5">
       <div>
@@ -19,15 +27,19 @@ export const FestDiscussion = ({ discussionQuery }) => {
           </div>
         )}
       </div>
-      <div className="flex gap-x-10 mt-10">
-        <textarea
-          className="w-5/6 h-11 text-left outline-1 border text-dark px-2.5 py-2 border-black/[0.5]"
-          placeholder="Type your message here"
-        ></textarea>
-        <Button variant="secondary" size="sm" className="px-6">
-          Send
-        </Button>
-      </div>
+      {attendeesList?.includes(currentUser?.id) && (
+        <div className="flex gap-x-10 mt-10">
+          <textarea
+            className="w-5/6 h-11 max-h-20 text-left outline-0 border text-dark px-2.5 py-1 border-black/[0.5] resize-none"
+            placeholder="Type your message here"
+            type="text"
+            name="discussion-content"
+          ></textarea>
+          <Button variant="secondary" size="sm" className="px-6">
+            Send
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

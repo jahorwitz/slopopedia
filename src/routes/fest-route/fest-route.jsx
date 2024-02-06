@@ -199,7 +199,10 @@ export const FestRoute = () => {
             </div>
           )}
           {location.pathname === `/fests/${festId}/discussion` && (
-            <FestDiscussion discussionQuery={discussionQuery} />
+            <FestDiscussion
+              discussionQuery={discussionQuery}
+              festQuery={festQuery}
+            />
           )}
         </div>
       </div>
