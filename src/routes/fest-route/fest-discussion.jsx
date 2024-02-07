@@ -6,10 +6,10 @@ import { CREATE_DISCUSSION, GET_DISCUSSIONS } from "../../graphql/index.js";
 import { CurrentUserContext } from "../../store/current-user-context.js";
 
 export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
+  const [discussionContent, setDiscussionContent] = useState("");
   const { currentUser } = useContext(CurrentUserContext);
   const userId = currentUser?.id;
-  const [discussionContent, setDiscussionContent] = useState("");
-  const isValid = discussionContent.length == 0 ? false : true;
+  const isValid = discussionContent.length !== 0 ? true : false;
 
   // Create an array of all attendees to later check if the current user is in list
   const attendeesList = festQuery?.data?.fest?.attendees?.map(
@@ -24,7 +24,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
     refetchQueries: [GET_DISCUSSIONS],
   });
 
-  // function to handle clicking of 'send' button; sends API response
+  // Function to handle clicking of 'send' button; sends API response
   const handleDiscussionSubmit = (evt) => {
     evt.preventDefault();
     createDiscussion({
@@ -69,26 +69,29 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
           </div>
         )}
       </div>
+      {/* Check to ensure the userId is in attendees list (only attendees can write comments); if not hide option to write discussion */}
       {attendeesList?.includes(userId) && (
         <div className="flex gap-x-10 mt-10">
           <textarea
-            className="w-5/6 h-11 max-h-20 text-left outline-0 border text-dark px-2.5 py-1 border-black/[0.5] resize-none"
+            className="w-5/6 h-11 max-h-20 min-h-11 text-left outline-0 border text-dark px-2.5 py-2 border-black/[0.5]"
             placeholder="Type your message here"
             type="text"
             name="discussion-content"
             value={discussionContent}
             onChange={(evt) => setDiscussionContent(evt.target.value)}
           ></textarea>
-          <Button
-            disabled={!isValid}
-            variant="secondary"
-            type="button"
-            size="sm"
-            className="px-6"
-            onClick={handleDiscussionSubmit}
-          >
-            Send
-          </Button>
+          <div className="">
+            <Button
+              disabled={!isValid} // prevent users from being able to submit blank posts
+              variant="secondary"
+              type="button"
+              size="sm"
+              className="px-6 h-11 max-h-11"
+              onClick={handleDiscussionSubmit}
+            >
+              Send
+            </Button>
+          </div>
         </div>
       )}
     </div>
