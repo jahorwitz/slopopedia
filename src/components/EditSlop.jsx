@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Form } from "./form/index";
 import { Header } from "./index";
 import { mockSlops } from "./SubmittedSlops";
 
@@ -38,78 +39,42 @@ export const EditSlop = () => {
       </Header>
       <div className="flex justify-center">
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block mb-3">Title</label>
-            <input
-              type="text"
-              value={slopData.title || ""}
-              onChange={handleInputChange("title")}
-              className="w-[453px] h-[49px] border-2 border-gray-300"
-            />
-          </div>
-          <div>
-            <label className="block mb-3">Description</label>
-            <textarea
-              value={slopData.description || ""}
-              onChange={handleInputChange("description")}
-              className="w-[453px] h-[120px] border-2 border-gray-300"
-            />
-          </div>
-          <div className="flex justify-between space-x-4">
-            <div>
-              <label className="block mb-3">Release Year</label>
-              <input
-                type="number"
-                value={slopData.releaseYear || ""}
-                onChange={handleInputChange("releaseYear")}
-                className="w-[216px] h-[49px] border-2 border-gray-300"
-              />
-            </div>
-            <div>
-              <label className="block mb-3">Run Time</label>
-              <input
-                type="number"
-                value={slopData.runtime || ""}
-                onChange={handleInputChange("runtime")}
-                className="w-[216px] h-[49px] border-2 border-gray-300"
-              />
-            </div>
-          </div>
-          <div className="flex justify-center space-x-4">
-            <div>
-              <label className="block mb-3">Rotten Tomatoes Score</label>
-              <input
-                type="number"
-                value={slopData.score || ""}
-                onChange={handleInputChange("score")}
-                className="w-[216px] h-[49px] border-2 border-gray-300"
-              />
-            </div>
-            <div>
-              <label className="block mb-3">How to Watch</label>
-              <input
-                type="text"
-                value={slopData.howToWatch || ""}
-                onChange={handleInputChange("howToWatch")}
-                className="w-[216px] h-[49px] border-2 border-gray-300"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block mb-3">Keywords</label>
-            <input
-              type="text"
-              value={slopData.keyword || ""}
-              onChange={handleInputChange("keyword")}
-              className="w-[453px] h-[49px] border-2 border-gray-300"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-[453px] mt-5 p-2 bg-blue-500 text-white rounded"
-          >
-            Save Changes
-          </button>
+          <Form.TextInput
+            labelText="Title"
+            value={slopData.title || ""}
+            onChange={handleInputChange("title")}
+          />
+          <Form.TextInput
+            labelText="Description"
+            value={slopData.description || ""}
+            onChange={handleInputChange("description")}
+          />
+          <Form.TextNumber
+            labelText="Release Year"
+            value={slopData.releaseYear || ""}
+            onChange={handleInputChange("releaseYear")}
+          />
+          <Form.TextNumber
+            labelText="Run Time"
+            value={slopData.runtime || ""}
+            onChange={handleInputChange("runtime")}
+          />
+          <Form.TextNumber
+            labelText="Rotten Tomatoes Score"
+            value={slopData.score || ""}
+            onChange={handleInputChange("score")}
+          />
+          <Form.TextInput
+            labelText="How to Watch"
+            value={slopData.howToWatch || ""}
+            onChange={handleInputChange("howToWatch")}
+          />
+          <Form.TextNumber
+            labelText="Keywords"
+            value={slopData.keyword || ""}
+            onChange={handleInputChange("keyword")}
+          />
+          <Form.Submit title="Save Changes" />
         </form>
       </div>
       <div className="mb-10 mt-24">//add footer component here//</div>
