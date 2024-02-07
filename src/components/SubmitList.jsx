@@ -1,9 +1,18 @@
+import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
-import { Header } from "./index";
-// SubmittedSlops is a mock component that needs to be replaced with actual SubmittedSlops component
-import { SubmittedSlops } from "./index";
+import { GET_MOVIES } from "../graphql/get-movies";
+import { Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
+  const { loading, data, error } = useQuery(GET_MOVIES, {
+    variables: {
+      where: {},
+    },
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <>
       <Header>
@@ -23,7 +32,7 @@ export const SubmitList = () => {
             Back to submit page
           </Link>
           <div className="max-w-[453px] h-[728px] ">
-            <SubmittedSlops />
+            {data && data.movies && <MovieCardList movies={data.movies} />}
           </div>
           <div className="mb-10 mt-24">//add footer component here//</div>
         </div>

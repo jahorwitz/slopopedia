@@ -38,7 +38,7 @@ export const EditSlop = () => {
         <Header.Profile />
       </Header>
       <div className="flex justify-center">
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} class=" w-full max-w-[453px]">
           <Form.TextInput
             labelText="Title"
             value={slopData.title || ""}
