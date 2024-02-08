@@ -9,7 +9,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute, Submit, SubmitList } from "./components/index";
+import { ProtectedRoute, SubmitList } from "./components/index";
 import {
   ArticleRoute,
   BlogRoute,
@@ -23,6 +23,7 @@ import {
   ProfileRoute,
   SearchRoute,
   SoundsRoute,
+  SubmitRoute,
 } from "./routes";
 import { FestRoute } from "./routes/fest-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
@@ -99,7 +100,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 path="/submit"
                 element={
                   <ProtectedRoute>
-                    <Submit />
+                    <SubmitRoute />
                   </ProtectedRoute>
                 }
               />

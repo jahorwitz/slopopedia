@@ -9,3 +9,4 @@ export * from "./preferences-route";
 export * from "./profile-route";
 export * from "./search-route";
 export * from "./sounds-route";
+export * from "./submit-route/submit-route";

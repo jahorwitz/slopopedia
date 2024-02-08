@@ -1,5 +1,6 @@
 // Ex:
 // export * from './my-component'
+export * from "../routes/submit-route/submit-slop-form";
 export * from "./badge";
 export * from "./blog";
 export * from "./button";
@@ -17,6 +18,5 @@ export * from "./MoviePage";
 export * from "./protected-route";
 export * from "./sidebar";
 export * from "./signup-modal";
-export * from "./Submit";
 export * from "./SubmitList";
 export * from "./tabber";
