@@ -1,10 +1,15 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-import { useState } from "react";
+import { setContext } from "@apollo/client/link/context";
+import { useEffect, useState } from "react";
+import { ClientContext } from "./client-context";
 
 export const ClientContextProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
-  setToken(localStorage.getItem("jwt"));
+  // setToken(localStorage.getItem("jwt"));
+  useEffect(() => {
+    setToken(localStorage.getItem("jwt"));
+  }, []);
 
   const httpLink = createHttpLink({
     uri:
