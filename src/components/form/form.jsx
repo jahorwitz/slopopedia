@@ -179,8 +179,8 @@ Form.Combobox = ({ id, labelText, className, list, name }) => {
             value={query}
             className="font-nomral border-none focus:outline-none w-0 flex-grow"
           />
-          <Combobox.Button className="absolute right-2 flex top-3 pr-2">
-            <img src={down} />
+          <Combobox.Button className="absolute right-5 flex top-4">
+            <img src={down} className="h-2.5 w-2.5" />
           </Combobox.Button>
         </div>
         <Combobox.Options>

@@ -15,6 +15,12 @@ export const Default = () => {
       <Form.TextArea id="comment" labelText="Description" register={register} />
       <Form.TextNumber id="number" labelText="Number" register={register} />
       <Form.Dropdown id="dropdown" labelText="Dropdown" register={register} />
+      <Form.Combobox
+        id="combobox"
+        labelText="Combobox"
+        name="combobox"
+        list={[]}
+      />
       <Form.Submit className="w-full" handleSubmit={handleSubmit}>
         Yeah!
       </Form.Submit>
