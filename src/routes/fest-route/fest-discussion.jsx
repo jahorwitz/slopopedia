@@ -63,7 +63,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
                 />
               ))
               .sort((a, b) => {
-                // sort posts based on their time elapsed in milliseconds since 1970, place more recent discussions at top
+                // sort posts based on their time elapsed in milliseconds since 1970, placing more recent discussions at bottom
                 return (
                   Date.parse(new Date(a.props.discussion.createdAt)) -
                   Date.parse(new Date(b.props.discussion.createdAt))
