@@ -69,7 +69,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
           </div>
         )}
       </div>
-      {/* Check to ensure the userId is in attendees list (only attendees can write comments); if not hide option to write discussion */}
+      {/* Check for the userId is in attendees list (only attendees can write comments); if not hide option to write discussion */}
       {attendeesList?.includes(userId) && (
         <div className="flex gap-x-10 mt-6">
           <textarea
