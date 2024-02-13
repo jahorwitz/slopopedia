@@ -60,10 +60,10 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
                 <DiscussionCard item={item} key={item?.id ?? item._id} />
               ))
               .sort((a, b) => {
-                // sort posts based on their time elapsed in milliseconds since 1970, place b first
+                // sort posts based on their time elapsed in milliseconds since 1970, place more recent discussions at top
                 return (
-                  Date.parse(new Date(b.props.item.createdAt)) -
-                  Date.parse(new Date(a.props.item.createdAt))
+                  Date.parse(new Date(a.props.item.createdAt)) -
+                  Date.parse(new Date(b.props.item.createdAt))
                 );
               })}
           </div>
@@ -71,7 +71,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
       </div>
       {/* Check to ensure the userId is in attendees list (only attendees can write comments); if not hide option to write discussion */}
       {attendeesList?.includes(userId) && (
-        <div className="flex gap-x-10 mt-10">
+        <div className="flex gap-x-10 mt-6">
           <textarea
             className="w-5/6 h-11 max-h-20 min-h-11 text-left outline-0 border text-dark px-2.5 py-2 border-black/[0.5]"
             placeholder="Type your message here"
