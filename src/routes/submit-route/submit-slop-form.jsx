@@ -1,8 +1,11 @@
+import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { Form } from "../../components/form";
-import title from "../../images/Submit a slop.png";
+import { CREATE_MOVIE } from "../../graphql/create-movie";
+import titleImage from "../../images/Submit a slop.png";
 
 export const SubmitSlopForm = () => {
+  const [createMovie, { data, loading, error }] = useMutation(CREATE_MOVIE);
   const {
     register,
     handleSubmit,
@@ -22,11 +25,25 @@ export const SubmitSlopForm = () => {
     },
   });
 
+  const handleFormSubmit = () => {
+    const { title, description, keywords } = getValues();
+    createMovie({
+      variables: {
+        data: {
+          title,
+          description,
+          keywords,
+        },
+      },
+    });
+    console.log("Data created");
+  };
+
   return (
     <>
-      <img src={title} className="m-auto mt-10 mb-10"></img>
+      <img src={titleImage} className="m-auto mt-10 mb-10"></img>
       <Form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="max-w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10"
       >
         <Form.TextInput
@@ -106,6 +123,7 @@ export const SubmitSlopForm = () => {
         </div>
         <Form.TextInput
           type="file"
+          accept="image/png, image/jpeg"
           placeholder="Click to upload"
           labelText={"Image"}
           isValid={!errors.image}
@@ -154,10 +172,10 @@ export const SubmitSlopForm = () => {
         {errors.keywords && <Form.Feedback message={errors.keywords.message} />}
         <Form.Submit
           type="submit"
-          title="Yeah!"
+          title={"yeah"}
           className="w-full"
           disabled={!isValid}
-        ></Form.Submit>
+        />
       </Form>
     </>
   );
