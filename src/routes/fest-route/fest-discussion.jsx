@@ -55,15 +55,18 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
           // otherwise show the posts coming from the backend
           <div className="h-96 overflow-y-scroll">
             {discussionQuery?.data?.fest?.festNotes
-              .map((item) => (
+              .map((discussion) => (
                 // Map each item onto the DiscussionCard template
-                <DiscussionCard item={item} key={item?.id ?? item._id} />
+                <DiscussionCard
+                  discussion={discussion}
+                  key={discussion?.id ?? discussion._id}
+                />
               ))
               .sort((a, b) => {
                 // sort posts based on their time elapsed in milliseconds since 1970, place more recent discussions at top
                 return (
-                  Date.parse(new Date(a.props.item.createdAt)) -
-                  Date.parse(new Date(b.props.item.createdAt))
+                  Date.parse(new Date(a.props.discussion.createdAt)) -
+                  Date.parse(new Date(b.props.discussion.createdAt))
                 );
               })}
           </div>

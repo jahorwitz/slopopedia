@@ -1,4 +1,4 @@
-export function DiscussionCard({ item }) {
+export function DiscussionCard({ discussion }) {
   // format date according to the figma & return formatted date
   const formatDiscussionDay = (dateTime) => {
     let date = new Date(dateTime);
@@ -14,11 +14,11 @@ export function DiscussionCard({ item }) {
     // Use API reponse to insert data
     <div className="flex flex-col">
       <p className="text-dark text-lg font-arialBold opacity-60">
-        {item.user.username} notes:
+        {discussion.user.username} notes:
       </p>
-      <p className="pt-2.5 text-base">{item.content}</p>
+      <p className="pt-2.5 text-base">{discussion.content}</p>
       <p className="border-b border-black/[0.2] pb-5 pt-2 mb-5 opacity-60">
-        {formatDiscussionDay(item.createdAt)}
+        {formatDiscussionDay(discussion.createdAt)}
       </p>
     </div>
   );
