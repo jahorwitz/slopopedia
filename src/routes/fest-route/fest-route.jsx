@@ -1,7 +1,13 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { Button, Header, Loading, MovieCardList } from "../../components";
+import {
+  Button,
+  Header,
+  Loading,
+  MovieCardList,
+  SlopFestModal,
+} from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
@@ -82,6 +88,13 @@ export const FestRoute = () => {
     );
   }, [recommendedMovies]);
 
+  useEffect(() => {
+    registerModal(
+      "edit-fest",
+      <SlopFestModal title={"Save edits"} onClose={closeModal} />
+    );
+  }, []);
+
   if (updateLoading) {
     return <Loading />;
   }
@@ -96,7 +109,7 @@ export const FestRoute = () => {
       <div className=" max-w-[1200px] my-0 mx-auto box-border">
         {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
         <div className="flex gap-x-28">
-          <FestSidebar />
+          <FestSidebar onClick={() => openModal("edit-fest")} />
           <div className="flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies.length > 0 && (

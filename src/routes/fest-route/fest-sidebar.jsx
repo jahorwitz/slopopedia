@@ -1,7 +1,7 @@
 import { useLocation } from "react-router";
 import { Button, Sidebar } from "../../components";
 
-export const FestSidebar = () => {
+export const FestSidebar = ({ onClick }) => {
   const location = useLocation();
   const sidebarItems = [
     {
@@ -12,10 +12,6 @@ export const FestSidebar = () => {
       title: "Discussion",
       link: `${location.pathname}/discussion`,
     },
-    {
-      title: "Edit dates & guests",
-      link: "",
-    },
   ];
 
   return (
@@ -25,6 +21,13 @@ export const FestSidebar = () => {
           {sidebarItems.map((item, index) => (
             <Sidebar.Item key={index} link={item.link} title={item.title} />
           ))}
+          <Button
+            variant="link-secondary"
+            className={"p-0 ml-5"}
+            onClick={onClick}
+          >
+            Edit dates & guests
+          </Button>
         </Sidebar>
       </div>
       <div>

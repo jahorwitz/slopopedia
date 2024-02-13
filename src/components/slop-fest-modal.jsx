@@ -9,7 +9,7 @@ import { useModals } from "../store";
 import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
-export function SlopFestModal() {
+export function SlopFestModal({ title }) {
   const { data, loading, error } = useQuery(GET_USERS);
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
@@ -64,7 +64,7 @@ export function SlopFestModal() {
             },
           },
         },
-      }).then(() => closeModal("create"));
+      }).then(() => closeModal("create-fest"));
     } catch (error) {
       console.log(`Error: ${error.message}`);
     }
@@ -199,7 +199,7 @@ export function SlopFestModal() {
             ></Select>
           </div>
           <Form.Submit
-            title={"Fest On!"}
+            title={title}
             className={"w-[373px] mb-5 mt-5"}
             disabled={!isValid}
           />
