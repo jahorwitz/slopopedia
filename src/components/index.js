@@ -18,5 +18,4 @@ export * from "./protected-route";
 export * from "./sidebar";
 export * from "./signup-modal";
 export * from "./Submit";
-export * from "./SubmitList";
 export * from "./tabber";

@@ -20,6 +20,10 @@ export const GET_MOVIES = gql`
         url
       }
       howToWatch
+      author {
+        id
+      }
+      status
     }
   }
 `;

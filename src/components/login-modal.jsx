@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
 import checkMark from "../images/check-mark-dark.svg";
@@ -13,9 +13,11 @@ export function LoginModal({ onClose }) {
     useMutation(SIGNIN);
   const { setCurrentUser } = useContext(CurrentUserContext);
 
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
 
-  if (error) console.error(error);
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
 
   const {
     register,
@@ -47,17 +49,13 @@ export function LoginModal({ onClose }) {
           const sessionToken = data.authenticateUserWithPassword.sessionToken;
           localStorage.setItem("jwt", sessionToken);
           setCurrentUser(userData);
-          closeModal("signin");
+          closeModal();
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
           console.log("Something went wrong");
         }
       });
     }
   };
-
-  useEffect(() => {
-    registerModal("signup", <SignupModal onClose={onClose} />);
-  }, []);
 
   return (
     <Modal title="OH HEY GOBLIN">
@@ -153,7 +151,7 @@ export function LoginModal({ onClose }) {
             <button
               type="button"
               className="underline"
-              onClick={() => openModal("signup")}
+              onClick={openSignUpModal}
               onClose={onClose}
             >
               Sign Up!

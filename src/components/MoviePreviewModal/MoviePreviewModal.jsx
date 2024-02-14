@@ -1,14 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
-import camera from "../images/camera.svg";
-import checkMarkDark from "../images/check-mark-dark.svg";
-import drCal from "../images/drcaligari.png";
-import heartDark from "../images/heart-dark.svg";
-import rottenTomato from "../images/rotten-tomatoes.svg";
-import { Badge } from "./badge";
-import { Button } from "./button";
-import { Keyword } from "./keyword";
-import { Modal } from "./modal";
+import camera from "../../images/camera.svg";
+import checkMarkDark from "../../images/check-mark-dark.svg";
+import heartDark from "../../images/heart-dark.svg";
+import rottenTomato from "../../images/rotten-tomatoes.svg";
+import { Badge } from "../badge";
+import { Button } from "../button";
+import { Keyword } from "../keyword";
+import { Modal } from "../modal";
 
 const BlurredImage = styled.div`
   background: url(${(props) => props.image});
@@ -28,7 +27,12 @@ const BlurredImage = styled.div`
   }
 `;
 
-export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
+export const MoviePreviewModal = ({
+  whiteButton,
+  buttons,
+  howToWatch,
+  selectedMovie,
+}) => {
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
 
@@ -41,15 +45,14 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
   };
 
   const movie = {
-    photo: drCal,
-    title: "Dr. Caligari",
-    releaseYear: 1989,
-    runtime: 80,
-    description:
-      'A 1989 softcore sequel to the 1920 German expressionist silent film. The L.A. Times sez: "One of the kinkiest artifacts ever to come out of Orange County."',
-    keywords: ["Auteur", "Campy", "Homoerotic Undertones", "Low Budget"],
-    tomatoScore: 56,
-    howToWatch: "Netflix",
+    photo: selectedMovie.photo.url,
+    title: selectedMovie.title,
+    releaseYear: selectedMovie.releaseYear,
+    runtime: selectedMovie.runtime,
+    description: selectedMovie.description,
+    keywords: selectedMovie.keywords,
+    tomatoScore: selectedMovie.tomatoScore,
+    howToWatch: selectedMovie.howToWatch,
   };
 
   return (
@@ -66,7 +69,7 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
         <img
           src={movie.photo}
           alt={movie.title}
-          className="mx-auto my-0 py-2.5 z-50"
+          className="mx-auto my-0 py-2.5 z-50 max-h-80"
         />
       </BlurredImage>
       <div className="max-w-[620px] pl-[60px] pt-5 pb-[60px] flex flex-col gap-y-5 font-arial">
@@ -81,7 +84,11 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
         </div>
         <div className="flex gap-x-2">
           {movie.keywords.map((keyword, index) => (
-            <Keyword className={"bg-yellow"} key={index} keyword={keyword} />
+            <Keyword
+              className={"bg-yellow"}
+              key={index}
+              keyword={keyword.name}
+            />
           ))}
         </div>
         <div className="flex gap-x-2.5">

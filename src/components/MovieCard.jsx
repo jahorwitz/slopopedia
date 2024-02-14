@@ -1,20 +1,22 @@
 import cx from "classnames";
 import { Button } from "../components";
 import purpleGoblin from "../images/purple-goblin.png";
+import { useModals } from "../store";
 import { getRandomColumns } from "../utils/constants";
 import { Keyword } from "./keyword";
+import { MoviePreviewModal } from "./MoviePreviewModal/MoviePreviewModal";
 
 export function MovieCard({
   children,
   size,
   onClick,
-  className,
   movieInfo,
   colSpanOne,
   minusButton,
   plusButton,
   minusButtonClick,
   plusButtonClick,
+  containerSize = "full",
   ...rest
 }) {
   const card = {
@@ -28,23 +30,37 @@ export function MovieCard({
     decription: movieInfo.description,
   };
 
+  //functionality for opening movie preview modal
+  const { closeModal, openModal } = useModals();
+
+  const handleMovieClick = () => {
+    openModal(
+      <MoviePreviewModal
+        closeModal={closeModal}
+        buttons
+        whiteButton
+        selectedMovie={movieInfo}
+      />
+    );
+  };
+
   return (
-    <div className={colSpanOne ? "col-span-1" : getRandomColumns()}>
+    <div
+      className={cx(
+        "h-full",
+        colSpanOne ? "col-span-1" : getRandomColumns(),
+        containerSize === "small" && "w-[224px]"
+      )}
+    >
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
-        className={
-          cx(
-            "flex flex-col relative",
-            size === 1 && "col-span-1",
-            size === 2 && "col-span-2",
-            size === 3 && "col-span-3",
-            className
-          )
-          // +
-          // className +
-          // // (size == 1 && "col-span-1 ") +
-          // (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
-        }
+        className={cx(
+          "flex flex-col relative h-full",
+          size === 1 && "col-span-1",
+          size === 2 && "col-span-2",
+          size === 3 && "col-span-3",
+          containerSize === "small" && "xs:items-center"
+        )}
         onClick={onClick}
         {...rest}
       >
@@ -65,12 +81,20 @@ export function MovieCard({
           />
         )}
         <img
-          className="mb-2.5 "
+          className={cx(
+            "mb-2.5 hover:cursor-pointer",
+            containerSize === "small" &&
+              "object-contain h-[120px] self-baseline xs:self-center"
+          )}
           src={card.image === null ? purpleGoblin : card.image.url}
+          onClick={() => handleMovieClick()}
         ></img>
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
-          <div className="flex flex-row col-span-2 justify-between">
+          <div
+            className="flex flex-row col-span-2 justify-between hover:cursor-pointer"
+            onClick={() => handleMovieClick()}
+          >
             <h2 className="text-lg mb-2.5 font-bold font-arial">
               {card.title}
             </h2>
@@ -80,11 +104,17 @@ export function MovieCard({
           </div>
         ) : (
           <>
-            <h2 className="text-lg mb-2.5 font-bold font-arial">
+            <h2
+              className="text-lg mb-2.5 font-bold font-arial leading-none hover:cursor-pointer"
+              onClick={() => handleMovieClick()}
+            >
               {card.title}
             </h2>
             {card.runtimeInMinutes && (
-              <p className="text-lg mb-2.5 text-gray-400 font-arial">
+              <p
+                className="text-lg mb-2.5 font-arial leading-none text-dark opacity-60 hover:cursor-pointer"
+                onClick={() => handleMovieClick()}
+              >
                 {card.releaseYear}, {card.runtimeInMinutes} minutes
               </p>
             )}
@@ -96,11 +126,12 @@ export function MovieCard({
             className={
               "flex flex-wrap gap-2 " +
               (size === 1
-                ? "flex flex-row relative col-span-1 justify-around"
-                : "flex flex-row flex-wrap w-64") +
+                ? "flex flex-row relative col-span-1 justify-around "
+                : "flex flex-row flex-wrap w-64 ") +
               (size >= 2
-                ? "absolute top-2 left-2 max-w-[calc(100%-24px)]"
-                : "w-full")
+                ? "absolute top-2 left-2 max-w-[calc(100%-24px)] "
+                : "w-full ") +
+              (containerSize === "small" && "xs:justify-center")
             }
           >
             {card.keywords.map((keyword, index) => (

@@ -1,0 +1,78 @@
+import { useQuery } from "@apollo/client";
+import { useContext } from "react";
+import { Button } from "../../../components/button";
+import MovieCard from "../../../components/MovieCard";
+import { GET_MOVIES } from "../../../graphql";
+import checkIcon from "../../../images/check-mark-dark.svg";
+import pencilIcon from "../../../images/pencil.svg";
+import deleteIcon from "../../../images/red-x-button.svg";
+import { CurrentUserContext } from "../../../store/current-user-context";
+
+export const SubmittedList = () => {
+  const { currentUser } = useContext(CurrentUserContext);
+
+  // Determine the data query based on the user's admin status
+  const queryVariables =
+    currentUser.isAdmin && currentUser
+      ? {
+          where: {
+            status: {
+              equals: "draft",
+            },
+          },
+        }
+      : {
+          where: {
+            author: {
+              id: {
+                equals: currentUser.id,
+              },
+            },
+            status: {
+              equals: "draft",
+            },
+          },
+        };
+
+  // Use the query with the determined variables
+  const { data, loading, error } = useQuery(GET_MOVIES, {
+    variables: queryVariables,
+  });
+
+  return (
+    <div className="w-fit h-fit">
+      {!loading && (
+        <div className="flex flex-col gap-y-5">
+          {data.movies.map((movie) => (
+            <div
+              className="h-fit w-[448px] border-b border-black-60 border-solid flex justify-between pb-5 xs:flex-col xs:items-center xs:gap-4"
+              key={movie.id}
+            >
+              <MovieCard
+                movieInfo={movie}
+                size={movie.size}
+                containerSize="small"
+              />
+              <div className="w-[204px] flex flex-col gap-y-5 xs:w-[224px]">
+                <Button
+                  variant="outline-secondary"
+                  className="text-lg font-bold flex gap-2.5 h-10 w-51 w-full"
+                >
+                  <img src={currentUser.isAdmin ? checkIcon : pencilIcon} />
+                  {currentUser.isAdmin ? "Accept & Publish" : "Edit"}
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  className="text-lg font-bold flex gap-2.5 h-[40px] w-full"
+                >
+                  <img src={deleteIcon} />
+                  {currentUser.isAdmin ? "Deny & Delete" : "Delete"}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

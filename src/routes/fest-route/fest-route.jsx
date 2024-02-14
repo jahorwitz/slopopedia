@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
@@ -9,7 +9,7 @@ import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
   const { festId } = useParams();
-  const { openModal, closeModal, registerModal } = useModals();
+  const { openModal, closeModal } = useModals();
 
   const festQuery = useQuery(GET_FEST, {
     variables: {
@@ -69,9 +69,8 @@ export const FestRoute = () => {
     });
   }, [moviesQuery.data, festQuery.data]);
 
-  useEffect(() => {
-    registerModal(
-      "add movie",
+  function openAddMovieModal() {
+    openModal(
       <FestModal
         closeModal={closeModal}
         recommendedMovies={recommendedMovies}
@@ -80,7 +79,7 @@ export const FestRoute = () => {
         loading={updateLoading}
       />
     );
-  }, [recommendedMovies]);
+  }
 
   if (updateLoading) {
     return <Loading />;
@@ -113,9 +112,7 @@ export const FestRoute = () => {
                 className="font-normal flex gap-x-2.5"
                 size="sm"
                 variant="outline-secondary"
-                onClick={() => {
-                  openModal("add movie");
-                }}
+                onClick={openAddMovieModal}
               >
                 <img
                   className="w-5 h-5"

@@ -31,7 +31,7 @@ export const Button = ({
           "bg-minus absolute top-2.5 right-2.5",
         !disabled && variant === "plus" && "bg-plus absolute top-2.5 right-2.5",
         disabled && "bg-dark/10 text-dark/60 cursor-not-allowed",
-        size === "md" && "p-4",
+        size === "md" && "p-3",
         size === "sm" && "p-2.5",
         size === "lg" && "py-4 w-full",
         className

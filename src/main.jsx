@@ -9,7 +9,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../src/global/default.css";
-import { ProtectedRoute, Submit, SubmitList } from "./components/index";
+import { ProtectedRoute, Submit } from "./components/index";
 import {
   ArticleRoute,
   BlogRoute,
@@ -23,6 +23,7 @@ import {
   ProfileRoute,
   SearchRoute,
   SoundsRoute,
+  SubmittedSlopsRoute,
 } from "./routes";
 import { FestRoute } from "./routes/fest-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
@@ -31,7 +32,8 @@ const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
       ? import.meta.env.VITE_API_URI
-      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      : "http://localhost:8080/api/graphql",
+  // "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -45,12 +47,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  uri:
-    //in Vite, use special object `import.meta.env` to access enviroment variables
-    import.meta.env.MODE === "production"
-      ? //created environment variables must be prefixed by VITE
-        import.meta.env.VITE_API_URI
-      : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
@@ -104,11 +100,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 }
               />
               <Route
-                path="/submit-list"
+                path="/submit/submitted-slops"
                 element={
-                  <ProtectedRoute>
-                    <SubmitList />
-                  </ProtectedRoute>
+                  // <ProtectedRoute>
+                  <SubmittedSlopsRoute />
+                  // </ProtectedRoute>
                 }
               />
               <Route

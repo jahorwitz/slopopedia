@@ -37,12 +37,16 @@ Header.Logo = () => {
 
 Header.NavLinks = () => {
   const [open, setOpen] = useState(false);
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
 
-  useEffect(() => {
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-    registerModal("signin", <LoginModal onClose={closeModal} />);
-  }, []);
+  function openSignInModal() {
+    console.log("clicked!");
+    openModal(<LoginModal onClose={closeModal} />);
+  }
+
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
 
   const handleMenu = () => {
     setOpen((prev) => !prev);
@@ -76,14 +80,14 @@ Header.NavLinks = () => {
       title: "Log In",
       src: headerSmile,
       onClick: () => {
-        openModal("signin");
+        openSignInModal();
       },
     },
     {
       title: "Sign Up",
       src: headerDoor,
       onClick: () => {
-        openModal("signup");
+        openSignUpModal();
       },
     },
     {
@@ -175,17 +179,20 @@ Header.Profile = () => {
   const [token, setToken] = useState("");
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const jwt = localStorage.getItem("jwt");
 
   const isLoggedIn = useMemo(() => {
     return true ? token !== "" : false;
   }, [token]);
 
-  useEffect(() => {
-    registerModal("signin", <LoginModal onClose={closeModal} />);
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-  }, []);
+  function openSignInModal() {
+    openModal(<LoginModal onClose={closeModal} />);
+  }
+
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
 
   useEffect(() => {
     if (jwt) {
@@ -205,9 +212,7 @@ Header.Profile = () => {
             size="sm"
             variant="secondary"
             children="Log In"
-            onClick={() => {
-              openModal("signin");
-            }}
+            onClick={openSignInModal}
           ></Button>
           <p>/</p>
           <Button
@@ -215,9 +220,7 @@ Header.Profile = () => {
             size="sm"
             variant="secondary"
             children="Sign Up"
-            onClick={() => {
-              openModal("signup");
-            }}
+            onClick={openSignUpModal}
           ></Button>
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>
