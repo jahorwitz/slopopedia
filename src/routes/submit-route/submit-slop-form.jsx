@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "../../components/form";
 import { CREATE_MOVIE } from "../../graphql/create-movie";
@@ -6,37 +7,57 @@ import titleImage from "../../images/Submit a slop.png";
 
 export const SubmitSlopForm = () => {
   const [createMovie, { data, loading, error }] = useMutation(CREATE_MOVIE);
+  const [submitted, setSubmitted] = useState(false);
+
+  const resetSubmitted = () => {
+    setSubmitted(false);
+  };
+
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       title: "",
       description: "",
       releaseYear: "",
-      runTime: "",
+      runtime: "",
       image: "",
-      score: "",
-      watch: "",
+      tomatoScore: "",
+      howToWatch: "",
       keywords: "",
     },
   });
 
-  const handleFormSubmit = () => {
-    const { title, description, keywords } = getValues();
-    createMovie({
-      variables: {
-        data: {
-          title,
-          description,
-          keywords,
+  //* Handling the form submit, getting the needed values and converting the default string values to integers as our request expects
+  const handleFormSubmit = (data) => {
+    const { title, description, howToWatch } = getValues();
+    setSubmitted(true);
+    const releaseYearInt = parseInt(data.releaseYear);
+    const runTimeInt = parseInt(data.runTime);
+    const scoreInt = parseInt(data.tomotoScore);
+    try {
+      createMovie({
+        variables: {
+          data: {
+            title,
+            description,
+            releaseYear: releaseYearInt,
+            //? Get the variables below to send
+            runtime: runTimeInt,
+            tomatoScore: scoreInt,
+            howToWatch,
+          },
         },
-      },
-    });
-    console.log("Data created");
+      });
+      console.log("Data sent");
+    } catch (err) {
+      console.error("Error in createMovies request", err);
+    }
   };
 
   return (
@@ -44,7 +65,11 @@ export const SubmitSlopForm = () => {
       <img src={titleImage} className="m-auto mt-10 mb-10"></img>
       <Form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="max-w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10"
+        className={
+          submitted
+            ? `hidden`
+            : `max-w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10`
+        }
       >
         <Form.TextInput
           errors={errors}
@@ -112,13 +137,10 @@ export const SubmitSlopForm = () => {
               placeholder="Runtime"
               labelText={"Runtime"}
               onChange={(e) => {
-                setValue("runTime", e.target.value, { shouldValidate: true });
+                setValue("runtime", e.target.value, { shouldValidate: true });
               }}
-              isValid={!errors.runTime}
+              isValid={!errors.runtime}
             />
-            {errors.runTime && (
-              <Form.Feedback message={errors.runTime.message} />
-            )}
           </div>
         </div>
         <Form.TextInput
@@ -139,24 +161,23 @@ export const SubmitSlopForm = () => {
               }}
               isValid={!errors.score}
             />
-            {errors.score && <Form.Feedback message={errors.score.message} />}
           </div>
           <div className="flex flex-col">
             <Form.TextInput
               placeholder="How To Watch"
               labelText={"How To Watch"}
               onChange={(e) => {
-                setValue("watch", e.target.value, { shouldValidate: true });
+                setValue("howToWatch", e.target.value, {
+                  shouldValidate: true,
+                });
               }}
-              isValid={!errors.watch}
+              isValid={!errors.howToWatch}
             />
-            {errors.watch && <Form.Feedback message={errors.watch.message} />}
           </div>
         </div>
         <Form.TextInput
           errors={errors}
           register={register("keywords", {
-            required: "Keywords are required",
             minLength: {
               value: 4,
               message: "Please enter 4 or more characters",
@@ -173,10 +194,29 @@ export const SubmitSlopForm = () => {
         <Form.Submit
           type="submit"
           title={"yeah"}
-          className="w-full"
+          className="w-full border-none"
           disabled={!isValid}
         />
       </Form>
+      {/* If form is submitted, display a thank you message */}
+      {submitted ? (
+        <div className="flex gap-[200px] flex-col m-auto max-w-[672px] mt-[200px]">
+          <p className="font-arialRegular text-lg text-center">
+            Thanks for submitting a slop to our platform, dear goblin! Our team
+            of professional slop goblins will review your submission and publish
+            it,  if your slop is actually sloppy, and doesn’t repeat movies
+            already published here
+          </p>
+          <button
+            onClick={resetSubmitted}
+            className="m-auto w-[453px] border-none font-bold font-arial text-lg/4 border py-4 px-4 bg-yellow"
+          >
+            Submit another one?
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

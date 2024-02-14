@@ -45,7 +45,7 @@ Form.TextInput = ({
   );
 };
 
-Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
+Form.TextArea = ({ className, labelText, id, register, isValid, ...rest }) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
@@ -55,7 +55,9 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
 
         <textarea
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className={`font-normal py-4 px-4 border-solid rounded-none border border-black ${
+            isValid ? "border-black" : "border-danger focus:outline-danger"
+          }`}
           type="text"
           placeholder="Type"
           {...rest}

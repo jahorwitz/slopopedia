@@ -8,13 +8,17 @@ export const CREATE_MOVIE = gql`
       }
       title
       description
+      releaseYear
+      runtime
       id
       keywords {
         name
       }
+      tomatoScore
       photo {
         url
       }
+      howToWatch
     }
   }
 `;
