@@ -37,7 +37,7 @@ export function SlopFestModal() {
     if (data && data.users) {
       setUsers(data.users);
     }
-  });
+  }, [data]);
 
   const userOptions = users.map((user) => ({
     value: user.username,
@@ -92,7 +92,7 @@ export function SlopFestModal() {
               onChange={(evt) => {
                 setValue("name", evt.target.value, { shouldValidate: true });
               }}
-              isValid={isValid}
+              isValid={!errors.name}
             />
             {errors.name ? (
               <Form.Feedback
@@ -110,7 +110,7 @@ export function SlopFestModal() {
                 className={"w-[176px]"}
                 required
                 name="startDate"
-                isValid={isValid}
+                isValid={!errors.startDate}
                 date={startDate}
                 onChange={(date) => {
                   setStartDate(date);
@@ -131,7 +131,7 @@ export function SlopFestModal() {
                 className={"w-[176px] h-12"}
                 required
                 name="endDate"
-                isValid={isValid}
+                isValid={!errors.endDate}
                 date={endDate}
                 onChange={(date) => {
                   setEndDate(date);
