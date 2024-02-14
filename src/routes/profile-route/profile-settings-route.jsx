@@ -16,7 +16,6 @@ export const ProfileSettingsRoute = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //const [passwordLength, setPasswordLength] = useState("");
   const { registerModal, openModal, closeModal } = useModals();
 
   const userQuery = useQuery(GET_USER, {
@@ -27,10 +26,9 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
-  const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER);
-  //  const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
-  //  refetchQueries: [GET_USER],
-  //});
+  const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
+    refetchQueries: [GET_USER],
+  });
 
   const handleUsernameChange = (e) => {
     //setUsername(e.target.value, {
@@ -72,7 +70,7 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
-  const onSubmit = (formValues) => {
+  const onSubmit = () => {
     //loading(true);
     const { username, email, password } = getValues();
     console.log({ username, email, password });
@@ -189,7 +187,7 @@ export const ProfileSettingsRoute = () => {
             )}
             <Form.Submit
               className="w-[373px]"
-              //disabled={!isValid}
+              disabled={!isValid}
               title={"Save"}
             />
           </Form>
