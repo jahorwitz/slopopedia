@@ -1,10 +1,10 @@
 import { useMutation } from "@apollo/client";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
-import { CurrentUserContext } from "../../store";
+import { useCurrentUser } from "../../hooks/use-current-user.js";
 
 export const Article = () => {
   const router = useNavigate();
@@ -16,7 +16,7 @@ export const Article = () => {
     movies: [],
   });
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;

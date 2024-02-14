@@ -6,7 +6,6 @@ import { ClientContext } from "./client-context";
 export const ClientContextProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
-  // setToken(localStorage.getItem("jwt"));
   useEffect(() => {
     setToken(localStorage.getItem("jwt"));
   }, []);

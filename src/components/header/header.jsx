@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
-import { useModals } from "../../hooks";
+import { useClient, useCurrentUser, useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -12,7 +12,6 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
@@ -172,15 +171,11 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
-  const [token, setToken] = useState("");
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setToken } = useClient();
+  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
+    useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { registerModal, openModal, closeModal } = useModals();
-  const jwt = localStorage.getItem("jwt");
-
-  const isLoggedIn = useMemo(() => {
-    return true ? token !== "" : false;
-  }, [token]);
 
   useEffect(() => {
     registerModal("signin", <LoginModal onClose={closeModal} />);
@@ -188,13 +183,16 @@ Header.Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (jwt) {
-      setToken(jwt);
-    }
-    if (data && data.authenticatedItem) {
+    if (!loading && data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
     }
-  }, [jwt, data]);
+
+    if (!loading && data && data.authenticatedItem === null) {
+      localStorage.removeItem("jwt");
+      setToken(null);
+    }
+  }, [data]);
 
   return (
     <>
