@@ -19,7 +19,15 @@ export const Default = () => {
         id="combobox"
         labelText="Combobox"
         name="combobox"
-        list={[]}
+        list={[
+          { id: 1, name: "Goblin 1" },
+          { id: 2, name: "Goblin 2" },
+          { id: 3, name: "Goblin 3" },
+          { id: 4, name: "Goblin 4" },
+          { id: 5, name: "Goblin 5" },
+        ]}
+        nameKey="name"
+        idKey="id"
       />
       <Form.Submit className="w-full" handleSubmit={handleSubmit}>
         Yeah!

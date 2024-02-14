@@ -133,14 +133,14 @@ Form.Feedback = ({ className, message }) => {
   );
 };
 
-Form.Combobox = ({ id, labelText, className, list, name }) => {
+Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [query, setQuery] = useState("");
   const filteredList =
     query === ""
       ? list
       : list.filter((item) => {
-          return item.name.toLowerCase().includes(query.toLowerCase());
+          return item[nameKey].toLowerCase().includes(query.toLowerCase());
         });
   return (
     <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
@@ -158,15 +158,19 @@ Form.Combobox = ({ id, labelText, className, list, name }) => {
           {selectedItems.length > 0 &&
             selectedItems.map((item) => (
               <div
-                key={item.id}
+                key={item[idKey]}
                 className="flex gap-1.5 bg-neutral-300 px-1.5 py-1"
               >
-                <span>{item.name}</span>
+                <span>{item[nameKey]}</span>
                 <button
                   type="click"
                   onClick={() => {
                     setSelectedItems(
-                      selectedItems.filter((element) => element.id !== item.id)
+                      selectedItems.filter(
+                        (element) =>
+                          element[idKey] !== item[idKey] ||
+                          element[nameKey] !== item[nameKey]
+                      )
                     );
                   }}
                 >
@@ -177,7 +181,7 @@ Form.Combobox = ({ id, labelText, className, list, name }) => {
           <Combobox.Input
             onChange={(event) => setQuery(event.target.value)}
             value={query}
-            className="font-nomral border-none focus:outline-none w-0 flex-grow"
+            className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
           />
           <Combobox.Button className="absolute right-5 flex top-4">
             <img src={down} className="h-2.5 w-2.5" />
@@ -186,12 +190,12 @@ Form.Combobox = ({ id, labelText, className, list, name }) => {
         <Combobox.Options>
           {filteredList.map((item) => (
             <Combobox.Option
-              key={item.id}
+              key={item[idKey]}
               value={item}
               className="font-normal py-3 px-4 border-solid rounded-none border border-black"
               onClick={() => setQuery("")}
             >
-              {item.name}
+              {item[nameKey]}
             </Combobox.Option>
           ))}
         </Combobox.Options>
