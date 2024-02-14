@@ -7,7 +7,7 @@ export const TabList = () => {
     <div>
       <Tab.List className={classNames("flex gap-12")}>
         <Tab
-          data-testId="tab1"
+          data-testid="tab1"
           className={({ selected }) =>
             classNames(
               selected ? "border-b-2 border-slate-950 " : "text-slate-500"
@@ -17,7 +17,7 @@ export const TabList = () => {
           SLOPS TO GOBBLE()
         </Tab>
         <Tab
-          data-testId="tab2"
+          data-testid="tab2"
           className={({ selected }) =>
             classNames(
               selected ? "border-b-2 border-slate-950 " : "text-slate-500"

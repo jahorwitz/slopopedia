@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
@@ -176,14 +176,15 @@ Header.NavLinks = () => {
 
 Header.Profile = () => {
   const [token, setToken] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { openModal, closeModal } = useModals();
   const jwt = localStorage.getItem("jwt");
 
-  const isLoggedIn = useMemo(() => {
-    return true ? token !== "" : false;
-  }, [token]);
+  // const isLoggedIn = useMemo(() => {
+  //   return true ? token !== "" : false;
+  // }, [token]);
 
   function openSignInModal() {
     openModal(<LoginModal onClose={closeModal} />);
@@ -197,10 +198,17 @@ Header.Profile = () => {
     if (jwt) {
       setToken(jwt);
     }
+
     if (data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
     }
-  }, [jwt, data]);
+    //needed to change value of isLoggedIn when a user logs in
+    //logging in happens in login-modal.jsx and
+    if (Object.values(currentUser).length > 0) {
+      setIsLoggedIn(true);
+    }
+  }, [jwt, data, currentUser]);
 
   return (
     <>
