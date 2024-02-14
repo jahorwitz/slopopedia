@@ -28,6 +28,7 @@ import {
 import { FestRoute } from "./routes/fest-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
+//update the URI by commenting code below to use your localhost database or the production database:
 const httpLink = createHttpLink({
   uri:
     import.meta.env.MODE === "production"
@@ -102,9 +103,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route
                 path="/submit/submitted-slops"
                 element={
-                  // <ProtectedRoute>
-                  <SubmittedSlopsRoute />
-                  // </ProtectedRoute>
+                  <ProtectedRoute>
+                    <SubmittedSlopsRoute />
+                  </ProtectedRoute>
                 }
               />
               <Route

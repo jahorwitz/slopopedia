@@ -31,7 +31,9 @@ export const DeleteMovieModal = ({
         <h1 className="mt-4 font-bold text-2xl text-danger">Are you sure?</h1>
         <p className="font-bold text-center text-lg">
           {currentUser.isAdmin
-            ? `You are about to delete ${movieData.author.username}'s submission of ${movieData.title}.`
+            ? `You are about to delete ${
+                movieData.author ? movieData.author.username : "a user"
+              }'s submission of ${movieData.title}.`
             : `You are about to delete your submission of ${movieData.title}.`}
         </p>
         <p className="font-bold text-lg">This is irreversible!</p>

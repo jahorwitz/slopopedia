@@ -4,26 +4,6 @@ import { Footer, Header } from "../../../components";
 import { CurrentUserContext } from "../../../store/current-user-context";
 import { SubmittedList } from "./submitted-list";
 
-// - THOUGHTS:
-// - This page should have a filter for approved and unapproved slops for the user
-
-// - The admin should show one for their own slops instead of unnapproved slops, and slops should be auto approved for admins
-
-// - Should users be able to delete their own slops after they're approved?
-
-// - After an approved slop is edited a copy should be submitted as a draft, if the draft is approved it should update the approved slop
-
-// - It would be better for UX if submit slop, submitted slops, "approve slops", and "my slops" routes were all selectors in a sidebar
-
-// NOTES:
-// 1. The header doesn't show login or signup at full screen width
-// 2. The logout button doesn't work
-// 3. In hamburger nav, login and signup show instead of logged in user
-// 4. Should we create a modals folder in components when we clean up the names?
-// 5. There are 2 Tabber components, one at /components, and one at /components/tabber
-// 6. We should set max heights for each image size displayed on home page
-// 7. Some movies can't be edited through keystone as they say they "may not exist"
-
 export const SubmittedSlopsRoute = () => {
   const { currentUser } = useContext(CurrentUserContext);
 
