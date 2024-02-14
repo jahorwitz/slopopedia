@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
-import { useClient, useCurrentUser, useModals } from "../../hooks";
+import { useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
