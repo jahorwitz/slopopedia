@@ -12,8 +12,10 @@ export const ClientContextProvider = ({ children }) => {
 
   const httpLink = createHttpLink({
     uri:
+      //in Vite, use special object `import.meta.env` to access enviroment variables
       import.meta.env.MODE === "production"
-        ? import.meta.env.VITE_API_URI
+        ? //created environment variables must be prefixed by VITE
+          import.meta.env.VITE_API_URI
         : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
   });
 
@@ -27,12 +29,6 @@ export const ClientContextProvider = ({ children }) => {
   });
 
   const client = new ApolloClient({
-    uri:
-      //in Vite, use special object `import.meta.env` to access enviroment variables
-      import.meta.env.MODE === "production"
-        ? //created environment variables must be prefixed by VITE
-          import.meta.env.VITE_API_URI
-        : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });

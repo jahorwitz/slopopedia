@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
@@ -10,13 +10,13 @@ import {
   GET_USER_FESTS,
   UPDATE_FEST,
 } from "../../graphql/";
-import { useModals } from "../../hooks";
+import { useCurrentUser, useModals } from "../../hooks";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
   const navigate = useNavigate();
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
 
   const { festId } = useParams();
   const { openModal, closeModal, registerModal } = useModals();

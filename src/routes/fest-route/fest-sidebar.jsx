@@ -1,12 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context.js";
+import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ removeFest, festQuery }) => {
   const { openModal, closeModal, registerModal } = useModals();
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
 
   const location = useLocation();
 
