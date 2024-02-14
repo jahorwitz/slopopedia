@@ -1,5 +1,5 @@
 import { dummyData } from "../utils/constants";
-import MovieCard from "./MovieCard";
+import MovieCard from "./movie-card/movie-card";
 
 export const MovieCardList = ({
   movies,

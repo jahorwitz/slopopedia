@@ -1,15 +1,18 @@
 import { useQuery } from "@apollo/client";
-import { useContext } from "react";
-import { Button } from "../../../components/button";
-import MovieCard from "../../../components/MovieCard";
+import {
+  Button,
+  DeleteMovieModal,
+  MovieCard,
+  MoviePreviewModal,
+} from "../../../components/";
 import { GET_MOVIES } from "../../../graphql";
 import checkIcon from "../../../images/check-mark-dark.svg";
 import pencilIcon from "../../../images/pencil.svg";
 import deleteIcon from "../../../images/red-x-button.svg";
-import { CurrentUserContext } from "../../../store/current-user-context";
+import { useModals } from "../../../store";
 
-export const SubmittedList = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+export const SubmittedList = ({ currentUser }) => {
+  const { openModal, closeModal } = useModals();
 
   // Determine the data query based on the user's admin status
   const queryVariables =
@@ -35,9 +38,32 @@ export const SubmittedList = () => {
         };
 
   // Use the query with the determined variables
-  const { data, loading, error } = useQuery(GET_MOVIES, {
+  const { data, loading, error, refetch } = useQuery(GET_MOVIES, {
     variables: queryVariables,
   });
+
+  const handleApproveClick = (movieData) => {
+    openModal(
+      <MoviePreviewModal
+        closeModal={closeModal}
+        whiteButton
+        publishButtons
+        selectedMovie={movieData}
+        refetchMovies={refetch}
+      />
+    );
+  };
+
+  function handleDeleteClick(movieData) {
+    openModal(
+      <DeleteMovieModal
+        movieData={movieData}
+        closeModal={closeModal}
+        currentUser={currentUser}
+        refetchMovies={refetch}
+      />
+    );
+  }
 
   return (
     <div className="w-fit h-fit">
@@ -57,6 +83,7 @@ export const SubmittedList = () => {
                 <Button
                   variant="outline-secondary"
                   className="text-lg font-bold flex gap-2.5 h-10 w-51 w-full"
+                  onClick={() => handleApproveClick(movie)}
                 >
                   <img src={currentUser.isAdmin ? checkIcon : pencilIcon} />
                   {currentUser.isAdmin ? "Accept & Publish" : "Edit"}
@@ -64,6 +91,7 @@ export const SubmittedList = () => {
                 <Button
                   variant="outline-danger"
                   className="text-lg font-bold flex gap-2.5 h-[40px] w-full"
+                  onClick={() => handleDeleteClick(movie)}
                 >
                   <img src={deleteIcon} />
                   {currentUser.isAdmin ? "Deny & Delete" : "Delete"}

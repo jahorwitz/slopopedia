@@ -1,10 +1,11 @@
 import cx from "classnames";
-import { Button } from "../components";
-import purpleGoblin from "../images/purple-goblin.png";
-import { useModals } from "../store";
-import { getRandomColumns } from "../utils/constants";
-import { Keyword } from "./keyword";
-import { MoviePreviewModal } from "./MoviePreviewModal/MoviePreviewModal";
+import { useEffect, useState } from "react";
+import { Button } from "..";
+import purpleGoblin from "../../images/purple-goblin.png";
+import { useModals } from "../../store";
+import { getRandomColumns } from "../../utils/constants";
+import { Keyword } from "../keyword";
+import { MoviePreviewModal } from "../movie-preview-modal";
 
 export function MovieCard({
   children,
@@ -32,23 +33,30 @@ export function MovieCard({
 
   //functionality for opening movie preview modal
   const { closeModal, openModal } = useModals();
+  const [columnSpan, setColumnSpan] = useState(null);
 
   const handleMovieClick = () => {
     openModal(
       <MoviePreviewModal
         closeModal={closeModal}
-        buttons
+        userButtons
         whiteButton
         selectedMovie={movieInfo}
       />
     );
   };
 
+  //this provides random values to each movie size once on render for main route
+  useEffect(() => {
+    const randomColumnValue = getRandomColumns();
+    setColumnSpan(randomColumnValue);
+  }, []);
+
   return (
     <div
       className={cx(
         "h-full",
-        colSpanOne ? "col-span-1" : getRandomColumns(),
+        colSpanOne ? "col-span-1" : columnSpan,
         containerSize === "small" && "w-[224px]"
       )}
     >

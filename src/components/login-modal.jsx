@@ -51,7 +51,6 @@ export function LoginModal({ onClose }) {
           setCurrentUser(userData);
           closeModal();
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
-          console.log("Something went wrong");
         }
       });
     }

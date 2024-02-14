@@ -5,7 +5,6 @@ import { formatDateTime } from "../../utils/constants.js";
 
 export default function Drafts() {
   const { data, loading, error } = useQuery(GET_DRAFT_POSTS);
-  console.log(data);
   if (loading) return "Loading...";
   if (error) return <pre>{error.message}</pre>;
 

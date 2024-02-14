@@ -1,8 +1,32 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Footer, Header } from "../../../components";
+import { CurrentUserContext } from "../../../store/current-user-context";
 import { SubmittedList } from "./submitted-list";
 
+// - THOUGHTS:
+// - This page should have a filter for approved and unapproved slops for the user
+
+// - The admin should show one for their own slops instead of unnapproved slops, and slops should be auto approved for admins
+
+// - Should users be able to delete their own slops after they're approved?
+
+// - After an approved slop is edited a copy should be submitted as a draft, if the draft is approved it should update the approved slop
+
+// - It would be better for UX if submit slop, submitted slops, "approve slops", and "my slops" routes were all selectors in a sidebar
+
+// NOTES:
+// 1. The header doesn't show login or signup at full screen width
+// 2. The logout button doesn't work
+// 3. In hamburger nav, login and signup show instead of logged in user
+// 4. Should we create a modals folder in components when we clean up the names?
+// 5. There are 2 Tabber components, one at /components, and one at /components/tabber
+// 6. We should set max heights for each image size displayed on home page
+// 7. Some movies can't be edited through keystone as they say they "may not exist"
+
 export const SubmittedSlopsRoute = () => {
+  const { currentUser } = useContext(CurrentUserContext);
+
   return (
     <>
       <Header>
@@ -20,24 +44,17 @@ export const SubmittedSlopsRoute = () => {
           </Link>
           <div className="flex flex-col max-w-[453px] sm:mt-16 xs:mt-16">
             <h1 className="self-center my-10 pl-10 xs:pl-2 xs:pr-2 font-bold text-xl xs:my-4">
-              SLOPS SUBMITTED BY USERS
+              {currentUser.isAdmin
+                ? "SLOPS SUBMITTED BY USERS"
+                : "YOUR SUBMITTED SLOPS"}
             </h1>
-            <SubmittedList />
+            <SubmittedList currentUser={currentUser} />
           </div>
         </div>
       </div>
       <div className="w-full max-w-[989] mx-auto pt-[120px] pb-10 px-5 sm:pt-10 xs:pt-10">
-        <Footer>
-          <Footer.Content></Footer.Content>
-        </Footer>
+        <Footer />
       </div>
     </>
   );
 };
-
-//* TODO:
-// - Clicking on the slop image / title / details will open the slop preview modal MOCK
-
-// - This should be re-used from elsewhere, we already have a slop preview modal like this.
-
-// - The publish / delete buttons should invoke API calls to execute that action.

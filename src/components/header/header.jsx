@@ -40,7 +40,6 @@ Header.NavLinks = () => {
   const { openModal, closeModal } = useModals();
 
   function openSignInModal() {
-    console.log("clicked!");
     openModal(<LoginModal onClose={closeModal} />);
   }
 

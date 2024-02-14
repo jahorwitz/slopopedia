@@ -1,13 +1,16 @@
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import styled from "styled-components";
-import camera from "../../images/camera.svg";
-import checkMarkDark from "../../images/check-mark-dark.svg";
-import heartDark from "../../images/heart-dark.svg";
-import rottenTomato from "../../images/rotten-tomatoes.svg";
-import { Badge } from "../badge";
-import { Button } from "../button";
-import { Keyword } from "../keyword";
-import { Modal } from "../modal";
+import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/update-movie-status";
+import backArrow from "../images/back-arrow.svg";
+import camera from "../images/camera.svg";
+import checkMarkDark from "../images/check-mark-dark.svg";
+import heartDark from "../images/heart-dark.svg";
+import rottenTomato from "../images/rotten-tomatoes.svg";
+import { Badge } from "./badge";
+import { Button } from "./button";
+import { Keyword } from "./keyword";
+import { Modal } from "./modal";
 
 const BlurredImage = styled.div`
   background: url(${(props) => props.image});
@@ -29,12 +32,26 @@ const BlurredImage = styled.div`
 
 export const MoviePreviewModal = ({
   whiteButton,
-  buttons,
+  userButtons,
+  publishButtons,
   howToWatch,
   selectedMovie,
+  closeModal,
+  refetchMovies,
 }) => {
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
+  const [updateMovieStatus, { data, loading, error }] =
+    useMutation(UPDATE_MOVIE_STATUS);
+
+  const approveMovie = (movieId) => {
+    updateMovieStatus({
+      variables: {
+        where: { id: movieId },
+        data: { status: "published" },
+      },
+    }).then(refetchMovies());
+  };
 
   const handleWatchedClick = () => {
     setIsWatchedClicked(!isWatchedClicked);
@@ -58,7 +75,7 @@ export const MoviePreviewModal = ({
   return (
     <Modal whiteButton={whiteButton}>
       <BlurredImage image={movie.photo}>
-        {buttons && (
+        {userButtons && (
           <Badge
             text="You'll like this!"
             className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial"
@@ -103,7 +120,9 @@ export const MoviePreviewModal = ({
             <p className="text-lg/5">Watch on: {movie.howToWatch}</p>
           </div>
         )}
-        {buttons && (
+
+        {/* userButtons */}
+        {userButtons && (
           <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
             <Button
               variant={isWatchedClicked ? "primary" : "outline-secondary"}
@@ -119,6 +138,29 @@ export const MoviePreviewModal = ({
               onClick={handleWantClick}
             >
               <img src={heartDark} className="w-4 h-3" />I want it!
+            </Button>
+          </div>
+        )}
+
+        {/* buttons for publishing drafts in submit route */}
+        {publishButtons && (
+          <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
+            <Button
+              variant={"outline-secondary"}
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              onClick={closeModal}
+            >
+              <img src={backArrow} className="w-7 h-7" />
+              {data ? "Exit" : "Back"}
+            </Button>
+            <Button
+              variant={"outline-secondary"}
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              onClick={() => approveMovie(selectedMovie.id)}
+              disabled={data ? true : false}
+            >
+              <img src={checkMarkDark} className="w-4 h-3" />
+              {data ? "Approved!" : "Publish"}
             </Button>
           </div>
         )}
