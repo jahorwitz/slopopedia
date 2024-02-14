@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { DeleteUserModal } from "../../components/delete-user-modal";
 import { Footer, Form, Header } from "../../components/index";
-import { GET_USER, UPDATE_USER } from "../../graphql/";
+import { GET_USER, GET_USERS, UPDATE_USER } from "../../graphql/";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
@@ -26,6 +26,10 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
+  const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
+
+  console.log(usersQuery);
+
   const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
     refetchQueries: [GET_USER],
   });
@@ -46,6 +50,8 @@ export const ProfileSettingsRoute = () => {
     setPassword(e.target.value);
     setValue("password", e.target.value);
   };
+
+  // - - - - - - - - - - USE EFFECT - - - - - - - - - -
 
   useEffect(() => {
     setUsername(username);
@@ -71,9 +77,16 @@ export const ProfileSettingsRoute = () => {
   });
 
   const onSubmit = () => {
-    //loading(true);
+    //loading should be true
+    //get values from form
     const { username, email, password } = getValues();
     console.log({ username, email, password });
+    //make sure that new username is unique
+    //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
+    //usersQuery.map((username) => {
+    //  console.log(username);
+    //});
+
     updateUser({
       variables: {
         where: { id: userId },
