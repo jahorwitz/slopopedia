@@ -3,6 +3,7 @@
 export * from "./badge";
 export * from "./blog";
 export * from "./button";
+export * from "./delete-confirmation-modal";
 export * from "./footer";
 export * from "./form";
 export * from "./form/form";
