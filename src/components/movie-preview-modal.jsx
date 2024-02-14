@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import styled from "styled-components";
-import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/update-movie-status";
+import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
 import backArrow from "../images/back-arrow.svg";
 import camera from "../images/camera.svg";
 import checkMarkDark from "../images/check-mark-dark.svg";

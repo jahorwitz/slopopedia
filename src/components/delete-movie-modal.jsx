@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { DELETE_MOVIE } from "../graphql/mutations/delete-movie";
+import { DELETE_MOVIE } from "../graphql/mutations/";
 import backArrow from "../images/back-arrow.svg";
 import redX from "../images/red-x-button.svg";
 import { Button } from "./button";
