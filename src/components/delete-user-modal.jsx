@@ -30,6 +30,7 @@ export function DeleteUserModal({ onClose }) {
         localStorage.removeItem("jwt");
         // - - - close modal
         handleCloseModal();
+        window.location.reload();
         // - - - remove "loading"
         // - - - redirect to home page
         // - - - or run "logout" when that is setup
@@ -44,7 +45,7 @@ export function DeleteUserModal({ onClose }) {
       <h2>This action cannot be undone</h2>
       <div>
         <Button variant="outline-danger" onClick={handleDeleteUserSubmit}>
-          Yes, I'm outta here.
+          Yep, I'm outta here.
         </Button>
         <Button onClick={onClose}> No, I wanna stay!</Button>
       </div>
