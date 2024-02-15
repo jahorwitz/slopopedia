@@ -1,18 +1,24 @@
 import { useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GET_MOVIES } from "../graphql/get-movies";
 import { Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
+  const navigate = useNavigate();
   const { loading, data, error } = useQuery(GET_MOVIES, {
     variables: {
       where: {},
     },
   });
 
+  const handleEdit = (movieId) => {
+    navigate(`/edit-slop/${movieId}`);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  console.log(data.movies);
   return (
     <>
       <Header>
@@ -32,7 +38,13 @@ export const SubmitList = () => {
             Back to submit page
           </Link>
           <div className="max-w-[453px] h-[728px] ">
-            {data && data.movies && <MovieCardList movies={data.movies} />}
+            {data && data.movies && (
+              <MovieCardList
+                movies={data.movies}
+                onEdit={handleEdit}
+                showEditButton={true}
+              />
+            )}
           </div>
           <div className="mb-10 mt-24">//add footer component here//</div>
         </div>

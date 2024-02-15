@@ -9,6 +9,8 @@ export const MovieCardList = ({
   plusButton,
   minusButtonClick,
   plusButtonClick,
+  onEdit,
+  showEditButton,
 }) => {
   dummyData.i;
   return (
@@ -25,6 +27,8 @@ export const MovieCardList = ({
             plusButton={plusButton}
             minusButtonClick={minusButtonClick}
             plusButtonClick={plusButtonClick}
+            showEditButton={showEditButton}
+            onEdit={onEdit}
           />
         ))}
       </div>

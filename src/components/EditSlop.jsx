@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { GET_MOVIE } from "../graphql/queries/blog/get-movie-by-id";
 import { Form } from "./form/index";
 import { Header } from "./index";
-import { mockSlops } from "./SubmittedSlops";
 
 export const EditSlop = () => {
-  const [slopData, setSlopData] = useState(null);
   const { slopId } = useParams();
+  const { data, loading, error } = useQuery(GET_MOVIE, {
+    variables: { id: slopId },
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // When findSlopById is available, will use that with a version of the commented code
-    // const data = getSlopById(slopId);
-    // setSlopData(data);
-
-    // For now retrieving the slop data by ID from hard coded slops
     const foundSlop = mockSlops.find((slop) => slop.id === slopId);
     setSlopData(foundSlop);
   }, [slopId]);
@@ -28,7 +26,10 @@ export const EditSlop = () => {
     setSlopData({ ...slopData, [fieldname]: event.target.value });
   };
 
-  if (!slopData) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const slopData = data?.movie;
 
   return (
     <>
