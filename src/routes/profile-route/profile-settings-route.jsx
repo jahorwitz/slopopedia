@@ -10,13 +10,16 @@ import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettingsRoute = () => {
-  const token = localStorage.getItem("jwt");
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const userId = currentUser.id;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { registerModal, openModal, closeModal } = useModals();
+
+  const prefilledInputs = {
+    username: currentUser?.username,
+    email: currentUser?.email,
+  };
 
   const userQuery = useQuery(GET_USER, {
     variables: {
@@ -28,34 +31,16 @@ export const ProfileSettingsRoute = () => {
 
   const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
 
-  console.log(usersQuery);
-
   const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
     refetchQueries: [GET_USER],
   });
 
-  const handleUsernameChange = (e) => {
-    //setUsername(e.target.value, {
-    //  shouldValidate: true,
-    //});
-    setValue("username", e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setValue("email", e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setValue("password", e.target.value);
-  };
-
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
 
   useEffect(() => {
-    setUsername(username);
-    setEmail(email);
+    //obtaining values
+    setUsername(currentUser?.username);
+    setEmail(currentUser.email);
   }, []);
 
   useEffect(() => {
@@ -70,7 +55,7 @@ export const ProfileSettingsRoute = () => {
     getValues,
   } = useForm({
     defaultValues: {
-      username: "",
+      //username: "",
       email: "",
       password: "",
     },
@@ -80,7 +65,7 @@ export const ProfileSettingsRoute = () => {
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
-    console.log({ username, email, password });
+    //console.log({ username, email, password });
     //make sure that new username is unique
     //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
     //usersQuery.map((username) => {
@@ -134,7 +119,6 @@ export const ProfileSettingsRoute = () => {
                 },
               })}
               labelText={"Nickname"}
-              //onChange={handleUsernameChange}
               onChange={(evt) => {
                 setValue("username", evt.target.value, {
                   shouldValidate: true,
@@ -142,10 +126,13 @@ export const ProfileSettingsRoute = () => {
               }}
               isValid={!errors.username}
               placeholder="Type here"
-            ></Form.TextInput>
+              prefilledInputs={prefilledInputs.username}
+            />
+
             {errors.username && (
               <Form.Feedback message={errors.username.message} />
             )}
+
             <Form.TextInput
               register={register("email", {
                 required: "Email is required",
@@ -155,12 +142,18 @@ export const ProfileSettingsRoute = () => {
                 },
               })}
               labelText={"Email"}
-              onChange={handleEmailChange}
+              onChange={(evt) => {
+                setValue("email", evt.target.value, {
+                  shouldValidate: true,
+                });
+              }}
               isValid={!errors.email}
               placeholder="Type here"
-              setValue=""
-            ></Form.TextInput>
+              prefilledInputs={prefilledInputs.email}
+            />
+
             {errors.email && <Form.Feedback message={errors.email.message} />}
+
             <Form.TextInput
               register={register("password", {
                 required: "Password is required",
@@ -170,17 +163,18 @@ export const ProfileSettingsRoute = () => {
                 },
               })}
               labelText={"Password"}
-              onChange={handlePasswordChange}
-              // onChange={(evt) => {
-              //   setValue("password", evt.target.value, {
-              //     shouldValidate: true,
-              //   });
-              //}}
+              onChange={(evt) => {
+                setValue("password", evt.target.value, {
+                  shouldValidate: true,
+                });
+              }}
               isValid={!errors.password}
-            ></Form.TextInput>
+            />
+
             {errors.password && (
               <Form.Feedback message={errors.password.message} />
             )}
+
             <Form.TextInput
               register={register("confirmPassword", {
                 required: "You must confirm the password",
@@ -195,9 +189,11 @@ export const ProfileSettingsRoute = () => {
               }}
               isValid={!errors.confirmPassword}
             />
+
             {errors.confirmPassword && (
               <Form.Feedback message={errors.confirmPassword.message} />
             )}
+
             <Form.Submit
               className="w-[373px]"
               disabled={!isValid}
