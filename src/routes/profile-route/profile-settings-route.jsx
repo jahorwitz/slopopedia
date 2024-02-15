@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { DeleteUserModal } from "../../components/delete-user-modal";
@@ -12,8 +12,6 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 export const ProfileSettingsRoute = () => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const userId = currentUser.id;
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const { registerModal, openModal, closeModal } = useModals();
 
   const prefilledInputs = {
@@ -36,17 +34,11 @@ export const ProfileSettingsRoute = () => {
   });
 
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
-
-  useEffect(() => {
-    //obtaining values
-    setUsername(currentUser?.username);
-    setEmail(currentUser.email);
-  }, []);
-
   useEffect(() => {
     registerModal("deleteUser", <DeleteUserModal onClose={closeModal} />);
   }, []);
 
+  // - - - - - - - - - - USE FORM - - - - - - - - - -
   const {
     register,
     handleSubmit,
@@ -55,7 +47,7 @@ export const ProfileSettingsRoute = () => {
     getValues,
   } = useForm({
     defaultValues: {
-      //username: "",
+      username: "",
       email: "",
       password: "",
     },
@@ -65,11 +57,9 @@ export const ProfileSettingsRoute = () => {
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
-    //console.log({ username, email, password });
     //make sure that new username is unique
     //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
     //usersQuery.map((username) => {
-    //  console.log(username);
     //});
 
     updateUser({
@@ -81,14 +71,8 @@ export const ProfileSettingsRoute = () => {
       .then((res) => {
         console.log(res);
         //form data is not currently refreshing after successful update
-        //setUsername(res.data.updateUser.username);
-        //setEmail(res.data.updateUser.email);
-        setValue("username", username);
-        setValue("email", email);
-        setValue("password", "password has been reset");
         //loading(false);
-        //probably need to change button text to "Changes Saved"?
-        //push new Username to header
+        //probably need to change button text to "Changes Saved" after submit?
       })
       .catch(error);
   };
@@ -219,18 +203,3 @@ export const ProfileSettingsRoute = () => {
     </div>
   );
 };
-
-//delete button to-do
-
-//when clicked, opens modal that says "are you sure?
-//This action cannot be undone."
-// 2 options on this modal "Yes, I'm out." or "No, I don't wanna go!"
-
-//if they click yes
-// - - - send api call to delete
-// - - - delete token - do I need to also Logout?
-// - - - set loading page until successful response is received from server
-// - - - redirect back to home page
-
-//the click no
-// - - - close modal
