@@ -153,52 +153,70 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
         multiple
         nullable
         name={name}
+        id={id}
+        immediate
       >
-        <div className=" relative font-normal py-3 px-4 border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 flex gap-2.5 flex-wrap">
-          {selectedItems.length > 0 &&
-            selectedItems.map((item) => (
-              <div
-                key={item[idKey]}
-                className="flex gap-1.5 bg-neutral-300 px-1.5 py-1"
-              >
-                <span>{item[nameKey]}</span>
-                <button
-                  type="click"
-                  onClick={() => {
-                    setSelectedItems(
-                      selectedItems.filter(
-                        (element) =>
-                          element[idKey] !== item[idKey] ||
-                          element[nameKey] !== item[nameKey]
-                      )
-                    );
-                  }}
+        <div className="relative">
+          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 min-h-[58px]">
+            {selectedItems.length > 0 &&
+              selectedItems.map((item) => (
+                <div
+                  key={item[idKey]}
+                  className="flex gap-1.5 px-1.5 py-1 bg-neutral-950 bg-opacity-10"
                 >
-                  <img src={cross} />
-                </button>
-              </div>
+                  <span>{item[nameKey]}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedItems(
+                        selectedItems.filter(
+                          (element) =>
+                            element[idKey] !== item[idKey] ||
+                            element[nameKey] !== item[nameKey]
+                        )
+                      );
+                    }}
+                  >
+                    <img src={cross} />
+                  </button>
+                </div>
+              ))}
+            <Combobox.Input
+              onChange={(event) => setQuery(event.target.value)}
+              value={query}
+              className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
+            />
+            <Combobox.Button className="absolute right-5 flex top-4">
+              <img src={down} className="h-2.5 w-2.5" />
+            </Combobox.Button>
+          </div>
+          <Combobox.Options className="absolute top-full w-full max-h-52 overflow-y-scroll bg-white  border-solid border border-black">
+            {filteredList.map((item) => (
+              <Combobox.Option
+                key={item[idKey]}
+                value={item}
+                className={({ selected, active }) =>
+                  `font-normal py-3 px-4 rounded-none cursor-pointer ${
+                    active ? "bg-neutral-200" : ""
+                  } ${selected ? "text-black" : "text-neutral-400"}`
+                }
+                onClick={() => setQuery("")}
+              >
+                {({ selected }) => (
+                  <>
+                    <span
+                      className={`block truncate ${
+                        selected ? "font-medium" : "font-normal"
+                      }`}
+                    >
+                      {item[nameKey]}
+                    </span>
+                  </>
+                )}
+              </Combobox.Option>
             ))}
-          <Combobox.Input
-            onChange={(event) => setQuery(event.target.value)}
-            value={query}
-            className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
-          />
-          <Combobox.Button className="absolute right-5 flex top-4">
-            <img src={down} className="h-2.5 w-2.5" />
-          </Combobox.Button>
+          </Combobox.Options>
         </div>
-        <Combobox.Options>
-          {filteredList.map((item) => (
-            <Combobox.Option
-              key={item[idKey]}
-              value={item}
-              className="font-normal py-3 px-4 border-solid rounded-none border border-black"
-              onClick={() => setQuery("")}
-            >
-              {item[nameKey]}
-            </Combobox.Option>
-          ))}
-        </Combobox.Options>
       </Combobox>
     </div>
   );
