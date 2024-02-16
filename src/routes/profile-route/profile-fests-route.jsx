@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { Button, Footer, Header, Keyword } from "../../components/index";
@@ -12,6 +12,9 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useContext(CurrentUserContext);
+  const [buttonText, setButtonText] = useState("I'm going!");
+  const [buttonVariant, setButtonVariant] = useState("outline-secondary");
+  const [buttonSrc, setButtonSrc] = useState(checkMark);
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -34,6 +37,18 @@ export const ProfileFestsRoute = () => {
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
+
+  const changeButtonAttributes = () => {
+    if (buttonText !== "I'm going!") {
+      setButtonText("I'm going!");
+      setButtonVariant("outline-secondary");
+      setButtonSrc(checkMark);
+    } else {
+      setButtonText("I went");
+      setButtonVariant("secondary");
+      setButtonSrc(checkMarkWhite);
+    }
+  };
 
   return (
     <div className="max-w-[1440px] mx-auto">
@@ -131,17 +146,17 @@ export const ProfileFestsRoute = () => {
                       </Button>
                     ) : (
                       <Button
-                        variant={"outline-secondary"}
+                        variant={buttonVariant}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
-                        // onClick={""}
+                        onClick={changeButtonAttributes}
                       >
                         <img
-                          src={checkMark}
+                          src={buttonSrc}
                           alt="check mark"
                           className="mr-2.5"
                         />
-                        I'm going!
+                        {buttonText}
                       </Button>
                     )}
                   </div>
