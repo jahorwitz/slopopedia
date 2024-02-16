@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GET_MOVIE } from "../graphql/queries/blog/get-movie-by-id";
 import { Form } from "./form/index";
@@ -7,29 +7,30 @@ import { Header } from "./index";
 
 export const EditSlop = () => {
   const { slopId } = useParams();
-  const { data, loading, error } = useQuery(GET_MOVIE, {
-    variables: { id: slopId },
-  });
   const navigate = useNavigate();
+  const [slopData, setSlopData] = useState();
+
+  const { data, loading, error } = useQuery(GET_MOVIE, {
+    variables: {
+      where: { id: slopId },
+    },
+  });
 
   useEffect(() => {
-    const foundSlop = mockSlops.find((slop) => slop.id === slopId);
-    setSlopData(foundSlop);
-  }, [slopId]);
+    setSlopData(data ? data.movie : null);
+  }, [data]);
+
+  const handleInputChange = (fieldname) => (event) => {
+    setSlopData({ ...slopData, [fieldname]: event.target.value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     navigate("/submit-list");
   };
 
-  const handleInputChange = (fieldname) => (event) => {
-    setSlopData({ ...slopData, [fieldname]: event.target.value });
-  };
-
-  if (loading) return <div>Loading...</div>;
+  if (!slopData) return <div>Loading or no data...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  const slopData = data?.movie;
 
   return (
     <>
@@ -39,7 +40,7 @@ export const EditSlop = () => {
         <Header.Profile />
       </Header>
       <div className="flex justify-center">
-        <form onSubmit={handleSubmit} class=" w-full max-w-[453px]">
+        <form onSubmit={handleSubmit} className=" w-full max-w-[453px]">
           <Form.TextInput
             labelText="Title"
             value={slopData.title || ""}
@@ -62,8 +63,8 @@ export const EditSlop = () => {
           />
           <Form.TextNumber
             labelText="Rotten Tomatoes Score"
-            value={slopData.score || ""}
-            onChange={handleInputChange("score")}
+            value={slopData.tomatoesScore || ""}
+            onChange={handleInputChange("tomatoesScore")}
           />
           <Form.TextInput
             labelText="How to Watch"
