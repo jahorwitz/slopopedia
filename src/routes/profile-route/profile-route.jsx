@@ -9,7 +9,7 @@ export const ProfileRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] min-h-[1023px] bg-gray-background mx-auto">
+    <div className="max-w-[1440px] bg-gray-background mx-auto min-h-screen relative">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -17,7 +17,7 @@ export const ProfileRoute = () => {
       </Header>
       <div className="flex">
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
-        <div className="mt-10">
+        <div className="mt-10 pe-20 gap-5 w-[950px]">
           <Tabber />
         </div>
       </div>

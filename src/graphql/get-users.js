@@ -17,12 +17,51 @@ export const GET_USERS = gql`
 
 // maybe consider connectiong user's session id
 // for the current user
-export const GET_USER = gql`
-  query Query($where: UserWhereUniqueInput!) {
+// export const GET_USER = gql`
+//   query Query($where: UserWhereUniqueInput!) {
+//     user(where: $where) {
+//       id
+//       username
+//       role
+//     }
+//   }
+// `;
+
+export const GET_USER_WATCHLIST = gql`
+  query User($where: UserWhereUniqueInput!) {
     user(where: $where) {
-      id
-      username
-      role
+      wishlist {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      wishlistCount
+      watched {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      watchedCount
     }
   }
 `;

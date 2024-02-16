@@ -1,30 +1,31 @@
 import { Tab } from "@headlessui/react";
-export const TabList = () => {
+
+export const TabList = ({ wishList, watchedList }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
   return (
     <div>
-      <Tab.List className={classNames("flex gap-12")}>
+      <Tab.List className={classNames("flex mb-8 gap-12")}>
         <Tab
-          data-testId="tab1"
+          data-testid="tab1"
           className={({ selected }) =>
             classNames(
               selected ? "border-b-2 border-slate-950 " : "text-slate-500"
             )
           }
         >
-          SLOPS TO GOBBLE()
+          SLOPS TO GOBBLE({wishList?.length})
         </Tab>
         <Tab
-          data-testId="tab2"
+          data-testid="tab2"
           className={({ selected }) =>
             classNames(
               selected ? "border-b-2 border-slate-950 " : "text-slate-500"
             )
           }
         >
-          SLOPS IVE GOBBLED()
+          SLOPS IVE GOBBLED({watchedList?.length})
         </Tab>
       </Tab.List>
     </div>
