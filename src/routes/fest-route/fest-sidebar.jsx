@@ -23,7 +23,8 @@ export const FestSidebar = ({ onClick }) => {
           ))}
           <Button
             variant="link-secondary"
-            className={"p-0 ml-5"}
+            className={"ml-5"}
+            size="link"
             onClick={onClick}
           >
             Edit dates & guests

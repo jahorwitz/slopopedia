@@ -9,7 +9,7 @@ import { useModals } from "../store";
 import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
-export function SlopFestModal({ title }) {
+export function SlopFestModal() {
   const { data, loading, error } = useQuery(GET_USERS);
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
@@ -37,7 +37,7 @@ export function SlopFestModal({ title }) {
     if (data && data.users) {
       setUsers(data.users);
     }
-  });
+  }, [data]);
 
   const userOptions = users.map((user) => ({
     value: user.username,
@@ -64,7 +64,7 @@ export function SlopFestModal({ title }) {
             },
           },
         },
-      }).then(() => closeModal("create-fest"));
+      }).then(() => closeModal("create"));
     } catch (error) {
       console.log(`Error: ${error.message}`);
     }
@@ -92,7 +92,7 @@ export function SlopFestModal({ title }) {
               onChange={(evt) => {
                 setValue("name", evt.target.value, { shouldValidate: true });
               }}
-              isValid={isValid}
+              isValid={!errors.name}
             />
             {errors.name ? (
               <Form.Feedback
@@ -110,7 +110,7 @@ export function SlopFestModal({ title }) {
                 className={"w-[176px]"}
                 required
                 name="startDate"
-                isValid={isValid}
+                isValid={!errors.startDate}
                 date={startDate}
                 onChange={(date) => {
                   setStartDate(date);
@@ -131,7 +131,7 @@ export function SlopFestModal({ title }) {
                 className={"w-[176px] h-12"}
                 required
                 name="endDate"
-                isValid={isValid}
+                isValid={!errors.endDate}
                 date={endDate}
                 onChange={(date) => {
                   setEndDate(date);
@@ -199,7 +199,7 @@ export function SlopFestModal({ title }) {
             ></Select>
           </div>
           <Form.Submit
-            title={title}
+            title={"Fest On!"}
             className={"w-[373px] mb-5 mt-5"}
             disabled={!isValid}
           />

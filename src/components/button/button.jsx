@@ -37,6 +37,7 @@ export const Button = ({
         size === "md" && "p-4",
         size === "sm" && "p-2.5",
         size === "lg" && "py-4 w-full",
+        size === "link" && "p-0",
         className
       )}
     >
