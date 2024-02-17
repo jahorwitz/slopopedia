@@ -133,7 +133,7 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className=" max-w-[1200px] my-0 mx-auto box-border">
+      <div className="max-w-[1200px] my-0 mx-auto box-border">
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} />
         )}

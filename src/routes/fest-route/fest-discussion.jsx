@@ -42,7 +42,7 @@ export const FestDiscussion = ({ discussionQuery, festQuery, festId }) => {
   };
 
   return (
-    <div className="w-3/5">
+    <div className="w-3/5 sm:w-1/2">
       <div>
         {/* If discussionQuery is loading or the length is 0, show "no notes here yet" */}
         {!discussionQuery?.loading &&
