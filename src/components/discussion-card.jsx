@@ -1,13 +1,27 @@
 export function DiscussionCard({ discussion }) {
   // format date according to the figma & return formatted date
   const formatDiscussionDay = (dateTime) => {
-    let date = new Date(dateTime);
-    const HH = String(date.getUTCHours()).padStart(2, 0);
-    const MM = String(date.getUTCMinutes()).padStart(2, 0);
-    const YYYY = date.getUTCFullYear();
-    const day = date.getUTCDate();
-    const month = date.toLocaleString("default", { month: "long" });
-    return `${HH}:${MM}, ${month} ${day}, ${YYYY}`;
+    const date = new Date(dateTime);
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const HH = String(date.getHours()).padStart(2, 0);
+    const MM = String(date.getMinutes()).padStart(2, 0);
+    const YYYY = date.getFullYear();
+    const day = date.getDate();
+    const month = date.getMonth();
+    return `${HH}:${MM}, ${months[month]} ${day}, ${YYYY}`;
   };
 
   return (
