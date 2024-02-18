@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { Button, Footer, Header, Keyword } from "../../components/index";
+import { GET_FESTS } from "../../graphql/get-fests";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
@@ -33,6 +34,17 @@ export const ProfileFestsRoute = () => {
       },
     },
   });
+
+  const festsQuery = useQuery(GET_FESTS, { variables: { where: {} } });
+
+  //seems like this needs to be a dropdown, not multiple buttons
+  //invitees should be the default array someone is added to for a fest
+  //when someone clicks I'm going, move to "attendees" array
+  // - - - need to create a mutation that
+  //when someone clicks "I'm invited" move to "invitees" array
+  //when enddate has passed, only can choose "I went" or "I didn't go"
+  //possibly need to have multiple fest catagories for this:
+  //invitees, attendees, declined-invitees (ask team about 3rd status/array)
 
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
