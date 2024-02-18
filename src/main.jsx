@@ -127,6 +127,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/fests/:festId/discussion"
+                element={
+                  <ProtectedRoute>
+                    <FestRoute />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </BrowserRouter>
         </ModalContextProvider>
