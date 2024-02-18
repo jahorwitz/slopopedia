@@ -17,7 +17,7 @@ export const ProfileRoute = () => {
       </Header>
       <div className="flex">
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
-        <div className="mt-10 pe-20 gap-5 w-[950px]">
+        <div className="w-[950px]">
           <Tabber />
         </div>
       </div>
