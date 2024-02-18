@@ -13,6 +13,9 @@ export const GET_FESTS = gql`
       attendees {
         id
       }
+      invitees {
+        id
+      }
     }
   }
 `;
