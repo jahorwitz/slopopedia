@@ -2,9 +2,15 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
-import { DeleteUserModal } from "../../components/delete-user-modal";
-import { Footer, Form, Header } from "../../components/index";
-import { GET_USER, GET_USERS, UPDATE_USER } from "../../graphql/";
+
+//import { DeleteUserModal } from "../../components/delete-user-modal";
+import {
+  DeleteConfirmationModal,
+  Footer,
+  Form,
+  Header,
+} from "../../components/index";
+import { DELETE_USER, GET_USER, GET_USERS, UPDATE_USER } from "../../graphql/";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
@@ -13,7 +19,7 @@ export const ProfileSettingsRoute = () => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const userId = currentUser.id;
   const { registerModal, openModal, closeModal } = useModals();
-
+  const [deleteUser] = useMutation(DELETE_USER);
   const prefilledInputs = {
     username: currentUser?.username,
     email: currentUser?.email,
@@ -33,9 +39,40 @@ export const ProfileSettingsRoute = () => {
     refetchQueries: [GET_USER],
   });
 
+  const handleDeleteUserSubmit = () => {
+    //loading visible
+    //call deleteUser(userID)
+    deleteUser({
+      variables: {
+        where: { id: userId },
+      },
+    })
+      //.then(res)
+      .then(({ data }) => {
+        //console.log(data);
+        // - - - delete stored token
+        localStorage.removeItem("jwt");
+        // - - - close modal
+        closeModal("deleteUser");
+        window.location.reload();
+        // - - - remove "loading"
+        // - - - redirect to home page
+        // - - - or run "logout" when that is setup
+      })
+      //.catch
+      .catch(error);
+    //.finally?
+  };
+
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
   useEffect(() => {
-    registerModal("deleteUser", <DeleteUserModal onClose={closeModal} />);
+    registerModal(
+      "deleteUser",
+      <DeleteConfirmationModal
+        onClose={closeModal}
+        confirmButtonAction={handleDeleteUserSubmit}
+      />
+    );
   }, []);
 
   // - - - - - - - - - - USE FORM - - - - - - - - - -
