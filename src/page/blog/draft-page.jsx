@@ -32,12 +32,12 @@ export default function Drafts() {
     <>
       <div className="w-full max-auto max-w-2xl h-40 left-60 relative">
         {data.posts.map((post, idx) => {
-          const { title, author } = post;
+          const { title, author, createdAt } = post;
           return (
             <Draft
               key={idx}
               title={title}
-              date={formatDateTime(author?.createdAt)}
+              date={formatDateTime(createdAt)}
               author={author?.username}
             />
           );

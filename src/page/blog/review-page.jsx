@@ -72,7 +72,7 @@ export const Review = ({ id }) => {
 
   post.keywords.forEach((keyword) => {
     keywordsList.push(
-      <Button className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center border mb-0 py-0 px-2">
+      <Button className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center mb-0 py-0 px-2">
         {`${keyword?.name}`}
       </Button>
     );
@@ -103,13 +103,11 @@ export const Review = ({ id }) => {
           )}
         </div>
         <div className="mb-4 flex flex-col gap-4 h-full">
-          <h2 className="text-3xl font-bold ">{post.title}</h2>
+          <h2 className="text-3xl Arial-NarrowBold">{post.title}</h2>
           <div className="my-0">{keywordsList}</div>
           <div className="flex gap-8">
-            <p className="text-grey-500">
-              {`${formatDateTime(post.createdAt)}`}
-            </p>
-            <p className="text-grey-500">{`By ${post.username}`} </p>
+            <p className="text-gray">{`${formatDateTime(post.createdAt)}`}</p>
+            <p className="text-gray">{`By ${post.username}`} </p>
           </div>
         </div>
         <div className="space-y-2">

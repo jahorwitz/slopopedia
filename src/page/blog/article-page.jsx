@@ -1,16 +1,17 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
+import { useParams } from "react-router";
+import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
+import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
 import { GET_BLOG_POST } from "../../graphql/queries/blog/posts.js";
 import { CurrentUserContext } from "../../store/current-user-context.js";
 
 export const Article = () => {
-  const router = useNavigate();
   const { id } = useParams();
+  const [successful, setSuccessful] = useState(false);
   const [formState, setFormState] = useState({
     title: "",
     content: "",
@@ -42,16 +43,9 @@ export const Article = () => {
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
-  const notification = () => {
+  const onSuccessful = () => {
     console.log("notifying");
-    const notify = toast.info("Post successful!", {
-      theme: "dark",
-    });
-    if (notify) {
-      setTimeout(() => {
-        router("/articles");
-      }, 3000);
-    }
+    setSuccessful(true);
   };
 
   const onDraft = (e) => {
@@ -79,7 +73,7 @@ export const Article = () => {
         },
       },
     })
-      .then(() => notification())
+      .then(() => onSuccessful())
       .catch((err) => {
         console.error(err);
       });
@@ -110,15 +104,30 @@ export const Article = () => {
         },
       },
     })
-      .then(() => notification())
+      .then(() => onSuccessful())
       .catch((err) => {
         console.error(err);
       });
   };
+  // I imagine there must be a way
+  // to turn the onPublish and onDraft
+  // into just one function that takes in a paramter
+  // but I was having trouble with passing a variable into a
+  // mutation
 
-  // ^^^
-  // not sure if there is a way to turn onDraft and onPublish into
-  // one function that takes in a string argument to assign to status
+  // For the sake of refactoring and making things more organized,
+  // implementing this would save a decent amount of space
+
+  // redirects the user back to a new empty form after selecting submit another
+  const submitAnother = () => {
+    setSuccessful(false);
+    setFormState({
+      title: "",
+      content: "",
+      keywords: [],
+      movies: [],
+    });
+  };
 
   const checkValidity = (value) => {
     if (!value) {
@@ -134,72 +143,107 @@ export const Article = () => {
 
   return (
     <>
-      <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
-        <ToastContainer className={"absolute"} />
-        <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
-          <Form.TextInput
-            className="relative flex justify-center font-bold font-arial flex-col py-3"
-            labelText={"Title"}
-            value={formState.title}
-            onChange={(e) =>
-              setFormState({ ...formState, title: e.target.value })
-            }
-            isValid={checkValidity(formState.title)}
-          />
-          <Form.TextArea
-            labelText={"Body"}
-            placeholder={`Body`}
-            value={formState.content}
-            onChange={(e) =>
-              setFormState({ ...formState, content: e.target.value })
-            }
-          />
-          <Form.TextInput
-            className=" flex font-bold font-arial flex-col py-3"
-            labelText={"Slops"}
-            placeholder={"Add topical slops"}
-            value={formState.movies.join(", ")}
-            onChange={(e) =>
-              setFormState({
-                ...formState,
-                movies: e.target.value.split(",").map((item) => item.trim()),
-              })
-            }
-            isValid={checkValidity(formState.movies.join(", "))}
-          />
-          <Form.TextInput
-            className=" flex font-bold font-arial flex-col py-3"
-            labelText={"Keywords"}
-            placeholder={"Add topical keywords"}
-            value={formState.keywords.join(", ")}
-            onChange={(e) =>
-              setFormState({
-                ...formState,
-                keywords: e.target.value.split(",").map((item) => item.trim()),
-              })
-            }
-            isValid={checkValidity(formState.keywords.join(", "))}
-          />
-        </Form>
-        <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
-          <Form onSubmit={onDraft}>
-            <Form.Submit
-              className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
-              title={"Save to drafts"}
-              onSubmit={onDraft}
+      {!successful ? (
+        <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
+          <ToastContainer className={"absolute"} />
+          <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
+            <Form.TextInput
+              className="relative flex justify-center font-bold font-arial flex-col py-3"
+              labelText={"Title"}
+              value={formState.title}
+              onChange={(e) =>
+                setFormState({ ...formState, title: e.target.value })
+              }
+              isValid={checkValidity(formState.title)}
+            />
+            <Form.TextArea
+              labelText={"Body"}
+              placeholder={`Body`}
+              value={formState.content}
+              onChange={(e) =>
+                setFormState({ ...formState, content: e.target.value })
+              }
+            />
+            <Form.TextInput
+              className=" flex font-bold font-arial flex-col py-3"
+              labelText={"Slops"}
+              placeholder={"Add topical slops"}
+              value={formState.movies.join(", ")}
+              onChange={(e) =>
+                setFormState({
+                  ...formState,
+                  movies: e.target.value.split(",").map((item) => item.trim()),
+                })
+              }
+              isValid={checkValidity(formState.movies.join(", "))}
+            />
+            <Form.TextInput
+              className=" flex font-bold font-arial flex-col py-3"
+              labelText={"Keywords"}
+              placeholder={"Add topical keywords"}
+              value={formState.keywords.join(", ")}
+              onChange={(e) =>
+                setFormState({
+                  ...formState,
+                  keywords: e.target.value
+                    .split(",")
+                    .map((item) => item.trim()),
+                })
+              }
+              isValid={checkValidity(formState.keywords.join(", "))}
             />
           </Form>
+          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
+            <Form onSubmit={onDraft}>
+              <Form.Submit
+                className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
+                title={"Save to drafts"}
+                onSubmit={onDraft}
+              />
+            </Form>
 
-          <Form onSubmit={onPublish}>
-            <Form.Submit
-              className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
-              title={"Publish! "}
-              disabled={false}
-            />
-          </Form>
+            <Form onSubmit={onPublish}>
+              <Form.Submit
+                className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
+                title={"Publish!"}
+                disabled={false}
+              />
+            </Form>
+          </div>
         </div>
-      </div>
-      <div className="w-full max-w-[989] mx-auto p-20">
+      ) : (
+        // the ticket that will turn the following success display
+        // into a component doesn't seem to be done yet, so for now the
+        //  markup is just hard coded in
+
+        <div className="max-w-[1440px] mx-auto ">
+          <div className="flex flex-col justify-center items-center xs:px-5 sm:px-5">
+            <h1 className="mb-40 mt-10 Arial-NarrowBold text-5xl">SLOP BLOG</h1>
+            <p className="max-w-[627px] xs:text-sm sm:text-center md:text-center lg:text-center">
+              Thanks for submitting a slop to our platform, dear goblin!
+            </p>
+            <p className="max-w-[632px] xs:text-sm ">
+              Our team of professional slop goblins will review your submission
+              and publish it, if your slop is actually sloppy, and doesn't
+              repeat movies already published here.
+            </p>
+            <div className="mt-40 xs:mt-16 ">
+              <Button
+                className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
+                title="Submit another one?"
+                onClick={submitAnother}
+              >
+                <label className="self-center">Submit another one?</label>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Footer needs to sit at bottom on the successfully submitted screen
+absolute bottom-0 does this, but then it clips through the form
+Would conditionally adding these CSS styles be the best approach, or does the footer component need work */}
+
+      <div className="w-full max-w-[989] mt-auto p-20">
         <Footer></Footer>
       </div>
     </>

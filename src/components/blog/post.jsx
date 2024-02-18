@@ -19,14 +19,13 @@ export const Post = ({
     keywordsList.push(
       <Keyword
         keyword={`${word?.name}`}
-        className="bg-yellow text-sm font-bold p-2.5 h-8 w-30 text-black text-center items-center border mb-4 py-0 px-2"
+        className="bg-yellow text-sm font-semibold p-2.5 h-8 w-30 text-black text-center items-center border-none mb-4 py-0 px-2"
       />
     );
   });
-
   return (
     <>
-      <div className={`${className} w-96 -top-14 relative`}>
+      <div className={`${className} w-96`}>
         <h2
           onClick={() => router(`/articles/${id}`)}
           className="font-semibold text-2xl tracking-tighter mb-4 cursor-pointer"
@@ -39,14 +38,16 @@ export const Post = ({
           {date === null ? (
             <small>"no published date"</small>
           ) : (
-            <small className="text-gray-500">{date}</small>
+            <small className="text-gray font-semibold">{date}</small>
           )}
-          {author && <small className="text-gray-500">{`By ${author}`}</small>}
+          {author && (
+            <small className="text-gray font-semibold">{`By ${author}`}</small>
+          )}
         </div>
       </div>
-      <div className="w-1/4 pr-20 float-right relative -top-60 left-40">
-        {/*<Image className={"h-18 w-22"} src={image} alt="Post Image" />*/}
-      </div>
+      {/* <div className="w-1/4 pr-20 float-right relative -top-60 left-40">
+        <Image className={"h-18 w-22"} src={image} alt="Post Image" />
+      </div> */}
     </>
   );
 };

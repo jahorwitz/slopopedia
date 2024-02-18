@@ -43,6 +43,7 @@ export const GET_DRAFT_POSTS = gql`
       author {
         username
       }
+      createdAt
     }
   }
 `;
