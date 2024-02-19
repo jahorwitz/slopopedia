@@ -1,7 +1,8 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GET_MOVIE } from "../graphql/queries/blog/get-movie-by-id";
+import { EDIT_MOVIE } from "../graphql/mutations/edit-slop-submission";
+import { GET_MOVIE } from "../graphql/queries/get-movie-by-id";
 import { Form } from "./form/index";
 import { Header } from "./index";
 
@@ -16,6 +17,9 @@ export const EditSlop = () => {
     },
   });
 
+  const [editMovie, { loading: editing, error: editError }] =
+    useMutation(EDIT_MOVIE);
+
   useEffect(() => {
     setSlopData(data ? data.movie : null);
   }, [data]);
@@ -24,9 +28,32 @@ export const EditSlop = () => {
     setSlopData({ ...slopData, [fieldname]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate("/submit-list");
+
+    const updatedMovieData = {
+      title: slopData.title,
+      description: slopData.description,
+      howToWatch: slopData.howToWatch,
+      keyword: slopData.keyword,
+      releaseYear: slopData.releaseYear,
+      runtime: slopData.runtime,
+      tomatoesScore: slopData.tomatoesScore,
+    };
+
+    try {
+      const response = await editMovie({
+        variables: {
+          where: { id: slopId },
+          data: updatedMovieData,
+        },
+      });
+
+      console.log("Update successful", response);
+      navigate("/submit-list");
+    } catch (e) {
+      console.error("Error updating movie", e);
+    }
   };
 
   if (!slopData) return <div>Loading or no data...</div>;
