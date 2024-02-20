@@ -1,5 +1,7 @@
 import { Combobox } from "@headlessui/react";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import cross from "../../images/combo-box-cross.svg";
 import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
@@ -170,6 +172,9 @@ Form.Feedback = ({ className, message }) => {
 Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [query, setQuery] = useState("");
+
+  console.log(query);
+  console.log(selectedItems);
   const filteredList =
     query === ""
       ? list
@@ -188,10 +193,9 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
         nullable
         name={name}
         id={id}
-        immediate
       >
         <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 min-h-[58px]">
+          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1">
             {selectedItems.length > 0 &&
               selectedItems.map((item) => (
                 <div
@@ -216,9 +220,10 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
                 </div>
               ))}
             <Combobox.Input
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(evt) => setQuery(evt.target.value)}
               value={query}
               className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
+              placeholder="Select"
             />
             <Combobox.Button className="absolute right-5 flex top-4">
               <img src={down} className="h-2.5 w-2.5" />
