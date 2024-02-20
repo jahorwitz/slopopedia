@@ -32,11 +32,11 @@ export const FestSidebar = ({ festQuery }) => {
   const sidebarItems = [
     {
       title: "Slops to watch",
-      link: `${location.pathname}`,
+      link: `/fests/${festId}`,
     },
     {
       title: "Discussion",
-      link: `${location.pathname}/discussion`,
+      link: `/fests/${festId}/discussion`,
     },
     {
       title: "Edit dates & guests",
