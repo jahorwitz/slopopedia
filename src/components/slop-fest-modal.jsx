@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Select from "react-select";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
@@ -32,6 +31,7 @@ export function SlopFestModal() {
   const [users, setUsers] = useState([]);
   const { currentUser } = useContext(CurrentUserContext);
   const { closeModal } = useModals();
+  const [attendees, setAttendees] = useState([]);
 
   useEffect(() => {
     if (data && data.users) {
@@ -40,9 +40,11 @@ export function SlopFestModal() {
   }, [data]);
 
   const userOptions = users.map((user) => ({
-    value: user.username,
-    label: user.username,
+    username: user.username,
+    email: user.email,
   }));
+
+  console.log(attendees);
 
   const onSubmit = () => {
     const { name, attendees } = getValues();
@@ -57,7 +59,10 @@ export function SlopFestModal() {
             endDate: endDateISO,
             // attendees should include creator and other usernames in attendees field
             attendees: {
-              connect: { username: currentUser.username },
+              connect: [
+                { username: currentUser.username },
+                { username: attendees.value },
+              ],
             },
             creator: {
               connect: { id: currentUser.id },
@@ -147,57 +152,13 @@ export function SlopFestModal() {
               )}
             </div>
           </div>
-          <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
-            <label htmlFor="attending" className="mb-1.5 text-lg">
-              Goblins Attending
-            </label>
-            {/* will change to headless ui component */}
-            <Select
-              options={userOptions}
-              className={"basic-multi-select"}
-              classNames={{
-                control: () =>
-                  "w-[373px] max-h-[92px] px-2 py-2 border border-solid rounded-none border-black overflow-scroll",
-              }}
-              isMulti
-              name="attendees"
-              isSearchable={true}
-              isClearable={false}
-              // onChange={(evt) => {
-              //   setValue("attendees", evt.target.value);
-              // }}
-              styles={{
-                control: (base) => ({
-                  ...base,
-                  borderColor: "#000000",
-                  borderRadius: "none",
-                }),
-                valueContainer2: (base) => ({
-                  ...base,
-                  overflow: "scroll",
-                }),
-                multiValueLabel: (base) => ({
-                  ...base,
-                  whiteSpace: "normal",
-                  overflow: "visible",
-                  fontFamily: "Arial",
-                  fontWeight: "bold",
-                  fontSize: "100%",
-                }),
-                indicatorSeparator: () => ({
-                  container: "hidden",
-                }),
-                dropdownIndicator: () => ({
-                  color: "#000000",
-                }),
-                menu: (base) => ({
-                  ...base,
-                  overflow: "hidden",
-                  height: "140px",
-                }),
-              }}
-            ></Select>
-          </div>
+          <Form.Combobox
+            labelText={"Goblins Attending"}
+            list={userOptions}
+            id={"fest-comobobox"}
+            nameKey={"username"}
+            idKey={"email"}
+          />
           <Form.Submit
             title={"Fest On!"}
             className={"w-[373px] mb-5 mt-5"}
