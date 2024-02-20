@@ -1,14 +1,33 @@
+import { useMutation } from "@apollo/client";
 import { useContext, useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
+import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context.js";
 
-export const FestSidebar = ({ removeFest, festQuery }) => {
-  const { openModal, closeModal, registerModal } = useModals();
+export const FestSidebar = ({ festQuery }) => {
   const { currentUser } = useContext(CurrentUserContext);
-
+  const { openModal, closeModal, registerModal } = useModals();
   const location = useLocation();
+  const festId = useParams().festId;
+  const navigate = useNavigate();
+
+  // Mutation to remove fests from server
+  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
+    refetchQueries: [GET_USER_FESTS],
+  });
+
+  // Function to remove a Fest from server when 'delete' button is clicked
+  const removeFest = () => {
+    if (currentUser.id === festQuery.data.fest.creator.id) {
+      deleteFest({ variables: { where: { id: festId } } });
+      if (loading) return "Submitting...";
+      if (error) return `Submission error! ${error.message}`;
+      closeModal();
+      navigate("/profile/fests");
+    }
+  };
 
   const sidebarItems = [
     {
@@ -25,6 +44,7 @@ export const FestSidebar = ({ removeFest, festQuery }) => {
     },
   ];
 
+  // Load Delete Confirmation Modal on page load
   useEffect(() => {
     registerModal(
       "confirmation",
