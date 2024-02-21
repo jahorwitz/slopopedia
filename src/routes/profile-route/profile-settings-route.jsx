@@ -23,6 +23,7 @@ export const ProfileSettingsRoute = () => {
   const prefilledInputs = {
     username: currentUser?.username,
     email: currentUser?.email,
+    password: "**********",
   };
 
   const userQuery = useQuery(GET_USER, {
@@ -90,6 +91,8 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
+  //console.log({ dirtyFields, isDirty });
+
   const onSubmit = () => {
     //loading should be true
     //get values from form
@@ -133,7 +136,7 @@ export const ProfileSettingsRoute = () => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.TextInput
               register={register("username", {
-                required: "Nickname is required",
+                //required: "Nickname is required",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",
@@ -156,7 +159,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.TextInput
               register={register("email", {
-                required: "Email is required",
+                //required: "Email is required",
                 pattern: {
                   value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
                   message: "Invalid Email",
@@ -177,7 +180,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.TextInput
               register={register("password", {
-                required: "Password is required",
+                //required: "Password is required",
                 minLength: {
                   value: 10,
                   message: "Passwords must be at least 10 characters",
@@ -190,6 +193,7 @@ export const ProfileSettingsRoute = () => {
                 });
               }}
               isValid={!errors.password}
+              prefilledInputs={prefilledInputs.password}
             />
 
             {errors.password && (
@@ -198,7 +202,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.TextInput
               register={register("confirmPassword", {
-                required: "You must confirm the password",
+                //required: "You must confirm the password",
                 validate: (value, formValues) =>
                   value === formValues.password || "Passwords do not match",
               })}
@@ -209,6 +213,7 @@ export const ProfileSettingsRoute = () => {
                 });
               }}
               isValid={!errors.confirmPassword}
+              prefilledInputs={prefilledInputs.password}
             />
 
             {errors.confirmPassword && (
@@ -217,7 +222,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.Submit
               className="w-[373px]"
-              disabled={!isValid}
+              //disabled={!isValid}
               title={"Save"}
             />
           </Form>
