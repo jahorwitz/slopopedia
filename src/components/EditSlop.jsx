@@ -56,8 +56,11 @@ export const EditSlop = () => {
     }
   };
 
-  if (!slopData) return <div>Loading or no data...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (loading) return <div>Loading movie data...</div>;
+  if (error) return <div>Error loading movie: {error.message}</div>;
+
+  if (editing) return <div>Updating movie...</div>;
+  if (editError) return <div>Error updating movie: {editError.message}</div>;
 
   return (
     <>
