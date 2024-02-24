@@ -17,7 +17,7 @@ import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = ({ children }) => {
   return (
-    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 max-w-[1440px] mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
+    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
       {children}
     </header>
   );
@@ -210,7 +210,7 @@ Header.Profile = () => {
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
           <Button
             className={"border-b-2"}
-            size="sm"
+            size="base"
             variant="secondary"
             children="Log In"
             onClick={() => {
@@ -220,7 +220,7 @@ Header.Profile = () => {
           <p>/</p>
           <Button
             className={"border-b-2"}
-            size="sm"
+            size="base"
             variant="secondary"
             children="Sign Up"
             onClick={() => {
