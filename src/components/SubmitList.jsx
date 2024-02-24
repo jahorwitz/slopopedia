@@ -1,10 +1,13 @@
 import { useQuery } from "@apollo/client";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GET_MOVIES } from "../graphql/get-movies";
-import { Header, MovieCardList } from "./index";
+import { GET_MOVIES } from "../graphql/index";
+import { CurrentUserContext } from "../store/current-user-context";
+import { Button, Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
   const navigate = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
   const { loading, data, error } = useQuery(GET_MOVIES, {
     variables: {
       where: {},
@@ -13,6 +16,18 @@ export const SubmitList = () => {
 
   const handleEdit = (movieId) => {
     navigate(`/edit-slop/${movieId}`);
+  };
+
+  const renderButton = (movie) => {
+    console.log(currentUser);
+    if (currentUser?.isAdmin) {
+      return (
+        <Button onClick={() => console.log("Movie Approved!")}>Approve</Button>
+      );
+    } else if (currentUser?.id === movie?.author?.id) {
+      return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
+    }
+    return null;
   };
 
   if (loading) return <p>Loading...</p>;
@@ -38,11 +53,7 @@ export const SubmitList = () => {
           </Link>
           <div className="max-w-[453px] h-[728px] ">
             {data && data.movies && (
-              <MovieCardList
-                movies={data.movies}
-                onEdit={handleEdit}
-                showEditButton={true}
-              />
+              <MovieCardList movies={data.movies} renderButton={renderButton} />
             )}
           </div>
           <div className="mb-10 mt-24">//add footer component here//</div>

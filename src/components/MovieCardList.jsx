@@ -1,4 +1,3 @@
-import { dummyData } from "../utils/constants";
 import MovieCard from "./MovieCard";
 
 export const MovieCardList = ({
@@ -9,10 +8,8 @@ export const MovieCardList = ({
   plusButton,
   minusButtonClick,
   plusButtonClick,
-  onEdit,
-  showEditButton,
+  renderButton,
 }) => {
-  dummyData.i;
   return (
     <>
       <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-4 xs:grid-cols-3 gap-5">
@@ -27,8 +24,7 @@ export const MovieCardList = ({
             plusButton={plusButton}
             minusButtonClick={minusButtonClick}
             plusButtonClick={plusButtonClick}
-            showEditButton={showEditButton}
-            onEdit={onEdit}
+            renderButton={renderButton}
           />
         ))}
       </div>

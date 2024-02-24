@@ -15,9 +15,7 @@ export function MovieCard({
   plusButton,
   minusButtonClick,
   plusButtonClick,
-  showEditButton,
-  onEdit,
-  currentUser,
+  renderButton,
   ...rest
 }) {
   const card = {
@@ -30,14 +28,6 @@ export function MovieCard({
     howToWatch: movieInfo.howToWatch,
     decription: movieInfo.description,
   };
-
-  let buttonText = "Edit";
-
-  if (currentUser?.isAdmin) {
-    buttonText = "Approve";
-  } else if (currentUser?.id !== movieInfo?.author?.id) {
-    buttonText = "Edit";
-  }
 
   return (
     <div className={colSpanOne ? "col-span-1" : getRandomColumns()}>
@@ -59,16 +49,8 @@ export function MovieCard({
         onClick={onClick}
         {...rest}
       >
-        {/* Place the Edit button at the top-right corner of the card */}
-        {showEditButton && (
-          <Button
-            variant="outline-secondary" // Or any other appropriate variant
-            className="absolute top-0 right-0 m-2"
-            onClick={() => onEdit(movieInfo.id)}
-          >
-            Edit
-          </Button>
-        )}
+        {/* Render Edit Button conditionally */}
+        {renderButton && renderButton(movieInfo)}
 
         {minusButton && (
           <Button
