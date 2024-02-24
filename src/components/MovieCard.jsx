@@ -17,6 +17,7 @@ export function MovieCard({
   plusButtonClick,
   showEditButton,
   onEdit,
+  currentUser,
   ...rest
 }) {
   const card = {
@@ -29,6 +30,14 @@ export function MovieCard({
     howToWatch: movieInfo.howToWatch,
     decription: movieInfo.description,
   };
+
+  let buttonText = "Edit";
+
+  if (currentUser?.isAdmin) {
+    buttonText = "Approve";
+  } else if (currentUser?.id !== movieInfo?.author?.id) {
+    buttonText = "Edit";
+  }
 
   return (
     <div className={colSpanOne ? "col-span-1" : getRandomColumns()}>
