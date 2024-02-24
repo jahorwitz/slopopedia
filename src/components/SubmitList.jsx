@@ -1,13 +1,11 @@
 import { useQuery } from "@apollo/client";
-import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GET_MOVIES } from "../graphql/index";
-import { CurrentUserContext } from "../store/current-user-context";
+import { GET_MOVIES, useCurrentUser } from "../graphql/index";
 import { Button, Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
   const navigate = useNavigate();
-  const { currentUser } = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const { loading, data, error } = useQuery(GET_MOVIES, {
     variables: {
       where: {},
@@ -20,14 +18,13 @@ export const SubmitList = () => {
 
   const renderButton = (movie) => {
     console.log(currentUser);
-    if (currentUser?.isAdmin) {
+    if (currentUser?.id === movie?.author?.id) {
+      return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
+    } else if (currentUser?.isAdmin) {
       return (
         <Button onClick={() => console.log("Movie Approved!")}>Approve</Button>
       );
-    } else if (currentUser?.id === movie?.author?.id) {
-      return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
-    }
-    return null;
+    } else return null;
   };
 
   if (loading) return <p>Loading...</p>;
