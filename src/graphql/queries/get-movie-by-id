@@ -15,6 +15,7 @@ export const GET_MOVIE = gql`
       }
       keywords {
         name
+        id
       }
     }
   }

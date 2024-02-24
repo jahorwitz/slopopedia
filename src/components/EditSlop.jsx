@@ -9,7 +9,17 @@ import { Header } from "./index";
 export const EditSlop = () => {
   const { slopId } = useParams();
   const navigate = useNavigate();
-  const [slopData, setSlopData] = useState();
+
+  const [slopData, setSlopData] = useState({
+    title: "",
+    description: "",
+    howToWatch: "",
+    releaseYear: "",
+    runtime: "",
+    tomatoScore: "",
+  });
+
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
 
   const { data, loading, error } = useQuery(GET_MOVIE, {
     variables: {
@@ -17,12 +27,27 @@ export const EditSlop = () => {
     },
   });
 
-  const [editMovie, { loading: editing, error: editError }] =
-    useMutation(EDIT_MOVIE);
+  const [editMovie, { loading: editing, error: editError }] = useMutation(
+    EDIT_MOVIE,
+    {
+      refetchQueries: [
+        { query: GET_MOVIE, variables: { where: { id: slopId } } },
+      ],
+    }
+  );
 
   useEffect(() => {
-    setSlopData(data ? data.movie : null);
+    if (data && data.movie) {
+      setSlopData(data.movie);
+      setSelectedKeywords(
+        data.movie.keywords.map((kw) => ({ id: kw.id, name: kw.name }))
+      );
+    }
   }, [data]);
+
+  const handleKeywordChange = (newKeywords) => {
+    setSelectedKeywords(newKeywords);
+  };
 
   const handleInputChange = (fieldname) => (event) => {
     setSlopData({ ...slopData, [fieldname]: event.target.value });
@@ -31,14 +56,22 @@ export const EditSlop = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const releaseYearInt = parseInt(slopData.releaseYear, 10);
+    const tomatoScoreInt = parseInt(slopData.tomatoScore, 10);
+    const runtimeInt = parseInt(slopData.runtime, 10);
+
+    console.log("Selected Keywords:", selectedKeywords);
+
     const updatedMovieData = {
       title: slopData.title,
       description: slopData.description,
       howToWatch: slopData.howToWatch,
-      keyword: slopData.keyword,
-      releaseYear: slopData.releaseYear,
-      runtime: slopData.runtime,
-      tomatoesScore: slopData.tomatoesScore,
+      releaseYear: releaseYearInt,
+      runtime: runtimeInt,
+      tomatoScore: tomatoScoreInt,
+      keywords: {
+        connect: selectedKeywords.map((keyword) => ({ id: keyword.id })),
+      },
     };
 
     try {
@@ -61,6 +94,7 @@ export const EditSlop = () => {
 
   if (editing) return <div>Updating movie...</div>;
   if (editError) return <div>Error updating movie: {editError.message}</div>;
+  if (!slopData) return <div>Loading movie data...</div>;
 
   return (
     <>
@@ -76,35 +110,48 @@ export const EditSlop = () => {
             value={slopData.title || ""}
             onChange={handleInputChange("title")}
           />
-          <Form.TextInput
+          <Form.TextArea
             labelText="Description"
             value={slopData.description || ""}
             onChange={handleInputChange("description")}
+            className="mb-4 h-[120px]"
           />
-          <Form.TextNumber
-            labelText="Release Year"
-            value={slopData.releaseYear || ""}
-            onChange={handleInputChange("releaseYear")}
-          />
-          <Form.TextNumber
-            labelText="Run Time"
-            value={slopData.runtime || ""}
-            onChange={handleInputChange("runtime")}
-          />
-          <Form.TextNumber
-            labelText="Rotten Tomatoes Score"
-            value={slopData.tomatoesScore || ""}
-            onChange={handleInputChange("tomatoesScore")}
-          />
-          <Form.TextInput
-            labelText="How to Watch"
-            value={slopData.howToWatch || ""}
-            onChange={handleInputChange("howToWatch")}
-          />
-          <Form.TextNumber
+          <div className="flex gap-5 mb-4">
+            <Form.TextNumber
+              labelText="Release Year"
+              value={slopData.releaseYear || ""}
+              onChange={handleInputChange("releaseYear")}
+              className="w-[216.5px]"
+            />
+            <Form.TextNumber
+              labelText="Run Time"
+              value={slopData.runtime || ""}
+              onChange={handleInputChange("runtime")}
+              className="w-[216.5px]"
+            />
+          </div>
+          <div className="flex gap-5 mb-4">
+            <Form.TextNumber
+              labelText="Rotten Tomato Score"
+              value={slopData.tomatoScore || ""}
+              onChange={handleInputChange("tomatoScore")}
+              className="w-[216.5px]"
+            />
+            <Form.TextInput
+              labelText="How to Watch"
+              value={slopData.howToWatch || ""}
+              onChange={handleInputChange("howToWatch")}
+              className="w-[216.5px]"
+            />
+          </div>
+          <Form.Combobox
+            id="keywords"
             labelText="Keywords"
-            value={slopData.keyword || ""}
-            onChange={handleInputChange("keyword")}
+            list={selectedKeywords}
+            selectedItems={selectedKeywords}
+            onSelectionChange={handleKeywordChange}
+            nameKey="name"
+            idKey="name"
           />
           <Form.Submit title="Save Changes" />
         </form>
