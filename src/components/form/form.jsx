@@ -1,5 +1,6 @@
 import { Combobox } from "@headlessui/react";
-import { useState } from "react";
+import _ from "lodash";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cross from "../../images/combo-box-cross.svg";
@@ -169,12 +170,27 @@ Form.Feedback = ({ className, message }) => {
   );
 };
 
-Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+Form.Combobox = ({
+  id,
+  register,
+  labelText,
+  className,
+  list,
+  name,
+  nameKey,
+  idKey,
+  watch,
+  setValue,
+  defaultValues,
+  ...rest
+}) => {
+  const selectedItems = watch(id);
   const [query, setQuery] = useState("");
 
-  console.log(query);
-  console.log(selectedItems);
+  useEffect(() => {
+    setValue(id, defaultValues);
+  }, [defaultValues]);
+
   const filteredList =
     query === ""
       ? list
@@ -187,17 +203,20 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
         {labelText}
       </label>
       <Combobox
+        register={register}
         value={selectedItems}
-        onChange={setSelectedItems}
+        onChange={setValue}
         multiple
         nullable
         name={name}
         id={id}
+        {...rest}
       >
         <div className="relative">
           <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1">
-            {selectedItems.length > 0 &&
-              selectedItems.map((item) => (
+            {selectedItems &&
+              selectedItems?.length > 0 &&
+              selectedItems?.map((item) => (
                 <div
                   key={item[idKey]}
                   className="flex gap-1.5 px-1.5 py-1 bg-neutral-950 bg-opacity-10"
@@ -206,12 +225,8 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
                   <button
                     type="button"
                     onClick={() => {
-                      setSelectedItems(
-                        selectedItems.filter(
-                          (element) =>
-                            element[idKey] !== item[idKey] ||
-                            element[nameKey] !== item[nameKey]
-                        )
+                      setValue(
+                        _.omitBy(selectedItems, (element) => element === item)
                       );
                     }}
                   >
@@ -229,7 +244,7 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
               <img src={down} className="h-2.5 w-2.5" />
             </Combobox.Button>
           </div>
-          <Combobox.Options className="absolute top-full w-full max-h-52 overflow-y-scroll bg-white  border-solid border border-black">
+          <Combobox.Options className="absolute top-full w-full max-h-36 overflow-y-scroll bg-white  border-solid border border-black">
             {filteredList.map((item) => (
               <Combobox.Option
                 key={item[idKey]}

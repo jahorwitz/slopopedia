@@ -6,8 +6,8 @@ import { gql } from "@apollo/client";
 //const = {loading, error, data} = useQuery(GET_USERS);
 
 export const GET_USERS = gql`
-  query GetUsers {
-    users {
+  query GetUsers($where: UserWhereInput!) {
+    users(where: $where) {
       id
       username
       email

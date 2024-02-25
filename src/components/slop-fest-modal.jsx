@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+// import Select from "react-select";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
@@ -9,12 +10,38 @@ import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
 export function SlopFestModal() {
-  const { data, loading, error } = useQuery(GET_USERS);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [users, setUsers] = useState([]);
+  const { currentUser } = useContext(CurrentUserContext);
+  const { closeModal } = useModals();
+  // const [attendees, setAttendees] = useState([]);
+
+  const { data, loading, error } = useQuery(GET_USERS, {
+    variables: {
+      where: {
+        id: {
+          not: {
+            equals: currentUser.id,
+          },
+        },
+      },
+    },
+  });
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
+
+  const defaultValues = {
+    name: "",
+    startDate: "",
+    endDate: "",
+    attendees: [{ username: currentUser.username }],
+  };
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { isValid, errors },
     setValue,
     getValues,
@@ -23,15 +50,9 @@ export function SlopFestModal() {
       name: "",
       startDate: "",
       endDate: "",
-      attendees: [],
+      attendees: [{ username: currentUser.username }],
     },
   });
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [users, setUsers] = useState([]);
-  const { currentUser } = useContext(CurrentUserContext);
-  const { closeModal } = useModals();
-  const [attendees, setAttendees] = useState([]);
 
   useEffect(() => {
     if (data && data.users) {
@@ -41,10 +62,7 @@ export function SlopFestModal() {
 
   const userOptions = users.map((user) => ({
     username: user.username,
-    email: user.email,
   }));
-
-  console.log(attendees);
 
   const onSubmit = () => {
     const { name, attendees } = getValues();
@@ -59,10 +77,7 @@ export function SlopFestModal() {
             endDate: endDateISO,
             // attendees should include creator and other usernames in attendees field
             attendees: {
-              connect: [
-                { username: currentUser.username },
-                { username: attendees.value },
-              ],
+              connect: attendees,
             },
             creator: {
               connect: { id: currentUser.id },
@@ -117,6 +132,10 @@ export function SlopFestModal() {
                 name="startDate"
                 isValid={!errors.startDate}
                 date={startDate}
+                register={register("startDate", {
+                  required: "A start date is required",
+                  valueAsDate: true,
+                })}
                 onChange={(date) => {
                   setStartDate(date);
                   setValue("startDate", date, {
@@ -153,11 +172,16 @@ export function SlopFestModal() {
             </div>
           </div>
           <Form.Combobox
+            register={register("attendees")}
+            setValue={setValue}
+            defaultValue={defaultValues}
+            watch={watch}
             labelText={"Goblins Attending"}
+            id={"combobox"}
             list={userOptions}
-            id={"fest-comobobox"}
             nameKey={"username"}
-            idKey={"email"}
+            idKey={"username"}
+            name={"attendees"}
           />
           <Form.Submit
             title={"Fest On!"}

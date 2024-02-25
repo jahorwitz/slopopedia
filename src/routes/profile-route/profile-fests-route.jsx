@@ -98,22 +98,22 @@ export const ProfileFestsRoute = () => {
                       </p>
                       <div className="flex flex-row">
                         {items.attendees.length <= 4
-                          ? items.attendees?.map((attendee, index) => {
+                          ? items.attendees?.map((attendee) => {
                               return (
                                 <Keyword
-                                  key={index}
+                                  key={attendee.username}
                                   className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                   keyword={attendee.username}
                                 />
                               );
                             })
-                          : items.slice(0, 4).map((attendee, index) => {
+                          : items.attendees.slice(0, 4).map((attendee) => {
                               // needs to have {+ attendees.length - 5} to show how many attendees after 5
                               return (
                                 <>
                                   <div>
                                     <Keyword
-                                      key={index}
+                                      key={attendee.username}
                                       className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                       keyword={attendee.username}
                                     />
@@ -125,7 +125,7 @@ export const ProfileFestsRoute = () => {
                           <Keyword
                             key={index}
                             className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                            keyword={items.attendees.length - 4}
+                            keyword={`+ ${items.attendees.length - 4} more`}
                           />
                         ) : (
                           ""
