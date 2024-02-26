@@ -209,8 +209,8 @@ Header.Profile = () => {
       {isLoggedIn === false ? (
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
           <Button
-            className={"border-b-2"}
-            size="base"
+            className={"border-b-2 p-0 leading-7"}
+            size="sm"
             variant="secondary"
             children="Log In"
             onClick={() => {
@@ -219,8 +219,8 @@ Header.Profile = () => {
           ></Button>
           <p>/</p>
           <Button
-            className={"border-b-2"}
-            size="base"
+            className={"border-b-2 p-0 leading-7"}
+            size="sm"
             variant="secondary"
             children="Sign Up"
             onClick={() => {
