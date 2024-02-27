@@ -1,8 +1,7 @@
 import { gql } from "@apollo/client";
 
-
 export const EDIT_MOVIE = gql`
-mutation editMovie($where: MovieWhereUniqueInput!, $data: MovieUpdateInput!) {
+  mutation editMovie($where: MovieWhereUniqueInput!, $data: MovieUpdateInput!) {
     updateMovie(where: $where, data: $data) {
       title
       description
@@ -18,4 +17,4 @@ mutation editMovie($where: MovieWhereUniqueInput!, $data: MovieUpdateInput!) {
       tomatoScore
     }
   }
-  `;
+`;
