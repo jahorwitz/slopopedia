@@ -10,6 +10,7 @@ export const EditSlop = () => {
   const { slopId } = useParams();
   const navigate = useNavigate();
 
+  //set slopData to be empty as that was causing my form to error when loading
   const [slopData, setSlopData] = useState({
     title: "",
     description: "",
@@ -21,12 +22,14 @@ export const EditSlop = () => {
 
   const [selectedKeywords, setSelectedKeywords] = useState([]);
 
+  //Load movie data from GET_MOVIE query
   const { data, loading, error } = useQuery(GET_MOVIE, {
     variables: {
       where: { id: slopId },
     },
   });
 
+  //use EDIT_MOVIE mutation to update data when form is submitted
   const [editMovie, { loading: editing, error: editError }] = useMutation(
     EDIT_MOVIE,
     {
@@ -36,6 +39,7 @@ export const EditSlop = () => {
     }
   );
 
+  //this use effect hook pulls the movie data and keywords and sets them into the edit form.
   useEffect(() => {
     if (data && data.movie) {
       setSlopData(data.movie);
@@ -56,11 +60,10 @@ export const EditSlop = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //parse all numerical values to be accepted when submitting
     const releaseYearInt = parseInt(slopData.releaseYear, 10);
     const tomatoScoreInt = parseInt(slopData.tomatoScore, 10);
     const runtimeInt = parseInt(slopData.runtime, 10);
-
-    console.log("Selected Keywords:", selectedKeywords);
 
     const updatedMovieData = {
       title: slopData.title,
