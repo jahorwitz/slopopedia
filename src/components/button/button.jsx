@@ -6,7 +6,6 @@ export const Button = ({
   children,
   className,
   disabled,
-  onClick,
   ...rest
 }) => {
   return (

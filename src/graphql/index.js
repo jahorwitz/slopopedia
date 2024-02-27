@@ -1,3 +1,4 @@
+export * from "./create-movie";
 export * from "./create-user";
 export * from "./get-fest";
 export * from "./get-movies";

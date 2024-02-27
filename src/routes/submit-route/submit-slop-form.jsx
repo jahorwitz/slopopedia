@@ -1,12 +1,17 @@
-import { useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { isEmpty } from "lodash";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { Footer } from "../../components/footer/footer";
 import { Form } from "../../components/form";
-import { CREATE_MOVIE } from "../../graphql/create-movie";
+import { CREATE_MOVIE, GET_MOVIES } from "../../graphql";
 import titleImage from "../../images/Submit a slop.png";
+import { CurrentUserContext } from "../../store/current-user-context";
 
 export const SubmitSlopForm = () => {
-  const [createMovie, { data, loading, error }] = useMutation(CREATE_MOVIE);
+  const { currentUser } = useContext(CurrentUserContext);
+  const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
 
   const resetSubmitted = () => {
@@ -19,38 +24,41 @@ export const SubmitSlopForm = () => {
     setValue,
     getValues,
     reset,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
       title: "",
       description: "",
       releaseYear: "",
       runtime: "",
-      image: "",
       tomatoScore: "",
       howToWatch: "",
       keywords: "",
     },
   });
 
-  //* Handling the form submit, getting the needed values and converting the default string values to integers as our request expects
   const handleFormSubmit = (data) => {
-    const { title, description, howToWatch } = getValues();
     setSubmitted(true);
     const releaseYearInt = parseInt(data.releaseYear);
-    const runTimeInt = parseInt(data.runTime);
-    const scoreInt = parseInt(data.tomotoScore);
+    const runTimeInt = parseInt(data.runtime);
+    const tomatoScoreInt = parseInt(data.tomatoScore);
     try {
       createMovie({
         variables: {
           data: {
+            author: {
+              connect: {
+                id: currentUser.id,
+              },
+            },
             title,
             description,
             releaseYear: releaseYearInt,
-            //? Get the variables below to send
             runtime: runTimeInt,
-            tomatoScore: scoreInt,
+            // Todo: Not totally sure how to handle the image
+            tomatoScore: tomatoScoreInt,
             howToWatch,
+            // Keywords blocked by another ticket.
           },
         },
       });
@@ -60,8 +68,47 @@ export const SubmitSlopForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        title: "",
+        description: "",
+        releaseYear: "",
+        runtime: "",
+        image: "",
+        tomatoScore: "",
+        howToWatch: "",
+        keywords: "",
+      });
+    }
+  }, [isSubmitSuccessful]);
+
+  const {
+    title,
+    description,
+    releaseYear,
+    runtime,
+    image,
+    tomatoScore,
+    howToWatch,
+    keywords,
+  } = getValues();
+
+  // Querying movies and adding the needed, variables. Setting the author id to the user.id
+  const { loading, error, data } = useQuery(GET_MOVIES, {
+    variables: { where: { author: { id: { equals: currentUser.id } } } },
+  });
+
+  // Function to check if movie ID is the same as the user Id
+  const hasSubmittedMovie = !isEmpty(data?.movies);
+
   return (
-    <>
+    <div className="max-w-[1440px] relative m-auto">
+      {hasSubmittedMovie && (
+        <Link className="absolute right-0 mr-10 underline" to="/">
+          View submitted
+        </Link>
+      )}
       <img src={titleImage} className="m-auto mt-10 mb-10"></img>
       <Form
         onSubmit={handleSubmit(handleFormSubmit)}
@@ -72,6 +119,7 @@ export const SubmitSlopForm = () => {
         }
       >
         <Form.TextInput
+          value={title}
           errors={errors}
           register={register("title", {
             required: "Title is required",
@@ -91,6 +139,7 @@ export const SubmitSlopForm = () => {
         />
         {errors.title && <Form.Feedback message={errors.title.message} />}
         <Form.TextArea
+          value={description}
           errors={errors}
           register={register("description", {
             required: "Description is required",
@@ -112,6 +161,7 @@ export const SubmitSlopForm = () => {
         <div className="flex justify-between font-arialBold text-lg box-border ">
           <div className="flex flex-col">
             <Form.TextInput
+              value={releaseYear}
               errors={errors}
               register={register("releaseYear", {
                 minLength: {
@@ -134,6 +184,7 @@ export const SubmitSlopForm = () => {
           </div>
           <div className="flex flex-col">
             <Form.TextInput
+              value={runtime}
               placeholder="Runtime"
               labelText={"Runtime"}
               onChange={(e) => {
@@ -145,25 +196,38 @@ export const SubmitSlopForm = () => {
         </div>
         <Form.TextInput
           type="file"
+          register={register("image", { required: false })}
           accept="image/png, image/jpeg"
           placeholder="Click to upload"
           labelText={"Image"}
           isValid={!errors.image}
         />
-        {errors.image && <Form.Feedback message={errors.image.message} />}
         <div className="flex justify-between box-border font-arialBold text-lg">
           <div className="flex flex-col">
             <Form.TextInput
+              value={tomatoScore}
+              register={register("tomatoScore", {
+                pattern: {
+                  value: /^\d+%/,
+                  message: "Must be a percent",
+                },
+              })}
               placeholder="Rotten Tomatoes Score"
               labelText={"Rotten Tomatoes Score"}
               onChange={(e) => {
-                setValue("score", e.target.value, { shouldValidate: true });
+                setValue("tomatoScore", e.target.value, {
+                  shouldValidate: true,
+                });
               }}
-              isValid={!errors.score}
+              isValid={!errors.tomatoScore}
             />
+            {errors.tomatoScore && (
+              <Form.Feedback message={errors.tomatoScore.message} />
+            )}
           </div>
           <div className="flex flex-col">
             <Form.TextInput
+              value={howToWatch}
               placeholder="How To Watch"
               labelText={"How To Watch"}
               onChange={(e) => {
@@ -176,6 +240,7 @@ export const SubmitSlopForm = () => {
           </div>
         </div>
         <Form.TextInput
+          value={keywords}
           errors={errors}
           register={register("keywords", {
             minLength: {
@@ -198,10 +263,10 @@ export const SubmitSlopForm = () => {
           disabled={!isValid}
         />
       </Form>
-      {/* If form is submitted, display a thank you message */}
+      {/* If form is submitted, we are displaying a thank you message */}
       {submitted ? (
         <div className="flex gap-[200px] flex-col m-auto max-w-[672px] mt-[200px]">
-          <p className="font-arialRegular text-lg text-center">
+          <p class="font-arialRegular text-lg text-center">
             Thanks for submitting a slop to our platform, dear goblin! Our team
             of professional slop goblins will review your submission and publish
             it,  if your slop is actually sloppy, and doesn’t repeat movies
@@ -217,6 +282,7 @@ export const SubmitSlopForm = () => {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
+  <Footer />;
 };

@@ -22,9 +22,3 @@ export const CREATE_MOVIE = gql`
     }
   }
 `;
-
-const all = {
-  CREATE_MOVIE,
-};
-
-export default all;
