@@ -92,7 +92,7 @@ export const FestRoute = () => {
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestSidebar festQuery={festQuery} />
           )}
-          <div className="flex flex-col gap-y-8">
+          <div className="w-full flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies && movies.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
