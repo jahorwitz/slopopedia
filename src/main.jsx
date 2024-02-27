@@ -29,7 +29,7 @@ import {
   SearchRoute,
   SoundsRoute,
 } from "./routes";
-import { FestRoute } from "./routes/fest-route";
+import { FestDiscussion, FestRoute } from "./routes/fest-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
 const httpLink = createHttpLink({
@@ -144,7 +144,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 path="/fests/:festId/discussion"
                 element={
                   <ProtectedRoute>
-                    <FestRoute />
+                    <FestDiscussion />
                   </ProtectedRoute>
                 }
               />
