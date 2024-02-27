@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Select from "react-select";
+// import Select from "react-select";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
@@ -10,12 +10,33 @@ import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
 export function SlopFestModal() {
-  const { data, loading, error } = useQuery(GET_USERS);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [users, setUsers] = useState([]);
+  const { currentUser } = useContext(CurrentUserContext);
+  const { closeModal } = useModals();
+  // const [attendees, setAttendees] = useState([]);
+
+  const { data, loading, error } = useQuery(GET_USERS, {
+    variables: {
+      where: {
+        id: {
+          not: {
+            equals: currentUser.id,
+          },
+        },
+      },
+    },
+  });
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
+
+  const defaultValues = [{ username: currentUser.username }];
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { isValid, errors },
     setValue,
     getValues,
@@ -27,11 +48,6 @@ export function SlopFestModal() {
       attendees: [],
     },
   });
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [users, setUsers] = useState([]);
-  const { currentUser } = useContext(CurrentUserContext);
-  const { closeModal } = useModals();
 
   useEffect(() => {
     if (data && data.users) {
@@ -40,8 +56,7 @@ export function SlopFestModal() {
   }, [data]);
 
   const userOptions = users.map((user) => ({
-    value: user.username,
-    label: user.username,
+    username: user.username,
   }));
 
   const onSubmit = () => {
@@ -57,7 +72,7 @@ export function SlopFestModal() {
             endDate: endDateISO,
             // attendees should include creator and other usernames in attendees field
             attendees: {
-              connect: { username: currentUser.username },
+              connect: attendees,
             },
             creator: {
               connect: { id: currentUser.id },
@@ -112,6 +127,10 @@ export function SlopFestModal() {
                 name="startDate"
                 isValid={!errors.startDate}
                 date={startDate}
+                register={register("startDate", {
+                  required: "A start date is required",
+                  valueAsDate: true,
+                })}
                 onChange={(date) => {
                   setStartDate(date);
                   setValue("startDate", date, {
@@ -147,57 +166,17 @@ export function SlopFestModal() {
               )}
             </div>
           </div>
-          <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
-            <label htmlFor="attending" className="mb-1.5 text-lg">
-              Goblins Attending
-            </label>
-            {/* will change to headless ui component */}
-            <Select
-              options={userOptions}
-              className={"basic-multi-select"}
-              classNames={{
-                control: () =>
-                  "w-[373px] max-h-[92px] px-2 py-2 border border-solid rounded-none border-black overflow-scroll",
-              }}
-              isMulti
-              name="attendees"
-              isSearchable={true}
-              isClearable={false}
-              // onChange={(evt) => {
-              //   setValue("attendees", evt.target.value);
-              // }}
-              styles={{
-                control: (base) => ({
-                  ...base,
-                  borderColor: "#000000",
-                  borderRadius: "none",
-                }),
-                valueContainer2: (base) => ({
-                  ...base,
-                  overflow: "scroll",
-                }),
-                multiValueLabel: (base) => ({
-                  ...base,
-                  whiteSpace: "normal",
-                  overflow: "visible",
-                  fontFamily: "Arial",
-                  fontWeight: "bold",
-                  fontSize: "100%",
-                }),
-                indicatorSeparator: () => ({
-                  container: "hidden",
-                }),
-                dropdownIndicator: () => ({
-                  color: "#000000",
-                }),
-                menu: (base) => ({
-                  ...base,
-                  overflow: "hidden",
-                  height: "140px",
-                }),
-              }}
-            ></Select>
-          </div>
+          <Form.Combobox
+            setValue={setValue}
+            defaultValues={defaultValues}
+            watch={watch}
+            labelText={"Goblins Attending"}
+            id={"attendees"}
+            list={userOptions}
+            nameKey={"username"}
+            idKey={"username"}
+            name={"attendees"}
+          />
           <Form.Submit
             title={"Fest On!"}
             className={"w-[373px] mb-5 mt-5"}
