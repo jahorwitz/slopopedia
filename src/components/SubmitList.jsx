@@ -21,7 +21,6 @@ export const SubmitList = () => {
   // if the current user is an admin, approve button appears.
   // if neither of these conditions are met, the button does not appear.
   const renderButton = (movie) => {
-    console.log(currentUser);
     if (currentUser?.id === movie?.author?.id) {
       return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
     } else if (currentUser?.isAdmin) {

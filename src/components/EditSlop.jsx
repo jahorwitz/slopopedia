@@ -84,8 +84,6 @@ export const EditSlop = () => {
           data: updatedMovieData,
         },
       });
-
-      console.log("Update successful", response);
       navigate("/submit-list");
     } catch (e) {
       console.error("Error updating movie", e);
