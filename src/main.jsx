@@ -19,7 +19,6 @@ import {
   MainRoute,
   MovieRoute,
   PreferencesRoute,
-  ProfileFestsRoute,
   ProfileRoute,
   SearchRoute,
   SoundsRoute,
@@ -72,18 +71,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="/draft" element={<DraftRoute />} />
               <Route path="/article" element={<ArticleRoute />} />
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={
                   <ProtectedRoute user={"user"}>
                     <ProfileRoute />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile/fests"
-                element={
-                  <ProtectedRoute>
-                    <ProfileFestsRoute />
                   </ProtectedRoute>
                 }
               />

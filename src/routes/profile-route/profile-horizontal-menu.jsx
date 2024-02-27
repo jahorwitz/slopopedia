@@ -9,7 +9,7 @@ export const ProfileHorizontalMenu = () => {
     {
       title: "Me goblin",
       src: sidebarCrown,
-      link: "/profile/me",
+      link: "/profile",
     },
     {
       title: "Slop fests",
