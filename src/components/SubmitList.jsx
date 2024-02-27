@@ -12,18 +12,20 @@ export const SubmitList = () => {
     },
   });
 
+  //edit function for dynamic button
   const handleEdit = (movieId) => {
     navigate(`/edit-slop/${movieId}`);
   };
 
+  //dynamic button for handleEdit. If the author id matches the user, Edit Button appears.
+  // if the current user is an admin, approve button appears.
+  // if neither of these conditions are met, the button does not appear.
   const renderButton = (movie) => {
     console.log(currentUser);
     if (currentUser?.id === movie?.author?.id) {
       return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
     } else if (currentUser?.isAdmin) {
-      return (
-        <Button onClick={() => console.log("Movie Approved!")}>Approve</Button>
-      );
+      return <Button onClick={() => console.log("Approve!")}>Approve</Button>;
     } else return null;
   };
 
