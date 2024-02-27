@@ -114,34 +114,30 @@ export const EditSlop = () => {
             labelText="Description"
             value={slopData.description || ""}
             onChange={handleInputChange("description")}
-            className="mb-4 h-[120px]"
+            className="h-[120px]"
           />
-          <div className="flex gap-5 mb-4">
+          <div className="flex gap-12">
             <Form.TextNumber
               labelText="Release Year"
               value={slopData.releaseYear || ""}
               onChange={handleInputChange("releaseYear")}
-              className="w-[216.5px]"
             />
             <Form.TextNumber
               labelText="Run Time"
               value={slopData.runtime || ""}
               onChange={handleInputChange("runtime")}
-              className="w-[216.5px]"
             />
           </div>
-          <div className="flex gap-5 mb-4">
+          <div className="flex gap-12">
             <Form.TextNumber
               labelText="Rotten Tomato Score"
               value={slopData.tomatoScore || ""}
               onChange={handleInputChange("tomatoScore")}
-              className="w-[216.5px]"
             />
             <Form.TextInput
               labelText="How to Watch"
               value={slopData.howToWatch || ""}
               onChange={handleInputChange("howToWatch")}
-              className="w-[216.5px]"
             />
           </div>
           <Form.Combobox
