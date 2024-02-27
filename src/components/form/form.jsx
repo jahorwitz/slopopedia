@@ -1,5 +1,4 @@
 import { Combobox } from "@headlessui/react";
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -184,12 +183,12 @@ Form.Combobox = ({
   defaultValues,
   ...rest
 }) => {
-  const selectedItems = watch(id);
+  const selectedItems = watch(id) || [];
   const [query, setQuery] = useState("");
 
   useEffect(() => {
     setValue(id, defaultValues);
-  }, [defaultValues]);
+  }, []);
 
   const filteredList =
     query === ""
@@ -203,17 +202,15 @@ Form.Combobox = ({
         {labelText}
       </label>
       <Combobox
-        register={register}
         value={selectedItems}
-        onChange={setValue}
+        onChange={(data) => setValue(id, data)}
         multiple
         nullable
         name={name}
         id={id}
-        {...rest}
       >
         <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1">
+          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 max-w-sm">
             {selectedItems &&
               selectedItems?.length > 0 &&
               selectedItems?.map((item) => (
@@ -226,7 +223,8 @@ Form.Combobox = ({
                     type="button"
                     onClick={() => {
                       setValue(
-                        _.omitBy(selectedItems, (element) => element === item)
+                        id,
+                        selectedItems.filter((element) => element !== item)
                       );
                     }}
                   >
@@ -238,14 +236,13 @@ Form.Combobox = ({
               onChange={(evt) => setQuery(evt.target.value)}
               value={query}
               className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
-              placeholder="Select"
             />
             <Combobox.Button className="absolute right-5 flex top-4">
               <img src={down} className="h-2.5 w-2.5" />
             </Combobox.Button>
           </div>
           <Combobox.Options className="absolute top-full w-full max-h-36 overflow-y-scroll bg-white  border-solid border border-black">
-            {filteredList.map((item) => (
+            {filteredList?.map((item) => (
               <Combobox.Option
                 key={item[idKey]}
                 value={item}
