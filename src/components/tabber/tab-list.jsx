@@ -1,25 +1,31 @@
 import { Tab } from "@headlessui/react";
-import cx from "classnames";
-import { uniqueId } from "lodash";
-
-export const TabList = ({ tabs }) => {
+export const TabList = () => {
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
   return (
     <div>
-      <Tab.List className={cx("flex gap-12 mb-8")}>
-        {tabs.map((tab) => (
-          <Tab
-            key={uniqueId(tab)}
-            data-testid={tab}
-            className={({ selected }) =>
-              cx(
-                "font-bold text-3xl uppercase",
-                selected ? "border-b-2 border-dark text-dark" : "text-dark/60"
-              )
-            }
-          >
-            {tab}
-          </Tab>
-        ))}
+      <Tab.List className={classNames("flex gap-12")}>
+        <Tab
+          data-testid="tab1"
+          className={({ selected }) =>
+            classNames(
+              selected ? "border-b-2 border-slate-950 " : "text-slate-500"
+            )
+          }
+        >
+          SLOPS TO GOBBLE()
+        </Tab>
+        <Tab
+          data-testid="tab2"
+          className={({ selected }) =>
+            classNames(
+              selected ? "border-b-2 border-slate-950 " : "text-slate-500"
+            )
+          }
+        >
+          SLOPS IVE GOBBLED()
+        </Tab>
       </Tab.List>
     </div>
   );

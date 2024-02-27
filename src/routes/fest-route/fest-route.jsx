@@ -17,14 +17,12 @@ export const FestRoute = () => {
   const { festId } = useParams();
   const { openModal, closeModal, registerModal } = useModals();
 
+  // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
-    variables: {
-      where: {
-        id: festId,
-      },
-    },
+    variables: { where: { id: festId } },
   });
 
+  // Movie Query
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
 
   const [
@@ -40,24 +38,17 @@ export const FestRoute = () => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            connect: movieIds,
-          },
-        },
+        data: { movies: { connect: movieIds } },
       },
     });
   };
 
+  // Function to remove movies from server
   const removeMovie = (movieId) => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            disconnect: [{ id: movieId }],
-          },
-        },
+        data: { movies: { disconnect: [{ id: movieId }] } },
       },
     });
   };
@@ -106,18 +97,22 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className=" max-w-[1200px] my-0 mx-auto box-border">
-        {!festQuery.loading && <FestHeader fest={festQuery.data.fest} />}
-        <div className="flex gap-x-28">
-          <FestSidebar onClick={() => openModal("edit-fest")} />
-          <div className="flex flex-col gap-y-8">
+      <div className="max-w-[1200px] my-0 mx-auto box-border">
+        {!festQuery.loading && festQuery?.data?.fest && (
+          <FestHeader fest={festQuery.data.fest} />
+        )}
+        <div className="flex gap-x-24">
+          {!festQuery.loading && festQuery?.data?.fest && (
+            <FestSidebar festQuery={festQuery} />
+          )}
+          <div className="w-full flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
-              {!festQuery.loading && movies.length > 0 && (
+              {!festQuery.loading && movies && movies.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   Slops for this fest
                 </h2>
               )}
-              {!festQuery.loading && movies.length === 0 && (
+              {!festQuery.loading && movies && movies.length === 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   {"No slops for this fest yet :("}
                 </h2>

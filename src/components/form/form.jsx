@@ -1,5 +1,9 @@
+import { Combobox } from "@headlessui/react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import cross from "../../images/combo-box-cross.svg";
+import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
 
 export const Form = ({ className, children, onSubmit, ...rest }) => {
@@ -162,5 +166,94 @@ Form.Feedback = ({ className, message }) => {
         {message}
       </p>
     </>
+  );
+};
+
+Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [query, setQuery] = useState("");
+  const filteredList =
+    query === ""
+      ? list
+      : list.filter((item) => {
+          return item[nameKey].toLowerCase().includes(query.toLowerCase());
+        });
+  return (
+    <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
+      <label htmlFor={id} className={`mb-1.5 text-lg text-start `}>
+        {labelText}
+      </label>
+      <Combobox
+        value={selectedItems}
+        onChange={setSelectedItems}
+        multiple
+        nullable
+        name={name}
+        id={id}
+        immediate
+      >
+        <div className="relative">
+          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 min-h-[58px]">
+            {selectedItems.length > 0 &&
+              selectedItems.map((item) => (
+                <div
+                  key={item[idKey]}
+                  className="flex gap-1.5 px-1.5 py-1 bg-neutral-950 bg-opacity-10"
+                >
+                  <span>{item[nameKey]}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedItems(
+                        selectedItems.filter(
+                          (element) =>
+                            element[idKey] !== item[idKey] ||
+                            element[nameKey] !== item[nameKey]
+                        )
+                      );
+                    }}
+                  >
+                    <img src={cross} />
+                  </button>
+                </div>
+              ))}
+            <Combobox.Input
+              onChange={(event) => setQuery(event.target.value)}
+              value={query}
+              className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
+            />
+            <Combobox.Button className="absolute right-5 flex top-4">
+              <img src={down} className="h-2.5 w-2.5" />
+            </Combobox.Button>
+          </div>
+          <Combobox.Options className="absolute top-full w-full max-h-52 overflow-y-scroll bg-white  border-solid border border-black">
+            {filteredList.map((item) => (
+              <Combobox.Option
+                key={item[idKey]}
+                value={item}
+                className={({ selected, active }) =>
+                  `font-normal py-3 px-4 rounded-none cursor-pointer ${
+                    active ? "bg-neutral-200" : ""
+                  } ${selected ? "text-black" : "text-neutral-400"}`
+                }
+                onClick={() => setQuery("")}
+              >
+                {({ selected }) => (
+                  <>
+                    <span
+                      className={`block truncate ${
+                        selected ? "font-medium" : "font-normal"
+                      }`}
+                    >
+                      {item[nameKey]}
+                    </span>
+                  </>
+                )}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </div>
+      </Combobox>
+    </div>
   );
 };
