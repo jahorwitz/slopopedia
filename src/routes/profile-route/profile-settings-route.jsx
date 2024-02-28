@@ -67,6 +67,32 @@ export const ProfileSettingsRoute = () => {
     //.finally?
   };
 
+  // - - - - - - - - - - USE FORM - - - - - - - - - -
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors,
+      isValid,
+      isDirty,
+      dirtyFields,
+      isSubmitting,
+      isSubmitSuccessful,
+    },
+    setValue,
+    getValues,
+    control,
+    reset,
+    //watch,
+    //onChange,
+  } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
   useEffect(() => {
     registerModal(
@@ -78,23 +104,11 @@ export const ProfileSettingsRoute = () => {
     );
   }, []);
 
-  // - - - - - - - - - - USE FORM - - - - - - - - - -
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, isDirty, dirtyFields, isSubmitting },
-    setValue,
-    getValues,
-    control,
-    //watch,
-    //onChange,
-  } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
-  });
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   // useEffect(() => {
   //   const subscription = watch((value) => {
