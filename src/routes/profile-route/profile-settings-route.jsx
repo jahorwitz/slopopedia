@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
+import { DevTool } from "@hookform/devtools";
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
+import { GET_USERS } from "../../graphql/";
 
 //import { DeleteUserModal } from "../../components/delete-user-modal";
 import {
@@ -10,7 +12,7 @@ import {
   Form,
   Header,
 } from "../../components/index";
-import { DELETE_USER, GET_USER, GET_USERS, UPDATE_USER } from "../../graphql/";
+import { DELETE_USER, GET_USER, UPDATE_USER } from "../../graphql/";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
@@ -19,13 +21,6 @@ export const ProfileSettingsRoute = () => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const userId = currentUser.id;
   const { registerModal, openModal, closeModal } = useModals();
-  const [deleteUser] = useMutation(DELETE_USER);
-  const prefilledInputs = {
-    username: currentUser?.username,
-    email: currentUser?.email,
-    password: "**********",
-  };
-
   const userQuery = useQuery(GET_USER, {
     variables: {
       where: {
@@ -33,8 +28,15 @@ export const ProfileSettingsRoute = () => {
       },
     },
   });
-
-  const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
+  const usersQuery = useQuery(GET_USERS, {
+    variables: { where: {} },
+  });
+  const [deleteUser] = useMutation(DELETE_USER);
+  const prefilledInputs = {
+    username: currentUser?.username,
+    email: currentUser?.email,
+    password: "**********",
+  };
 
   const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
     refetchQueries: [GET_USER],
@@ -80,9 +82,12 @@ export const ProfileSettingsRoute = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty, dirtyFields },
     setValue,
     getValues,
+    control,
+    //watch,
+    //onChange,
   } = useForm({
     defaultValues: {
       username: "",
@@ -90,6 +95,32 @@ export const ProfileSettingsRoute = () => {
       password: "",
     },
   });
+
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     const changedUsername = {
+  //       username: value.username,
+  //     };
+  //     const existingUsernames = () => {
+  //       GET_USERS({
+  //         variables: {
+  //           where: {},
+  //           data: {
+  //             username,
+  //           },
+  //         },
+  //       }).then((data) => {
+  //         console.log(data.usernames);
+  //       });
+  //     };
+  //     console.log(existingUsernames);
+  //     console.log(changedUsername);
+  //   });
+  //   return () => subscription.unsubscribe;
+  // }, [watch]);
+
+  //const watchForm = watch();
+  //console.log(watchForm);
 
   //console.log({ dirtyFields, isDirty });
 
@@ -99,9 +130,9 @@ export const ProfileSettingsRoute = () => {
     const { username, email, password } = getValues();
     //make sure that new username is unique
     //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
-    //usersQuery.map((username) => {
+    //usersQuery.map((usernames) => {
+    //
     //});
-
     updateUser({
       variables: {
         where: { id: userId },
@@ -110,7 +141,11 @@ export const ProfileSettingsRoute = () => {
     })
       .then((res) => {
         console.log(res);
+        setValue("username", res.username);
+        setValue("email", res.email);
+        setValue("password", "");
         //form data is not currently refreshing after successful update
+        //this is because "value" is not being tracked by React Hook Form
         //loading(false);
         //probably need to change button text to "Changes Saved" after submit?
       })
@@ -133,9 +168,13 @@ export const ProfileSettingsRoute = () => {
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
 
         <section className="mt-9">
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form
+            onSubmit={handleSubmit(onSubmit)}
+            //onChange={onChange}
+            //noValidate
+          >
             <Form.TextInput
-              register={register("username", {
+              {...register("username", {
                 //required: "Nickname is required",
                 pattern: {
                   value: /^\S/,
@@ -154,11 +193,11 @@ export const ProfileSettingsRoute = () => {
             />
 
             {errors.username && (
-              <Form.Feedback message={errors.username.message} />
+              <Form.Feedback message={errors.username?.message} />
             )}
 
             <Form.TextInput
-              register={register("email", {
+              {...register("email", {
                 //required: "Email is required",
                 pattern: {
                   value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
@@ -176,10 +215,10 @@ export const ProfileSettingsRoute = () => {
               prefilledInputs={prefilledInputs.email}
             />
 
-            {errors.email && <Form.Feedback message={errors.email.message} />}
+            {errors.email && <Form.Feedback message={errors.email?.message} />}
 
             <Form.TextInput
-              register={register("password", {
+              {...register("password", {
                 //required: "Password is required",
                 minLength: {
                   value: 10,
@@ -197,12 +236,12 @@ export const ProfileSettingsRoute = () => {
             />
 
             {errors.password && (
-              <Form.Feedback message={errors.password.message} />
+              <Form.Feedback message={errors.password?.message} />
             )}
 
             <Form.TextInput
               register={register("confirmPassword", {
-                //required: "You must confirm the password",
+                required: "You must confirm the password",
                 validate: (value, formValues) =>
                   value === formValues.password || "Passwords do not match",
               })}
@@ -217,7 +256,7 @@ export const ProfileSettingsRoute = () => {
             />
 
             {errors.confirmPassword && (
-              <Form.Feedback message={errors.confirmPassword.message} />
+              <Form.Feedback message={errors.confirmPassword?.message} />
             )}
 
             <Form.Submit
@@ -226,7 +265,7 @@ export const ProfileSettingsRoute = () => {
               title={"Save"}
             />
           </Form>
-
+          <DevTool control={control}></DevTool>
           <button
             type="button"
             className="bg-transparent text-danger font-bold text-lg mt-10"
