@@ -82,7 +82,7 @@ export const ProfileSettingsRoute = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty, dirtyFields },
+    formState: { errors, isValid, isDirty, dirtyFields, isSubmitting },
     setValue,
     getValues,
     control,
@@ -125,6 +125,9 @@ export const ProfileSettingsRoute = () => {
   //console.log({ dirtyFields, isDirty });
 
   const onSubmit = () => {
+    //if (isSubmitting === true) {
+    //  return <Loading />;
+    // }
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
@@ -140,9 +143,9 @@ export const ProfileSettingsRoute = () => {
       },
     })
       .then((res) => {
-        console.log(res);
-        setValue("username", res.username);
-        setValue("email", res.email);
+        console.log(res.data);
+        setValue("username", res.data.username);
+        setValue("email", res.data.email);
         setValue("password", "");
         //form data is not currently refreshing after successful update
         //this is because "value" is not being tracked by React Hook Form
@@ -185,6 +188,7 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("username", evt.target.value, {
                   shouldValidate: true,
+                  shouldDirty: true,
                 });
               }}
               isValid={!errors.username}
@@ -208,6 +212,7 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("email", evt.target.value, {
                   shouldValidate: true,
+                  shouldDirty: true,
                 });
               }}
               isValid={!errors.email}
@@ -229,6 +234,7 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("password", evt.target.value, {
                   shouldValidate: true,
+                  shouldDirty: true,
                 });
               }}
               isValid={!errors.password}
@@ -249,6 +255,7 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("confirmPassword", evt.target.value, {
                   shouldValidate: true,
+                  shouldDirty: true,
                 });
               }}
               isValid={!errors.confirmPassword}
@@ -261,7 +268,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.Submit
               className="w-[373px]"
-              //disabled={!isValid}
+              disabled={!isDirty || isSubmitting}
               title={"Save"}
             />
           </Form>
