@@ -5,7 +5,6 @@ export * from "./blog";
 export * from "./button";
 export * from "./delete-confirmation-modal";
 export * from "./discussion-card";
-export * from "./EditSlop";
 export * from "./footer";
 export * from "./form";
 export * from "./form/form";

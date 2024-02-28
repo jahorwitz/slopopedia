@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { EDIT_MOVIE } from "../graphql/mutations/edit-slop-submission";
-import { GET_MOVIE } from "../graphql/queries/get-movie-by-id";
-import { Form } from "./form/index";
-import { Header } from "./index";
+import { Form } from "../../components/form/form";
+import { Header } from "../../components/header/header";
+import { EDIT_MOVIE } from "../../graphql/mutations/edit-slop-submission";
+import { GET_MOVIE } from "../../graphql/queries/get-movie-by-id";
 
 export const EditSlop = () => {
   const { slopId } = useParams();
