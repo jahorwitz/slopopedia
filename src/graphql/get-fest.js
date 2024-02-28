@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_FEST = gql`
   query GetFest($where: FestWhereUniqueInput!) {
     fest(where: $where) {
+      id
       attendees {
         id
         username
