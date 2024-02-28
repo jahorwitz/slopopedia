@@ -18,7 +18,7 @@ export const MovieCardList = ({
           <MovieCard
             key={movie.id}
             movieInfo={movie}
-            size={movie.size}
+            size={movie?.size}
             className={className}
             colSpanOne={colSpanOne}
             minusButton={minusButton}
