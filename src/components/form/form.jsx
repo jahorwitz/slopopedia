@@ -139,7 +139,6 @@ Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
         onChange={onChange}
         selected={date}
         placeholderText="Select"
-        value={"" || date}
       />
       {/* <Button className="absolute right-0.5 flex top-12" variant="tertiary">
         <img src={down} className="h-2.5 w-2.5" />
