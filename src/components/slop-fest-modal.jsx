@@ -61,6 +61,7 @@ export function SlopFestModal() {
     const { name, attendees } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
+    console.log(startDate);
     try {
       createFest({
         variables: {
@@ -95,6 +96,7 @@ export function SlopFestModal() {
               labelText="Name it!"
               className={`w-[373px]`}
               id={"name"}
+              placeholder={"Name it"}
               register={register("name", {
                 required: true,
                 pattern: {
