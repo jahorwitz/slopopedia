@@ -61,7 +61,6 @@ export function SlopFestModal() {
     const { name, attendees } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
-    console.log(startDate);
     try {
       createFest({
         variables: {
