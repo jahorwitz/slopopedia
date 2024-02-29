@@ -180,7 +180,6 @@ Form.Combobox = ({
   idKey,
   watch,
   setValue,
-  defaultValues,
   ...rest
 }) => {
   const selectedItems = watch(id) || [];
