@@ -72,7 +72,7 @@ export function SlopFestModal() {
             endDate: endDateISO,
             // attendees should include creator and other usernames in attendees field
             attendees: {
-              connect: attendees,
+              connect: [...attendees, { username: currentUser.username }],
             },
             creator: {
               connect: { id: currentUser.id },

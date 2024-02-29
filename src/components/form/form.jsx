@@ -187,7 +187,7 @@ Form.Combobox = ({
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setValue(id, defaultValues);
+    setValue(id, selectedItems);
   }, []);
 
   const filteredList =
