@@ -250,6 +250,7 @@ export const ProfileSettingsRoute = () => {
                 },
               })}
               labelText={"Password"}
+              type="password"
               onChange={(evt) => {
                 setValue("password", evt.target.value, {
                   shouldValidate: true,
@@ -271,6 +272,7 @@ export const ProfileSettingsRoute = () => {
                   value === formValues.password || "Passwords do not match",
               })}
               labelText={"Confirm password"}
+              type="password"
               onChange={(evt) => {
                 setValue("confirmPassword", evt.target.value, {
                   shouldValidate: true,
