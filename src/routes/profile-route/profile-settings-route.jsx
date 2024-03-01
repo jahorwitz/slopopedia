@@ -67,6 +67,10 @@ export const ProfileSettingsRoute = () => {
     //.finally?
   };
 
+  const handleIsUserNameAvailable = (fieldValue) => {
+    console.log(fieldValue, "username available handler");
+  };
+
   // - - - - - - - - - - USE FORM - - - - - - - - - -
   const {
     register,
@@ -208,6 +212,7 @@ export const ProfileSettingsRoute = () => {
               isValid={!errors.username}
               placeholder="Type here"
               prefilledInputs={prefilledInputs.username}
+              //usernameAvailable={handleIsUserNameAvailable}
             />
 
             {errors.username && (
