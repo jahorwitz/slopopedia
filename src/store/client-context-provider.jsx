@@ -7,10 +7,6 @@ export const ClientContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("jwt"));
   const [client, setClient] = useState(null);
 
-  // useEffect(() => {
-  //   setToken(localStorage.getItem("jwt"));
-  // }, []);
-
   useEffect(() => {
     const httpLink = createHttpLink({
       uri:
@@ -56,7 +52,6 @@ export const ClientContextProvider = ({ children }) => {
           },
         };
       });
-      console.log(client);
       client.setLink(authLink.concat(httpLink));
     }
   }, [token]);

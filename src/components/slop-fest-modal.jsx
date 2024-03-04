@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
