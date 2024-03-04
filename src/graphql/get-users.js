@@ -6,10 +6,10 @@ import { gql } from "@apollo/client";
 //const = {loading, error, data} = useQuery(GET_USERS);
 
 export const GET_USERS = gql`
-  query GetUsers {
-    users {
+  query GetUsers($where: UserWhereInput!) {
+    users(where: $where) {
       id
-      name
+      username
       email
     }
   }
@@ -30,6 +30,9 @@ export const GET_USERS = gql`
 export const GET_USER_WATCHLIST = gql`
   query User($where: UserWhereUniqueInput!) {
     user(where: $where) {
+      id
+      username
+      isAdmin
       wishlist {
         id
         title
