@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
-import { useCurrentUser } from "../../hooks/use-current-user.js";
+import { useCurrentUser } from "../../hooks";
 
 export const Article = () => {
   const router = useNavigate();

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
 import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
-import { useModals } from "../../store";
+import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {
   const { openModal, closeModal, registerModal } = useModals();
