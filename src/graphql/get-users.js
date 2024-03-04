@@ -6,8 +6,8 @@ import { gql } from "@apollo/client";
 //const = {loading, error, data} = useQuery(GET_USERS);
 
 export const GET_USERS = gql`
-  query GetUsers {
-    users {
+  query GetUsers($where: UserWhereInput!) {
+    users(where: $where) {
       id
       username
       email
@@ -22,7 +22,46 @@ export const GET_USER = gql`
     user(where: $where) {
       id
       username
-      role
+      isAdmin
+    }
+  }
+`;
+
+export const GET_USER_WATCHLIST = gql`
+  query User($where: UserWhereUniqueInput!) {
+    user(where: $where) {
+      wishlist {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      wishlistCount
+      watched {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      watchedCount
     }
   }
 `;

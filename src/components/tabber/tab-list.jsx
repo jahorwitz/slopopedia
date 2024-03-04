@@ -5,27 +5,23 @@ export const TabList = () => {
   }
   return (
     <div>
-      <Tab.List className={classNames("flex gap-12")}>
-        <Tab
-          data-testid="tab1"
-          className={({ selected }) =>
-            classNames(
-              selected ? "border-b-2 border-slate-950 " : "text-slate-500"
-            )
-          }
-        >
-          SLOPS TO GOBBLE()
-        </Tab>
-        <Tab
-          data-testid="tab2"
-          className={({ selected }) =>
-            classNames(
-              selected ? "border-b-2 border-slate-950 " : "text-slate-500"
-            )
-          }
-        >
-          SLOPS IVE GOBBLED()
-        </Tab>
+      <Tab.List
+        as="h3"
+        className={cx(
+          "flex mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4"
+        )}
+      >
+        {tabs.map((tab) => (
+          <Tab
+            key={uniqueId(tab)}
+            data-testid={tab}
+            className={({ selected }) =>
+              cx(selected ? "border-b-2 border-slate-950 " : "text-slate-500")
+            }
+          >
+            {tab}
+          </Tab>
+        ))}
       </Tab.List>
     </div>
   );

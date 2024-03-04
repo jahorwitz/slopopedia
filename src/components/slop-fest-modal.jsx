@@ -31,8 +31,6 @@ export function SlopFestModal() {
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
 
-  const defaultValues = [{ username: currentUser.username }];
-
   const {
     register,
     handleSubmit,
@@ -72,7 +70,7 @@ export function SlopFestModal() {
             endDate: endDateISO,
             // attendees should include creator and other usernames in attendees field
             attendees: {
-              connect: attendees,
+              connect: [...attendees, { username: currentUser.username }],
             },
             creator: {
               connect: { id: currentUser.id },
@@ -97,6 +95,7 @@ export function SlopFestModal() {
               labelText="Name it!"
               className={`w-[373px]`}
               id={"name"}
+              placeholder={"Name it"}
               register={register("name", {
                 required: true,
                 pattern: {
@@ -168,7 +167,6 @@ export function SlopFestModal() {
           </div>
           <Form.Combobox
             setValue={setValue}
-            defaultValues={defaultValues}
             watch={watch}
             labelText={"Goblins Attending"}
             id={"attendees"}

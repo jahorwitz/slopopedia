@@ -25,6 +25,7 @@ import {
   SoundsRoute,
 } from "./routes";
 import { FestDiscussion, FestRoute } from "./routes/fest-route";
+import { EditSlop } from "./routes/index";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
 const httpLink = createHttpLink({
@@ -108,6 +109,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute>
                     <SubmitList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/edit-slop/:slopId"
+                element={
+                  <ProtectedRoute>
+                    <EditSlop />
                   </ProtectedRoute>
                 }
               />
