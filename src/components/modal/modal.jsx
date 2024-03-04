@@ -44,7 +44,7 @@ export function Modal({ children, title, whiteButton }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white align-middle shadow-xl transition-all box-border">
+                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-background align-middle shadow-xl transition-all box-border">
                     <button
                       className="w-5 h-5 absolute top-[20px] right-[20px] z-50"
                       onClick={closeThisModal}

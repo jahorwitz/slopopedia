@@ -1,50 +1,23 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
-import {
-  DELETE_FEST,
-  GET_FEST,
-  GET_MOVIES,
-  GET_USER_FESTS,
-  UPDATE_FEST,
-} from "../../graphql/";
+import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context.js";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
-  const navigate = useNavigate();
-  const { currentUser } = useContext(CurrentUserContext);
-
   const { festId } = useParams();
   const { openModal, closeModal } = useModals();
 
+  // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
-    variables: {
-      where: {
-        id: festId,
-      },
-    },
+    variables: { where: { id: festId } },
   });
 
+  // Movie Query
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
-
-  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
-    refetchQueries: [GET_USER_FESTS],
-  });
-
-  const removeFest = () => {
-    if (currentUser.id === festQuery.data.fest.creator.id) {
-      deleteFest({ variables: { where: { id: festId } } });
-      if (loading) return "Submitting...";
-      if (error) return `Submission error! ${error.message}`;
-      closeModal();
-      navigate("/profile/fests");
-    }
-  };
 
   const [
     updateFest,
@@ -59,24 +32,17 @@ export const FestRoute = () => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            connect: movieIds,
-          },
-        },
+        data: { movies: { connect: movieIds } },
       },
     });
   };
 
+  // Function to remove movies from server
   const removeMovie = (movieId) => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            disconnect: [{ id: movieId }],
-          },
-        },
+        data: { movies: { disconnect: [{ id: movieId }] } },
       },
     });
   };
@@ -117,15 +83,15 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className=" max-w-[1200px] my-0 mx-auto box-border">
+      <div className="max-w-[1200px] my-0 mx-auto box-border">
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} />
         )}
-        <div className="flex gap-x-28">
+        <div className="flex gap-x-24">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar removeFest={removeFest} festQuery={festQuery} />
+            <FestSidebar festQuery={festQuery} />
           )}
-          <div className="flex flex-col gap-y-8">
+          <div className="w-full flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
               {!festQuery.loading && movies && movies.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">

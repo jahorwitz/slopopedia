@@ -25,7 +25,8 @@ import {
   SoundsRoute,
   SubmittedSlopsRoute,
 } from "./routes";
-import { FestRoute } from "./routes/fest-route";
+import { FestDiscussion, FestRoute } from "./routes/fest-route";
+import { EditSlop } from "./routes/index";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
 //update the URI by commenting code below to use your localhost database or the production database:
@@ -109,6 +110,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 }
               />
               <Route
+                path="/edit-slop/:slopId"
+                element={
+                  <ProtectedRoute>
+                    <EditSlop />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/recommend"
                 element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
               />
@@ -121,6 +130,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute>
                     <FestRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/fests/:festId/discussion"
+                element={
+                  <ProtectedRoute>
+                    <FestDiscussion />
                   </ProtectedRoute>
                 }
               />

@@ -15,10 +15,59 @@ import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
-export const Header = ({ children }) => {
+export const Header = () => {
+  const [token, setToken] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
+  const { openModal, closeModal } = useModals();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const jwt = localStorage.getItem("jwt");
+
+  function openLoginModal() {
+    openModal(<LoginModal onClose={closeModal} />);
+  }
+
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
+
+  const handleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (jwt) {
+      setToken(jwt);
+    }
+
+    if (data && data.authenticatedItem) {
+      setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
+    }
+    //needed to change value of isLoggedIn when a user logs in
+    //logging in happens in login-modal.jsx and
+
+    if (Object.values(currentUser).length > 0) {
+      setIsLoggedIn(true);
+    }
+  }, [jwt, data, currentUser]);
   return (
-    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 max-w-[1440px] mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
-      {children}
+    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
+      <Header.Logo />
+      <Header.NavLinks
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        openModal={openModal}
+        handleMenu={handleMenu}
+        menuOpen={menuOpen}
+      />
+      <Header.Profile
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        openSignUpModal={openSignUpModal}
+        openLoginModal={openLoginModal}
+      />
     </header>
   );
 };
@@ -35,22 +84,14 @@ Header.Logo = () => {
   );
 };
 
-Header.NavLinks = () => {
-  const [open, setOpen] = useState(false);
-  const { openModal, closeModal } = useModals();
-
-  function openSignInModal() {
-    openModal(<LoginModal onClose={closeModal} />);
-  }
-
-  function openSignUpModal() {
-    openModal(<SignupModal onClose={closeModal} />);
-  }
-
-  const handleMenu = () => {
-    setOpen((prev) => !prev);
-  };
-
+Header.NavLinks = ({
+  isLoggedIn,
+  currentUser,
+  menuOpen,
+  handleMenu,
+  openSignUpModal,
+  openLoginModal,
+}) => {
   const navLinks = [
     {
       title: "Slop Search",
@@ -79,7 +120,7 @@ Header.NavLinks = () => {
       title: "Log In",
       src: headerSmile,
       onClick: () => {
-        openSignInModal();
+        openLoginModal();
       },
     },
     {
@@ -88,10 +129,6 @@ Header.NavLinks = () => {
       onClick: () => {
         openSignUpModal();
       },
-    },
-    {
-      title: "Danila Ting",
-      src: headerSmile,
     },
   ];
 
@@ -119,11 +156,11 @@ Header.NavLinks = () => {
                 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block  lg:hidden xl:hidden "
         >
           <span className="sr-only">Open Main Menu</span>
-          {open == true ? <FaTimes /> : <FaBars />}
+          {menuOpen == true ? <FaTimes /> : <FaBars />}
         </button>
       </div>
       {/* hamburger-menu */}
-      {open ? (
+      {menuOpen ? (
         <div className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden">
           <div className=" space-y-1  ">
             {navLinks.map((link) => (
@@ -141,25 +178,38 @@ Header.NavLinks = () => {
                 {link.title}
               </Link>
             ))}
-            {buttons.slice(0, buttons.length - 1).map((button) => (
-              <div
-                key={button.title}
-                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
-              >
-                <img
-                  className="w-5 h-5 mt-2 ml-1"
-                  src={button.src}
-                  alt={button.title}
-                />
-                <Button
-                  variant="link"
-                  onClick={button.onClick}
-                  className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+            {isLoggedIn === false ? (
+              buttons.map((button) => (
+                <div
+                  key={button.title}
+                  className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
                 >
-                  {button.title}
-                </Button>
+                  <img
+                    className="w-5 h-5 mt-2 ml-1"
+                    src={button.src}
+                    alt={button.title}
+                  />
+                  <Button
+                    variant="link"
+                    onClick={button.onClick}
+                    className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                  >
+                    {button.title}
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <div className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
+                <img
+                  className="w-5 h-5 mt-2 ml-1 mr-1"
+                  src={headerSmile}
+                  alt={currentUser.username}
+                />
+                <div className="flex flex-row h-[24px] mt-1 gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex ">
+                  <a href="/profile">{currentUser.username}</a>
+                </div>
               </div>
-            ))}
+            )}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
             {/* {buttons.slice(2, 3).map((button, index) => (
                 <div key={index} className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
@@ -174,57 +224,27 @@ Header.NavLinks = () => {
   );
 };
 
-Header.Profile = () => {
-  const [token, setToken] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
-  const { openModal, closeModal } = useModals();
-  const jwt = localStorage.getItem("jwt");
-
-  // const isLoggedIn = useMemo(() => {
-  //   return true ? token !== "" : false;
-  // }, [token]);
-
-  function openSignInModal() {
-    openModal(<LoginModal onClose={closeModal} />);
-  }
-
-  function openSignUpModal() {
-    openModal(<SignupModal onClose={closeModal} />);
-  }
-
-  useEffect(() => {
-    if (jwt) {
-      setToken(jwt);
-    }
-
-    if (data && data.authenticatedItem) {
-      setCurrentUser(data.authenticatedItem);
-      setIsLoggedIn(true);
-    }
-    //needed to change value of isLoggedIn when a user logs in
-    //logging in happens in login-modal.jsx and
-    if (Object.values(currentUser).length > 0) {
-      setIsLoggedIn(true);
-    }
-  }, [jwt, data, currentUser]);
-
+Header.Profile = ({
+  isLoggedIn,
+  currentUser,
+  openSignUpModal,
+  openLoginModal,
+}) => {
   return (
     <>
       {isLoggedIn === false ? (
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
           <Button
-            className={"border-b-2"}
-            size="sm"
+            className={"border-b-2 leading-7"}
+            size="sm p-0"
             variant="secondary"
             children="Log In"
-            onClick={openSignInModal}
+            onClick={openLoginModal}
           ></Button>
           <p>/</p>
           <Button
-            className={"border-b-2"}
-            size="sm"
+            className={"border-b-2 leading-7"}
+            size="sm p-0"
             variant="secondary"
             children="Sign Up"
             onClick={openSignUpModal}
