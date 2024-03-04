@@ -81,7 +81,7 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
         </label>
         <input
           id={id}
-          className="font-normal py-4 px-4 bg-background border-solid rounded-none border border-black"
+          className="font-normal py-3 px-4 bg-background border-solid rounded-none border border-black"
           type="number"
           placeholder="Type"
           {...rest}

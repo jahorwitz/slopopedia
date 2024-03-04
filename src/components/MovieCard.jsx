@@ -15,6 +15,7 @@ export function MovieCard({
   plusButton,
   minusButtonClick,
   plusButtonClick,
+  renderButton,
   ...rest
 }) {
   const card = {
@@ -48,6 +49,9 @@ export function MovieCard({
         onClick={onClick}
         {...rest}
       >
+        {/* Render Edit Button conditionally */}
+        {renderButton && renderButton(movieInfo)}
+
         {minusButton && (
           <Button
             variant="minus"
