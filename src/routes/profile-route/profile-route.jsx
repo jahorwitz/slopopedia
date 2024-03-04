@@ -2,7 +2,7 @@ import { useMediaQuery } from "react-responsive";
 import { Footer, Header } from "../../components/";
 import { ProfileHorizontalMenu } from "./profile-horizontal-menu";
 import { ProfileSidebar } from "./profile-sidebar";
-import { Tabber } from "./watchlist-tabber";
+import { WatchlistTabber } from "./watchlist-tabber";
 
 export const ProfileRoute = () => {
   const isDesktopSize = useMediaQuery({
@@ -19,7 +19,7 @@ export const ProfileRoute = () => {
       <div className="flex">
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
         <div className="w-[950px]">
-          <Tabber />
+          <WatchlistTabber />
         </div>
       </div>
 

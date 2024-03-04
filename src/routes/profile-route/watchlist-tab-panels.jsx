@@ -1,17 +1,14 @@
-import { Tab } from "@headlessui/react";
-import { MovieCardList } from "../../components/MovieCardList";
+import { MovieCardList, Tabber } from "../../components";
 
-export const TabPanels = ({ wishList, watchedList }) => {
+export const WatchlistTabPanels = ({ wishList, watchedList }) => {
   return (
-    <Tab.Panels>
-      <Tab.Panel>
+    <Tabber.TabPanels>
+      <Tabber.TabPanel>
         <MovieCardList movies={wishList} colSpanOne />
-      </Tab.Panel>
-      <Tab.Panel>
+      </Tabber.TabPanel>
+      <Tabber.TabPanel>
         <MovieCardList movies={watchedList} colSpanOne />
-      </Tab.Panel>
-    </Tab.Panels>
+      </Tabber.TabPanel>
+    </Tabber.TabPanels>
   );
 };
-
-TabPanels.displayName = "TabPanels";

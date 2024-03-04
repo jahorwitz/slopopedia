@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
-import { Tab } from "@headlessui/react";
 import { useContext, useMemo } from "react";
+import { Tabber } from "../../components";
 import { GET_USER_WATCHLIST } from "../../graphql";
 import { CurrentUserContext } from "../../store/current-user-context";
-import { TabList } from "./watchlist-tab-list";
-import { TabPanels } from "./watchlist-tab-panels";
+import { WatchlistTabList } from "./watchlist-tab-list";
+import { WatchlistTabPanels } from "./watchlist-tab-panels";
 
-export const Tabber = () => {
+export const WatchlistTabber = () => {
   const { currentUser } = useContext(CurrentUserContext);
 
   const watchlistQuery = useQuery(GET_USER_WATCHLIST, {
@@ -26,11 +26,9 @@ export const Tabber = () => {
   }, [watchlistQuery.data]);
 
   return (
-    <Tab.Group>
-      <TabList wishList={wishList} watchedList={watchedList} />
-      <TabPanels wishList={wishList} watchedList={watchedList} />
-    </Tab.Group>
+    <Tabber>
+      <WatchlistTabList wishList={wishList} watchedList={watchedList} />
+      <WatchlistTabPanels wishList={wishList} watchedList={watchedList} />
+    </Tabber>
   );
 };
-
-Tabber.displayName = "Tabber";
