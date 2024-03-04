@@ -44,6 +44,7 @@ export const GET_DRAFT_POSTS = gql`
         username
       }
       createdAt
+      id
     }
   }
 `;

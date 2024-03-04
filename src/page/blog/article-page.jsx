@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
@@ -11,6 +11,7 @@ import { CurrentUserContext } from "../../store/current-user-context.js";
 
 export const Article = () => {
   const { id } = useParams();
+  const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
   const [formState, setFormState] = useState({
     title: "",
@@ -30,15 +31,17 @@ export const Article = () => {
 
   useEffect(() => {
     if (id) {
-      console.log(data, data.post);
+      console.log(data);
       setFormState({
-        title: data.post.title,
-        content: data.post.content,
+        title: data?.post.title,
+        content: data?.post.content,
         keywords: [],
+        // keywords is an array of objects -- the way keywords and movies will be set depends on how these
+        // two fields are going to be built upon, so for now these are just empty
         movies: [],
       });
     }
-  }, [id]);
+  }, [data]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
@@ -227,13 +230,20 @@ export const Article = () => {
               and publish it, if your slop is actually sloppy, and doesn't
               repeat movies already published here.
             </p>
-            <div className="mt-40 xs:mt-16 ">
+            <div className="flex gap-4 mt-40 xs:mt-16 ">
               <Button
                 className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
                 title="Submit another one?"
                 onClick={submitAnother}
               >
                 <label className="self-center">Submit another one?</label>
+              </Button>
+              <Button
+                className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
+                title="Submit another one?"
+                onClick={() => router(`/articles`)}
+              >
+                <label className="self-center">View published articles</label>
               </Button>
             </div>
           </div>

@@ -1,6 +1,17 @@
-export const Draft = ({ title, author, date, additionalInfo, classNames }) => {
+import { useNavigate } from "react-router";
+
+export const Draft = ({
+  title,
+  author,
+  date,
+  additionalInfo,
+  classNames,
+  id,
+}) => {
+  const router = useNavigate();
   const containerClass = classNames?.container || "";
-  const titleClass = classNames?.title || "font-semibold text-base";
+  const titleClass =
+    classNames?.title || "font-semibold text-base cursor-pointer";
   const infoClass =
     classNames?.info ||
     "flex font-semibold gap-4 pb-2 border-gray-400 border-b-[1px]  ";
@@ -10,7 +21,9 @@ export const Draft = ({ title, author, date, additionalInfo, classNames }) => {
 
   return (
     <div className={containerClass}>
-      <h2 className={titleClass}>{title}</h2>
+      <h2 onClick={() => router(`/articles/${id}/edit`)} className={titleClass}>
+        {title}
+      </h2>
       <div className={infoClass}>
         {author === undefined ? (
           <small>anonymous user</small>

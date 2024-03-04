@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         gray: "#CBCBCB",
+        lightGray: "#EFEFEF",
         green: "#48FF50",
         yellow: "#FFD913",
         danger: "#FF4040",
