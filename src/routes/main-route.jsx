@@ -29,7 +29,7 @@ export function MainRoute() {
       </div>
 
       <div className="bg-lightGray w-full max-w-[1440px] mx-auto p-20">
-        <h1 className="h-6 w-36 font-bold">RECENTLY ADDED</h1>
+        <h1 className="h-18 w-max font-arialNarrow text-3xl">RECENTLY ADDED</h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
           {!loading && <MovieCardList movies={data.movies} />}
         </div>

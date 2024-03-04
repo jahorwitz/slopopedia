@@ -65,26 +65,22 @@ export function MovieCard({
           />
         )}
         <img
-          className="mb-2.5 "
+          className="mb-1.5 "
           src={card.image === null ? purpleGoblin : card.image.url}
         ></img>
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
           <div className="flex flex-row col-span-2 justify-between">
-            <h2 className="text-lg mb-2.5 font-bold font-arial">
-              {card.title}
-            </h2>
-            <p className="text-lg mb-2.5 text-gray-400 font-arial">
+            <h2 className="text-lg mb-0 font-bold font-arial">{card.title}</h2>
+            <p className="text-lg mb-1.5 text-dark font-arial">
               {card.releaseYear}, {card.runtimeInMinutes}
             </p>
           </div>
         ) : (
           <>
-            <h2 className="text-lg mb-2.5 font-bold font-arial">
-              {card.title}
-            </h2>
+            <h2 className="text-lg mb-0 font-arialBold">{card.title}</h2>
             {card.runtimeInMinutes && (
-              <p className="text-lg mb-2.5 text-gray-400 font-arial">
+              <p className="text-lg mb-1.5 text-dark font-arialBold">
                 {card.releaseYear}, {card.runtimeInMinutes} minutes
               </p>
             )}
