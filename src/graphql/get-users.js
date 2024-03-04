@@ -26,3 +26,42 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const GET_USER_WATCHLIST = gql`
+  query User($where: UserWhereUniqueInput!) {
+    user(where: $where) {
+      wishlist {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      wishlistCount
+      watched {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      watchedCount
+    }
+  }
+`;

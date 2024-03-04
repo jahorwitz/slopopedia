@@ -19,14 +19,14 @@ export function MovieCard({
   ...rest
 }) {
   const card = {
-    image: movieInfo.photo,
-    title: movieInfo.title,
-    keywords: movieInfo.keywords,
-    releaseYear: movieInfo.releaseYear,
-    runtimeInMinutes: movieInfo.runtime,
-    rottenTomatoesScore: movieInfo.rottenTomatoesScore,
-    howToWatch: movieInfo.howToWatch,
-    decription: movieInfo.description,
+    image: movieInfo?.photo,
+    title: movieInfo?.title,
+    keywords: movieInfo?.keywords,
+    releaseYear: movieInfo?.releaseYear,
+    runtimeInMinutes: movieInfo?.runtime,
+    rottenTomatoesScore: movieInfo?.rottenTomatoesScore,
+    howToWatch: movieInfo?.howToWatch,
+    decription: movieInfo?.description,
   };
 
   return (
@@ -70,7 +70,7 @@ export function MovieCard({
         )}
         <img
           className="mb-2.5 "
-          src={card.image === null ? purpleGoblin : card.image.url}
+          src={card.image === null ? purpleGoblin : card.image?.url}
         ></img>
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
