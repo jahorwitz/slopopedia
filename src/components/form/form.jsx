@@ -1,5 +1,7 @@
 import { Combobox } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import cross from "../../images/combo-box-cross.svg";
 import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
@@ -21,6 +23,7 @@ Form.TextInput = ({
   register,
   onChange,
   isValid,
+  placeholder,
   ...rest
 }) => {
   return (
@@ -36,11 +39,11 @@ Form.TextInput = ({
         <input
           register={register}
           id={id}
-          className={`font-normal py-3 px-4 border-solid rounded-none border ${
+          className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"
           } `}
           type="text"
-          placeholder={"Type here"}
+          placeholder={placeholder || "Type here"}
           onChange={onChange}
           {...rest}
         />
@@ -59,7 +62,7 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
 
         <textarea
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className="font-normal bg-background py-4 px-4 border-solid rounded-none border border-black"
           type="text"
           placeholder="Type"
           {...rest}
@@ -78,7 +81,7 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
         </label>
         <input
           id={id}
-          className="font-normal py-4 px-4 border-solid rounded-none border border-black"
+          className="font-normal py-4 px-4 bg-background border-solid rounded-none border border-black"
           type="number"
           placeholder="Type"
           {...rest}
@@ -88,22 +91,59 @@ Form.TextNumber = ({ className, labelText, id, email, password, ...rest }) => {
   );
 };
 
-Form.Dropdown = ({ className, labelText, id, email, password, ...rest }) => {
+Form.Dropdown = ({
+  className,
+  labelText,
+  id,
+  email,
+  password,
+  children,
+  multiple,
+  ...rest
+}) => {
   return (
     <>
-      <div className="flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4]">
+      <div
+        className={`flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
+      >
         <label htmlFor={id} className="mb-1.5 text-lg">
           {labelText}
         </label>
         <select
           id={id}
-          className="py-4 px-4 border-solid rounded-none border border-black"
+          className="py-4 px-4 bg-background border-solid rounded-none border border-black"
           type="dropdown"
           placeholder="Dropdown"
+          multiple={multiple}
           {...rest}
-        />
+        >
+          {children}
+        </select>
       </div>
     </>
+  );
+};
+
+Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
+  return (
+    <div
+      className={`relative flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
+    >
+      <label htmlFor={id} className="mb-1.5 text-lg">
+        {labelText}
+      </label>
+      <DatePicker
+        className={
+          "py-4 px-4 border-solid rounded-none border border-black w-44 h-12 flex bg-background"
+        }
+        onChange={onChange}
+        selected={date}
+        placeholderText="Select"
+      />
+      {/* <Button className="absolute right-0.5 flex top-12" variant="tertiary">
+        <img src={down} className="h-2.5 w-2.5" />
+      </Button> */}
+    </div>
   );
 };
 
@@ -133,9 +173,26 @@ Form.Feedback = ({ className, message }) => {
   );
 };
 
-Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+Form.Combobox = ({
+  id,
+  register,
+  labelText,
+  className,
+  list,
+  name,
+  nameKey,
+  idKey,
+  watch,
+  setValue,
+  ...rest
+}) => {
+  const selectedItems = watch(id) || [];
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    setValue(id, selectedItems);
+  }, []);
+
   const filteredList =
     query === ""
       ? list
@@ -149,17 +206,17 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
       </label>
       <Combobox
         value={selectedItems}
-        onChange={setSelectedItems}
+        onChange={(data) => setValue(id, data)}
         multiple
         nullable
         name={name}
         id={id}
-        immediate
       >
         <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 min-h-[58px]">
-            {selectedItems.length > 0 &&
-              selectedItems.map((item) => (
+          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 max-w-sm">
+            {selectedItems &&
+              selectedItems?.length > 0 &&
+              selectedItems?.map((item) => (
                 <div
                   key={item[idKey]}
                   className="flex gap-1.5 px-1.5 py-1 bg-neutral-950 bg-opacity-10"
@@ -168,12 +225,9 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
                   <button
                     type="button"
                     onClick={() => {
-                      setSelectedItems(
-                        selectedItems.filter(
-                          (element) =>
-                            element[idKey] !== item[idKey] ||
-                            element[nameKey] !== item[nameKey]
-                        )
+                      setValue(
+                        id,
+                        selectedItems.filter((element) => element !== item)
                       );
                     }}
                   >
@@ -182,16 +236,17 @@ Form.Combobox = ({ id, labelText, className, list, name, nameKey, idKey }) => {
                 </div>
               ))}
             <Combobox.Input
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(evt) => setQuery(evt.target.value)}
               value={query}
-              className="font-nomral border-none focus:outline-none flex-grow flex-shrink-0 w-16"
+              placeholder="Select"
+              className="font-normal bg-background border-none focus:outline-none flex-grow flex-shrink-0 w-16"
             />
             <Combobox.Button className="absolute right-5 flex top-4">
               <img src={down} className="h-2.5 w-2.5" />
             </Combobox.Button>
           </div>
-          <Combobox.Options className="absolute top-full w-full max-h-52 overflow-y-scroll bg-white  border-solid border border-black">
-            {filteredList.map((item) => (
+          <Combobox.Options className="absolute bg-background top-full w-full max-h-36 overflow-y-scroll border-solid border border-black">
+            {filteredList?.map((item) => (
               <Combobox.Option
                 key={item[idKey]}
                 value={item}
