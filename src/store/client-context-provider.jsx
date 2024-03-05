@@ -54,7 +54,7 @@ export const ClientContextProvider = ({ children }) => {
       });
       client.setLink(authLink.concat(httpLink));
     }
-  }, [token]);
+  }, [token, client]);
 
   return client ? (
     <ClientContext.Provider value={{ token, setToken, client }}>
