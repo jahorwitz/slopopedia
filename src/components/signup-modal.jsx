@@ -60,7 +60,7 @@ export const SignupModal = ({ onClose }) => {
       </div>
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background"}
       >
         <Form.TextInput
           register={register("username", {

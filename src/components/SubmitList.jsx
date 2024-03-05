@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
-import { GET_MOVIES, useCurrentUser } from "../graphql/index";
+import { GET_MOVIES } from "../graphql/index";
+import { useCurrentUser } from "../hooks";
 import { Button, Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
