@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { Button } from "./button";
 import { Header } from "./header";
 import { MoviePreviewModal } from "./MoviePreviewModal";

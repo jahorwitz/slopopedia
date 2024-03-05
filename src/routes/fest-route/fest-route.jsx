@@ -3,8 +3,8 @@ import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
+import { useModals } from "../../hooks";
 import magGlassDark from "../../images/mag-glass-black.svg";
-import { useModals } from "../../store";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
