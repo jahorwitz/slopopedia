@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 // import Select from "react-select";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
-import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
+import { CREATE_FEST } from "../graphql/mutations/fest/create-fest";
 import { useModals } from "../store";
 import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal } from "./index";
 
-export function SlopFestModal() {
+export function SlopFestModal({ buttonTitle }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [users, setUsers] = useState([]);
@@ -176,7 +176,7 @@ export function SlopFestModal() {
             name={"attendees"}
           />
           <Form.Submit
-            title={"Fest On!"}
+            title={buttonTitle}
             className={"w-[373px] mb-5 mt-5"}
             disabled={!isValid}
           />

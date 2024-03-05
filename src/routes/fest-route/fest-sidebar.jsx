@@ -1,7 +1,12 @@
 import { useMutation } from "@apollo/client";
 import { useContext, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
-import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
+import {
+  Button,
+  DeleteConfirmationModal,
+  Sidebar,
+  SlopFestModal,
+} from "../../components";
 import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
 import { useModals } from "../../store";
 import { CurrentUserContext } from "../../store/current-user-context.js";
@@ -48,6 +53,13 @@ export const FestSidebar = ({ festQuery }) => {
     );
   }, []);
 
+  useEffect(() => {
+    registerModal(
+      "edit-fest",
+      <SlopFestModal buttonTitle={"Save edits"} onClose={closeModal} />
+    );
+  }, []);
+
   return (
     <div>
       <div className="ml-[-1.25rem]">
@@ -59,7 +71,7 @@ export const FestSidebar = ({ festQuery }) => {
             variant="link-secondary"
             className={"ml-5"}
             size="link"
-            onClick={onClick}
+            onClick={() => openModal("edit-fest")}
           >
             Edit dates & guests
           </Button>

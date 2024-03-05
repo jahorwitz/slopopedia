@@ -1,13 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import {
-  Button,
-  Header,
-  Loading,
-  MovieCardList,
-  SlopFestModal,
-} from "../../components";
+import { Button, Header, Loading, MovieCardList } from "../../components";
 import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { useModals } from "../../store";
@@ -78,13 +72,6 @@ export const FestRoute = () => {
       />
     );
   }, [recommendedMovies]);
-
-  useEffect(() => {
-    registerModal(
-      "edit-fest",
-      <SlopFestModal title={"Save edits"} onClose={closeModal} />
-    );
-  }, []);
 
   if (updateLoading) {
     return <Loading />;

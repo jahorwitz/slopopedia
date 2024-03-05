@@ -47,7 +47,7 @@ export const ProfileFestsRoute = () => {
   useEffect(() => {
     registerModal(
       "create-fest",
-      <SlopFestModal title={"Fest On!"} onClose={closeModal} />
+      <SlopFestModal buttonTitle={"Fest On!"} onClose={closeModal} />
     );
   }, []);
 
