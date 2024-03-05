@@ -10,8 +10,8 @@ import { Form, Modal, SignupModal } from "./index";
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
     useMutation(SIGNIN);
-  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
 
+  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
   const { registerModal, openModal, closeModal } = useModals();
   const { setToken } = useClient();
 
@@ -92,7 +92,7 @@ export function LoginModal({ onClose }) {
             }}
           />
         </div>
-        <div className="flex ml-auto mr-auto justify-between">
+        <div className="flex justify-between xs:flex xs:flex-col xs:items-center">
           <div className="flex">
             {/* Specific design for checkbox including checkMark */}
             {/* Logic for remembering user */}
@@ -141,14 +141,14 @@ export function LoginModal({ onClose }) {
           className="w-[373px]"
           disabled={!isValid}
         />
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           {(errors.gobbId || errors.password) && (
             <Form.Feedback
               message={"Incorrect Username or Password"}
-              className="mb-5"
+              className="font-arialRegular text-lg self-center"
             />
           )}
-          <h3 className="font-arialRegular text-lg mt-5 mb-10">
+          <h3 className="font-arialRegular text-lg mt-5 mb-10 self-center">
             Don't have an account? {""}
             <button
               type="button"
