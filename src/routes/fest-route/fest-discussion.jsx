@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import { Button, DiscussionCard, Header, Loading } from "../../components";
 import {
@@ -7,12 +7,12 @@ import {
   GET_DISCUSSIONS,
   GET_FEST,
 } from "../../graphql/index.js";
-import { CurrentUserContext } from "../../store/current-user-context.js";
+import { useCurrentUser } from "../../hooks";
 import { FestHeader, FestSidebar } from "../fest-route";
 
 export const FestDiscussion = ({}) => {
   const [discussionContent, setDiscussionContent] = useState("");
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const userId = currentUser?.id;
   const festId = useParams().festId;
   const isValid = discussionContent.length !== 0 ? true : false;

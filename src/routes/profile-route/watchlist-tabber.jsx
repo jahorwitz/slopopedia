@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { Tabber } from "../../components";
 import { GET_USER_WATCHLIST } from "../../graphql";
-import { CurrentUserContext } from "../../store/current-user-context";
+import { useCurrentUser } from "../../hooks";
 import { WatchlistTabList } from "./watchlist-tab-list";
 import { WatchlistTabPanels } from "./watchlist-tab-panels";
 
 export const WatchlistTabber = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser;
 
   const watchlistQuery = useQuery(GET_USER_WATCHLIST, {
     variables: { where: { id: currentUser.id } },
