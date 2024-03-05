@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useModals } from "../store";
 import { Button } from "./button";
 import { Header } from "./header";
+import { MoviePreviewModal } from "./movie-preview-modal";
 
 export const Submit = ({ children }) => {
-  const { registerModal, closeModal, openModal } = useModals();
+  const { closeModal, openModal } = useModals();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  useEffect(() => {
-    registerModal(
-      "preview",
+
+  function openMovieModal() {
+    openModal(
       <MoviePreviewModal closeModal={closeModal} howToWatch whiteButton />
     );
-  }, []);
+  }
 
   const handleSubmit = () => {
     setIsSubmitted(true);
@@ -44,7 +46,7 @@ const Form = () => {
           //PageTitle component here
         </h1>
         <Link
-          to={"/submit-list"}
+          to={"/submit/submitted-slops"}
           className="absolute right-10 xs:right-4 xs:text-sm sm:right-4 top-[38.5px] border-b-2 border-black"
         >
           view submitted

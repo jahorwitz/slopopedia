@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -44,9 +44,9 @@ export const ProfileFestsRoute = () => {
 
   const { registerModal, openModal, closeModal } = useModals();
 
-  useEffect(() => {
-    registerModal("create", <SlopFestModal onClose={closeModal} />);
-  }, []);
+  function openSlopFestModal() {
+    openModal(<SlopFestModal onClose={closeModal} />);
+  }
 
   return (
     <div className="max-w-[1440px] mx-auto">
@@ -67,9 +67,7 @@ export const ProfileFestsRoute = () => {
             <Button
               variant="primary"
               className="w-[224px]"
-              onClick={() => {
-                openModal("create");
-              }}
+              onClick={openSlopFestModal}
             >
               New Fest!
             </Button>

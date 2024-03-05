@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import styled from "styled-components";
+import { GET_MOVIES } from "../graphql";
 import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
 import backArrow from "../images/back-arrow.svg";
 import camera from "../images/camera.svg";
@@ -37,12 +38,13 @@ export const MoviePreviewModal = ({
   howToWatch,
   selectedMovie,
   closeModal,
-  refetchMovies,
 }) => {
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
-  const [updateMovieStatus, { data, loading, error }] =
-    useMutation(UPDATE_MOVIE_STATUS);
+  const [updateMovieStatus, { data, loading, error }] = useMutation(
+    UPDATE_MOVIE_STATUS,
+    { refetchQueries: [GET_MOVIES] }
+  );
 
   const approveMovie = (movieId) => {
     updateMovieStatus({
@@ -50,7 +52,7 @@ export const MoviePreviewModal = ({
         where: { id: movieId },
         data: { status: "published" },
       },
-    }).then(refetchMovies());
+    });
   };
 
   const handleWatchedClick = () => {

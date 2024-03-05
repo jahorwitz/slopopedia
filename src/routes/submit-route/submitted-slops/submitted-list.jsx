@@ -38,7 +38,7 @@ export const SubmittedList = ({ currentUser }) => {
         };
 
   // Use the query with the determined variables
-  const { data, loading, error, refetch } = useQuery(GET_MOVIES, {
+  const { data, loading, error } = useQuery(GET_MOVIES, {
     variables: queryVariables,
   });
 
@@ -49,7 +49,6 @@ export const SubmittedList = ({ currentUser }) => {
         whiteButton
         publishButtons
         selectedMovie={movieData}
-        refetchMovies={refetch}
       />
     );
   };
@@ -60,7 +59,6 @@ export const SubmittedList = ({ currentUser }) => {
         movieData={movieData}
         closeModal={closeModal}
         currentUser={currentUser}
-        refetchMovies={refetch}
       />
     );
   }

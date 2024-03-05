@@ -58,7 +58,8 @@ export const Header = () => {
       <Header.NavLinks
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
-        openModal={openModal}
+        openSignUpModal={openSignUpModal}
+        openLoginModal={openLoginModal}
         handleMenu={handleMenu}
         menuOpen={menuOpen}
       />
@@ -119,16 +120,12 @@ Header.NavLinks = ({
     {
       title: "Log In",
       src: headerSmile,
-      onClick: () => {
-        openLoginModal();
-      },
+      onClick: openLoginModal,
     },
     {
       title: "Sign Up",
       src: headerDoor,
-      onClick: () => {
-        openSignUpModal();
-      },
+      onClick: openSignUpModal,
     },
   ];
 
@@ -239,7 +236,7 @@ Header.Profile = ({
             size="sm p-0"
             variant="secondary"
             children="Log In"
-            onClick={openLoginModal}
+            onClick={() => openLoginModal()}
           ></Button>
           <p>/</p>
           <Button
@@ -247,7 +244,7 @@ Header.Profile = ({
             size="sm p-0"
             variant="secondary"
             children="Sign Up"
-            onClick={openSignUpModal}
+            onClick={() => openSignUpModal()}
           ></Button>
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>

@@ -32,11 +32,6 @@ export function LoginModal({ onClose }) {
     },
   });
 
-  const adminInfo = {
-    name: "Contact",
-    description: "Contact an admin to reset your password",
-  };
-
   const onSubmit = () => {
     if (username !== "" || password !== "") {
       const { gobbId, password } = getValues();
@@ -51,6 +46,7 @@ export function LoginModal({ onClose }) {
           setCurrentUser(userData);
           closeModal();
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
+          console.log("error with signin");
         }
       });
     }
