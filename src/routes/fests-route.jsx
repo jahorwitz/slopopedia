@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Button } from "../components";
 import { MoviePreviewModal } from "../components/MoviePreviewModal";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 
 export function FestsRoute() {
   const { registerModal, closeModal, openModal } = useModals();
