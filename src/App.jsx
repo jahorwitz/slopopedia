@@ -14,6 +14,7 @@ import {
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ProfileSettingsRoute,
   SearchRoute,
   SoundsRoute,
 } from "./routes";
@@ -50,6 +51,14 @@ export const App = () => {
                 element={
                   <ProtectedRoute>
                     <ProfileFestsRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/settings"
+                element={
+                  <ProtectedRoute>
+                    <ProfileSettingsRoute />
                   </ProtectedRoute>
                 }
               />
