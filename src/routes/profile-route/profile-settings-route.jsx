@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { DevTool } from "@hookform/devtools";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { GET_USERS } from "../../graphql/";
@@ -13,12 +13,12 @@ import {
   Header,
 } from "../../components/index";
 import { DELETE_USER, GET_USER, UPDATE_USER } from "../../graphql/";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context";
+import { useModals } from "../../hooks";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettingsRoute = () => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  //const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = userCurrentUser();
   const userId = currentUser.id;
   const { registerModal, openModal, closeModal } = useModals();
   const userQuery = useQuery(GET_USER, {
