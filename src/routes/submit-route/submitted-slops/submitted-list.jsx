@@ -67,7 +67,7 @@ export const SubmittedList = ({ currentUser }) => {
     <div className="w-fit h-fit">
       {!loading && (
         <div className="flex flex-col gap-y-5">
-          {data.movies.map((movie) => (
+          {data?.movies.map((movie) => (
             <div
               className="h-fit w-[448px] border-b border-black-60 border-solid flex justify-between pb-5 xs:flex-col xs:items-center xs:gap-4"
               key={movie.id}
