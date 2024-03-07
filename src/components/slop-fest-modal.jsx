@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 // import Select from "react-select";
 import { GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
-import { CREATE_FEST } from "../graphql/mutations/create-fest/create-fest";
+import { CREATE_FEST } from "../graphql/mutations/fest";
 import { useCurrentUser, useModals } from "../hooks";
 import { Form, Modal } from "./index";
 
@@ -57,7 +57,7 @@ export function SlopFestModal({ buttonTitle }) {
   }));
 
   const onSubmit = () => {
-    const { name, attendees } = getValues();
+    const { name, attendees, startDate, endDate } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
     try {
@@ -124,17 +124,9 @@ export function SlopFestModal({ buttonTitle }) {
                 required
                 name="startDate"
                 isValid={!errors.startDate}
-                date={startDate}
-                register={register("startDate", {
-                  required: "A start date is required",
-                  valueAsDate: true,
-                })}
-                onChange={(date) => {
-                  setStartDate(date);
-                  setValue("startDate", date, {
-                    shouldValidate: true,
-                  });
-                }}
+                id={"startDate"}
+                watch={watch}
+                setValue={setValue}
               />
               {errors.startDate ? (
                 <Form.Feedback message={"Must be a valid date"} />
@@ -146,16 +138,12 @@ export function SlopFestModal({ buttonTitle }) {
               <Form.DateDropdown
                 labelText={"End Date"}
                 className={"w-[176px] h-12"}
+                id={"endDate"}
                 required
+                watch={watch}
+                setValue={setValue}
                 name="endDate"
                 isValid={!errors.endDate}
-                date={endDate}
-                onChange={(date) => {
-                  setEndDate(date);
-                  setValue("endDate", date, {
-                    shouldValidate: true,
-                  });
-                }}
               />
               {errors.endDate ? (
                 <Form.Feedback message={"Must be a valid date"} />

@@ -7,7 +7,8 @@ import {
   Sidebar,
   SlopFestModal,
 } from "../../components";
-import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
+import { GET_USER_FESTS } from "../../graphql/";
+import { DELETE_FEST } from "../../graphql/mutations/fest";
 import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {

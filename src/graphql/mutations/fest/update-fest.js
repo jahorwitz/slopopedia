@@ -1,17 +1,40 @@
 import { gql } from "@apollo/client";
 
 export const UPDATE_FEST = gql`
-  mutation UpdateFest($where: FestWhereUniqueInput!, $data: FestUpdateInput!) {
+  mutation UpdateFestMovies(
+    $where: FestWhereUniqueInput!
+    $data: FestUpdateInput!
+  ) {
     updateFest(where: $where, data: $data) {
+      attendees {
+        id
+        username
+      }
+      movies {
+        id
+        title
+        description
+        keywords {
+          name
+        }
+        photo {
+          url
+        }
+        runtime
+        releaseYear
+        tomatoScore
+      }
+      name
+      id
+      startDate
+      endDate
       creator {
         id
       }
-      id
-      name
-      startDate
-      endDate
-      attendees {
-        username
+      festVotes {
+        movie {
+          id
+        }
       }
     }
   }

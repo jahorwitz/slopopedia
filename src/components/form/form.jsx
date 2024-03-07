@@ -124,7 +124,24 @@ Form.Dropdown = ({
   );
 };
 
-Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
+Form.DateDropdown = ({
+  register,
+  className,
+  labelText,
+  id,
+  onChange,
+  setValue,
+  watch,
+  name,
+  ...rest
+}) => {
+  const selectedItem = watch(id) || new Date(Date.now());
+  // const selectedDate = selectedItem.toISOString().substring(0, 10);
+
+  useEffect(() => {
+    setValue(id, selectedItem);
+  }, []);
+
   return (
     <div
       className={`relative flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
@@ -133,11 +150,13 @@ Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
         {labelText}
       </label>
       <DatePicker
+        name={name}
+        dateFormat={"MM/dd/yyyy"}
         className={
           "py-4 px-4 border-solid rounded-none border border-black w-44 h-12 flex bg-background"
         }
-        onChange={onChange}
-        selected={date}
+        onChange={(date) => setValue(id, date)}
+        selected={selectedItem}
         placeholderText="Select"
       />
       {/* <Button className="absolute right-0.5 flex top-12" variant="tertiary">
