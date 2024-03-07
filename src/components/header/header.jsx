@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
+import { useClient, useCurrentUser, useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -11,18 +12,15 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
 export const Header = () => {
-  const [token, setToken] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setToken } = useClient();
+  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
+    useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { openModal, closeModal } = useModals();
   const [menuOpen, setMenuOpen] = useState(false);
-  const jwt = localStorage.getItem("jwt");
 
   function openLoginModal() {
     openModal(<LoginModal onClose={closeModal} />);
@@ -37,21 +35,17 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    if (jwt) {
-      setToken(jwt);
-    }
-
-    if (data && data.authenticatedItem) {
+    if (!loading && data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
       setIsLoggedIn(true);
     }
-    //needed to change value of isLoggedIn when a user logs in
-    //logging in happens in login-modal.jsx and
 
-    if (Object.values(currentUser).length > 0) {
-      setIsLoggedIn(true);
+    if (!loading && data && data.authenticatedItem === null) {
+      localStorage.removeItem("jwt");
+      setToken(null);
     }
-  }, [jwt, data, currentUser]);
+  }, [data]);
+
   return (
     <header className="flex flex-row w-full relative z-10 pl-5 pr-5 mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
       <Header.Logo />
@@ -68,6 +62,8 @@ export const Header = () => {
         currentUser={currentUser}
         openSignUpModal={openSignUpModal}
         openLoginModal={openLoginModal}
+        setCurrentUser={setCurrentUser}
+        setIsLoggedIn={setIsLoggedIn}
       />
     </header>
   );
@@ -221,12 +217,29 @@ Header.NavLinks = ({
   );
 };
 
-Header.Profile = ({
+Header.Profile = (
   isLoggedIn,
   currentUser,
   openSignUpModal,
   openLoginModal,
-}) => {
+  setCurrentUser,
+  setIsLoggedIn
+) => {
+  const { setToken, token } = useClient();
+  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
+
+  useEffect(() => {
+    if (!loading && data && data.authenticatedItem) {
+      setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
+    }
+
+    if (!loading && data && data.authenticatedItem === null) {
+      localStorage.removeItem("jwt");
+      setToken(null);
+    }
+  }, [data]);
+
   return (
     <>
       {isLoggedIn === false ? (

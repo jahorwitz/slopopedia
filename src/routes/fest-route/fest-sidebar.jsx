@@ -3,8 +3,7 @@ import { useContext } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
 import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context.js";
+import { useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {
   const { currentUser } = useContext(CurrentUserContext);

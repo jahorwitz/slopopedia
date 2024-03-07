@@ -1,19 +1,19 @@
 import { useMutation } from "@apollo/client";
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
+import { useClient, useCurrentUser, useModals } from "../hooks";
 import checkMark from "../images/check-mark-dark.svg";
-import { useModals } from "../store";
-import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal, SignupModal } from "./index";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
     useMutation(SIGNIN);
-  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
 
   const { openModal, closeModal } = useModals();
+  const { setToken } = useClient();
 
   function openSignUpModal() {
     openModal(<SignupModal onClose={closeModal} />);
@@ -43,7 +43,9 @@ export function LoginModal({ onClose }) {
           const userData = data.authenticateUserWithPassword.item;
           const sessionToken = data.authenticateUserWithPassword.sessionToken;
           localStorage.setItem("jwt", sessionToken);
+          setToken(sessionToken);
           setCurrentUser(userData);
+          setIsLoggedIn(true);
           closeModal();
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
           console.log("error with signin");

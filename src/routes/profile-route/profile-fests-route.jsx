@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -11,14 +10,13 @@ import {
   SlopFestModal,
 } from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
+import { useCurrentUser, useModals } from "../../hooks";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -42,7 +40,7 @@ export const ProfileFestsRoute = () => {
     query: "(min-width: 1170px)",
   });
 
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
 
   function openSlopFestModal() {
     openModal(<SlopFestModal onClose={closeModal} />);

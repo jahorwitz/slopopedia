@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
