@@ -33,7 +33,7 @@ export function Modal({ children, title, whiteButton }) {
             </Transition.Child>
 
             <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 ">
+              <div className="flex min-h-full items-center justify-center p-4 xs:p-0 xs:min-h-0">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-out duration-300"
@@ -53,7 +53,7 @@ export function Modal({ children, title, whiteButton }) {
                     {title && (
                       <Dialog.Title
                         as="h3"
-                        className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4"
+                        className="text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4 xs:my-2"
                       >
                         {title}
                       </Dialog.Title>
