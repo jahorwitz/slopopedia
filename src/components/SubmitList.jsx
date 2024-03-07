@@ -1,7 +1,37 @@
-import { Link } from "react-router-dom";
-import { Header } from "./index";
+import { useQuery } from "@apollo/client";
+import { Link, useNavigate } from "react-router-dom";
+import { GET_MOVIES } from "../graphql/index";
+import { useCurrentUser } from "../hooks";
+import { Button, Header, MovieCardList } from "./index";
 
 export const SubmitList = () => {
+  const navigate = useNavigate();
+  const currentUser = useCurrentUser();
+  const { loading, data, error } = useQuery(GET_MOVIES, {
+    variables: {
+      where: {},
+    },
+  });
+
+  //edit function for dynamic button
+  const handleEdit = (movieId) => {
+    navigate(`/edit-slop/${movieId}`);
+  };
+
+  //dynamic button for handleEdit. If the author id matches the user, Edit Button appears.
+  // if the current user is an admin, approve button appears.
+  // if neither of these conditions are met, the button does not appear.
+  const renderButton = (movie) => {
+    if (currentUser?.id === movie?.author?.id) {
+      return <Button onClick={() => handleEdit(movie.id)}>Edit</Button>;
+    } else if (currentUser?.isAdmin) {
+      return <Button onClick={() => console.log("Approve!")}>Approve</Button>;
+    } else return null;
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <>
       <Header>
@@ -21,7 +51,9 @@ export const SubmitList = () => {
             Back to submit page
           </Link>
           <div className="max-w-[453px] h-[728px] ">
-            //Add the submitted slops Component Here
+            {data && data.movies && (
+              <MovieCardList movies={data.movies} renderButton={renderButton} />
+            )}
           </div>
           <div className="mb-10 mt-24">//add footer component here//</div>
         </div>

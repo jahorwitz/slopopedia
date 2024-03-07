@@ -18,20 +18,17 @@ export function MainRoute() {
           <Header.NavLinks />
           <Header.Profile />
         </Header>
-        <div className=" flex flex-row w-full max-w-[1440px] mb-20 mx-auto items-center content-center xs:pr-2  md:text-md md:pr-2">
-          <img
-            className={"absolute w-full  max-w-[1440px] pt-11 xs:pt-5 sm:pt-9"}
-            src={image}
-            alt="actors"
-          />
+        <div className="flex  flex-row w-full h-[120px] mt-[-30px] bg-no-repeat bg-cover bg-center mx-auto items-center content-center md:text-md ">
+          <img className={"w-full"} src={image} alt="actors" />
         </div>
         {/* The above div is the mainpage banner */}
       </div>
-
-      <div className="bg-lightGray w-full max-w-[1440px] mx-auto p-20">
-        <h1 className="h-18 w-max font-arialNarrow text-3xl">RECENTLY ADDED</h1>
+      <div className="w-full p-[120px] xs:p-[20px] sm:p-[40px] md:p-[60px]">
+        <h1 className="flex w-full mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center ">
+          RECENTLY ADDED
+        </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
-          {!loading && <MovieCardList movies={data.movies} />}
+          {!loading && <MovieCardList movies={data?.movies} />}
         </div>
       </div>
     </>

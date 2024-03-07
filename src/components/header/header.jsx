@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
+import { useClient, useCurrentUser, useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -11,14 +12,52 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context";
 import { Button, LoginModal, SignupModal } from "../index";
 
-export const Header = ({ children }) => {
+export const Header = () => {
+  const { setToken } = useClient();
+  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
+    useCurrentUser();
+  const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
+  const { registerModal, openModal, closeModal } = useModals();
+  const [open, setOpen] = useState(false);
+
+  const handleMenu = () => {
+    setOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    registerModal("signin", <LoginModal onClose={closeModal} />);
+    registerModal("signup", <SignupModal closeModal={closeModal} />);
+  }, []);
+
+  useEffect(() => {
+    if (!loading && data && data.authenticatedItem) {
+      setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
+    }
+
+    if (!loading && data && data.authenticatedItem === null) {
+      localStorage.removeItem("jwt");
+      setToken(null);
+    }
+  }, [data]);
+
   return (
-    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 max-w-[1440px] mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
-      {children}
+    <header className="flex flex-row w-full relative z-10 pl-5 pr-5 mx-auto justify-between items-center text-lg font-arialRegular x-0 content-center h-20 bg-black text-stone-50 xs:pl-2 xs:pr-2 md:text-md md:pr-2 md:pl-2">
+      <Header.Logo />
+      <Header.NavLinks
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        openModal={openModal}
+        handleMenu={handleMenu}
+        open={open}
+      />
+      <Header.Profile
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        openModal={openModal}
+      />
     </header>
   );
 };
@@ -35,19 +74,13 @@ Header.Logo = () => {
   );
 };
 
-Header.NavLinks = () => {
-  const [open, setOpen] = useState(false);
-  const { registerModal, openModal, closeModal } = useModals();
-
-  useEffect(() => {
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-    registerModal("signin", <LoginModal onClose={closeModal} />);
-  }, []);
-
-  const handleMenu = () => {
-    setOpen((prev) => !prev);
-  };
-
+Header.NavLinks = ({
+  isLoggedIn,
+  currentUser,
+  openModal,
+  open,
+  handleMenu,
+}) => {
   const navLinks = [
     {
       title: "Slop Search",
@@ -85,10 +118,6 @@ Header.NavLinks = () => {
       onClick: () => {
         openModal("signup");
       },
-    },
-    {
-      title: "Danila Ting",
-      src: headerSmile,
     },
   ];
 
@@ -141,25 +170,38 @@ Header.NavLinks = () => {
                 {link.title}
               </Link>
             ))}
-            {buttons.slice(0, buttons.length - 1).map((button) => (
-              <div
-                key={button.title}
-                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
-              >
-                <img
-                  className="w-5 h-5 mt-2 ml-1"
-                  src={button.src}
-                  alt={button.title}
-                />
-                <Button
-                  variant="link"
-                  onClick={button.onClick}
-                  className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+            {isLoggedIn === false ? (
+              buttons.map((button) => (
+                <div
+                  key={button.title}
+                  className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
                 >
-                  {button.title}
-                </Button>
+                  <img
+                    className="w-5 h-5 mt-2 ml-1"
+                    src={button.src}
+                    alt={button.title}
+                  />
+                  <Button
+                    variant="link"
+                    onClick={button.onClick}
+                    className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                  >
+                    {button.title}
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <div className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
+                <img
+                  className="w-5 h-5 mt-2 ml-1 mr-1"
+                  src={headerSmile}
+                  alt={currentUser.username}
+                />
+                <div className="flex flex-row h-[24px] mt-1 gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex ">
+                  <a href="/profile">{currentUser.username}</a>
+                </div>
               </div>
-            ))}
+            )}
             {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
             {/* {buttons.slice(2, 3).map((button, index) => (
                 <div key={index} className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
@@ -175,15 +217,11 @@ Header.NavLinks = () => {
 };
 
 Header.Profile = () => {
-  const [token, setToken] = useState("");
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { setToken, token } = useClient();
+  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
+    useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { registerModal, openModal, closeModal } = useModals();
-  const jwt = localStorage.getItem("jwt");
-
-  const isLoggedIn = useMemo(() => {
-    return true ? token !== "" : false;
-  }, [token]);
 
   useEffect(() => {
     registerModal("signin", <LoginModal onClose={closeModal} />);
@@ -191,21 +229,24 @@ Header.Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (jwt) {
-      setToken(jwt);
-    }
-    if (data && data.authenticatedItem) {
+    if (!loading && data && data.authenticatedItem) {
       setCurrentUser(data.authenticatedItem);
+      setIsLoggedIn(true);
     }
-  }, [jwt, data]);
+
+    if (!loading && data && data.authenticatedItem === null) {
+      localStorage.removeItem("jwt");
+      setToken(null);
+    }
+  }, [data]);
 
   return (
     <>
       {isLoggedIn === false ? (
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex sm:hidden xs:hidden">
           <Button
-            className={"border-b-2"}
-            size="sm"
+            className={"border-b-2 leading-7"}
+            size="sm p-0"
             variant="secondary"
             children="Log In"
             onClick={() => {
@@ -214,8 +255,8 @@ Header.Profile = () => {
           ></Button>
           <p>/</p>
           <Button
-            className={"border-b-2"}
-            size="sm"
+            className={"border-b-2 leading-7"}
+            size="sm p-0"
             variant="secondary"
             children="Sign Up"
             onClick={() => {

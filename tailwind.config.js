@@ -9,8 +9,8 @@ export default {
         green: "#48FF50",
         yellow: "#FFD913",
         danger: "#FF4040",
-        dark: "#10101060",
-        // ^^ added 60 opacity to the end of dark
+        dark: "#101010",
+        background: "#EFEFEF",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

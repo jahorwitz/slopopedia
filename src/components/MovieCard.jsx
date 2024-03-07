@@ -15,17 +15,18 @@ export function MovieCard({
   plusButton,
   minusButtonClick,
   plusButtonClick,
+  renderButton,
   ...rest
 }) {
   const card = {
-    image: movieInfo.photo,
-    title: movieInfo.title,
-    keywords: movieInfo.keywords,
-    releaseYear: movieInfo.releaseYear,
-    runtimeInMinutes: movieInfo.runtime,
-    rottenTomatoesScore: movieInfo.rottenTomatoesScore,
-    howToWatch: movieInfo.howToWatch,
-    decription: movieInfo.description,
+    image: movieInfo?.photo,
+    title: movieInfo?.title,
+    keywords: movieInfo?.keywords,
+    releaseYear: movieInfo?.releaseYear,
+    runtimeInMinutes: movieInfo?.runtime,
+    rottenTomatoesScore: movieInfo?.rottenTomatoesScore,
+    howToWatch: movieInfo?.howToWatch,
+    decription: movieInfo?.description,
   };
 
   return (
@@ -48,6 +49,9 @@ export function MovieCard({
         onClick={onClick}
         {...rest}
       >
+        {/* Render Edit Button conditionally */}
+        {renderButton && renderButton(movieInfo)}
+
         {minusButton && (
           <Button
             variant="minus"

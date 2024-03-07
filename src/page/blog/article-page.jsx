@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
@@ -7,7 +7,7 @@ import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
 import { GET_BLOG_POST } from "../../graphql/queries/blog/posts.js";
-import { CurrentUserContext } from "../../store/current-user-context.js";
+import { useCurrentUser } from "../../hooks";
 
 export const Article = () => {
   const { id } = useParams();
@@ -20,7 +20,7 @@ export const Article = () => {
     movies: [],
   });
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const { data } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
