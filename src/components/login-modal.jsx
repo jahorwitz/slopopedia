@@ -65,7 +65,7 @@ export function LoginModal({ onClose }) {
     <Modal title="OH HEY GOBLIN">
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"w-full max-w-sm mx-auto p-1.5 bg-background"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background xs:px-5"}
       >
         <div className="flex flex-col">
           <Form.TextInput
@@ -138,7 +138,7 @@ export function LoginModal({ onClose }) {
         </div>
         <Form.Submit
           title={"Get to Sloppin'"}
-          className="w-[373px]"
+          className="w-[373px] "
           disabled={!isValid}
         />
         <div className="flex flex-col">
