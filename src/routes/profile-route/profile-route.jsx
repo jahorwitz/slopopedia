@@ -11,7 +11,7 @@ export const ProfileRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] bg-gray-background mx-auto min-h-screen relative">
+    <div className=" bg-gray-background mx-auto min-h-screen relative">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
