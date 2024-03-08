@@ -97,6 +97,15 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
+  // const getDirtyValues = () => {
+  //   //let dirtyValues = [];
+  //   const { username, email, password } = getValues();
+  //   console.log("getDirtyValues called");
+  //   console.log(username, email, password);
+  //   if (dirtyFields === true || Array.isArray(dirtyFields));
+  //   return dirtyFields;
+  // };
+
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
   useEffect(() => {
     registerModal(
@@ -149,6 +158,8 @@ export const ProfileSettingsRoute = () => {
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
+    //getDirtyValues();
+
     //make sure that new username is unique
     //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
     //usersQuery.map((usernames) => {
