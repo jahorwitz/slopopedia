@@ -9,6 +9,7 @@ export default {
         yellow: "#FFD913",
         danger: "#FF4040",
         dark: "#101010",
+        background: "#EFEFEF",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

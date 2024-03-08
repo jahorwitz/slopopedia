@@ -1,17 +1,23 @@
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useContext } from "react";
+import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import { Button, Footer, Header, Keyword } from "../../components/index";
+import {
+  Button,
+  Footer,
+  Header,
+  Keyword,
+  SlopFestModal,
+} from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
+import { useCurrentUser, useModals } from "../../hooks";
 import checkMark from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
-import { CurrentUserContext } from "../../store/current-user-context";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -35,6 +41,12 @@ export const ProfileFestsRoute = () => {
     query: "(min-width: 1170px)",
   });
 
+  const { registerModal, openModal, closeModal } = useModals();
+
+  useEffect(() => {
+    registerModal("create", <SlopFestModal onClose={closeModal} />);
+  }, []);
+
   return (
     <div className="max-w-[1440px] mx-auto">
       <Header>
@@ -51,7 +63,13 @@ export const ProfileFestsRoute = () => {
                 ? "YOU HAVE NO FESTS :("
                 : "YOUR FESTS"}
             </h2>
-            <Button variant="primary" className="w-[224px]">
+            <Button
+              variant="primary"
+              className="w-[224px]"
+              onClick={() => {
+                openModal("create");
+              }}
+            >
               New Fest!
             </Button>
           </div>
@@ -79,22 +97,22 @@ export const ProfileFestsRoute = () => {
                       </p>
                       <div className="flex flex-row">
                         {items.attendees.length <= 4
-                          ? items.attendees?.map((attendee, index) => {
+                          ? items.attendees?.map((attendee) => {
                               return (
                                 <Keyword
-                                  key={index}
+                                  key={attendee.username}
                                   className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                   keyword={attendee.username}
                                 />
                               );
                             })
-                          : items.slice(0, 4).map((attendee, index) => {
+                          : items.attendees.slice(0, 4).map((attendee) => {
                               // needs to have {+ attendees.length - 5} to show how many attendees after 5
                               return (
                                 <>
                                   <div>
                                     <Keyword
-                                      key={index}
+                                      key={attendee.username}
                                       className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                       keyword={attendee.username}
                                     />
@@ -106,7 +124,7 @@ export const ProfileFestsRoute = () => {
                           <Keyword
                             key={index}
                             className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                            keyword={items.attendees.length - 4}
+                            keyword={`+ ${items.attendees.length - 4} more`}
                           />
                         ) : (
                           ""
