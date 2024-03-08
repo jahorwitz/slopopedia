@@ -58,14 +58,14 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
         {buttons && (
           <Badge
             text="You'll like this!"
-            className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial"
+            className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial xs:top-[30px] xs:left-[10px]"
           />
         )}
         <div className="blur"></div>
         <img
           src={movie.photo}
           alt={movie.title}
-          className="mx-auto my-0 py-2.5 z-50 xs:max-w-10"
+          className="mx-auto my-0 py-2.5 z-50 xs:w-72 sm:z-0 xs:z-0"
         />
       </BlurredImage>
       <div className="max-w-[620px] m-auto pt-5 pb-[60px] flex flex-col gap-y-5 font-arial px-4 ">
