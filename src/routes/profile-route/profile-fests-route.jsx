@@ -36,7 +36,7 @@ export const ProfileFestsRoute = () => {
     },
   });
 
-  const festsQuery = useQuery(GET_FESTS, { variables: { where: {} } });
+  const festsQuery = useQuery(GET_USER_FESTS, { variables: { where: {} } });
 
   //seems like this needs to be a dropdown, not multiple buttons
   //invitees should be the default array someone is added to for a fest
