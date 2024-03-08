@@ -10,7 +10,7 @@ export const WatchlistTabber = () => {
   const { currentUser } = useCurrentUser;
 
   const watchlistQuery = useQuery(GET_USER_WATCHLIST, {
-    variables: { where: { id: currentUser.id } },
+    variables: { where: { id: currentUser?.id } },
   });
 
   const wishList = useMemo(() => {
