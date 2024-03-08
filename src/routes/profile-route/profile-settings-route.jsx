@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { GET_USERS } from "../../graphql/";
+import { useCurrentUser } from "../../hooks";
 
 //import { DeleteUserModal } from "../../components/delete-user-modal";
 import {
@@ -17,8 +18,7 @@ import { useModals } from "../../hooks";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettingsRoute = () => {
-  //const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const { currentUser, setCurrentUser } = userCurrentUser();
+  const { currentUser, setCurrentUser } = useCurrentUser();
   const userId = currentUser.id;
   const { registerModal, openModal, closeModal } = useModals();
   const userQuery = useQuery(GET_USER, {
