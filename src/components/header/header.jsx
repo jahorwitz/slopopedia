@@ -234,6 +234,7 @@ Header.Profile = () => {
     if (!loading && data && data.authenticatedItem === null) {
       localStorage.removeItem("jwt");
       setToken(null);
+      setIsLoggedIn(false);
     }
   }, [data]);
 

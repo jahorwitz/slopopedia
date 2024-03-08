@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router";
 import { Sidebar } from "../../components";
+import { useClient, useCurrentUser } from "../../hooks";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
 import sidebarHeart from "../../images/sidebar-heart.svg";
 import sidebarWrench from "../../images/sidebar-wrench.svg";
 
 export const ProfileSidebar = () => {
+  const { setIsLoggedIn } = useCurrentUser();
+  const { setToken, client } = useClient();
   const menuItems = [
     {
       title: "Me goblin",
@@ -29,10 +32,13 @@ export const ProfileSidebar = () => {
     },
   ];
 
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("jwt");
-    navigate("/");
+    setToken(null);
+    setIsLoggedIn(false);
+    client.resetStore();
+    navigate("/", { replace: true });
   };
 
   return (
