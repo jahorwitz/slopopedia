@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
+import { useModals } from "../../hooks";
 import closeButton from "../../images/close-button.svg";
-import { useModals } from "../../store";
 
 export function Modal({ children, title, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);
@@ -43,7 +43,7 @@ export function Modal({ children, title, whiteButton }) {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-white align-middle shadow-xl transition-all box-border">
+                  <Dialog.Panel className="w-full max-w-lg-card transform overflow-hidden bg-background align-middle shadow-xl transition-all box-border">
                     <button
                       className="w-5 h-5 absolute top-10 right-10 z-50"
                       onClick={closeThisModal}

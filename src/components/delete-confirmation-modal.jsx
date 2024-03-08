@@ -1,5 +1,5 @@
 import { Button } from "../components/index";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { Modal } from "./index";
 
 export function DeleteConfirmationModal({ confirmButtonAction }) {
