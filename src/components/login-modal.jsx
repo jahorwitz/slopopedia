@@ -10,8 +10,8 @@ import { Form, Modal, SignupModal } from "./index";
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
     useMutation(SIGNIN);
-  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
 
+  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
   const { registerModal, openModal, closeModal } = useModals();
   const { setToken } = useClient();
 
@@ -65,7 +65,7 @@ export function LoginModal({ onClose }) {
     <Modal title="OH HEY GOBLIN">
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"flex flex-col items-center p-6"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background xs:px-5"}
       >
         <div className="flex flex-col">
           <Form.TextInput
@@ -76,7 +76,6 @@ export function LoginModal({ onClose }) {
             id={"gobb-id"}
             labelText={"Gobb ID"}
             isValid={!errors.gobbId}
-            className={`w-[373px]`}
             onChange={(evt) => {
               setValue("gobbId", evt.target.value, { shouldValidate: true });
             }}
@@ -88,19 +87,18 @@ export function LoginModal({ onClose }) {
             id={"password"}
             labelText={"Password"}
             isValid={!errors.password}
-            className={`w-[373px]`}
             onChange={(evt) => {
               setValue("password", evt.target.value, { shouldValidate: true });
             }}
           />
         </div>
-        <div className="flex ml-auto mr-auto w-[373px] justify-between">
+        <div className="flex justify-between xs:flex xs:flex-col xs:items-center">
           <div className="flex">
             {/* Specific design for checkbox including checkMark */}
             {/* Logic for remembering user */}
             <input
               type="checkbox"
-              className={`w-[24px] h-[24px] mr-[16px] checked:bg-${checkMark}`}
+              className={`w-[24px] h-[24px] mr-[14px] checked:bg-${checkMark}`}
             />
             <h3 className="font-arialRegular text-lg">Remember Me</h3>
           </div>
@@ -138,19 +136,19 @@ export function LoginModal({ onClose }) {
             )}
           </Popover>
         </div>
-        <div className="flex flex-col items-center">
-          <Form.Submit
-            title={"Get to Sloppin'"}
-            className="w-[373px]"
-            disabled={!isValid}
-          />
+        <Form.Submit
+          title={"Get to Sloppin'"}
+          className="w-[373px] "
+          disabled={!isValid}
+        />
+        <div className="flex flex-col">
           {(errors.gobbId || errors.password) && (
             <Form.Feedback
               message={"Incorrect Username or Password"}
-              className="mb-5"
+              className="font-arialRegular text-lg self-center"
             />
           )}
-          <h3 className="font-arialRegular text-lg mt-5 mb-10">
+          <h3 className="font-arialRegular text-lg mt-5 mb-10 self-center">
             Don't have an account? {""}
             <button
               type="button"
