@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Footer } from "../../components/footer/footer";
 import { Form } from "../../components/form";
 import { CREATE_MOVIE, GET_MOVIES } from "../../graphql";
+import { GET_KEYWORDS } from "../../graphql/get-keywords";
 import titleImage from "../../images/Submit a slop.png";
 import { CurrentUserContext } from "../../store/current-user-context";
 
@@ -13,6 +14,13 @@ export const SubmitSlopForm = () => {
   const { currentUser } = useContext(CurrentUserContext);
   const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
+  const [movieKeywords, setMovieKeywords] = useState([]);
+
+  // Grab the keywords from the database
+  const { data: keywordsData } = useQuery(GET_KEYWORDS);
+
+  // Logic to upload image
+  const [uploadImage] = useMutation(CREATE_MOVIE);
 
   const resetSubmitted = () => {
     setSubmitted(false);
@@ -32,10 +40,21 @@ export const SubmitSlopForm = () => {
       releaseYear: "",
       runtime: "",
       tomatoScore: "",
+      photo: "",
       howToWatch: "",
       keywords: "",
     },
   });
+
+  const {
+    title,
+    description,
+    releaseYear,
+    runtime,
+    tomatoScore,
+    howToWatch,
+    keywords,
+  } = getValues();
 
   const handleFormSubmit = (data) => {
     setSubmitted(true);
@@ -55,10 +74,11 @@ export const SubmitSlopForm = () => {
             description,
             releaseYear: releaseYearInt,
             runtime: runTimeInt,
-            // Todo: Not totally sure how to handle the image
             tomatoScore: tomatoScoreInt,
             howToWatch,
-            // Keywords blocked by another ticket.
+            keywords: {
+              connect: [...keywords, { id: keywords.id }],
+            },
           },
         },
       });
@@ -75,24 +95,12 @@ export const SubmitSlopForm = () => {
         description: "",
         releaseYear: "",
         runtime: "",
-        image: "",
         tomatoScore: "",
         howToWatch: "",
         keywords: "",
       });
     }
   }, [isSubmitSuccessful]);
-
-  const {
-    title,
-    description,
-    releaseYear,
-    runtime,
-    image,
-    tomatoScore,
-    howToWatch,
-    keywords,
-  } = getValues();
 
   // Querying movies and adding the needed, variables. Setting the author id to the user.id
   const { loading, error, data } = useQuery(GET_MOVIES, {
@@ -130,7 +138,7 @@ export const SubmitSlopForm = () => {
           })}
           name="title"
           placeholder="Title"
-          labelText={"Title *"}
+          labelText="Title *"
           required
           onChange={(e) => {
             setValue("title", e.target.value, { shouldValidate: true });
@@ -149,7 +157,7 @@ export const SubmitSlopForm = () => {
             },
           })}
           placeholder="Descritpion"
-          labelText={"Description *"}
+          labelText="Description *"
           onChange={(e) => {
             setValue("description", e.target.value, { shouldValidate: true });
           }}
@@ -170,7 +178,7 @@ export const SubmitSlopForm = () => {
                 },
               })}
               placeholder="Release Year"
-              labelText={"Release Year"}
+              labelText="Release Year"
               onChange={(e) => {
                 setValue("releaseYear", e.target.value, {
                   shouldValidate: true,
@@ -186,7 +194,7 @@ export const SubmitSlopForm = () => {
             <Form.TextInput
               value={runtime}
               placeholder="Runtime"
-              labelText={"Runtime"}
+              labelText="Runtime"
               onChange={(e) => {
                 setValue("runtime", e.target.value, { shouldValidate: true });
               }}
@@ -196,11 +204,23 @@ export const SubmitSlopForm = () => {
         </div>
         <Form.TextInput
           type="file"
-          register={register("image", { required: false })}
+          register={register("photo", { required: false })}
           accept="image/png, image/jpeg"
-          placeholder="Click to upload"
-          labelText={"Image"}
-          isValid={!errors.image}
+          labelText="Image"
+          isValid={!isValid}
+          // onChange={({
+          //   target: {
+          //     validity,
+          //     files: [file],
+          //   },
+          // }) => {
+          //   if (validity.valid)
+          //     uploadImage({
+          //       variables: {
+          //         file,
+          //       },
+          //     });
+          // }}
         />
         <div className="flex justify-between box-border font-arialBold text-lg">
           <div className="flex flex-col">
@@ -213,7 +233,7 @@ export const SubmitSlopForm = () => {
                 },
               })}
               placeholder="Rotten Tomatoes Score"
-              labelText={"Rotten Tomatoes Score"}
+              labelText="Rotten Tomatoes Score"
               onChange={(e) => {
                 setValue("tomatoScore", e.target.value, {
                   shouldValidate: true,
@@ -229,7 +249,7 @@ export const SubmitSlopForm = () => {
             <Form.TextInput
               value={howToWatch}
               placeholder="How To Watch"
-              labelText={"How To Watch"}
+              labelText="How To Watch"
               onChange={(e) => {
                 setValue("howToWatch", e.target.value, {
                   shouldValidate: true,
@@ -239,7 +259,11 @@ export const SubmitSlopForm = () => {
             />
           </div>
         </div>
-        <Form.TextInput
+        <Form.Combobox
+          nameKey="name"
+          idKey="name"
+          id="keywords"
+          list={movieKeywords}
           value={keywords}
           errors={errors}
           register={register("keywords", {
@@ -249,7 +273,7 @@ export const SubmitSlopForm = () => {
             },
           })}
           placeholder="Keywords"
-          labelText={"Keywords *"}
+          labelText="Keywords *"
           onChange={(e) => {
             setValue("keywords", e.target.value, { shouldValidate: true });
           }}
@@ -258,7 +282,7 @@ export const SubmitSlopForm = () => {
         {errors.keywords && <Form.Feedback message={errors.keywords.message} />}
         <Form.Submit
           type="submit"
-          title={"yeah"}
+          title="yeah"
           className="w-full border-none"
           disabled={!isValid}
         />
@@ -266,7 +290,7 @@ export const SubmitSlopForm = () => {
       {/* If form is submitted, we are displaying a thank you message */}
       {submitted ? (
         <div className="flex gap-[200px] flex-col m-auto max-w-[672px] mt-[200px]">
-          <p class="font-arialRegular text-lg text-center">
+          <p className="font-arialRegular text-lg text-center">
             Thanks for submitting a slop to our platform, dear goblin! Our team
             of professional slop goblins will review your submission and publish
             it,  if your slop is actually sloppy, and doesn’t repeat movies
