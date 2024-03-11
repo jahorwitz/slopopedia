@@ -190,7 +190,6 @@ export const ProfileSettingsRoute = () => {
                 });
               }}
               isValid={!errors.username}
-              placeholder="Type here"
               prefilledInputs={prefilledInputs.username}
             />
 
@@ -213,7 +212,6 @@ export const ProfileSettingsRoute = () => {
                 });
               }}
               isValid={!errors.email}
-              placeholder="Type here"
               prefilledInputs={prefilledInputs.email}
             />
 
