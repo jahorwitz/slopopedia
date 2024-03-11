@@ -1,12 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { GET_USERS } from "../../graphql/";
 import { useCurrentUser } from "../../hooks";
 
-//import { DeleteUserModal } from "../../components/delete-user-modal";
 import {
   DeleteConfirmationModal,
   Footer,
@@ -18,6 +16,8 @@ import { useModals } from "../../hooks";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettingsRoute = () => {
+  //this form eventually needs to handle the scenario where
+  //the user selects a username that already exists in database.
   const { currentUser, setCurrentUser } = useCurrentUser();
   const userId = currentUser.id;
   const { registerModal, openModal, closeModal } = useModals();
@@ -43,14 +43,11 @@ export const ProfileSettingsRoute = () => {
   });
 
   const handleDeleteUserSubmit = () => {
-    //loading visible
-    //call deleteUser(userID)
     deleteUser({
       variables: {
         where: { id: userId },
       },
     })
-      //.then(res)
       .then(({ data }) => {
         //console.log(data);
         // - - - delete stored token
@@ -67,28 +64,15 @@ export const ProfileSettingsRoute = () => {
     //.finally?
   };
 
-  const handleIsUserNameAvailable = (fieldValue) => {
-    console.log(fieldValue, "username available handler");
-  };
-
   // - - - - - - - - - - USE FORM - - - - - - - - - -
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      isValid,
-      isDirty,
-      dirtyFields,
-      isSubmitting,
-      isSubmitSuccessful,
-    },
+    formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
     setValue,
     getValues,
     control,
     reset,
-    //watch,
-    //onChange,
   } = useForm({
     defaultValues: {
       username: "",
@@ -96,15 +80,6 @@ export const ProfileSettingsRoute = () => {
       password: "",
     },
   });
-
-  // const getDirtyValues = () => {
-  //   //let dirtyValues = [];
-  //   const { username, email, password } = getValues();
-  //   console.log("getDirtyValues called");
-  //   console.log(username, email, password);
-  //   if (dirtyFields === true || Array.isArray(dirtyFields));
-  //   return dirtyFields;
-  // };
 
   // - - - - - - - - - - USE EFFECT - - - - - - - - - -
   useEffect(() => {
@@ -149,8 +124,6 @@ export const ProfileSettingsRoute = () => {
   //const watchForm = watch();
   //console.log(watchForm);
 
-  //console.log({ dirtyFields, isDirty });
-
   const onSubmit = () => {
     //if (isSubmitting === true) {
     //  return <Loading />;
@@ -158,7 +131,6 @@ export const ProfileSettingsRoute = () => {
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
-    //getDirtyValues();
 
     //make sure that new username is unique
     //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
@@ -176,8 +148,6 @@ export const ProfileSettingsRoute = () => {
         setValue("username", res.data.username);
         setValue("email", res.data.email);
         setValue("password", "");
-        //form data is not currently refreshing after successful update
-        //this is because "value" is not being tracked by React Hook Form
         //loading(false);
         //probably need to change button text to "Changes Saved" after submit?
       })
@@ -207,7 +177,7 @@ export const ProfileSettingsRoute = () => {
           >
             <Form.TextInput
               {...register("username", {
-                //required: "Nickname is required",
+                required: "Nickname is required",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",
@@ -217,13 +187,11 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("username", evt.target.value, {
                   shouldValidate: true,
-                  shouldDirty: true,
                 });
               }}
               isValid={!errors.username}
               placeholder="Type here"
               prefilledInputs={prefilledInputs.username}
-              //usernameAvailable={handleIsUserNameAvailable}
             />
 
             {errors.username && (
@@ -232,7 +200,7 @@ export const ProfileSettingsRoute = () => {
 
             <Form.TextInput
               {...register("email", {
-                //required: "Email is required",
+                required: "Email is required",
                 pattern: {
                   value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
                   message: "Invalid Email",
@@ -242,7 +210,6 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("email", evt.target.value, {
                   shouldValidate: true,
-                  shouldDirty: true,
                 });
               }}
               isValid={!errors.email}
@@ -265,7 +232,6 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("password", evt.target.value, {
                   shouldValidate: true,
-                  shouldDirty: true,
                 });
               }}
               isValid={!errors.password}
@@ -287,7 +253,6 @@ export const ProfileSettingsRoute = () => {
               onChange={(evt) => {
                 setValue("confirmPassword", evt.target.value, {
                   shouldValidate: true,
-                  shouldDirty: true,
                 });
               }}
               isValid={!errors.confirmPassword}
@@ -298,13 +263,8 @@ export const ProfileSettingsRoute = () => {
               <Form.Feedback message={errors.confirmPassword?.message} />
             )}
 
-            <Form.Submit
-              className="w-[373px]"
-              disabled={!isDirty || isSubmitting}
-              title={"Save"}
-            />
+            <Form.Submit className="w-[373px]" title={"Save"} />
           </Form>
-          <DevTool control={control}></DevTool>
           <button
             type="button"
             className="bg-transparent text-danger font-bold text-lg mt-10"
