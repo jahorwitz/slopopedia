@@ -14,6 +14,9 @@ import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkWhite from "../../images/check-mark.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
+//const [buttonText, setButtonText] = useState("I'm going!");
+//const [buttonVariant, setButtonVariant] = useState("outline-secondary");
+//const [buttonSrc, setButtonSrc] = useState(checkMarkWhite);
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
@@ -22,6 +25,19 @@ export const ProfileFestsRoute = () => {
     day: "2-digit",
     year: "numeric",
   });
+
+  // const changeButtonAttributes = () => {
+  //   if (buttonText !== "I'm going!") {
+  //     setButtonText("I'm going!");
+  //     setButtonVariant("outline-secondary");
+  //     setButtonSrc(checkMarkBlack);
+  //   } else {
+  //     setButtonText("I went");
+  //     setButtonVariant("secondary");
+  //     setButtonSrc(checkMarkWhite);
+  //   }
+  // };
+
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
       where: {
@@ -159,17 +175,17 @@ export const ProfileFestsRoute = () => {
                       </Button>
                     ) : (
                       <Button
-                        variant={buttonVariant}
+                        variant={"secondary"}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
-                        onClick={changeButtonAttributes}
+                        //onClick={changeButtonAttributes}
                       >
                         <img
-                          src={buttonSrc}
+                          src={checkMarkWhite}
                           alt="check mark"
                           className="mr-2.5"
                         />
-                        {buttonText}
+                        Button Text
                       </Button>
                     )}
                   </div>
