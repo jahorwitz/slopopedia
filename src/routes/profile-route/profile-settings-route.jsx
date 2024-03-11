@@ -2,42 +2,43 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
-import { GET_USERS } from "../../graphql/";
-import { useCurrentUser } from "../../hooks";
-
 import {
   DeleteConfirmationModal,
   Footer,
   Form,
   Header,
 } from "../../components/index";
-import { DELETE_USER, GET_USER, UPDATE_USER } from "../../graphql/";
-import { useModals } from "../../hooks";
+import { DELETE_USER, GET_USER, GET_USERS, UPDATE_USER } from "../../graphql/";
+import { useCurrentUser, useModals } from "../../hooks";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileSettingsRoute = () => {
   //this form eventually needs to handle the scenario where
   //the user selects a username that already exists in database.
   const { currentUser, setCurrentUser } = useCurrentUser();
+  //const { userUsername, setUserUsername } = useState("");
+  //const { userEmail, setUserEmail } = useState("");
   const userId = currentUser.id;
+
   const { registerModal, openModal, closeModal } = useModals();
-  const userQuery = useQuery(GET_USER, {
+
+  const {
+    data: userData,
+    loading: userLoading,
+    error: userError,
+  } = useQuery(GET_USER, {
     variables: {
       where: {
         id: userId,
       },
     },
   });
+
   const usersQuery = useQuery(GET_USERS, {
     variables: { where: {} },
   });
 
   const [deleteUser] = useMutation(DELETE_USER);
-
-  const prefilledInputs = {
-    username: currentUser?.username,
-    email: currentUser?.email,
-  };
 
   const [updateUser, { data, loading, error }] = useMutation(UPDATE_USER, {
     refetchQueries: [GET_USER],
@@ -97,6 +98,20 @@ export const ProfileSettingsRoute = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
+  useEffect(
+    () => {
+      if (!userLoading) {
+        console.log(userData.user.username);
+        console.log(userData.user.email);
+        setValue("username", userData.user.username);
+        setValue("username", userData.user.email);
+      }
+    },
+    [GET_USER],
+    userData,
+    userLoading
+  );
+
   // useEffect(() => {
   //   const subscription = watch((value) => {
   //     const changedUsername = {
@@ -124,9 +139,6 @@ export const ProfileSettingsRoute = () => {
   //console.log(watchForm);
 
   const onSubmit = () => {
-    //if (isSubmitting === true) {
-    //  return <Loading />;
-    // }
     //loading should be true
     //get values from form
     const { username, email, password } = getValues();
@@ -183,119 +195,118 @@ export const ProfileSettingsRoute = () => {
 
       <section className="flex flex-colmax-w-[1440px] h-[900px] bg-gray-background">
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
+        {!userLoading.loading && (
+          <section className="mt-9">
+            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+              <Form.TextInput
+                {...register("username", {
+                  required: "Nickname is required",
+                  pattern: {
+                    value: /^\S/,
+                    message: "Must not start with a space",
+                  },
+                })}
+                autocomplete="username"
+                labelText={"Nickname"}
+                onChange={(evt) => {
+                  setValue("username", evt.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+                isValid={!errors.username}
+                prefilledInputs={currentUser?.username}
+              />
 
-        <section className="mt-9">
-          <Form
-            onSubmit={handleSubmit(onSubmit)}
-            //onChange={onChange}
-            noValidate
-          >
-            <Form.TextInput
-              {...register("username", {
-                required: "Nickname is required",
-                pattern: {
-                  value: /^\S/,
-                  message: "Must not start with a space",
-                },
-              })}
-              autocomplete="username"
-              labelText={"Nickname"}
-              onChange={(evt) => {
-                setValue("username", evt.target.value, {
-                  shouldValidate: true,
-                });
+              {errors.username && (
+                <Form.Feedback message={errors.username?.message} />
+              )}
+
+              <Form.TextInput
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
+                    message: "Invalid Email",
+                  },
+                })}
+                autocomplete="username"
+                labelText={"Email"}
+                onChange={(evt) => {
+                  setValue("email", evt.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+                isValid={!errors.email}
+                prefilledInputs={currentUser?.email}
+              />
+
+              {errors.email && (
+                <Form.Feedback message={errors.email?.message} />
+              )}
+
+              <Form.TextInput
+                {...register("password", {
+                  //required: "Password is required",
+                  minLength: {
+                    value: 10,
+                    message: "Passwords must be at least 10 characters",
+                  },
+                })}
+                autocomplete="new-password"
+                labelText={"New Password"}
+                type="password"
+                onChange={(evt) => {
+                  setValue("password", evt.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+                isValid={!errors.password}
+              />
+
+              {errors.password && (
+                <Form.Feedback message={errors.password?.message} />
+              )}
+
+              <Form.TextInput
+                register={register("confirmPassword", {
+                  //required: "You must confirm the password",
+                  validate: (value, formValues) =>
+                    value !== "" ||
+                    value === formValues.password ||
+                    "Passwords do not match",
+                })}
+                autocomplete="confirm-new-password"
+                labelText={"Confirm New Password"}
+                type="password"
+                onChange={(evt) => {
+                  setValue("confirmPassword", evt.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
+                isValid={!errors.confirmPassword}
+              />
+
+              {errors.confirmPassword && (
+                <Form.Feedback message={errors.confirmPassword?.message} />
+              )}
+
+              <Form.Submit
+                className="w-[373px]"
+                title={"Save"}
+                //disabled={!isValid}
+              />
+            </Form>
+            <button
+              type="button"
+              className="bg-transparent text-danger font-bold text-lg mt-10"
+              onClick={() => {
+                openModal("deleteUser");
               }}
-              isValid={!errors.username}
-              prefilledInputs={prefilledInputs.username}
-            />
-
-            {errors.username && (
-              <Form.Feedback message={errors.username?.message} />
-            )}
-
-            <Form.TextInput
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
-                  message: "Invalid Email",
-                },
-              })}
-              autocomplete="username"
-              labelText={"Email"}
-              onChange={(evt) => {
-                setValue("email", evt.target.value, {
-                  shouldValidate: true,
-                });
-              }}
-              isValid={!errors.email}
-              prefilledInputs={prefilledInputs.email}
-            />
-
-            {errors.email && <Form.Feedback message={errors.email?.message} />}
-
-            <Form.TextInput
-              {...register("password", {
-                //required: "Password is required",
-                minLength: {
-                  value: 10,
-                  message: "Passwords must be at least 10 characters",
-                },
-              })}
-              autocomplete="new-password"
-              labelText={"New Password"}
-              type="password"
-              onChange={(evt) => {
-                setValue("password", evt.target.value, {
-                  shouldValidate: true,
-                });
-              }}
-              isValid={!errors.password}
-            />
-
-            {errors.password && (
-              <Form.Feedback message={errors.password?.message} />
-            )}
-
-            <Form.TextInput
-              register={register("confirmPassword", {
-                //required: "You must confirm the password",
-                validate: (value, formValues) =>
-                  value !== "" ||
-                  value === formValues.password ||
-                  "Passwords do not match",
-              })}
-              autocomplete="confirm-new-password"
-              labelText={"Confirm New Password"}
-              type="password"
-              onChange={(evt) => {
-                setValue("confirmPassword", evt.target.value, {
-                  shouldValidate: true,
-                });
-              }}
-              isValid={!errors.confirmPassword}
-            />
-
-            {errors.confirmPassword && (
-              <Form.Feedback message={errors.confirmPassword?.message} />
-            )}
-
-            <Form.Submit
-              className="w-[373px]"
-              title={"Save"}
-              //disabled={!isValid}
-            />
-          </Form>
-          <button
-            type="button"
-            className="bg-transparent text-danger font-bold text-lg mt-10"
-            onClick={() => {
-              openModal("deleteUser");
-            }}
-          >
-            Delete Account
-          </button>
-        </section>
+            >
+              Delete Account
+            </button>
+          </section>
+        )}
       </section>
 
       <footer className="mt-5">
