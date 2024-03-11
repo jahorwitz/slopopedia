@@ -7,6 +7,7 @@ import {
   BlogRoute,
   BrowseRoute,
   DraftRoute,
+  FestDiscussion,
   FestRoute,
   FestsRoute,
   MainRoute,
@@ -97,7 +98,7 @@ export const App = () => {
                 path="/fests/:festId/discussion"
                 element={
                   <ProtectedRoute>
-                    <FestRoute />
+                    <FestDiscussion />
                   </ProtectedRoute>
                 }
               />
