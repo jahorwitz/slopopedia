@@ -12,6 +12,7 @@ import {
 } from "../../components/index";
 import { GET_USER_FESTS } from "../../graphql/get-user-fests";
 import { useCurrentUser, useModals } from "../../hooks";
+import checkMarkBlack from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 //const [buttonText, setButtonText] = useState("I'm going!");
@@ -175,17 +176,17 @@ export const ProfileFestsRoute = () => {
                       </Button>
                     ) : (
                       <Button
-                        variant={"secondary"}
+                        variant={"outline-secondary"}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
                         //onClick={changeButtonAttributes}
                       >
                         <img
-                          src={checkMarkWhite}
+                          src={checkMarkBlack}
                           alt="check mark"
                           className="mr-2.5"
                         />
-                        Button Text
+                        I'm going!
                       </Button>
                     )}
                   </div>
