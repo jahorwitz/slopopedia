@@ -20,5 +20,7 @@ export * from "./MoviePage";
 export * from "./protected-route";
 export * from "./sidebar";
 export * from "./signup-modal";
+export * from "./slop-fest-modal";
+export * from "./Submit";
 export * from "./SubmitList";
 export * from "./tabber";

@@ -1,4 +1,4 @@
 import { useContext } from "react";
-import { CurrentUserContext } from "./current-user-context";
+import { CurrentUserContext } from "../store";
 
 export const useCurrentUser = () => useContext(CurrentUserContext);

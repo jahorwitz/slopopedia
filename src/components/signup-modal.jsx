@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
@@ -60,7 +60,7 @@ export const SignupModal = ({ onClose }) => {
       </div>
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background xs:px-5"}
       >
         <Form.TextInput
           register={register("username", {

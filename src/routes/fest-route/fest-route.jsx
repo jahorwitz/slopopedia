@@ -1,65 +1,23 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Header, Loading, MovieCardList } from "../../components";
-import {
-  DELETE_FEST,
-  GET_DISCUSSIONS,
-  GET_FEST,
-  GET_MOVIES,
-  GET_USER_FESTS,
-  UPDATE_FEST,
-} from "../../graphql/";
+import { GET_FEST, GET_MOVIES, UPDATE_FEST } from "../../graphql/";
+import { useModals } from "../../hooks";
 import magGlassDark from "../../images/mag-glass-black.svg";
-import { useModals } from "../../store";
-import { CurrentUserContext } from "../../store/current-user-context.js";
-import {
-  FestDiscussion,
-  FestHeader,
-  FestModal,
-  FestSidebar,
-} from "../fest-route";
+import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const { festId } = useParams();
-  const { currentUser } = useContext(CurrentUserContext);
   const { openModal, closeModal, registerModal } = useModals();
 
-  // Fest Query
+  // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
-    variables: {
-      where: {
-        id: festId,
-      },
-    },
-  });
-
-  // Discussion Query
-  const discussionQuery = useQuery(GET_DISCUSSIONS, {
     variables: { where: { id: festId } },
   });
 
   // Movie Query
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
-
-  // Remove Fest Mutation
-  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
-    refetchQueries: [GET_USER_FESTS],
-  });
-
-  // Function to remove a Fest
-  const removeFest = () => {
-    if (currentUser.id === festQuery.data.fest.creator.id) {
-      deleteFest({ variables: { where: { id: festId } } });
-      if (loading) return "Submitting...";
-      if (error) return `Submission error! ${error.message}`;
-      closeModal();
-      navigate("/profile/fests");
-    }
-  };
 
   const [
     updateFest,
@@ -74,24 +32,17 @@ export const FestRoute = () => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            connect: movieIds,
-          },
-        },
+        data: { movies: { connect: movieIds } },
       },
     });
   };
 
+  // Function to remove movies from server
   const removeMovie = (movieId) => {
     updateFest({
       variables: {
         where: { id: festId },
-        data: {
-          movies: {
-            disconnect: [{ id: movieId }],
-          },
-        },
+        data: { movies: { disconnect: [{ id: movieId }] } },
       },
     });
   };
@@ -139,77 +90,68 @@ export const FestRoute = () => {
         )}
         <div className="flex gap-x-24">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar removeFest={removeFest} festQuery={festQuery} />
+            <FestSidebar festQuery={festQuery} />
           )}
-          {location.pathname === `/fests/${festId}` && (
-            <div className="flex flex-col gap-y-8">
-              <div className="flex justify-between items-center">
-                {!festQuery.loading && movies && movies.length > 0 && (
-                  <h2 className="font-arial text-lg/4 font-bold">
-                    Slops for this fest
-                  </h2>
-                )}
-                {!festQuery.loading && movies && movies.length === 0 && (
-                  <h2 className="font-arial text-lg/4 font-bold">
-                    {"No slops for this fest yet :("}
-                  </h2>
-                )}
-                <Button
-                  className="font-normal flex gap-x-2.5"
-                  size="sm"
-                  variant="outline-secondary"
-                  onClick={() => {
-                    openModal("add movie");
-                  }}
-                >
-                  <img
-                    className="w-5 h-5"
-                    src={magGlassDark}
-                    alt="black magnifying glass"
-                  />
-                  Search to add
-                </Button>
-              </div>
-              {!festQuery.loading && (
-                <MovieCardList
-                  movies={movies}
-                  colSpanOne
-                  minusButton
-                  minusButtonClick={removeMovie}
-                />
+          <div className="w-full flex flex-col gap-y-8">
+            <div className="flex justify-between items-center">
+              {!festQuery.loading && movies && movies.length > 0 && (
+                <h2 className="font-arial text-lg/4 font-bold">
+                  Slops for this fest
+                </h2>
               )}
-              <span className="w-full border-b-[1px] border-gray" />
-              {!moviesQuery.loading &&
-                !festQuery.loading &&
-                recommendedMovies.length > 0 && (
-                  <>
-                    <h2 className="font-arial text-lg/4 font-bold">
-                      Recommended Movies
-                    </h2>
-                    <MovieCardList
-                      movies={recommendedMovies}
-                      colSpanOne
-                      plusButton
-                      plusButtonClick={addMovies}
-                    />
-                  </>
-                )}
-              {!moviesQuery.loading &&
-                !festQuery.loading &&
-                recommendedMovies.length === 0 && (
-                  <h2 className="font-arial text-lg/4 font-bold">
-                    {"No movies to recommend :("}
-                  </h2>
-                )}
+              {!festQuery.loading && movies && movies.length === 0 && (
+                <h2 className="font-arial text-lg/4 font-bold">
+                  {"No slops for this fest yet :("}
+                </h2>
+              )}
+              <Button
+                className="font-normal flex gap-x-2.5"
+                size="sm"
+                variant="outline-secondary"
+                onClick={() => {
+                  openModal("add movie");
+                }}
+              >
+                <img
+                  className="w-5 h-5"
+                  src={magGlassDark}
+                  alt="black magnifying glass"
+                />
+                Search to add
+              </Button>
             </div>
-          )}
-          {location.pathname === `/fests/${festId}/discussion` && (
-            <FestDiscussion
-              discussionQuery={discussionQuery}
-              festQuery={festQuery}
-              festId={festId}
-            />
-          )}
+            {!festQuery.loading && (
+              <MovieCardList
+                movies={movies}
+                colSpanOne
+                minusButton
+                minusButtonClick={removeMovie}
+              />
+            )}
+            <span className="w-full border-b-[1px] border-gray" />
+            {!moviesQuery.loading &&
+              !festQuery.loading &&
+              recommendedMovies.length > 0 && (
+                <>
+                  <h2 className="font-arial text-lg/4 font-bold">
+                    Recommended Movies
+                  </h2>
+                  <MovieCardList
+                    movies={recommendedMovies}
+                    colSpanOne
+                    plusButton
+                    plusButtonClick={addMovies}
+                  />
+                </>
+              )}
+            {!moviesQuery.loading &&
+              !festQuery.loading &&
+              recommendedMovies.length === 0 && (
+                <h2 className="font-arial text-lg/4 font-bold">
+                  {"No movies to recommend :("}
+                </h2>
+              )}
+          </div>
         </div>
       </div>
     </>
