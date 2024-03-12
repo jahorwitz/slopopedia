@@ -11,7 +11,7 @@ export const MovieCardList = ({
   renderButton,
 }) => {
   return (
-    <>
+    <div className="flex  justify-center">
       <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-4 xs:grid-cols-3 gap-5">
         {movies?.map((movie) => (
           <MovieCard
@@ -27,7 +27,7 @@ export const MovieCardList = ({
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

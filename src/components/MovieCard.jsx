@@ -47,6 +47,7 @@ export function MovieCard({
           size === 3 && "col-span-3",
           className
         )}
+        style={{ maxHeight: "80vh" }}
         onClick={onClick}
         {...rest}
       >
@@ -70,7 +71,7 @@ export function MovieCard({
           />
         )}
         <img
-          className="mb-2.5 "
+          className="mb-2.5 max-h-full overflow-hidden"
           src={card.image === null ? purpleGoblin : card.image?.url}
         ></img>
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
