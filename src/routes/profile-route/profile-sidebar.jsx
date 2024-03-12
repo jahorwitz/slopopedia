@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router";
+import { useMutation } from "@apollo/client";
 import { Sidebar } from "../../components";
+import { END_SESSION, GET_USER_AUTHENTICATION } from "../../graphql";
 import { useClient, useCurrentUser } from "../../hooks";
 import sidebarCamera from "../../images/sidebar-camera.svg";
 import sidebarCrown from "../../images/sidebar-crown.svg";
@@ -9,6 +10,9 @@ import sidebarWrench from "../../images/sidebar-wrench.svg";
 export const ProfileSidebar = () => {
   const { setIsLoggedIn } = useCurrentUser();
   const { setToken, client } = useClient();
+  const [endSession, { data, loading, error }] = useMutation(END_SESSION, {
+    refetchQueries: [GET_USER_AUTHENTICATION],
+  });
   const menuItems = [
     {
       title: "Me goblin",
@@ -32,13 +36,12 @@ export const ProfileSidebar = () => {
     },
   ];
 
-  const navigate = useNavigate();
   const handleLogout = () => {
+    endSession();
     localStorage.removeItem("jwt");
     setToken(null);
     setIsLoggedIn(false);
     client.resetStore();
-    navigate("/", { replace: true });
   };
 
   return (

@@ -1,6 +1,7 @@
 export * from "./create-discussion";
 export * from "./create-user";
 export * from "./delete-fest";
+export * from "./end-session";
 export * from "./get-discussions";
 export * from "./get-fest";
 export * from "./get-movies";
