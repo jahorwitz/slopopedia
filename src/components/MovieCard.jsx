@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { useEffect, useState } from "react";
 import { Button } from "../components";
 import purpleGoblin from "../images/purple-goblin.png";
 import { getRandomColumns } from "../utils/constants";
@@ -6,7 +7,6 @@ import { Keyword } from "./keyword";
 
 export function MovieCard({
   children,
-  size,
   onClick,
   className,
   movieInfo,
@@ -18,6 +18,13 @@ export function MovieCard({
   renderButton,
   ...rest
 }) {
+  const [colSpan, setColSpan] = useState({ class: "col-span-1", size: 1 });
+  useEffect(() => {
+    setColSpan(getRandomColumns());
+  }, []);
+
+  const { class: colSpanClass, size } = colSpan;
+
   const card = {
     image: movieInfo?.photo,
     title: movieInfo?.title,
@@ -26,26 +33,20 @@ export function MovieCard({
     runtimeInMinutes: movieInfo?.runtime,
     rottenTomatoesScore: movieInfo?.rottenTomatoesScore,
     howToWatch: movieInfo?.howToWatch,
-    decription: movieInfo?.description,
+    description: movieInfo?.description,
   };
 
   return (
-    <div className={colSpanOne ? "col-span-1" : getRandomColumns()}>
+    <div className={colSpanOne ? "col-span-1" : colSpanClass}>
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
-        className={
-          cx(
-            "flex flex-col relative",
-            size === 1 && "col-span-1",
-            size === 2 && "col-span-2",
-            size === 3 && "col-span-3",
-            className
-          )
-          // +
-          // className +
-          // // (size == 1 && "col-span-1 ") +
-          // (size >= 2 && (size === 2 ? " col-span-2" : " col-span-3"))
-        }
+        className={cx(
+          "flex flex-col relative",
+          size === 1 && "col-span-1",
+          size === 2 && "col-span-2",
+          size === 3 && "col-span-3",
+          className
+        )}
         onClick={onClick}
         {...rest}
       >
@@ -97,24 +98,18 @@ export function MovieCard({
         {!!card.keywords && (
           <div
             // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
-            className={
-              "flex flex-wrap gap-2 " +
-              (size === 1
-                ? "flex flex-row relative col-span-1 justify-around"
-                : "flex flex-row flex-wrap w-64") +
-              (size >= 2
+            className={`flex flex-wrap gap-2 ${
+              size >= 2
                 ? "absolute top-2 left-2 max-w-[calc(100%-24px)]"
-                : "w-full")
-            }
+                : "relative"
+            }`}
           >
             {card.keywords.map((keyword, index) => (
               <Keyword
                 keyword={keyword.name}
-                className={
-                  size >= 2
-                    ? "bg-yellow col-span-2"
-                    : "h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2"
-                }
+                className={`${
+                  size >= 2 ? "bg-yellow" : "bg-gray"
+                } col-span-2 h-31px space-x-2 space-y-2 xs:space-x-2 xs:space-y-2`}
                 index={index}
                 key={index}
               />
