@@ -1,8 +1,8 @@
 import cx from "classnames";
 import { useEffect, useState } from "react";
 import { Button } from "..";
+import { useModals } from "../../hooks";
 import purpleGoblin from "../../images/purple-goblin.png";
-import { useModals } from "../../store";
 import { getRandomColumns } from "../../utils/constants";
 import { Keyword } from "../keyword";
 import { MoviePreviewModal } from "../movie-preview-modal";

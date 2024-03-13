@@ -6,10 +6,10 @@ import {
   MoviePreviewModal,
 } from "../../../components/";
 import { GET_MOVIES } from "../../../graphql";
+import { useModals } from "../../../hooks";
 import checkIcon from "../../../images/check-mark-dark.svg";
 import pencilIcon from "../../../images/pencil.svg";
 import deleteIcon from "../../../images/red-x-button.svg";
-import { useModals } from "../../../store";
 
 export const SubmittedList = ({ currentUser }) => {
   const { openModal, closeModal } = useModals();

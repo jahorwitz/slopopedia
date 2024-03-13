@@ -217,14 +217,14 @@ Header.NavLinks = ({
   );
 };
 
-Header.Profile = (
+Header.Profile = ({
   isLoggedIn,
   currentUser,
   openSignUpModal,
   openLoginModal,
   setCurrentUser,
-  setIsLoggedIn
-) => {
+  setIsLoggedIn,
+}) => {
   const { setToken, token } = useClient();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
 
