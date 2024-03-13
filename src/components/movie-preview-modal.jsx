@@ -7,6 +7,7 @@ import backArrow from "../images/back-arrow.svg";
 import camera from "../images/camera.svg";
 import checkMarkDark from "../images/check-mark-dark.svg";
 import heartDark from "../images/heart-dark.svg";
+import purpleGoblin from "../images/purple-goblin.png";
 import rottenTomato from "../images/rotten-tomatoes.svg";
 import { Badge } from "./badge";
 import { Button } from "./button";
@@ -62,9 +63,10 @@ export const MoviePreviewModal = ({
   const handleWantClick = () => {
     setIsWantClicked(!isWantClicked);
   };
+  console.log(selectedMovie);
 
   const movie = {
-    photo: selectedMovie.photo.url,
+    photo: selectedMovie.photo?.url || purpleGoblin,
     title: selectedMovie.title,
     releaseYear: selectedMovie.releaseYear,
     runtime: selectedMovie.runtime,
