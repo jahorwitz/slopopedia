@@ -8,6 +8,9 @@ export const GET_USER_FESTS = gql`
       attendees {
         username
       }
+      invitees {
+        username
+      }
       name
       id
     }
