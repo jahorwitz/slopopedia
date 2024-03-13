@@ -21,6 +21,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
+  console.log(currentUser.id);
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -52,6 +53,8 @@ export const ProfileFestsRoute = () => {
       },
     },
   });
+
+  console.log(data);
 
   const festsQuery = useQuery(GET_USER_FESTS, { variables: { where: {} } });
 
@@ -122,40 +125,81 @@ export const ProfileFestsRoute = () => {
                       <p className="font-arialRegular mb-2.5">
                         {startDate + " - " + endDate}
                       </p>
-                      <div className="flex flex-row">
-                        {items.attendees.length <= 4
-                          ? items.attendees?.map((attendee) => {
-                              return (
-                                <Keyword
-                                  key={attendee.username}
-                                  className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                                  keyword={attendee.username}
-                                />
-                              );
-                            })
-                          : items.attendees.slice(0, 4).map((attendee) => {
-                              // needs to have {+ attendees.length - 5} to show how many attendees after 5
-                              return (
-                                <>
-                                  <div>
-                                    <Keyword
-                                      key={attendee.username}
-                                      className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                                      keyword={attendee.username}
-                                    />
-                                  </div>
-                                </>
-                              );
-                            })}
-                        {items.attendees.length > 4 ? (
-                          <Keyword
-                            key={index}
-                            className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                            keyword={`+ ${items.attendees.length - 4} more`}
-                          />
-                        ) : (
-                          ""
-                        )}
+                      <div className="mt-3">
+                        <h3>Fest Invitees</h3>
+                        <div className="flex flex-row">
+                          {items.invitees.length <= 4
+                            ? items.invitees?.map((invitee) => {
+                                return (
+                                  <Keyword
+                                    key={invitee.username}
+                                    className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                                    keyword={invitee.username}
+                                  />
+                                );
+                              })
+                            : items.invitees.slice(0, 4).map((invitee) => {
+                                // needs to have {+ invitees.length - 5} to show how many invitees after 5
+                                return (
+                                  <>
+                                    <div>
+                                      <Keyword
+                                        key={invitee.username}
+                                        className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                                        keyword={invitee.username}
+                                      />
+                                    </div>
+                                  </>
+                                );
+                              })}
+                          {items.invitees.length > 4 ? (
+                            <Keyword
+                              key={index}
+                              className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                              keyword={`+ ${items.invitees.length - 4} more`}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <h3>Fest Attendees</h3>
+                        <div className="flex flex-row">
+                          {items.attendees.length <= 4
+                            ? items.attendees?.map((attendee) => {
+                                return (
+                                  <Keyword
+                                    key={attendee.username}
+                                    className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                                    keyword={attendee.username}
+                                  />
+                                );
+                              })
+                            : items.attendees.slice(0, 4).map((attendee) => {
+                                // needs to have {+ attendees.length - 5} to show how many attendees after 5
+                                return (
+                                  <>
+                                    <div>
+                                      <Keyword
+                                        key={attendee.username}
+                                        className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                                        keyword={attendee.username}
+                                      />
+                                    </div>
+                                  </>
+                                );
+                              })}
+                          {items.attendees.length > 4 ? (
+                            <Keyword
+                              key={index}
+                              className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                              keyword={`+ ${items.attendees.length - 4} more`}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
