@@ -45,6 +45,7 @@ export const ProfileSettingsRoute = () => {
   });
 
   const handleDeleteUserSubmit = () => {
+    console.log(userId);
     deleteUser({
       variables: {
         where: { id: userId },
@@ -98,19 +99,15 @@ export const ProfileSettingsRoute = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  useEffect(
-    () => {
-      if (!userLoading) {
-        console.log(userData.user.username);
-        console.log(userData.user.email);
-        setValue("username", userData.user.username);
-        setValue("username", userData.user.email);
-      }
-    },
-    [GET_USER],
-    userData,
-    userLoading
-  );
+  useEffect(() => {
+    // debugger;
+    if (userData?.user) {
+      console.log(userData.user.username);
+      console.log(userData.user.email);
+      setValue("username", userData.user.username);
+      setValue("email", userData.user.email);
+    }
+  }, [userData]);
 
   // useEffect(() => {
   //   const subscription = watch((value) => {
@@ -197,8 +194,10 @@ export const ProfileSettingsRoute = () => {
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
         {!userLoading.loading && (
           <section className="mt-9">
-            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.TextInput
+                id="username"
+                labelText={"Nickname"}
                 {...register("username", {
                   required: "Nickname is required",
                   pattern: {
@@ -207,7 +206,6 @@ export const ProfileSettingsRoute = () => {
                   },
                 })}
                 autocomplete="username"
-                labelText={"Nickname"}
                 onChange={(evt) => {
                   setValue("username", evt.target.value, {
                     shouldValidate: true,
