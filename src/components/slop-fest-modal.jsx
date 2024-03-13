@@ -2,19 +2,16 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 // import Select from "react-select";
-import { GET_USER_FESTS } from "../graphql";
+import { GET_FEST, GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
-import { CREATE_FEST } from "../graphql/mutations/fest";
+import { CREATE_FEST, UPDATE_FEST } from "../graphql/mutations/fest";
 import { useCurrentUser, useModals } from "../hooks";
 import { Form, Modal } from "./index";
 
-export function SlopFestModal({ buttonTitle }) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+export function SlopFestModal({ buttonTitle, location, fest }) {
   const [users, setUsers] = useState([]);
   const { currentUser } = useCurrentUser();
   const { closeModal } = useModals();
-  // const [attendees, setAttendees] = useState([]);
 
   const { data, loading, error } = useQuery(GET_USERS, {
     variables: {
@@ -30,6 +27,9 @@ export function SlopFestModal({ buttonTitle }) {
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
 
+  const [updateFest, { loading: updateLoading, error: updateError }] =
+    useMutation(UPDATE_FEST, { refetchQueries: [GET_FEST] });
+
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ export function SlopFestModal({ buttonTitle }) {
       name: "",
       startDate: "",
       endDate: "",
-      attendees: [],
+      attendees: fest?.data?.fest?.attendees || [],
     },
   });
 
@@ -91,6 +91,7 @@ export function SlopFestModal({ buttonTitle }) {
         <div className="flex flex-col">
           <div className="flex-col">
             <Form.TextInput
+              defaultValue={fest?.data?.fest?.name || ""}
               labelText="Name it!"
               className={`w-[373px]`}
               id={"name"}

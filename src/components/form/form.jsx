@@ -135,8 +135,7 @@ Form.DateDropdown = ({
   name,
   ...rest
 }) => {
-  const selectedItem = watch(id) || new Date(Date.now());
-  // const selectedDate = selectedItem.toISOString().substring(0, 10);
+  const selectedItem = watch(id);
 
   useEffect(() => {
     setValue(id, selectedItem);
@@ -158,6 +157,7 @@ Form.DateDropdown = ({
         onChange={(date) => setValue(id, date)}
         selected={selectedItem}
         placeholderText="Select"
+        {...rest}
       />
       {/* <Button className="absolute right-0.5 flex top-12" variant="tertiary">
         <img src={down} className="h-2.5 w-2.5" />

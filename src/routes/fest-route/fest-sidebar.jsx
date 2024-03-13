@@ -57,7 +57,12 @@ export const FestSidebar = ({ festQuery }) => {
   useEffect(() => {
     registerModal(
       "edit-fest",
-      <SlopFestModal buttonTitle={"Save edits"} onClose={closeModal} />
+      <SlopFestModal
+        buttonTitle={"Save edits"}
+        location={location}
+        fest={festQuery}
+        onClose={closeModal}
+      />
     );
   }, []);
 
