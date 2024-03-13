@@ -16,8 +16,6 @@ export const ProfileSettingsRoute = () => {
   //this form eventually needs to handle the scenario where
   //the user selects a username that already exists in database.
   const { currentUser, setCurrentUser } = useCurrentUser();
-  //const { userUsername, setUserUsername } = useState("");
-  //const { userEmail, setUserEmail } = useState("");
   const userId = currentUser.id;
 
   const { registerModal, openModal, closeModal } = useModals();
@@ -52,17 +50,11 @@ export const ProfileSettingsRoute = () => {
       },
     })
       .then(({ data }) => {
-        //delete stored token
         localStorage.removeItem("jwt");
-        //close modal
         closeModal("deleteUser");
-        //redirect to home page
         window.location.reload();
-        // - - - remove "loading"
       })
-      //.catch
       .catch(error);
-    //.finally?
   };
 
   // - - - - - - - - - - USE FORM - - - - - - - - - -
@@ -100,50 +92,15 @@ export const ProfileSettingsRoute = () => {
   }, [isSubmitSuccessful, reset]);
 
   useEffect(() => {
-    // debugger;
     if (userData?.user) {
-      console.log(userData.user.username);
-      console.log(userData.user.email);
       setValue("username", userData.user.username);
       setValue("email", userData.user.email);
     }
   }, [userData]);
 
-  // useEffect(() => {
-  //   const subscription = watch((value) => {
-  //     const changedUsername = {
-  //       username: value.username,
-  //     };
-  //     const existingUsernames = () => {
-  //       GET_USERS({
-  //         variables: {
-  //           where: {},
-  //           data: {
-  //             username,
-  //           },
-  //         },
-  //       }).then((data) => {
-  //         console.log(data.usernames);
-  //       });
-  //     };
-  //     console.log(existingUsernames);
-  //     console.log(changedUsername);
-  //   });
-  //   return () => subscription.unsubscribe;
-  // }, [watch]);
-
-  //const watchForm = watch();
-  //console.log(watchForm);
-
   const onSubmit = () => {
-    //loading should be true
-    //get values from form
     const { username, email, password } = getValues();
     if (password === "") {
-      //const usersQuery = useQuery(GET_USERS, { variables: { where: {} } });
-      //usersQuery.map((usernames) => {
-      //
-      //});
       updateUser({
         variables: {
           where: { id: userId },
@@ -151,12 +108,8 @@ export const ProfileSettingsRoute = () => {
         },
       })
         .then((res) => {
-          console.log(res.data);
           setValue("username", res.data.username);
           setValue("email", res.data.email);
-          //setValue("password", "");
-          //loading(false);
-          //probably need to change button text to "Changes Saved" after submit?
         })
         .catch(error);
     } else {
@@ -167,12 +120,9 @@ export const ProfileSettingsRoute = () => {
         },
       })
         .then((res) => {
-          console.log(res.data);
           setValue("username", res.data.username);
           setValue("email", res.data.email);
           setValue("password", "");
-          //loading(false);
-          //probably need to change button text to "Changes Saved" after submit?
         })
         .catch(error);
     }
@@ -205,7 +155,7 @@ export const ProfileSettingsRoute = () => {
                     message: "Must not start with a space",
                   },
                 })}
-                autocomplete="username"
+                autocomplete="username" //required per console error from React Hook Form
                 onChange={(evt) => {
                   setValue("username", evt.target.value, {
                     shouldValidate: true,
@@ -220,6 +170,7 @@ export const ProfileSettingsRoute = () => {
               )}
 
               <Form.TextInput
+                labelText={"Email"}
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -227,8 +178,7 @@ export const ProfileSettingsRoute = () => {
                     message: "Invalid Email",
                   },
                 })}
-                autocomplete="username"
-                labelText={"Email"}
+                autocomplete="username" //required per console error from React Hook Form
                 onChange={(evt) => {
                   setValue("email", evt.target.value, {
                     shouldValidate: true,
@@ -243,6 +193,7 @@ export const ProfileSettingsRoute = () => {
               )}
 
               <Form.TextInput
+                labelText={"New Password"}
                 {...register("password", {
                   //required: "Password is required",
                   minLength: {
@@ -250,8 +201,7 @@ export const ProfileSettingsRoute = () => {
                     message: "Passwords must be at least 10 characters",
                   },
                 })}
-                autocomplete="new-password"
-                labelText={"New Password"}
+                autocomplete="new-password" //required per console error from React Hook Form
                 type="password"
                 onChange={(evt) => {
                   setValue("password", evt.target.value, {
@@ -266,6 +216,7 @@ export const ProfileSettingsRoute = () => {
               )}
 
               <Form.TextInput
+                labelText={"Confirm New Password"}
                 register={register("confirmPassword", {
                   //required: "You must confirm the password",
                   validate: (value, formValues) =>
@@ -273,8 +224,7 @@ export const ProfileSettingsRoute = () => {
                     value === formValues.password ||
                     "Passwords do not match",
                 })}
-                autocomplete="confirm-new-password"
-                labelText={"Confirm New Password"}
+                autocomplete="confirm-new-password" //required per console error from React Hook Form
                 type="password"
                 onChange={(evt) => {
                   setValue("confirmPassword", evt.target.value, {
@@ -288,11 +238,7 @@ export const ProfileSettingsRoute = () => {
                 <Form.Feedback message={errors.confirmPassword?.message} />
               )}
 
-              <Form.Submit
-                className="w-[373px]"
-                title={"Save"}
-                //disabled={!isValid}
-              />
+              <Form.Submit className="w-[373px]" title={"Save"} />
             </Form>
             <button
               type="button"
