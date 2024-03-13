@@ -46,7 +46,7 @@ const Form = () => {
           //PageTitle component here
         </h1>
         <Link
-          to={"/submit/submitted-slops"}
+          to={"/submitted-list"}
           className="absolute right-10 xs:right-4 xs:text-sm sm:right-4 top-[38.5px] border-b-2 border-black"
         >
           view submitted
