@@ -65,3 +65,43 @@ export const GET_USER_WATCHLIST = gql`
     }
   }
 `;
+
+export const GET_USERS_WATCHLIST = gql`
+  query GetUsersWatchlist {
+    users {
+      id
+      watched {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      wishlist {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      wishlistCount
+      watchedCount
+    }
+  }
+`;

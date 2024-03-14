@@ -14,6 +14,7 @@ import {
   MovieRoute,
   PreferencesRoute,
   ProfileFestsRoute,
+  ProfileRecommendedRoute,
   ProfileRoute,
   SearchRoute,
   SoundsRoute,
@@ -51,6 +52,14 @@ export const App = () => {
                 element={
                   <ProtectedRoute>
                     <ProfileFestsRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/recommend"
+                element={
+                  <ProtectedRoute>
+                    <ProfileRecommendedRoute />
                   </ProtectedRoute>
                 }
               />
