@@ -14,7 +14,8 @@ export const ClientContextProvider = ({ children }) => {
         import.meta.env.MODE === "production"
           ? //created environment variables must be prefixed by VITE
             import.meta.env.VITE_API_URI
-          : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+          : "http://localhost:8080/api/graphql",
+      // "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -41,7 +42,8 @@ export const ClientContextProvider = ({ children }) => {
           import.meta.env.MODE === "production"
             ? //created environment variables must be prefixed by VITE
               import.meta.env.VITE_API_URI
-            : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+            : "http://localhost:8080/api/graphql",
+        // "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
       });
 
       const authLink = setContext((_, { headers }) => {
