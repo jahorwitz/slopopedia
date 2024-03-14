@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Button,
   Footer,
@@ -18,6 +18,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
+  const location = useLocation();
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -46,7 +47,11 @@ export const ProfileFestsRoute = () => {
   useEffect(() => {
     registerModal(
       "create-fest",
-      <SlopFestModal buttonTitle={"Fest On!"} onClose={closeModal} />
+      <SlopFestModal
+        location={location}
+        buttonTitle={"Fest On!"}
+        onClose={closeModal}
+      />
     );
   }, []);
 

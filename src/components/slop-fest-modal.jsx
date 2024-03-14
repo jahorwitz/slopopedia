@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-// import Select from "react-select";
 import { GET_FEST, GET_USER_FESTS } from "../graphql";
 import { GET_USERS } from "../graphql/get-users";
 import { CREATE_FEST, UPDATE_FEST } from "../graphql/mutations/fest";
@@ -12,6 +11,16 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const [users, setUsers] = useState([]);
   const { currentUser } = useCurrentUser();
   const { closeModal } = useModals();
+
+  const festStart = new Date(fest?.data?.fest?.startDate);
+  const festEnd = new Date(fest?.data?.fest?.endDate);
+
+  useEffect(() => {
+    if (location.pathname === `/fests/${fest?.data?.fest?.id}`) {
+      setValue("startDate", festStart);
+      setValue("endDate", festEnd);
+    }
+  }, [fest?.data]);
 
   const { data, loading, error } = useQuery(GET_USERS, {
     variables: {
