@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -18,8 +18,8 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   //const [buttonText, setButtonText] = useState("I'm going!");
-  //const [buttonVariant, setButtonVariant] = useState("outline-secondary");
-  //const [buttonSrc, setButtonSrc] = useState(checkMarkWhite);
+  const [buttonVariant, setButtonVariant] = useState("outline-secondary");
+  const [buttonSrc, setButtonSrc] = useState(checkMarkBlack);
   const { currentUser } = useCurrentUser();
   console.log(currentUser.id);
 
@@ -70,11 +70,7 @@ export const ProfileFestsRoute = () => {
   //otherwise button disappears completely if the fest is in the past but user did not attend
 
   const handleRSVPButtonClick = (festId) => {
-    //isolate the fest that was clicked on only
     console.log(festId);
-    //use festID to determine if they're currently attendee vs invitee
-    //then update fest accordingly
-
     updateFest({
       variables: {
         data: {
@@ -86,6 +82,10 @@ export const ProfileFestsRoute = () => {
           id: festId,
         },
       },
+    }).then(() => {
+      //color button black
+      setButtonVariant("secondary");
+      setButtonSrc(checkMarkWhite);
     });
     //need "disconnect" option as well
   };
@@ -247,13 +247,13 @@ export const ProfileFestsRoute = () => {
                       </Button>
                     ) : (
                       <Button
-                        variant={"outline-secondary"}
+                        variant={buttonVariant}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
                         onClick={() => handleRSVPButtonClick(items.id)}
                       >
                         <img
-                          src={checkMarkBlack}
+                          src={buttonSrc}
                           alt="check mark"
                           className="mr-2.5"
                         />
