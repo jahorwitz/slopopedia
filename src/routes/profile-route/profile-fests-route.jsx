@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -10,18 +10,19 @@ import {
   Keyword,
   SlopFestModal,
 } from "../../components/index";
-import { GET_USER_FESTS } from "../../graphql/get-user-fests";
+import { GET_FEST, GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkBlack from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
-//const [buttonText, setButtonText] = useState("I'm going!");
-//const [buttonVariant, setButtonVariant] = useState("outline-secondary");
-//const [buttonSrc, setButtonSrc] = useState(checkMarkWhite);
 
 export const ProfileFestsRoute = () => {
+  //const [buttonText, setButtonText] = useState("I'm going!");
+  //const [buttonVariant, setButtonVariant] = useState("outline-secondary");
+  //const [buttonSrc, setButtonSrc] = useState(checkMarkWhite);
   const { currentUser } = useCurrentUser();
   console.log(currentUser.id);
+
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
@@ -43,7 +44,7 @@ export const ProfileFestsRoute = () => {
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
       where: {
-        attendees: {
+        invitees: {
           some: {
             id: {
               equals: currentUser.id,
@@ -54,18 +55,44 @@ export const ProfileFestsRoute = () => {
     },
   });
 
-  console.log(data);
+  const [
+    updateFest,
+    { data: updateData, loading: updateLoading, error: updateError },
+  ] = useMutation(UPDATE_FEST, { refetchQueries: [GET_USER_FESTS] });
 
+  const festQuery = useQuery(GET_FEST, { variables: { where: {} } });
   const festsQuery = useQuery(GET_USER_FESTS, { variables: { where: {} } });
 
-  //seems like this needs to be a dropdown, not multiple buttons
   //invitees should be the default array someone is added to for a fest
-  //when someone clicks I'm going, move to "attendees" array
-  // - - - need to create a mutation that
-  //when someone clicks "I'm invited" move to "invitees" array
-  //when enddate has passed, only can choose "I went" or "I didn't go"
-  //possibly need to have multiple fest catagories for this:
-  //invitees, attendees, declined-invitees (ask team about 3rd status/array)
+  //when someone clicks I'm going, move to "attendees" array, turn button black
+  //when someone clicks again,  move to "invitees" array, turn button white
+  //when enddate has passed, button is "I went" for all who attended
+  //otherwise button disappears completely if the fest is in the past but user did not attend
+
+  const handleRSVPButtonClick = (festId) => {
+    //isolate the fest that was clicked on only
+    console.log(festId);
+    //use festID to determine if they're currently attendee vs invitee
+    //then update fest accordingly
+
+    updateFest({
+      variables: {
+        data: {
+          attendees: {
+            connect: [{ id: currentUser.id }],
+          },
+        },
+        where: {
+          id: festId,
+        },
+      },
+    });
+    //need "disconnect" option as well
+  };
+
+  // useEffect(() => {
+  //setup useEffect to set correct button styles at page load?
+  // });
 
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
@@ -223,7 +250,7 @@ export const ProfileFestsRoute = () => {
                         variant={"outline-secondary"}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
-                        //onClick={changeButtonAttributes}
+                        onClick={() => handleRSVPButtonClick(items.id)}
                       >
                         <img
                           src={checkMarkBlack}
