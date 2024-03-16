@@ -17,10 +17,14 @@ import checkMarkWhite from "../../images/check-mark.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
-  //const [buttonText, setButtonText] = useState("I'm going!");
+  const [buttonText, setButtonText] = useState("");
+  const [buttonSrc, setButtonSrc] = useState("");
+  const [buttonVariant, setButtonVariant] = useState("");
   const [rsvpStatus, setRsvpStatus] = useState("");
   const { currentUser } = useCurrentUser();
-  console.log(currentUser.id);
+  //const username = currentUser.username;
+  //console.log(username);
+  console.log(currentUser.username);
 
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
@@ -102,10 +106,38 @@ export const ProfileFestsRoute = () => {
     {
       !loading &&
         data.fests?.map((fest) => {
-          if (fest.invitees.username) {
-            setRsvpStatus("invitee");
-          } else {
-            setRsvpStatus("attendee");
+          console.log(fest);
+          //fest.attendees?.map((attendees) => {
+          //console.log(attendees.username);
+          if (
+            fest.attendees.find(
+              (attendee) => attendee.username !== currentUser.username
+            ) &&
+            dayjs().isBefore(fest.endDate)
+          ) {
+            setButtonSrc(checkMarkBlack);
+            setButtonText("I'm going!");
+            setButtonVariant("outline-secondary");
+          }
+          if (
+            fest.attendees.find(
+              (attendee) => attendee.username === currentUser.username
+            ) &&
+            dayjs().isBefore(fest.endDate)
+          ) {
+            setButtonSrc(checkMarkWhite);
+            setButtonText("I'm going!");
+            setButtonVariant("secondary");
+          }
+          if (
+            fest.attendees.find(
+              (attendee) => attendee.username === currentUser.username
+            ) &&
+            dayjs().isAfter(fest.endDate)
+          ) {
+            setButtonSrc(checkMarkWhite);
+            setButtonText("I went");
+            setButtonVariant("secondary");
           }
         });
     }
@@ -238,36 +270,20 @@ export const ProfileFestsRoute = () => {
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
                     {/* Currently going and went states are based off endDate vs currentDate */}
-                    {rsvpStatus === "attendee" &&
-                    dayjs().isAfter(items.endDate) ? (
-                      <Button
-                        variant={"secondary"}
-                        className="flex flex-row mb-5 h-10"
-                        size="sm"
-                        // onClick={""}
-                      >
-                        <img
-                          src={checkMarkWhite}
-                          alt="check mark"
-                          className="mr-2.5"
-                        />
-                        I went
-                      </Button>
-                    ) : (
-                      <Button
-                        variant={"outline-secondary"}
-                        className="flex flex-row mb-5 h-10"
-                        size="sm"
-                        onClick={() => handleRSVPButtonClick(items)}
-                      >
-                        <img
-                          src={checkMarkBlack}
-                          alt="check mark"
-                          className="mr-2.5"
-                        />
-                        I'm going!
-                      </Button>
-                    )}
+
+                    <Button
+                      variant={buttonVariant}
+                      className="flex flex-row mb-5 h-10"
+                      size="sm"
+                      onClick={() => handleRSVPButtonClick(items)}
+                    >
+                      <img
+                        src={buttonSrc}
+                        alt="check mark"
+                        className="mr-2.5"
+                      />
+                      {buttonText}
+                    </Button>
                   </div>
                 );
               })}
