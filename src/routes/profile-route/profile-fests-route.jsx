@@ -69,8 +69,9 @@ export const ProfileFestsRoute = () => {
   //when enddate has passed, button is "I went" for all who attended
   //otherwise button disappears completely if the fest is in the past but user did not attend
 
-  const handleRSVPButtonClick = (festId) => {
-    console.log(festId);
+  const handleRSVPButtonClick = (items) => {
+    console.log(items);
+    console.log(items.id);
     updateFest({
       variables: {
         data: {
@@ -79,7 +80,7 @@ export const ProfileFestsRoute = () => {
           },
         },
         where: {
-          id: festId,
+          id: items.id,
         },
       },
     }).then(() => {
@@ -231,7 +232,9 @@ export const ProfileFestsRoute = () => {
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
                     {/* Currently going and went states are based off endDate vs currentDate */}
-                    {dayjs().isAfter(items.endDate) ? (
+                    {items.attendees !== currentUser.username &&
+                    dayjs().isAfter(items.endDate) ? (
+                      //if currentUser.username !=== invitees.username
                       <Button
                         variant={"secondary"}
                         className="flex flex-row mb-5 h-10"
@@ -247,13 +250,13 @@ export const ProfileFestsRoute = () => {
                       </Button>
                     ) : (
                       <Button
-                        variant={buttonVariant}
+                        variant={"outline-secondary"}
                         className="flex flex-row mb-5 h-10"
                         size="sm"
-                        onClick={() => handleRSVPButtonClick(items.id)}
+                        onClick={() => handleRSVPButtonClick(items)}
                       >
                         <img
-                          src={buttonSrc}
+                          src={checkMarkBlack}
                           alt="check mark"
                           className="mr-2.5"
                         />
