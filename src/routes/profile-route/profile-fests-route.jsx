@@ -18,8 +18,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   //const [buttonText, setButtonText] = useState("I'm going!");
-  const [buttonVariant, setButtonVariant] = useState("outline-secondary");
-  const [buttonSrc, setButtonSrc] = useState(checkMarkBlack);
+  const [rsvpStatus, setRsvpStatus] = useState("");
   const { currentUser } = useCurrentUser();
   console.log(currentUser.id);
 
@@ -70,30 +69,24 @@ export const ProfileFestsRoute = () => {
   //otherwise button disappears completely if the fest is in the past but user did not attend
 
   const handleRSVPButtonClick = (items) => {
-    console.log(items);
-    console.log(items.id);
-    updateFest({
-      variables: {
-        data: {
-          attendees: {
-            connect: [{ id: currentUser.id }],
+    if (currentUser.username !== items.attendees) {
+      updateFest({
+        variables: {
+          data: {
+            attendees: {
+              connect: [{ id: currentUser.id }],
+            },
+          },
+          where: {
+            id: items.id, //festId
           },
         },
-        where: {
-          id: items.id,
-        },
-      },
-    }).then(() => {
-      //color button black
-      setButtonVariant("secondary");
-      setButtonSrc(checkMarkWhite);
-    });
+      }).then(() => {
+        setRsvpStatus("attendee");
+      });
+    }
     //need "disconnect" option as well
   };
-
-  // useEffect(() => {
-  //setup useEffect to set correct button styles at page load?
-  // });
 
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
@@ -104,6 +97,19 @@ export const ProfileFestsRoute = () => {
   useEffect(() => {
     registerModal("create", <SlopFestModal onClose={closeModal} />);
   }, []);
+
+  useEffect(() => {
+    {
+      !loading &&
+        data.fests?.map((fest) => {
+          if (fest.invitees.username) {
+            setRsvpStatus("invitee");
+          } else {
+            setRsvpStatus("attendee");
+          }
+        });
+    }
+  }, [data]);
 
   return (
     <div className="max-w-[1440px] mx-auto">
@@ -232,9 +238,8 @@ export const ProfileFestsRoute = () => {
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
                     {/* Currently going and went states are based off endDate vs currentDate */}
-                    {items.attendees !== currentUser.username &&
+                    {rsvpStatus === "attendee" &&
                     dayjs().isAfter(items.endDate) ? (
-                      //if currentUser.username !=== invitees.username
                       <Button
                         variant={"secondary"}
                         className="flex flex-row mb-5 h-10"
