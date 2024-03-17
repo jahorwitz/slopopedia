@@ -212,8 +212,10 @@ Form.Combobox = ({
         name={name}
         id={id}
       >
-        <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 max-w-sm">
+        <div className={`relative ${className}`}>
+          <div
+            className={`relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 ${className}`}
+          >
             {selectedItems &&
               selectedItems?.length > 0 &&
               selectedItems?.map((item) => (

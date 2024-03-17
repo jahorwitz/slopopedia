@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Footer, SubmitSlopForm as Form } from "../../components";
+import { Footer, SubmitSlopForm } from "../../components";
 import { Header } from "../../components/header";
 import { MoviePreviewModal } from "../../components/MoviePreviewModal";
-import { useModals } from "../../store";
+import { useModals } from "../../hooks";
 
 export const SubmitRoute = ({ children }) => {
   const { registerModal, closeModal } = useModals();
@@ -19,7 +19,7 @@ export const SubmitRoute = ({ children }) => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <Form />
+      <SubmitSlopForm />
       <Footer />
     </>
   );

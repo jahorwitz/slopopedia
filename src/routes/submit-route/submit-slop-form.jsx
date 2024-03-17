@@ -15,12 +15,17 @@ export const SubmitSlopForm = () => {
   const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
   const [movieKeywords, setMovieKeywords] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // Grab the keywords from the database
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
 
-  // Logic to upload image
-  const [uploadImage] = useMutation(CREATE_MOVIE);
+  // If we have keywords, then setMovieKeywords to the data in the response
+  useEffect(() => {
+    if (keywordsData) {
+      setMovieKeywords(keywordsData.keywords);
+    }
+  }, [keywordsData]);
 
   const resetSubmitted = () => {
     setSubmitted(false);
@@ -28,6 +33,7 @@ export const SubmitSlopForm = () => {
 
   const {
     register,
+    watch,
     handleSubmit,
     setValue,
     getValues,
@@ -46,6 +52,7 @@ export const SubmitSlopForm = () => {
     },
   });
 
+  // Gettting the form values with useForm
   const {
     title,
     description,
@@ -56,6 +63,7 @@ export const SubmitSlopForm = () => {
     keywords,
   } = getValues();
 
+  // Handle submit function. The constants are expected to be integers so we need to run parseInt to make the default string value and integer
   const handleFormSubmit = (data) => {
     setSubmitted(true);
     const releaseYearInt = parseInt(data.releaseYear);
@@ -77,7 +85,9 @@ export const SubmitSlopForm = () => {
             tomatoScore: tomatoScoreInt,
             howToWatch,
             keywords: {
-              connect: [...keywords, { id: keywords.id }],
+              connect: movieKeywords.map((keyword) => ({
+                id: keyword.id,
+              })),
             },
           },
         },
@@ -88,6 +98,7 @@ export const SubmitSlopForm = () => {
     }
   };
 
+  // useEffect that resets our values when the form is submitted
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
@@ -113,7 +124,10 @@ export const SubmitSlopForm = () => {
   return (
     <div className="max-w-[1440px] relative m-auto">
       {hasSubmittedMovie && (
-        <Link className="absolute right-0 mr-10 underline" to="/">
+        <Link
+          className="xs:hidden block absolute right-0 mr-10 underline"
+          to="/submitted-slops"
+        >
           View submitted
         </Link>
       )}
@@ -123,7 +137,7 @@ export const SubmitSlopForm = () => {
         className={
           submitted
             ? `hidden`
-            : `max-w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10`
+            : ` xs:w-[300px] sm:w-[453px] md:w-[453px] lg:w-[453px] xl:w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10`
         }
       >
         <Form.TextInput
@@ -166,7 +180,7 @@ export const SubmitSlopForm = () => {
         {errors.description && (
           <Form.Feedback message={errors.description.message} />
         )}
-        <div className="flex justify-between font-arialBold text-lg box-border ">
+        <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between font-arialBold text-lg box-border ">
           <div className="flex flex-col">
             <Form.TextInput
               value={releaseYear}
@@ -204,25 +218,13 @@ export const SubmitSlopForm = () => {
         </div>
         <Form.TextInput
           type="file"
+          onChange={(e) => setSelectedImage(e.target.files[0])}
           register={register("photo", { required: false })}
           accept="image/png, image/jpeg"
           labelText="Image"
           isValid={!isValid}
-          // onChange={({
-          //   target: {
-          //     validity,
-          //     files: [file],
-          //   },
-          // }) => {
-          //   if (validity.valid)
-          //     uploadImage({
-          //       variables: {
-          //         file,
-          //       },
-          //     });
-          // }}
         />
-        <div className="flex justify-between box-border font-arialBold text-lg">
+        <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between box-border font-arialBold text-lg">
           <div className="flex flex-col">
             <Form.TextInput
               value={tomatoScore}
@@ -260,24 +262,16 @@ export const SubmitSlopForm = () => {
           </div>
         </div>
         <Form.Combobox
-          nameKey="name"
-          idKey="name"
-          id="keywords"
-          list={movieKeywords}
-          value={keywords}
-          errors={errors}
-          register={register("keywords", {
-            minLength: {
-              value: 4,
-              message: "Please enter 4 or more characters",
-            },
-          })}
-          placeholder="Keywords"
-          labelText="Keywords *"
-          onChange={(e) => {
-            setValue("keywords", e.target.value, { shouldValidate: true });
-          }}
-          isValid={!errors.keywords}
+          list={movieKeywords.map((keyword) => ({
+            name: keyword.name,
+          }))}
+          watch={watch}
+          setValue={setValue}
+          labelText={"Keywords"}
+          id={"Keywords"}
+          nameKey={"name"}
+          idKey={"name"}
+          name={"Keywords"}
         />
         {errors.keywords && <Form.Feedback message={errors.keywords.message} />}
         <Form.Submit
@@ -286,6 +280,12 @@ export const SubmitSlopForm = () => {
           className="w-full border-none"
           disabled={!isValid}
         />
+        <Link
+          className="xs:block hidden font-arialRegular m-auto mt-4 underline"
+          to="/submitted-slops"
+        >
+          View submitted
+        </Link>
       </Form>
       {/* If form is submitted, we are displaying a thank you message */}
       {submitted ? (
