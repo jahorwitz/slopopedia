@@ -20,7 +20,7 @@ export const ProfileFestsRoute = () => {
   const [buttonText, setButtonText] = useState("");
   const [buttonSrc, setButtonSrc] = useState("");
   const [buttonVariant, setButtonVariant] = useState("");
-  const [rsvpStatus, setRsvpStatus] = useState("");
+  //const [rsvpStatus, setRsvpStatus] = useState("");
   const { currentUser } = useCurrentUser();
   //const username = currentUser.username;
   //console.log(username);
@@ -86,7 +86,7 @@ export const ProfileFestsRoute = () => {
           },
         },
       }).then(() => {
-        setRsvpStatus("attendee");
+        console.log("RSVP status updated");
       });
     }
     //need "disconnect" option as well
@@ -103,41 +103,34 @@ export const ProfileFestsRoute = () => {
   }, []);
 
   useEffect(() => {
+    //debugger;
     {
       !loading &&
-        data.fests?.map((fest) => {
+        data.fests?.forEach((fest) => {
           console.log(fest);
-          //fest.attendees?.map((attendees) => {
-          //console.log(attendees.username);
-          if (
-            fest.attendees.find(
-              (attendee) => attendee.username !== currentUser.username
-            ) &&
-            dayjs().isBefore(fest.endDate)
-          ) {
+          const attendeeStatus = fest.attendees.some(
+            (attendee) => attendee.username === currentUser.username
+          );
+          console.log(attendeeStatus);
+          const festDateInFuture = dayjs().isBefore(fest.endDate);
+          console.log(festDateInFuture);
+
+          if (attendeeStatus === false && festDateInFuture === true) {
             setButtonSrc(checkMarkBlack);
             setButtonText("I'm going!");
             setButtonVariant("outline-secondary");
-          }
-          if (
-            fest.attendees.find(
-              (attendee) => attendee.username === currentUser.username
-            ) &&
-            dayjs().isBefore(fest.endDate)
-          ) {
+          } else if (attendeeStatus === true && festDateInFuture === true) {
             setButtonSrc(checkMarkWhite);
             setButtonText("I'm going!");
             setButtonVariant("secondary");
-          }
-          if (
-            fest.attendees.find(
-              (attendee) => attendee.username === currentUser.username
-            ) &&
-            dayjs().isAfter(fest.endDate)
-          ) {
+          } else if (attendeeStatus === true && festDateInFuture === false) {
             setButtonSrc(checkMarkWhite);
             setButtonText("I went");
             setButtonVariant("secondary");
+          } else if (attendeeStatus === false && festDateInFuture === false) {
+            setButtonSrc("");
+            setButtonText("Testing False False");
+            setButtonVariant("");
           }
         });
     }
