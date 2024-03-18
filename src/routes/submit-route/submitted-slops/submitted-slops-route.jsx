@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Footer, Header } from "../../../components";
-import { CurrentUserContext } from "../../../store/current-user-context";
+import { useCurrentUser } from "../../../hooks";
 import { SubmittedList } from "./submitted-list";
 
 export const SubmittedSlopsRoute = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
 
   return (
     <>

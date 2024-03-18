@@ -93,12 +93,12 @@ export const FestRoute = () => {
           )}
           <div className="w-full flex flex-col gap-y-8">
             <div className="flex justify-between items-center">
-              {!festQuery.loading && movies && movies.length > 0 && (
+              {!festQuery.loading && movies && movies?.length > 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   Slops for this fest
                 </h2>
               )}
-              {!festQuery.loading && movies && movies.length === 0 && (
+              {!festQuery.loading && movies && movies?.length === 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   {"No slops for this fest yet :("}
                 </h2>
@@ -128,7 +128,7 @@ export const FestRoute = () => {
             <span className="w-full border-b-[1px] border-gray" />
             {!moviesQuery.loading &&
               !festQuery.loading &&
-              recommendedMovies.length > 0 && (
+              recommendedMovies?.length > 0 && (
                 <>
                   <h2 className="font-arial text-lg/4 font-bold">
                     Recommended Movies
@@ -143,7 +143,7 @@ export const FestRoute = () => {
               )}
             {!moviesQuery.loading &&
               !festQuery.loading &&
-              recommendedMovies.length === 0 && (
+              recommendedMovies?.length === 0 && (
                 <h2 className="font-arial text-lg/4 font-bold">
                   {"No movies to recommend :("}
                 </h2>

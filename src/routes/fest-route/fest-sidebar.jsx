@@ -1,13 +1,11 @@
 import { useMutation } from "@apollo/client";
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
 import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
-import { useModals } from "../../hooks";
-import { CurrentUserContext } from "../../store";
+import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const { openModal, closeModal } = useModals();
   const festId = useParams().festId;
   const navigate = useNavigate();

@@ -139,8 +139,7 @@ Header.NavLinks = ({
         <img src={headerNew} className="absolute right-[200px] bottom-[6px]" />
       </div>
       {/* hamburger button */}
-      <div className="xs: block sm:block  relative"></div>
-      <div className="flex justify-end  pt-5 xs:pr-0 xs:pt-0 sm:pt-0 md:pt-0 ">
+      <div className="flex w-fit pt-5 xs:pr-0 xs:pt-0 sm:pt-0 md:pt-0 md:hidden">
         <button
           type="button"
           onClick={handleMenu}
