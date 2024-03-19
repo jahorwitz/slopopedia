@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
+import { difference } from "lodash";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GET_FEST, GET_USER_FESTS } from "../graphql";
@@ -11,17 +12,20 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const [users, setUsers] = useState([]);
   const { currentUser } = useCurrentUser();
   const { closeModal } = useModals();
+  const festId = fest?.data?.fest?.id;
+  const attendeesBefore = fest?.data?.fest?.attendees;
 
   const festStart = new Date(fest?.data?.fest?.startDate);
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
   useEffect(() => {
-    if (location.pathname === `/fests/${fest?.data?.fest?.id}`) {
+    if (location.pathname === `/fests/${festId}`) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
     }
   }, [fest?.data]);
 
+  // Query for getting all user info for attendees selection
   const { data, loading, error } = useQuery(GET_USERS, {
     variables: {
       where: {
@@ -33,6 +37,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       },
     },
   });
+
+  // Mutations for creating and updating fests
   const [createFest, { loading: createLoading, error: createError }] =
     useMutation(CREATE_FEST, { refetchQueries: [GET_USER_FESTS] });
 
@@ -69,25 +75,59 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
     const { name, attendees, startDate, endDate } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
-    try {
-      createFest({
-        variables: {
-          data: {
-            name: name,
-            startDate: startDateISO,
-            endDate: endDateISO,
-            // attendees should include creator and other usernames in attendees field
-            attendees: {
-              connect: [...attendees, { username: currentUser.username }],
-            },
-            creator: {
-              connect: { id: currentUser.id },
+
+    if (
+      location.pathname === `/fests/${festId}` &&
+      fest?.data?.fest?.creator.id === currentUser.id
+    ) {
+      const attendeesData = attendeesBefore.map((attendee) => ({
+        username: attendee.username,
+      }));
+      const attendeesUpdate = attendees.map((attendee) => ({
+        username: attendee.username,
+      }));
+      console.log(attendeesUpdate);
+      try {
+        updateFest({
+          variables: {
+            where: { id: festId },
+            data: {
+              // Only submits when the name changes
+              name: name,
+              startDate: startDateISO,
+              endDate: endDateISO,
+              attendees: {
+                connect: [...attendeesUpdate],
+                disconnect: difference(attendeesData, attendeesUpdate),
+              },
             },
           },
-        },
-      }).then(() => closeModal("create"));
-    } catch (error) {
-      console.log(`Error: ${error.message}`);
+        }).then(() => {
+          closeModal("edit-fest");
+          console.log(attendeesUpdate);
+          window.location.reload();
+        });
+      } catch (error) {}
+    } else {
+      try {
+        createFest({
+          variables: {
+            data: {
+              name: name,
+              startDate: startDateISO,
+              endDate: endDateISO,
+              attendees: {
+                connect: [...attendees, { username: currentUser.username }],
+              },
+              creator: {
+                connect: { id: currentUser.id },
+              },
+            },
+          },
+        }).then(() => closeModal("create"));
+      } catch (error) {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 
@@ -100,7 +140,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
         <div className="flex flex-col">
           <div className="flex-col">
             <Form.TextInput
-              defaultValue={fest?.data?.fest?.name || ""}
+              prefilledInputs={fest?.data?.fest?.name}
               labelText="Name it!"
               className={`w-[373px]`}
               id={"name"}
@@ -118,10 +158,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
               isValid={!errors.name}
             />
             {errors.name ? (
-              <Form.Feedback
-                message={"Must contain more than one character"}
-                className={""}
-              />
+              <Form.Feedback message={"Must contain more than one character"} />
             ) : (
               ""
             )}

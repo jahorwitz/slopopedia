@@ -21,6 +21,7 @@ Form.TextInput = ({
   email,
   password,
   register,
+  prefilledInputs,
   onChange,
   isValid,
   placeholder,
@@ -38,6 +39,7 @@ Form.TextInput = ({
 
         <input
           register={register}
+          defaultValue={prefilledInputs}
           id={id}
           className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"
@@ -138,7 +140,7 @@ Form.DateDropdown = ({
   const selectedItem = watch(id);
 
   useEffect(() => {
-    setValue(id, selectedItem);
+    setValue(id, selectedItem, { shouldValidate: true });
   }, []);
 
   return (
@@ -154,7 +156,7 @@ Form.DateDropdown = ({
         className={
           "py-4 px-4 border-solid rounded-none border border-black w-44 h-12 flex bg-background"
         }
-        onChange={(date) => setValue(id, date)}
+        onChange={(date) => setValue(id, date, { shouldValidate: true })}
         selected={selectedItem}
         placeholderText="Select"
         {...rest}
@@ -209,7 +211,7 @@ Form.Combobox = ({
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setValue(id, selectedItems);
+    setValue(id, selectedItems, { shouldValidate: true });
   }, []);
 
   const filteredList =
@@ -225,7 +227,7 @@ Form.Combobox = ({
       </label>
       <Combobox
         value={selectedItems}
-        onChange={(data) => setValue(id, data)}
+        onChange={(data) => setValue(id, data, { shouldValidate: true })}
         multiple
         nullable
         name={name}
