@@ -7,6 +7,7 @@ import {
   BlogRoute,
   BrowseRoute,
   DraftRoute,
+  FestDiscussion,
   FestRoute,
   FestsRoute,
   MainRoute,
@@ -14,6 +15,7 @@ import {
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ProfileSettingsRoute,
   SearchRoute,
   SoundsRoute,
 } from "./routes";
@@ -50,6 +52,14 @@ export const App = () => {
                 element={
                   <ProtectedRoute>
                     <ProfileFestsRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/settings"
+                element={
+                  <ProtectedRoute>
+                    <ProfileSettingsRoute />
                   </ProtectedRoute>
                 }
               />
@@ -97,7 +107,7 @@ export const App = () => {
                 path="/fests/:festId/discussion"
                 element={
                   <ProtectedRoute>
-                    <FestRoute />
+                    <FestDiscussion />
                   </ProtectedRoute>
                 }
               />
