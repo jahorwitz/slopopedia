@@ -58,49 +58,52 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
         {buttons && (
           <Badge
             text="You'll like this!"
-            className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial"
+            className="absolute top-[55px] left-[20px] z-50 text-lg/5 font-arial xs:top-[30px] xs:left-[10px]"
           />
         )}
-
         <div className="blur"></div>
         <img
           src={movie.photo}
           alt={movie.title}
-          className="mx-auto my-0 py-2.5 z-50"
+          className="mx-auto my-0 py-2.5 z-50 xs:w-72 sm:z-0 xs:z-0"
         />
       </BlurredImage>
-      <div className="max-w-[620px] pl-[60px] pt-5 pb-[60px] flex flex-col gap-y-5 font-arial">
-        <div className="flex flex-col gap-y-2.5 text-lg">
+      <div className="max-w-[620px] m-auto pt-5 pb-[60px] flex flex-col gap-y-5 font-arial px-4 ">
+        <div className="flex flex-col gap-y-2.5 text-lg xs:text-base">
           <h1 className="font-bold ">{movie.title}</h1>
           <p>
             {movie.releaseYear}, {movie.runtime} minutes
           </p>
         </div>
         <div>
-          <p className="text-lg/5">{movie.description}</p>
+          <p className="text-lg/5 xs:text-base/5">{movie.description}</p>
         </div>
-        <div className="flex gap-x-2">
+        <div className="flex gap-2 flex-wrap ">
           {movie.keywords.map((keyword, index) => (
-            <Keyword className={"bg-yellow"} key={index} keyword={keyword} />
+            <Keyword
+              className={"bg-yellow xs:text-xs"}
+              key={index}
+              keyword={keyword}
+            />
           ))}
         </div>
         <div className="flex gap-x-2.5">
           <img src={rottenTomato} alt={"rotten tomato"} className="w-5 h-5" />
-          <p className="text-lg/5">
+          <p className="text-lg/5 xs:text-base">
             Rotten Tomatoes score: {movie.tomatoScore}%
           </p>
         </div>
         {howToWatch && (
           <div className="flex gap-x-2.5">
             <img src={camera} alt={"camera"} className="w-5 h-5" />
-            <p className="text-lg/5">Watch on: {movie.howToWatch}</p>
+            <p className="text-lg/5 xs:text-md">Watch on: {movie.howToWatch}</p>
           </div>
         )}
         {buttons && (
-          <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
+          <div className="flex gap-x-5 mt-10 font-bold text-lg/4 xs:mt-6">
             <Button
               variant={isWatchedClicked ? "primary" : "outline-secondary"}
-              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5 xs:p-1 xs:text-sm "
               onClick={handleWatchedClick}
             >
               <img src={checkMarkDark} className="w-4 h-3" />I watched it!
@@ -108,7 +111,7 @@ export const MoviePreviewModal = ({ whiteButton, buttons, howToWatch }) => {
             <Button
               size="sm"
               variant={isWantClicked ? "primary" : "outline-secondary"}
-              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5 xs:p-1 xs:text-sm"
               onClick={handleWantClick}
             >
               <img src={heartDark} className="w-4 h-3" />I want it!
