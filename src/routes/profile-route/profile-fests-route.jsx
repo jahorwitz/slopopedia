@@ -120,11 +120,11 @@ export const ProfileFestsRoute = () => {
           <div className="flex flex-col">
             {!loading &&
               data.fests.map((fest, index) => {
-                const startDate = new Intl.DateTimeFormat("en-US").format(
-                  new Date(fest.startDate)
+                const startDate = new Intl.DateTimeFormat("en-GB").format(
+                  new Date(fest.startDate.replace(/-/g, "/"))
                 );
-                const endDate = new Intl.DateTimeFormat("en-US").format(
-                  new Date(fest.endDate)
+                const endDate = new Intl.DateTimeFormat("en-GB").format(
+                  new Date(fest.endDate.replace(/-/g, "/"))
                 );
                 const attendeeStatus = fest.attendees.some(
                   (attendee) => attendee.username === currentUser.username
