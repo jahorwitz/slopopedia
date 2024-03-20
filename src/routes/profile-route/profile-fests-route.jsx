@@ -119,7 +119,7 @@ export const ProfileFestsRoute = () => {
           </div>
           <div className="flex flex-col">
             {!loading &&
-              data.fests.map((fest, index) => {
+              data.fests.map((fest) => {
                 const startDate = new Intl.DateTimeFormat("en-GB").format(
                   new Date(fest.startDate.replace(/-/g, "/"))
                 );
@@ -133,7 +133,7 @@ export const ProfileFestsRoute = () => {
                 // const isClicked = fest.some((click) => click.id === fest.id);
                 return (
                   <div
-                    key={index}
+                    key={fest.id}
                     className="flex flex-row justify-between mb-5 border-b border-black"
                   >
                     <div className="mb-5">
@@ -149,7 +149,7 @@ export const ProfileFestsRoute = () => {
                             ? fest.invitees?.map((invitee) => {
                                 return (
                                   <Keyword
-                                    key={invitee.username}
+                                    key={invitee.id}
                                     className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                     keyword={invitee.username}
                                   />
@@ -161,7 +161,7 @@ export const ProfileFestsRoute = () => {
                                   <>
                                     <div>
                                       <Keyword
-                                        key={invitee.username}
+                                        key={invitee.id}
                                         className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                                         keyword={invitee.username}
                                       />
@@ -171,7 +171,7 @@ export const ProfileFestsRoute = () => {
                               })}
                           {fest.invitees.length > 4 ? (
                             <Keyword
-                              key={index}
+                              key={fest.id}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                               keyword={`+ ${fest.invitees.length - 4} more`}
                             />
