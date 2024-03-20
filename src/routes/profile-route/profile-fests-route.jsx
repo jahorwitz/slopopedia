@@ -158,15 +158,11 @@ export const ProfileFestsRoute = () => {
                             : fest.invitees.slice(0, 4).map((invitee) => {
                                 // needs to have {+ invitees.length - 5} to show how many invitees after 5
                                 return (
-                                  <>
-                                    <div>
-                                      <Keyword
-                                        key={invitee.id}
-                                        className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                                        keyword={invitee.username}
-                                      />
-                                    </div>
-                                  </>
+                                  <Keyword
+                                    key={invitee.id}
+                                    className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
+                                    keyword={invitee.username}
+                                  />
                                 );
                               })}
                           {fest.invitees.length > 4 ? (
