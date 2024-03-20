@@ -22,7 +22,7 @@ export function MainRoute() {
           <img className={"w-full"} src={image} alt="actors" />
         </div>
       </div>
-      <div className="w-full p-[120px] xs:p-[20px] sm:p-[40px] md:p-[60px]">
+      <div className="w-full p-[120px] xs:p-[20px] sm:p-[50px] md:p-[60px]">
         <h1 className="flex w-full mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center ">
           RECENTLY ADDED
         </h1>

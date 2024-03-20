@@ -105,7 +105,7 @@ export function MovieCard({
                 : "relative"
             }`}
           >
-            {card.keywords.map((keyword, index) => (
+            {card.keywords.slice(0, 5).map((keyword, index) => (
               <Keyword
                 keyword={keyword.name}
                 className={`${
