@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -17,32 +17,13 @@ import checkMarkWhite from "../../images/check-mark.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
-  const [buttonText, setButtonText] = useState("");
-  const [buttonSrc, setButtonSrc] = useState("");
-  const [buttonVariant, setButtonVariant] = useState("");
-  //const [rsvpStatus, setRsvpStatus] = useState("");
   const { currentUser } = useCurrentUser();
-  //const username = currentUser.username;
-  //console.log(username);
-  console.log(currentUser.username);
 
   const currentDate = new Date().toLocaleString("default", {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",
   });
-
-  // const changeButtonAttributes = () => {
-  //   if (buttonText !== "I'm going!") {
-  //     setButtonText("I'm going!");
-  //     setButtonVariant("outline-secondary");
-  //     setButtonSrc(checkMarkBlack);
-  //   } else {
-  //     setButtonText("I went");
-  //     setButtonVariant("secondary");
-  //     setButtonSrc(checkMarkWhite);
-  //   }
-  // };
 
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
@@ -72,8 +53,9 @@ export const ProfileFestsRoute = () => {
   //when enddate has passed, button is "I went" for all who attended
   //otherwise button disappears completely if the fest is in the past but user did not attend
 
-  const handleRSVPButtonClick = (items) => {
-    if (currentUser.username !== items.attendees) {
+  const handleRSVPButtonClick = (fest, attendeestatus) => {
+    console.log(fest);
+    if (attendeestatus === false) {
       updateFest({
         variables: {
           data: {
@@ -82,14 +64,28 @@ export const ProfileFestsRoute = () => {
             },
           },
           where: {
-            id: items.id, //festId
+            id: fest.id, //festId
           },
         },
-      }).then(() => {
-        console.log("RSVP status updated");
+      }).then((res) => {
+        console.log(res);
+      });
+    } else {
+      updateFest({
+        variables: {
+          data: {
+            attendees: {
+              disconnect: [{ id: currentUser.id }],
+            },
+          },
+          where: {
+            id: fest.id, //festId
+          },
+        },
+      }).then((res) => {
+        console.log(res);
       });
     }
-    //need "disconnect" option as well
   };
 
   const isDesktopSize = useMediaQuery({
@@ -101,40 +97,6 @@ export const ProfileFestsRoute = () => {
   useEffect(() => {
     registerModal("create", <SlopFestModal onClose={closeModal} />);
   }, []);
-
-  useEffect(() => {
-    //debugger;
-    {
-      !loading &&
-        data.fests?.forEach((fest) => {
-          console.log(fest);
-          const attendeeStatus = fest.attendees.some(
-            (attendee) => attendee.username === currentUser.username
-          );
-          console.log(attendeeStatus);
-          const festDateInFuture = dayjs().isBefore(fest.endDate);
-          console.log(festDateInFuture);
-
-          if (attendeeStatus === false && festDateInFuture === true) {
-            setButtonSrc(checkMarkBlack);
-            setButtonText("I'm going!");
-            setButtonVariant("outline-secondary");
-          } else if (attendeeStatus === true && festDateInFuture === true) {
-            setButtonSrc(checkMarkWhite);
-            setButtonText("I'm going!");
-            setButtonVariant("secondary");
-          } else if (attendeeStatus === true && festDateInFuture === false) {
-            setButtonSrc(checkMarkWhite);
-            setButtonText("I went");
-            setButtonVariant("secondary");
-          } else if (attendeeStatus === false && festDateInFuture === false) {
-            setButtonSrc("");
-            setButtonText("Testing False False");
-            setButtonVariant("");
-          }
-        });
-    }
-  }, [data]);
 
   return (
     <div className="max-w-[1440px] mx-auto">
@@ -164,14 +126,18 @@ export const ProfileFestsRoute = () => {
           </div>
           <div className="flex flex-col">
             {!loading &&
-              data.fests.map((items, index) => {
+              data.fests.map((fest, index) => {
                 const startDate = new Intl.DateTimeFormat("en-US").format(
-                  new Date(items.startDate)
+                  new Date(fest.startDate)
                 );
                 const endDate = new Intl.DateTimeFormat("en-US").format(
-                  new Date(items.endDate)
+                  new Date(fest.endDate)
                 );
-                // const isClicked = items.some((click) => click.id === items.id);
+                const attendeeStatus = fest.attendees.some(
+                  (attendee) => attendee.username === currentUser.username
+                );
+                const festDateInFuture = dayjs().isBefore(fest.endDate);
+                // const isClicked = fest.some((click) => click.id === fest.id);
                 return (
                   <div
                     key={index}
@@ -179,7 +145,7 @@ export const ProfileFestsRoute = () => {
                   >
                     <div className="mb-5">
                       <h3 className="font-arialBold mb-2.5">
-                        <Link to={`/fests/${items.id}`}>{items.name}</Link>
+                        <Link to={`/fests/${fest.id}`}>{fest.name}</Link>
                       </h3>
                       <p className="font-arialRegular mb-2.5">
                         {startDate + " - " + endDate}
@@ -187,8 +153,8 @@ export const ProfileFestsRoute = () => {
                       <div className="mt-3">
                         <h3>Fest Invitees</h3>
                         <div className="flex flex-row">
-                          {items.invitees.length <= 4
-                            ? items.invitees?.map((invitee) => {
+                          {fest.invitees.length <= 4
+                            ? fest.invitees?.map((invitee) => {
                                 return (
                                   <Keyword
                                     key={invitee.username}
@@ -197,7 +163,7 @@ export const ProfileFestsRoute = () => {
                                   />
                                 );
                               })
-                            : items.invitees.slice(0, 4).map((invitee) => {
+                            : fest.invitees.slice(0, 4).map((invitee) => {
                                 // needs to have {+ invitees.length - 5} to show how many invitees after 5
                                 return (
                                   <>
@@ -211,11 +177,11 @@ export const ProfileFestsRoute = () => {
                                   </>
                                 );
                               })}
-                          {items.invitees.length > 4 ? (
+                          {fest.invitees.length > 4 ? (
                             <Keyword
                               key={index}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                              keyword={`+ ${items.invitees.length - 4} more`}
+                              keyword={`+ ${fest.invitees.length - 4} more`}
                             />
                           ) : (
                             ""
@@ -225,8 +191,8 @@ export const ProfileFestsRoute = () => {
                       <div className="mt-3">
                         <h3>Fest Attendees</h3>
                         <div className="flex flex-row">
-                          {items.attendees.length <= 4
-                            ? items.attendees?.map((attendee) => {
+                          {fest.attendees.length <= 4
+                            ? fest.attendees?.map((attendee) => {
                                 return (
                                   <Keyword
                                     key={attendee.username}
@@ -235,7 +201,7 @@ export const ProfileFestsRoute = () => {
                                   />
                                 );
                               })
-                            : items.attendees.slice(0, 4).map((attendee) => {
+                            : fest.attendees.slice(0, 4).map((attendee) => {
                                 // needs to have {+ attendees.length - 5} to show how many attendees after 5
                                 return (
                                   <>
@@ -249,11 +215,11 @@ export const ProfileFestsRoute = () => {
                                   </>
                                 );
                               })}
-                          {items.attendees.length > 4 ? (
+                          {fest.attendees.length > 4 ? (
                             <Keyword
                               key={index}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                              keyword={`+ ${items.attendees.length - 4} more`}
+                              keyword={`+ ${fest.attendees.length - 4} more`}
                             />
                           ) : (
                             ""
@@ -263,20 +229,25 @@ export const ProfileFestsRoute = () => {
                     </div>
                     {/* Button may need to be changed in future updates to include onClick functionality */}
                     {/* Currently going and went states are based off endDate vs currentDate */}
-
-                    <Button
-                      variant={buttonVariant}
-                      className="flex flex-row mb-5 h-10"
-                      size="sm"
-                      onClick={() => handleRSVPButtonClick(items)}
-                    >
-                      <img
-                        src={buttonSrc}
-                        alt="check mark"
-                        className="mr-2.5"
-                      />
-                      {buttonText}
-                    </Button>
+                    {(attendeeStatus || festDateInFuture) && (
+                      <Button
+                        variant={
+                          attendeeStatus ? "secondary" : "outline-secondary"
+                        }
+                        className="flex flex-row mb-5 h-10"
+                        size="sm"
+                        onClick={() =>
+                          handleRSVPButtonClick(fest, attendeeStatus)
+                        }
+                      >
+                        <img
+                          src={attendeeStatus ? checkMarkWhite : checkMarkBlack}
+                          alt="check mark"
+                          className="mr-2.5"
+                        />
+                        {festDateInFuture ? "I'm going" : "I went"}
+                      </Button>
+                    )}
                   </div>
                 );
               })}
