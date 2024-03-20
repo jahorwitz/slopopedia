@@ -80,8 +80,8 @@ export function MovieCard({
             <h2 className="text-lg mb-2.5 font-bold font-arial">
               {card.title}
             </h2>
-            <p className="text-lg mb-2.5 text-gray-400 font-arial">
-              {card.releaseYear}, {card.runtimeInMinutes}
+            <p className="text-lg mb-2.5 text-gray font-arial">
+              {card.releaseYear}, {card.runtimeInMinutes} minutes
             </p>
           </div>
         ) : (
@@ -90,7 +90,7 @@ export function MovieCard({
               {card.title}
             </h2>
             {card.runtimeInMinutes && (
-              <p className="text-lg mb-2.5 text-gray-400 font-arial">
+              <p className="text-lg mb-2.5 text-gray font-arial">
                 {card.releaseYear}, {card.runtimeInMinutes} minutes
               </p>
             )}
