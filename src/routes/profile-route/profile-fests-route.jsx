@@ -234,10 +234,16 @@ export const ProfileFestsRoute = () => {
                         variant={
                           attendeeStatus ? "secondary" : "outline-secondary"
                         }
-                        className="flex flex-row mb-5 h-10"
+                        className={
+                          festDateInFuture
+                            ? "flex flex-row mb-5 h-10"
+                            : "flex flex-row mb-5 h-10 cursor-auto"
+                        }
                         size="sm"
-                        onClick={() =>
-                          handleRSVPButtonClick(fest, attendeeStatus)
+                        onClick={
+                          festDateInFuture
+                            ? () => handleRSVPButtonClick(fest, attendeeStatus)
+                            : () => {}
                         }
                       >
                         <img
