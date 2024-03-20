@@ -47,14 +47,7 @@ export const ProfileFestsRoute = () => {
   const festQuery = useQuery(GET_FEST, { variables: { where: {} } });
   const festsQuery = useQuery(GET_USER_FESTS, { variables: { where: {} } });
 
-  //invitees should be the default array someone is added to for a fest
-  //when someone clicks I'm going, move to "attendees" array, turn button black
-  //when someone clicks again,  move to "invitees" array, turn button white
-  //when enddate has passed, button is "I went" for all who attended
-  //otherwise button disappears completely if the fest is in the past but user did not attend
-
   const handleRSVPButtonClick = (fest, attendeestatus) => {
-    console.log(fest);
     if (attendeestatus === false) {
       updateFest({
         variables: {
@@ -64,7 +57,7 @@ export const ProfileFestsRoute = () => {
             },
           },
           where: {
-            id: fest.id, //festId
+            id: fest.id,
           },
         },
       }).then((res) => {
@@ -79,7 +72,7 @@ export const ProfileFestsRoute = () => {
             },
           },
           where: {
-            id: fest.id, //festId
+            id: fest.id,
           },
         },
       }).then((res) => {
@@ -227,8 +220,6 @@ export const ProfileFestsRoute = () => {
                         </div>
                       </div>
                     </div>
-                    {/* Button may need to be changed in future updates to include onClick functionality */}
-                    {/* Currently going and went states are based off endDate vs currentDate */}
                     {(attendeeStatus || festDateInFuture) && (
                       <Button
                         variant={
