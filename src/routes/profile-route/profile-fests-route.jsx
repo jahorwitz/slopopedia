@@ -10,7 +10,7 @@ import {
   Keyword,
   SlopFestModal,
 } from "../../components/index";
-import { GET_FEST, GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
+import { GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkBlack from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
@@ -18,13 +18,10 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
-
-  const currentDate = new Date().toLocaleString("default", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
+  const { registerModal, openModal, closeModal } = useModals();
+  const isDesktopSize = useMediaQuery({
+    query: "(min-width: 1170px)",
   });
-
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
       where: {
@@ -39,14 +36,11 @@ export const ProfileFestsRoute = () => {
     },
   });
 
-  const [
-    updateFest,
-    { data: updateData, loading: updateLoading, error: updateError },
-  ] = useMutation(UPDATE_FEST, { refetchQueries: [GET_USER_FESTS] });
+  const [updateFest] = useMutation(UPDATE_FEST, {
+    refetchQueries: [GET_USER_FESTS],
+  });
 
-  const festQuery = useQuery(GET_FEST, { variables: { where: {} } });
-  const festsQuery = useQuery(GET_USER_FESTS, { variables: { where: {} } });
-
+  // - - - - - HANDLER
   const handleRSVPButtonClick = (fest, attendeestatus) => {
     if (attendeestatus === false) {
       updateFest({
@@ -60,8 +54,6 @@ export const ProfileFestsRoute = () => {
             id: fest.id,
           },
         },
-      }).then((res) => {
-        console.log(res);
       });
     } else {
       updateFest({
@@ -75,18 +67,11 @@ export const ProfileFestsRoute = () => {
             id: fest.id,
           },
         },
-      }).then((res) => {
-        console.log(res);
       });
     }
   };
 
-  const isDesktopSize = useMediaQuery({
-    query: "(min-width: 1170px)",
-  });
-
-  const { registerModal, openModal, closeModal } = useModals();
-
+  // - - - - - USE EFFECT
   useEffect(() => {
     registerModal("create", <SlopFestModal onClose={closeModal} />);
   }, []);
