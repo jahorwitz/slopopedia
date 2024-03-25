@@ -1,7 +1,8 @@
 import { Combobox } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDropzone } from "react-dropzone";
 import cross from "../../images/combo-box-cross.svg";
 import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
@@ -11,6 +12,46 @@ export const Form = ({ className, children, onSubmit, ...rest }) => {
     <form className={className} onSubmit={onSubmit} {...rest}>
       {children}
     </form>
+  );
+};
+
+Form.FileDrop = ({ id, labelText, watch, onChange, children }) => {
+  const [file, setFile] = useState(null);
+
+  const onDrop = useCallback(([acceptedFile]) => {
+    setFile(acceptedFile);
+    // const reader = new FileReader();
+
+    // reader.onabort = () => console.log("file reading was aborted");
+    // reader.onerror = () => console.log("file reading has failed");
+    // reader.onload = () => {
+    //   const binaryStr = reader.result;
+    //   const blob = new Blob([binaryStr], { type: acceptedFile.type });
+    //   onChange(URL.createObjectURL(blob));
+    // };
+    // reader.readAsArrayBuffer(acceptedFile);
+    onChange(acceptedFile);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+  });
+
+  return (
+    <div className="flex font-arial flex-col py-3">
+      <label htmlFor={id} className="mb-1.5 text-lg font-bold text-start">
+        {labelText}
+      </label>
+
+      <div
+        {...getRootProps()}
+        className="w-full border border-black font-medium text-lg/4 py-3 px-4 bg-background border-solid flex justify-center items-center cursor-pointer"
+      >
+        <input {...getInputProps()} type="file" />
+        {file?.path ?? children}
+      </div>
+    </div>
   );
 };
 

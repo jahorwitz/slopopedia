@@ -15,7 +15,6 @@ export const SubmitSlopForm = () => {
   const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
   const [movieKeywords, setMovieKeywords] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
 
   // Grab the keywords from the database
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
@@ -46,7 +45,6 @@ export const SubmitSlopForm = () => {
       releaseYear: "",
       runtime: "",
       tomatoScore: "",
-      photo: "",
       howToWatch: "",
       keywords: "",
     },
@@ -84,6 +82,9 @@ export const SubmitSlopForm = () => {
             runtime: runTimeInt,
             tomatoScore: tomatoScoreInt,
             howToWatch,
+            // photo: {
+            //   upload: data.photo,
+            // },
             keywords: {
               connect: movieKeywords.map((keyword) => ({
                 id: keyword.id,
@@ -170,7 +171,7 @@ export const SubmitSlopForm = () => {
               message: "Be more descriptive, 20 characters are required.",
             },
           })}
-          placeholder="Descritpion"
+          placeholder="Description"
           labelText="Description *"
           onChange={(e) => {
             setValue("description", e.target.value, { shouldValidate: true });
@@ -216,14 +217,15 @@ export const SubmitSlopForm = () => {
             />
           </div>
         </div>
-        <Form.TextInput
-          type="file"
-          onChange={(e) => setSelectedImage(e.target.files[0])}
-          register={register("photo", { required: false })}
-          accept="image/png, image/jpeg"
+        {/* <Form.FileDrop
+          id="photo"
           labelText="Image"
-          isValid={!isValid}
-        />
+          watch={watch}
+          setValue={setValue}
+          onChange={(file) => setValue("photo", file)}
+        >
+          Drop file here
+        </Form.FileDrop> */}
         <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between box-border font-arialBold text-lg">
           <div className="flex flex-col">
             <Form.TextInput
@@ -293,7 +295,7 @@ export const SubmitSlopForm = () => {
           <p className="font-arialRegular text-lg text-center">
             Thanks for submitting a slop to our platform, dear goblin! Our team
             of professional slop goblins will review your submission and publish
-            it,  if your slop is actually sloppy, and doesn’t repeat movies
+            it, if your slop is actually sloppy, and doesn’t repeat movies
             already published here
           </p>
           <button
