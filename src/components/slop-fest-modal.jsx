@@ -13,7 +13,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const { currentUser } = useCurrentUser();
   const { closeModal } = useModals();
   const festId = fest?.data?.fest?.id;
-  const attendeesBefore = fest?.data?.fest?.attendees;
+  const inviteesBefore = fest?.data?.fest?.invitees;
 
   const festStart = new Date(fest?.data?.fest?.startDate);
   const festEnd = new Date(fest?.data?.fest?.endDate);
@@ -57,7 +57,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       name: "",
       startDate: "",
       endDate: "",
-      attendees: fest?.data?.fest?.attendees || [],
+      invitees: fest?.data?.fest?.attendees || [],
     },
   });
 
@@ -72,7 +72,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   }));
 
   const onSubmit = () => {
-    const { name, attendees, startDate, endDate } = getValues();
+    const { name, invitees, startDate, endDate } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
 
@@ -80,11 +80,11 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       location.pathname === `/fests/${festId}` &&
       fest?.data?.fest?.creator.id === currentUser.id
     ) {
-      const attendeesData = attendeesBefore.map((attendee) => ({
-        username: attendee.username,
+      const inviteesData = inviteesBefore.map((invitee) => ({
+        username: invitee.username,
       }));
-      const attendeesUpdate = attendees.map((attendee) => ({
-        username: attendee.username,
+      const inviteesUpdate = invitees.map((invitee) => ({
+        username: invitee.username,
       }));
       try {
         updateFest({
@@ -95,9 +95,9 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
               name: name,
               startDate: startDateISO,
               endDate: endDateISO,
-              attendees: {
-                connect: [...attendeesUpdate],
-                disconnect: difference(attendeesData, attendeesUpdate),
+              invitees: {
+                connect: [...inviteesUpdate],
+                disconnect: difference(inviteesData, inviteesUpdate),
               },
             },
           },
@@ -116,8 +116,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
               name: name,
               startDate: startDateISO,
               endDate: endDateISO,
-              attendees: {
-                connect: [...attendees, { username: currentUser.username }],
+              invitees: {
+                connect: [...invitees, { username: currentUser.username }],
               },
               creator: {
                 connect: { id: currentUser.id },
@@ -202,12 +202,12 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
           <Form.Combobox
             setValue={setValue}
             watch={watch}
-            labelText={"Goblins Attending"}
-            id={"attendees"}
+            labelText={"Goblins Invited"}
+            id={"invitees"}
             list={userOptions}
             nameKey={"username"}
             idKey={"username"}
-            name={"attendees"}
+            name={"invitees"}
           />
           <Form.Submit
             title={buttonTitle}
