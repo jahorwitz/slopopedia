@@ -4,6 +4,7 @@ export * from "./create-movie";
 export * from "./create-user";
 export * from "./delete-fest";
 export * from "./delete-user";
+export * from "./end-session";
 export * from "./get-discussions";
 export * from "./get-fest";
 export * from "./get-fests";
