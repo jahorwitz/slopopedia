@@ -86,7 +86,6 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       const attendeesUpdate = attendees.map((attendee) => ({
         username: attendee.username,
       }));
-      console.log(attendeesUpdate);
       try {
         updateFest({
           variables: {
@@ -102,12 +101,13 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
               },
             },
           },
-        }).then(() => {
+        }).then((e) => {
           closeModal("edit-fest");
-          console.log(attendeesUpdate);
-          window.location.reload();
+          e.preventDefault();
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(`Error: ${error.message}`);
+      }
     } else {
       try {
         createFest({
