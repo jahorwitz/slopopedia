@@ -7,7 +7,7 @@ export const CREATE_FEST = gql`
       startDate
       endDate
       id
-      attendees {
+      invitees {
         username
       }
       creator {

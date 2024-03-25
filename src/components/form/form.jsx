@@ -62,6 +62,7 @@ Form.TextInput = ({
   email,
   password,
   register,
+  prefilledInputs,
   onChange,
   isValid,
   placeholder,
@@ -79,6 +80,7 @@ Form.TextInput = ({
 
         <input
           register={register}
+          defaultValue={prefilledInputs}
           id={id}
           className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"

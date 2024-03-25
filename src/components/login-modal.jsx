@@ -87,6 +87,7 @@ export function LoginModal({ onClose }) {
             id={"password"}
             labelText={"Password"}
             isValid={!errors.password}
+            type="password"
             onChange={(evt) => {
               setValue("password", evt.target.value, { shouldValidate: true });
             }}
@@ -126,7 +127,7 @@ export function LoginModal({ onClose }) {
                 >
                   <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
                     <div className="overflow-hidden bg-white rounded-lg shadow-lg ring-1 ring-black/5 border">
-                      <p className="p-5 font-arialRegular text-lg">
+                      <p className="p-4 font-arialRegular text-md/5 text-center xs:text-sm/5">
                         Please contact admin to reset password
                       </p>
                     </div>

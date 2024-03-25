@@ -42,7 +42,7 @@ export function SlopFestModal() {
       name: "",
       startDate: "",
       endDate: "",
-      attendees: [],
+      invitees: [],
     },
   });
 
@@ -57,7 +57,7 @@ export function SlopFestModal() {
   }));
 
   const onSubmit = () => {
-    const { name, attendees } = getValues();
+    const { name, invitees } = getValues();
     const startDateISO = startDate.toISOString().substring(0, 10);
     const endDateISO = endDate.toISOString().substring(0, 10);
     try {
@@ -67,9 +67,9 @@ export function SlopFestModal() {
             name: name,
             startDate: startDateISO,
             endDate: endDateISO,
-            // attendees should include creator and other usernames in attendees field
-            attendees: {
-              connect: [...attendees, { username: currentUser.username }],
+            // invitees should include creator and other usernames in invitees field
+            invitees: {
+              connect: [...invitees, { username: currentUser.username }],
             },
             creator: {
               connect: { id: currentUser.id },
@@ -167,12 +167,12 @@ export function SlopFestModal() {
           <Form.Combobox
             setValue={setValue}
             watch={watch}
-            labelText={"Goblins Attending"}
-            id={"attendees"}
+            labelText={"Goblins Invited"}
+            id={"invitees"}
             list={userOptions}
             nameKey={"username"}
             idKey={"username"}
-            name={"attendees"}
+            name={"invitees"}
           />
           <Form.Submit
             title={"Fest On!"}
