@@ -100,6 +100,7 @@ export const SignupModal = ({ onClose }) => {
             },
           })}
           labelText={"Password"}
+          type="password"
           onChange={(evt) => {
             setValue("password", evt.target.value, { shouldValidate: true });
           }}
