@@ -1,20 +1,21 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER_FESTS = gql`
-  query Fests($where: FestWhereInput!) {
+export const GET_FESTS = gql`
+  query Query($where: FestWhereInput!) {
     fests(where: $where) {
+      name
+      id
       startDate
       endDate
+      creator {
+        id
+      }
       attendees {
-        username
         id
       }
       invitees {
-        username
         id
       }
-      name
-      id
     }
   }
 `;
