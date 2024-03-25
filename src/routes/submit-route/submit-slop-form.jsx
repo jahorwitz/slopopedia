@@ -1,20 +1,19 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { isEmpty } from "lodash";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Footer } from "../../components/footer/footer";
-import { Form } from "../../components/form";
+import { Footer, Form } from "../../components";
 import { CREATE_MOVIE, GET_MOVIES } from "../../graphql";
 import { GET_KEYWORDS } from "../../graphql/get-keywords";
+import { useCurrentUser } from "../../hooks";
 import titleImage from "../../images/Submit a slop.png";
-import { CurrentUserContext } from "../../store/current-user-context";
 
 export const SubmitSlopForm = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
   const [movieKeywords, setMovieKeywords] = useState([]);
+  const [movieSubmitted, setMovieSubmitted] = useState(false);
 
   // Grab the keywords from the database
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
@@ -26,10 +25,13 @@ export const SubmitSlopForm = () => {
     }
   }, [keywordsData]);
 
+  // Reseting submitted data so we can submit another if the user wants
   const resetSubmitted = () => {
     setSubmitted(false);
+    setMovieSubmitted(true);
   };
 
+  // React hook form variables and default form values
   const {
     register,
     watch,
@@ -62,7 +64,7 @@ export const SubmitSlopForm = () => {
   } = getValues();
 
   // Handle submit function. The constants are expected to be integers so we need to run parseInt to make the default string value and integer
-  const handleFormSubmit = (data) => {
+  const handleFormSubmit = async (data) => {
     setSubmitted(true);
     const releaseYearInt = parseInt(data.releaseYear);
     const runTimeInt = parseInt(data.runtime);
@@ -83,7 +85,7 @@ export const SubmitSlopForm = () => {
             tomatoScore: tomatoScoreInt,
             howToWatch,
             // photo: {
-            //   upload: data.photo,
+            //   upload: data.photo
             // },
             keywords: {
               connect: movieKeywords.map((keyword) => ({
@@ -94,6 +96,7 @@ export const SubmitSlopForm = () => {
         },
       });
       console.log("Data sent");
+      hasSubmittedMovie();
     } catch (err) {
       console.error("Error in createMovies request", err);
     }
@@ -119,15 +122,29 @@ export const SubmitSlopForm = () => {
     variables: { where: { author: { id: { equals: currentUser.id } } } },
   });
 
-  // Function to check if movie ID is the same as the user Id
-  const hasSubmittedMovie = !isEmpty(data?.movies);
+  // If there is data or movies, call the hasSubmittedMovies function
+  useEffect(() => {
+    if (data) {
+      hasSubmittedMovie();
+    }
+  }, [data]);
+
+  // If the data length is great than 0, controll the movie state
+  const hasSubmittedMovie = () => {
+    if (data && data.movies.length > 0) {
+      setMovieSubmitted(true);
+    } else {
+      setMovieSubmitted(false);
+    }
+  };
 
   return (
     <div className="max-w-[1440px] relative m-auto">
-      {hasSubmittedMovie && (
+      {/* Conditionally render this Link if the user has submitted movies */}
+      {movieSubmitted && (
         <Link
           className="xs:hidden block absolute right-0 mr-10 underline"
-          to="/submitted-slops"
+          to="/submitted-list"
         >
           View submitted
         </Link>
@@ -171,7 +188,7 @@ export const SubmitSlopForm = () => {
               message: "Be more descriptive, 20 characters are required.",
             },
           })}
-          placeholder="Description"
+          placeholder="Descritpion"
           labelText="Description *"
           onChange={(e) => {
             setValue("description", e.target.value, { shouldValidate: true });
@@ -217,6 +234,7 @@ export const SubmitSlopForm = () => {
             />
           </div>
         </div>
+        {/* // For future use */}
         {/* <Form.FileDrop
           id="photo"
           labelText="Image"
@@ -224,7 +242,7 @@ export const SubmitSlopForm = () => {
           setValue={setValue}
           onChange={(file) => setValue("photo", file)}
         >
-          Drop file here
+          Drop File here
         </Form.FileDrop> */}
         <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between box-border font-arialBold text-lg">
           <div className="flex flex-col">
