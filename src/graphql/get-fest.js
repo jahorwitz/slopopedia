@@ -33,6 +33,10 @@ export const GET_FEST = gql`
           id
         }
       }
+      attendees {
+        id
+        username
+      }
     }
   }
 `;
