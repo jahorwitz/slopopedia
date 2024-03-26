@@ -6,7 +6,11 @@ import image from "../images/main_image.svg";
 export function MainRoute() {
   const { loading, data, error } = useQuery(GET_MOVIES, {
     variables: {
-      where: {},
+      where: {
+        status: {
+          equals: "published",
+        },
+      },
     },
   });
 
@@ -24,7 +28,7 @@ export function MainRoute() {
         {/* The above div is the mainpage banner */}
       </div>
       <div className="w-full p-[120px] xs:p-[20px] sm:p-[40px] md:p-[60px]">
-        <h1 className="flex w-full mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center ">
+        <h1 className="flex w-full mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center sm:pt-[20px] md:pt-[15px]">
           RECENTLY ADDED
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">

@@ -1,12 +1,13 @@
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ProtectedRoute, Submit, SubmitList } from "./components";
+import { ProtectedRoute, Submit } from "./components";
 import { useClient } from "./hooks";
 import {
   ArticleRoute,
   ArticlesRoute,
   BrowseRoute,
   DraftRoute,
+  FestDiscussion,
   FestRoute,
   FestsRoute,
   MainRoute,
@@ -14,9 +15,11 @@ import {
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ProfileSettingsRoute,
   ReviewRoute,
   SearchRoute,
   SoundsRoute,
+  SubmittedSlopsRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
@@ -56,6 +59,14 @@ export const App = () => {
                 }
               />
               <Route
+                path="/profile/settings"
+                element={
+                  <ProtectedRoute>
+                    <ProfileSettingsRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/preferences/:value"
                 element={
                   <ProtectedRoute>
@@ -72,10 +83,10 @@ export const App = () => {
                 }
               />
               <Route
-                path="/submit-list"
+                path="/submitted-list"
                 element={
                   <ProtectedRoute>
-                    <SubmitList />
+                    <SubmittedSlopsRoute />
                   </ProtectedRoute>
                 }
               />
@@ -103,7 +114,7 @@ export const App = () => {
                 path="/fests/:festId/discussion"
                 element={
                   <ProtectedRoute>
-                    <FestRoute />
+                    <FestDiscussion />
                   </ProtectedRoute>
                 }
               />

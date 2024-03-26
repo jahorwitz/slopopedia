@@ -10,3 +10,4 @@ export * from "./profile-route";
 export * from "./search-route";
 export * from "./slop-route/edit-submitted-slop-route";
 export * from "./sounds-route";
+export * from "./submit-route/submitted-slops/submitted-slops-route";

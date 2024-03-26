@@ -3,7 +3,7 @@ import { Button, Keyword } from "../../components";
 import checkMark from "../../images/check-mark.svg";
 
 export const FestHeader = ({ fest }) => {
-  let { name, attendees, startDate, endDate } = fest;
+  let { name, invitees, startDate, endDate } = fest;
   startDate = new Intl.DateTimeFormat("en-US").format(new Date(startDate));
   endDate = new Intl.DateTimeFormat("en-US").format(new Date(endDate));
 
@@ -22,11 +22,11 @@ export const FestHeader = ({ fest }) => {
       </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-wrap gap-2.5 max-w-lg">
-          {attendees.map((attendee, index) => (
+          {invitees.map((invitee, index) => (
             <Keyword
               className="bg-gray"
               key={index}
-              keyword={attendee.username}
+              keyword={invitee.username}
             />
           ))}
         </div>
