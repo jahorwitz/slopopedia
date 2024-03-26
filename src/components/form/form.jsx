@@ -61,6 +61,7 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
         </label>
 
         <textarea
+          register={register}
           id={id}
           className="font-normal bg-background py-4 px-4 border-solid rounded-none border border-black"
           type="text"
@@ -156,7 +157,6 @@ Form.Submit = ({ title, className, disabled }) => {
         children={title}
         className={`font-bold font-arial text-lg/4 border py-4 px-4 ${className}`}
         type="submit"
-        onSubmit={onSubmit}
       >
         {title}
       </Button>
@@ -214,7 +214,7 @@ Form.Combobox = ({
         id={id}
       >
         <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 max-w-sm">
+          <div className="relative font-normal max-w-l py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1">
             {selectedItems &&
               selectedItems?.length > 0 &&
               selectedItems?.map((item) => (

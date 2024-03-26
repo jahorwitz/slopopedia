@@ -35,6 +35,7 @@ export const Review = ({ id }) => {
 
   useEffect(() => {
     if (data) {
+      console.log(currentUser.id, data.post.author.id);
       setPost({
         title: data.post.title,
         content: data.post.content,

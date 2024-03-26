@@ -1,24 +1,23 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
-import { GET_BLOG_POST } from "../../graphql/queries/blog/posts.js";
+import {
+  GET_BLOG_POST,
+  GET_KEYWORDS,
+  GET_MOVIES,
+} from "../../graphql/queries/blog/posts.js";
 import { useCurrentUser } from "../../hooks";
 
 export const Article = () => {
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
-  const [formState, setFormState] = useState({
-    title: "",
-    content: "",
-    keywords: [],
-    movies: [],
-  });
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
   const { data } = useQuery(GET_BLOG_POST, {
@@ -28,18 +27,48 @@ export const Article = () => {
       },
     },
   });
+  const { data: keywordsData } = useQuery(GET_KEYWORDS);
+  const { data: moviesData } = useQuery(GET_MOVIES);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, errors },
+    watch,
+    setValue,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      title: "",
+      content: "",
+      keywords: [],
+      movies: [],
+    },
+  });
 
   useEffect(() => {
     if (id) {
       console.log(data);
-      setFormState({
-        title: data?.post.title,
-        content: data?.post.content,
-        keywords: [],
-        // keywords is an array of objects -- the way keywords and movies will be set depends on how these
-        // two fields are going to be built upon, so for now these are just empty
-        movies: [],
+      // setValue({
+      //   title: data?.post.title,
+      //   content: data?.post.content,
+      //   keywords: [],
+      //   movies: [],
+      // });
+      setValue("title", data?.post.title, { shouldValidate: true });
+      setValue("content", data?.post.content, {
+        shouldValidate: true,
       });
+
+      // need to load in keywords and movies
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
     }
   }, [data]);
 
@@ -57,17 +86,13 @@ export const Article = () => {
     createPost({
       variables: {
         data: {
-          title: formState.title,
-          content: formState.content,
+          title: title,
+          content: content,
           keywords: {
-            create: formState.keywords.map((item) => {
-              return { name: item };
-            }),
+            connect: keywords,
           },
           movies: {
-            create: formState.movies.map((item) => {
-              return { title: item, description: "placeholder" };
-            }),
+            connect: movies,
           },
           author: {
             connect: { username: currentUser.username },
@@ -83,22 +108,19 @@ export const Article = () => {
   };
 
   const onPublish = (e) => {
+    const { title, content, keywords, movies } = getValues();
     e.preventDefault();
     console.log(currentUser);
     createPost({
       variables: {
         data: {
-          title: formState.title,
-          content: formState.content,
+          title: title,
+          content: content,
           keywords: {
-            create: formState.keywords.map((item) => {
-              return { name: item };
-            }),
+            connect: keywords,
           },
           movies: {
-            create: formState.movies.map((item) => {
-              return { title: item, description: "placeholder" };
-            }),
+            connect: movies,
           },
           author: {
             connect: { username: currentUser.username },
@@ -112,37 +134,28 @@ export const Article = () => {
         console.error(err);
       });
   };
-  // I imagine there must be a way
-  // to turn the onPublish and onDraft
+  // Should turn the onPublish and onDraft
   // into just one function that takes in a paramter
   // but I was having trouble with passing a variable into a
   // mutation
 
-  // For the sake of refactoring and making things more organized,
-  // implementing this would save a decent amount of space
-
   // redirects the user back to a new empty form after selecting submit another
   const submitAnother = () => {
     setSuccessful(false);
-    setFormState({
-      title: "",
-      content: "",
-      keywords: [],
-      movies: [],
+    // setValue({
+    //   title: "",
+    //   content: "",
+    //   keywords: [],
+    //   movies: [],
+    // });
+    setValue("title", data?.post.title, { shouldValidate: true });
+    setValue("content", data?.post.content, {
+      shouldValidate: true,
     });
   };
 
-  const checkValidity = (value) => {
-    if (!value) {
-      return false;
-    }
-    return true;
-  };
-
-  // ^^^
-  // this can probably be replaced w/ better validation, for the sake of
-  // matching the mock I just made this, I forget if there is a built in
-  // validator
+  const keywordsOptions = keywordsData?.keywords ?? [];
+  const moviesOptions = moviesData?.movies ?? [];
 
   return (
     <>
@@ -151,65 +164,75 @@ export const Article = () => {
           <ToastContainer className={"absolute"} />
           <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
             <Form.TextInput
-              className="relative flex justify-center font-bold font-arial flex-col py-3"
+              className="relative flex justify-center font-bold font-arial flex-col mt-3"
               labelText={"Title"}
-              value={formState.title}
+              placeholder={`Title`}
+              id="title"
               onChange={(e) =>
-                setFormState({ ...formState, title: e.target.value })
+                setValue("title", e.target.value, { shouldValidate: true })
               }
-              isValid={checkValidity(formState.title)}
+              isValid={!errors.title}
+              register={register("title", {
+                required: true,
+                pattern: {
+                  value: /^\S/,
+                  message: "Must not start with a space",
+                },
+              })}
             />
             <Form.TextArea
               labelText={"Body"}
               placeholder={`Body`}
-              value={formState.content}
               onChange={(e) =>
-                setFormState({ ...formState, content: e.target.value })
+                setValue("content", e.target.value, {
+                  shouldValidate: true,
+                })
               }
+              register={register("content", {
+                required: true,
+                pattern: {
+                  value: /^\S/,
+                  message: "Must not start with a space",
+                },
+              })}
             />
-            <Form.TextInput
-              className=" flex font-bold font-arial flex-col py-3"
+            <Form.Combobox
+              className="relative flex justify-center font-bold font-arial flex-col py-3"
               labelText={"Slops"}
               placeholder={"Add topical slops"}
-              value={formState.movies.join(", ")}
-              onChange={(e) =>
-                setFormState({
-                  ...formState,
-                  movies: e.target.value.split(",").map((item) => item.trim()),
-                })
-              }
-              isValid={checkValidity(formState.movies.join(", "))}
+              list={moviesOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"title"}
+              name={"movie combobox"}
+              idKey={"title"}
+              id={"moviesCombobox"}
             />
-            <Form.TextInput
-              className=" flex font-bold font-arial flex-col py-3"
+            <Form.Combobox
+              className="flex font-bold font-arial flex-col py-3"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
-              value={formState.keywords.join(", ")}
-              onChange={(e) =>
-                setFormState({
-                  ...formState,
-                  keywords: e.target.value
-                    .split(",")
-                    .map((item) => item.trim()),
-                })
-              }
-              isValid={checkValidity(formState.keywords.join(", "))}
+              list={keywordsOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"name"}
+              name={"keyword combobox"}
+              idKey={"name"}
+              id={"keywordsCombobox"}
             />
           </Form>
           <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
-            <Form onSubmit={onDraft}>
+            <Form onSubmit={(e) => handleSubmit(onDraft(e))}>
               <Form.Submit
                 className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
                 title={"Save to drafts"}
-                onSubmit={onDraft}
               />
             </Form>
 
-            <Form onSubmit={onPublish}>
+            <Form onSubmit={(e) => handleSubmit(onPublish(e))}>
               <Form.Submit
                 className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
                 title={"Publish!"}
-                disabled={false}
               />
             </Form>
           </div>

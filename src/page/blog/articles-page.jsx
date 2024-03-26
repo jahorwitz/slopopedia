@@ -31,18 +31,19 @@ export const Articles = () => {
       <div className="w-full mx-auto pt-10 pb-20 flex flex-col">
         <div>
           {data.posts.map((post, index) => {
-            const { title, content, author, id, createdAt, keywords } = post;
+            const { title, content, author, id, createdAt, keywords, movies } =
+              post;
             if (index % 2 == 0) {
               return (
-                <div className="flex mx-20 justify-between mb-8">
+                <div key={id} className="flex mx-20 justify-between mb-8">
                   <Post
-                    key={id}
                     title={title}
                     content={content}
                     author={author?.username}
                     date={formatDateTime(createdAt)}
                     id={id}
                     keywords={keywords}
+                    movies={movies}
                     className={``}
                   />
                   <img className="mx-40" src={purpleGoblin} />
@@ -50,11 +51,10 @@ export const Articles = () => {
               );
             } else {
               return (
-                <div className="flex mx-20 justify-between mb-8">
+                <div key={id} className="flex mx-20 justify-between mb-8">
                   <img className="mx-auto" src={purpleGoblin} />
 
                   <Post
-                    key={id}
                     title={title}
                     content={content}
                     author={author?.username}

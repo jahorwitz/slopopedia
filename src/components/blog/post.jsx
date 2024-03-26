@@ -24,30 +24,30 @@ export const Post = ({
     );
   });
   return (
-    <>
-      <div className={`${className} w-96`}>
-        <h2
-          onClick={() => router(`/articles/${id}`)}
-          className="font-semibold text-2xl tracking-tighter mb-4 cursor-pointer"
-        >
-          {title}
-        </h2>
-        {keywordsList}
-        <p className="break-word text-sm font-normal mb-4">{content}</p>
-        <div className="flex justify-between">
-          {date === null ? (
-            <small>"no published date"</small>
-          ) : (
-            <small className="text-gray font-semibold">{date}</small>
-          )}
-          {author && (
-            <small className="text-gray font-semibold">{`By ${author}`}</small>
-          )}
-        </div>
+    <div className={`${className} w-96`}>
+      <h2
+        onClick={() => router(`/articles/${id}`)}
+        className="font-semibold text-2xl tracking-tighter mb-4 cursor-pointer"
+      >
+        {title}
+      </h2>
+      {keywordsList}
+      <p className="break-word text-sm font-normal mb-4">{content}</p>
+      <div className="flex justify-between">
+        {date === null ? (
+          <small>"no published date"</small>
+        ) : (
+          <small className="text-gray font-semibold">{date}</small>
+        )}
+        {author && (
+          <small className="text-gray font-semibold">{`By ${author}`}</small>
+        )}
       </div>
-      {/* <div className="w-1/4 pr-20 float-right relative -top-60 left-40">
-        <Image className={"h-18 w-22"} src={image} alt="Post Image" />
-      </div> */}
-    </>
+    </div>
   );
+  {
+    /* <div className="w-1/4 pr-20 float-right relative -top-60 left-40">
+        <Image className={"h-18 w-22"} src={image} alt="Post Image" />
+      </div> */
+  }
 };
