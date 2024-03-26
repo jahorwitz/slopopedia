@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
 import { useModals } from "../hooks";
@@ -6,7 +7,7 @@ import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
-  const { openModal, closeModal } = useModals();
+  const { registerModal, openModal } = useModals();
   const {
     register,
     handleSubmit,
@@ -21,16 +22,16 @@ export const SignupModal = ({ onClose }) => {
     },
   });
 
-  function openLoginModal() {
-    openModal(<LoginModal onClose={closeModal} />);
-  }
-
   const onSubmit = () => {
     const { username, email, password } = getValues();
     createUser({
       variables: { data: { username, email, password } },
     });
   };
+
+  useEffect(() => {
+    registerModal("signin", <LoginModal onClose={onClose} />);
+  }, []);
 
   if (data) {
     return (
@@ -41,7 +42,7 @@ export const SignupModal = ({ onClose }) => {
             <button
               type="button"
               className="underline"
-              onClick={openLoginModal}
+              onClick={() => openModal("signin")}
               onClose={() => onClose}
             >
               Login!
@@ -134,7 +135,7 @@ export const SignupModal = ({ onClose }) => {
         <button
           type="button"
           className="underline"
-          onClick={openLoginModal}
+          onClick={() => openModal("signin")}
           onClose={() => onClose}
         >
           Login!

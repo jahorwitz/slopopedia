@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -39,9 +40,6 @@ export const ProfileFestsRoute = () => {
     refetchQueries: [GET_USER_FESTS],
   });
 
-  function openSlopFestModal() {
-    openModal(<SlopFestModal onClose={closeModal} />);
-  }
   // - - - - - HANDLER
   const handleRSVPButtonClick = (fest, attendeestatus) => {
     if (attendeestatus === false) {
@@ -97,7 +95,9 @@ export const ProfileFestsRoute = () => {
             <Button
               variant="primary"
               className="w-[224px]"
-              onClick={openSlopFestModal}
+              onClick={() => {
+                openModal("create");
+              }}
             >
               New Fest!
             </Button>

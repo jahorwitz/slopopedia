@@ -22,9 +22,8 @@ export const GET_MOVIES = gql`
       howToWatch
       author {
         id
-        username
+        isAdmin
       }
-      status
     }
   }
 `;

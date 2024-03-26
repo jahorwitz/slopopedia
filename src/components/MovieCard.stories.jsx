@@ -1,4 +1,4 @@
-import { movieInfo, sizes } from "../../utils/constants";
+import { movieInfo, sizes } from "../utils/constants";
 import MovieCard from "./MovieCard";
 
 export default {
