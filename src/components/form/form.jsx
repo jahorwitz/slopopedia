@@ -54,7 +54,14 @@ Form.TextInput = ({
   );
 };
 
-Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
+Form.TextArea = ({
+  className,
+  labelText,
+  id,
+  register,
+  prefilledInputs,
+  ...rest
+}) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
@@ -63,6 +70,7 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
         </label>
 
         <textarea
+          defaultValue={prefilledInputs}
           register={register}
           id={id}
           className="font-normal bg-background py-4 px-4 border-solid rounded-none border border-black"

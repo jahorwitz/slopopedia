@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -28,8 +28,25 @@ export const Article = () => {
     },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
+  console.log(keywordsData);
   const { data: moviesData } = useQuery(GET_MOVIES);
+  const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
+    name: keyword.name,
+  }));
+  const moviesPrefills = data?.post?.movies?.map((movie) => ({
+    title: movie.title,
+  }));
+  // const keywordsOptions = keywordsData?.keywords.map((keyword) => ({
+  //   name: keyword.name,
+  // }));
+  // const moviesOptions = moviesData?.movies.map((movie) => ({
+  //   title: movie.title,
+  // }));
 
+  const keywordsOptions = keywordsData?.keywords ?? [];
+  const moviesOptions = moviesData?.movies ?? [];
+
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -41,36 +58,21 @@ export const Article = () => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: [],
-      movies: [],
+      keywords: data?.post?.keywords,
+      movies: data?.post?.movies,
     },
   });
+  console.log(data?.post?.keywords, keywordsPrefills);
+  // useEffect(() => {
+  //   if (id) {
+  //     console.log(data);
 
-  useEffect(() => {
-    if (id) {
-      console.log(data);
-      // setValue({
-      //   title: data?.post.title,
-      //   content: data?.post.content,
-      //   keywords: [],
-      //   movies: [],
-      // });
-      setValue("title", data?.post.title, { shouldValidate: true });
-      setValue("content", data?.post.content, {
-        shouldValidate: true,
-      });
-
-      // need to load in keywords and movies
-      //
-      //
-      //
-      //
-      //
-      //
-      //
-      //
-    }
-  }, [data]);
+  //     setValue("keywords", data?.post?.keywords, { shouldValidate: true });
+  //     setValue("movies", data?.post?.movies, {
+  //       shouldValidate: true,
+  //     });
+  //   }
+  // }, [data]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
@@ -82,6 +84,7 @@ export const Article = () => {
 
   const onDraft = (e) => {
     e.preventDefault();
+    const { title, content, keywords, movies } = getValues();
     console.log(currentUser);
     createPost({
       variables: {
@@ -89,10 +92,14 @@ export const Article = () => {
           title: title,
           content: content,
           keywords: {
-            connect: keywords,
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
           },
           movies: {
-            connect: movies,
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
           },
           author: {
             connect: { username: currentUser.username },
@@ -110,6 +117,7 @@ export const Article = () => {
   const onPublish = (e) => {
     const { title, content, keywords, movies } = getValues();
     e.preventDefault();
+
     console.log(currentUser);
     createPost({
       variables: {
@@ -117,10 +125,14 @@ export const Article = () => {
           title: title,
           content: content,
           keywords: {
-            connect: keywords,
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
           },
           movies: {
-            connect: movies,
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
           },
           author: {
             connect: { username: currentUser.username },
@@ -154,9 +166,6 @@ export const Article = () => {
     });
   };
 
-  const keywordsOptions = keywordsData?.keywords ?? [];
-  const moviesOptions = moviesData?.movies ?? [];
-
   return (
     <>
       {!successful ? (
@@ -168,6 +177,7 @@ export const Article = () => {
               labelText={"Title"}
               placeholder={`Title`}
               id="title"
+              prefilledInputs={data?.post?.title}
               onChange={(e) =>
                 setValue("title", e.target.value, { shouldValidate: true })
               }
@@ -188,6 +198,7 @@ export const Article = () => {
                   shouldValidate: true,
                 })
               }
+              prefilledInputs={data?.post?.content}
               register={register("content", {
                 required: true,
                 pattern: {
@@ -197,18 +208,6 @@ export const Article = () => {
               })}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3"
-              labelText={"Slops"}
-              placeholder={"Add topical slops"}
-              list={moviesOptions}
-              watch={watch}
-              setValue={setValue}
-              nameKey={"title"}
-              name={"movie combobox"}
-              idKey={"title"}
-              id={"moviesCombobox"}
-            />
-            <Form.Combobox
               className="flex font-bold font-arial flex-col py-3"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
@@ -216,9 +215,21 @@ export const Article = () => {
               watch={watch}
               setValue={setValue}
               nameKey={"name"}
-              name={"keyword combobox"}
+              name={"keywords"}
               idKey={"name"}
-              id={"keywordsCombobox"}
+              id={"keywords"}
+            />
+            <Form.Combobox
+              className="relative flex justify-center font-bold font-arial flex-col py-3"
+              labelText={"Slops"}
+              placeholder={"Add topical slops"}
+              list={moviesOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"title"}
+              name={"movies"}
+              idKey={"title"}
+              id={"movies"}
             />
           </Form>
           <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">

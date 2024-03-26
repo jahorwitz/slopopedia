@@ -21,10 +21,12 @@ export const CREATE_POST = gql`
       content
       keywords {
         name
+        id
       }
       movies {
         title
         description
+        id
       }
       author {
         username
