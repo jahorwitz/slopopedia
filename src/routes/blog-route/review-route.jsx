@@ -1,7 +1,12 @@
+import { useParams } from "react-router-dom";
 import { Header } from "../../components";
-import ArticlePage from "../../page/blog/article-page.jsx";
+import ReviewPage from "../../page/blog/review-page.jsx";
 
-export function ArticleRoute() {
+export function ReviewRoute() {
+  const { id } = useParams();
+
+  console.log(id);
+
   return (
     <>
       <div className="relative">
@@ -11,7 +16,7 @@ export function ArticleRoute() {
           <Header.Profile />
         </Header>
       </div>
-      <ArticlePage />
+      <ReviewPage id={id} />
     </>
   );
 }

@@ -2,6 +2,7 @@ export * from "../hooks/use-current-user";
 export * from "./create-discussion";
 export * from "./create-user";
 export * from "./delete-user";
+export * from "./end-session";
 export * from "./get-discussions";
 export * from "./get-fest";
 export * from "./get-fests";
