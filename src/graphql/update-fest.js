@@ -10,6 +10,10 @@ export const UPDATE_FEST = gql`
         id
         username
       }
+      invitees {
+        id
+        username
+      }
       movies {
         id
         title

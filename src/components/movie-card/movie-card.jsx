@@ -9,7 +9,6 @@ import { MoviePreviewModal } from "../movie-preview-modal";
 
 export function MovieCard({
   children,
-  size,
   onClick,
   movieInfo,
   colSpanOne,
@@ -20,15 +19,22 @@ export function MovieCard({
   containerSize = "full",
   ...rest
 }) {
+  const [colSpan, setColSpan] = useState({ class: "col-span-1", size: 1 });
+  useEffect(() => {
+    setColSpan(getRandomColumns());
+  }, []);
+
+  const { class: colSpanClass, size } = colSpan;
+
   const card = {
-    image: movieInfo.photo,
-    title: movieInfo.title,
-    keywords: movieInfo.keywords,
-    releaseYear: movieInfo.releaseYear,
-    runtimeInMinutes: movieInfo.runtime,
-    rottenTomatoesScore: movieInfo.rottenTomatoesScore,
-    howToWatch: movieInfo.howToWatch,
-    decription: movieInfo.description,
+    image: movieInfo?.photo,
+    title: movieInfo?.title,
+    keywords: movieInfo?.keywords,
+    releaseYear: movieInfo?.releaseYear,
+    runtimeInMinutes: movieInfo?.runtime,
+    rottenTomatoesScore: movieInfo?.rottenTomatoesScore,
+    howToWatch: movieInfo?.howToWatch,
+    description: movieInfo?.description,
   };
 
   //functionality for opening movie preview modal
@@ -53,22 +59,17 @@ export function MovieCard({
   }, []);
 
   return (
-    <div
-      className={cx(
-        "h-full",
-        colSpanOne ? "col-span-1" : columnSpan,
-        containerSize === "small" && "w-[224px]"
-      )}
-    >
+    <div className={colSpanOne ? "col-span-1" : colSpanClass}>
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
         className={cx(
-          "flex flex-col relative h-full",
+          "flex flex-col relative",
           size === 1 && "col-span-1",
           size === 2 && "col-span-2",
           size === 3 && "col-span-3",
-          containerSize === "small" && "xs:items-center"
+          className
         )}
+        style={{ maxHeight: "80vh" }}
         onClick={onClick}
         {...rest}
       >
@@ -90,13 +91,13 @@ export function MovieCard({
         )}
         <img
           className={cx(
-            "mb-2.5 hover:cursor-pointer",
+            "mb-2.5 max-h-full overflow-hidden hover:cursor-pointer",
             containerSize === "small" &&
               "object-contain h-[120px] self-baseline xs:self-center"
           )}
           src={card.image === null ? purpleGoblin : card.image.url}
           onClick={() => handleMovieClick()}
-        ></img>
+        />
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
           <div
@@ -142,7 +143,7 @@ export function MovieCard({
               (containerSize === "small" && "xs:justify-center")
             }
           >
-            {card.keywords.map((keyword, index) => (
+            {card.keywords.slice(0, 5).map((keyword, index) => (
               <Keyword
                 keyword={keyword.name}
                 className={
