@@ -57,7 +57,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       name: "",
       startDate: "",
       endDate: "",
-      invitees: fest?.data?.fest?.attendees || [],
+      invitees: fest?.data?.fest?.invitees || [],
     },
   });
 
