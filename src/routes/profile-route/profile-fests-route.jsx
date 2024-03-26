@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Button,
   Footer,
@@ -10,7 +10,8 @@ import {
   Keyword,
   SlopFestModal,
 } from "../../components/index";
-import { GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
+import { GET_USER_FESTS } from "../../graphql";
+import { UPDATE_FEST } from "../../graphql/mutations/fest";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkBlack from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
@@ -18,6 +19,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
+  const location = useLocation();
   const { registerModal, openModal, closeModal } = useModals();
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
@@ -73,7 +75,14 @@ export const ProfileFestsRoute = () => {
 
   // - - - - - USE EFFECT
   useEffect(() => {
-    registerModal("create", <SlopFestModal onClose={closeModal} />);
+    registerModal(
+      "create-fest",
+      <SlopFestModal
+        location={location}
+        buttonTitle={"Fest On!"}
+        onClose={closeModal}
+      />
+    );
   }, []);
 
   return (
@@ -88,7 +97,7 @@ export const ProfileFestsRoute = () => {
         <div className="flex flex-col w-[712px] mt-10">
           <div className="flex flex-row items-center justify-between pb-10">
             <h2 className="scale-y-2 font-arialBold w-[250px] text-xl">
-              {!loading && data.fests.length === 0
+              {!loading && data?.fests?.length === 0
                 ? "YOU HAVE NO FESTS :("
                 : "YOUR FESTS"}
             </h2>
@@ -96,7 +105,7 @@ export const ProfileFestsRoute = () => {
               variant="primary"
               className="w-[224px]"
               onClick={() => {
-                openModal("create");
+                openModal("create-fest");
               }}
             >
               New Fest!
@@ -104,11 +113,11 @@ export const ProfileFestsRoute = () => {
           </div>
           <div className="flex flex-col">
             {!loading &&
-              data.fests.map((fest) => {
-                const startDate = new Intl.DateTimeFormat("en-GB").format(
+              data?.fests?.map((fest) => {
+                const startDate = new Intl.DateTimeFormat("en-US").format(
                   new Date(fest.startDate.replace(/-/g, "/"))
                 );
-                const endDate = new Intl.DateTimeFormat("en-GB").format(
+                const endDate = new Intl.DateTimeFormat("en-US").format(
                   new Date(fest.endDate.replace(/-/g, "/"))
                 );
                 const attendeeStatus = fest.attendees.some(
@@ -130,7 +139,7 @@ export const ProfileFestsRoute = () => {
                       </p>
                       <div>
                         <div className="flex flex-row">
-                          {fest.invitees.length <= 4
+                          {fest.invitees?.length <= 4
                             ? fest.invitees?.map((invitee) => {
                                 return (
                                   <Keyword
@@ -140,7 +149,7 @@ export const ProfileFestsRoute = () => {
                                   />
                                 );
                               })
-                            : fest.invitees.slice(0, 4).map((invitee) => {
+                            : fest.invitees?.slice(0, 4).map((invitee) => {
                                 // needs to have {+ invitees.length - 5} to show how many invitees after 5
                                 return (
                                   <Keyword
@@ -150,11 +159,11 @@ export const ProfileFestsRoute = () => {
                                   />
                                 );
                               })}
-                          {fest.invitees.length > 4 ? (
+                          {fest.invitees?.length > 4 ? (
                             <Keyword
                               key={fest.id}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                              keyword={`+ ${fest.invitees.length - 4} more`}
+                              keyword={`+ ${fest.invitees?.length - 4} more`}
                             />
                           ) : (
                             ""

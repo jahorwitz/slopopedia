@@ -5,18 +5,16 @@ import { uniqueId } from "lodash";
 export const TabList = ({ tabs }) => {
   return (
     <div>
-      <Tab.List
-        as="h3"
-        className={cx(
-          "flex mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center pt-6 my-4"
-        )}
-      >
+      <Tab.List className={cx("flex gap-12 mb-8")}>
         {tabs.map((tab) => (
           <Tab
             key={uniqueId(tab)}
             data-testid={tab}
             className={({ selected }) =>
-              cx(selected ? "border-b-2 border-slate-950 " : "text-slate-500")
+              cx(
+                "font-bold text-3xl uppercase",
+                selected ? "border-b-2 border-dark text-dark" : "text-dark/60"
+              )
             }
           >
             {tab}

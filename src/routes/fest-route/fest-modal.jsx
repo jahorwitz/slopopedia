@@ -16,7 +16,7 @@ export const FestModal = ({
   const filteredMovies =
     query === ""
       ? movieList
-      : movieList.filter((movie) => {
+      : movieList?.filter((movie) => {
           return movie.title.toLowerCase().includes(query.toLowerCase());
         });
 
@@ -31,17 +31,17 @@ export const FestModal = ({
             />
           </div>
           <Combobox.Options className="border-2 max-w-sm w-full my-0 mx-auto cursor-pointer">
-            {filteredMovies.length === 0 && query !== "" ? (
+            {filteredMovies?.length === 0 && query !== "" ? (
               <div>Nothing found</div>
             ) : (
-              filteredMovies.map((movie) => (
+              filteredMovies?.map((movie) => (
                 <Combobox.Option
                   key={movie.id}
                   value={movie.title}
                   onClick={() => {
                     setMoviesToAdd([...moviesToAdd, movie]);
                     setMovieList(
-                      movieList.filter((item) => item.title !== movie.title)
+                      movieList?.filter((item) => item.title !== movie.title)
                     );
                   }}
                 >
@@ -54,7 +54,7 @@ export const FestModal = ({
         <div className="py-4">
           <MovieCardList movies={moviesToAdd} colSpanOne />
         </div>
-        {moviesToAdd.length > 0 && (
+        {moviesToAdd?.length > 0 && (
           <Button
             onClick={() => {
               addMovies(moviesToAdd);
