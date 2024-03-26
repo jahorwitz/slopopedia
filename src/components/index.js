@@ -8,7 +8,6 @@ export * from "./delete-movie-modal";
 export * from "./discussion-card";
 export * from "./footer";
 export * from "./form";
-export * from "./form/form";
 export * from "./header";
 export * from "./horizontal-menu";
 export * from "./keyword";

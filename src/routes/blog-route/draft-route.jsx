@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Header } from "../../components";
+import { Footer, Header } from "../../components";
 import DraftPage from "../../page/blog/draft-page";
 
 export function DraftRoute() {
@@ -16,18 +16,16 @@ export function DraftRoute() {
         <Link to={"/draft"} className="underline">
           Drafts
         </Link>
-        <Link to={"/article"} className="underline ml-5 cursor-pointer">
+        <Link to={"/articles/create"} className="underline ml-5 cursor-pointer">
           + New Entry
         </Link>
       </div>
       <div className="w-full max-w-[1440px] -top-5 mx-auto p-20 flex flex-row relative">
         <DraftPage />
       </div>
-      {/*<div className="w-full max-w-[989] mx-auto relative p-20 top-80">*/}
-      {/*  <Footer>*/}
-      {/*    <Footer.Content></Footer.Content>{" "}*/}
-      {/*  </Footer>*/}
-      {/*</div>*/}
+      <div className="absolute bottom-0 w-full max-w-[989] mx-auto p-10">
+        <Footer>{/* <Footer.Content></Footer.Content>{" "} */}</Footer>
+      </div>
     </>
   );
 }

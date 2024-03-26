@@ -21,20 +21,27 @@ export const CREATE_POST = gql`
       content
       keywords {
         name
+        id
       }
       movies {
         title
         description
+        id
       }
       author {
         username
+        id
       }
+      createdAt
+      status
     }
   }
 `;
 
-const all = {
-  CREATE_POST,
-};
-
-export default all;
+export const DELETE_POST = gql`
+  mutation Mutation($where: PostWhereUniqueInput!) {
+    deletePost(where: $where) {
+      id
+    }
+  }
+`;
