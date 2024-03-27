@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Footer, Form } from "../../components";
+import { Form } from "../../components";
 import { CREATE_MOVIE, GET_MOVIES } from "../../graphql";
 import { GET_KEYWORDS } from "../../graphql/get-keywords";
 import { useCurrentUser } from "../../hooks";
@@ -163,10 +163,6 @@ export const SubmitSlopForm = () => {
           errors={errors}
           register={register("title", {
             required: "Title is required",
-            minLength: {
-              value: 2,
-              message: "Please enter 2 or more characters",
-            },
           })}
           name="title"
           placeholder="Title"
@@ -176,6 +172,7 @@ export const SubmitSlopForm = () => {
             setValue("title", e.target.value, { shouldValidate: true });
           }}
           isValid={!errors.title}
+          classNameInput="bg-white"
         />
         {errors.title && <Form.Feedback message={errors.title.message} />}
         <Form.TextArea
@@ -183,10 +180,6 @@ export const SubmitSlopForm = () => {
           errors={errors}
           register={register("description", {
             required: "Description is required",
-            minLength: {
-              value: 20,
-              message: "Be more descriptive, 20 characters are required.",
-            },
           })}
           placeholder="Descritpion"
           labelText="Description *"
@@ -194,6 +187,7 @@ export const SubmitSlopForm = () => {
             setValue("description", e.target.value, { shouldValidate: true });
           }}
           isValid={!errors.description}
+          classNameTextArea="bg-white"
         />
         {errors.description && (
           <Form.Feedback message={errors.description.message} />
@@ -217,6 +211,7 @@ export const SubmitSlopForm = () => {
                 });
               }}
               isValid={!errors.releaseYear}
+              classNameInput="bg-white"
             />
             {errors.releaseYear && (
               <Form.Feedback message={errors.releaseYear.message} />
@@ -231,6 +226,7 @@ export const SubmitSlopForm = () => {
                 setValue("runtime", e.target.value, { shouldValidate: true });
               }}
               isValid={!errors.runtime}
+              classNameInput="bg-white"
             />
           </div>
         </div>
@@ -262,6 +258,7 @@ export const SubmitSlopForm = () => {
                 });
               }}
               isValid={!errors.tomatoScore}
+              classNameInput="bg-white"
             />
             {errors.tomatoScore && (
               <Form.Feedback message={errors.tomatoScore.message} />
@@ -278,6 +275,7 @@ export const SubmitSlopForm = () => {
                 });
               }}
               isValid={!errors.howToWatch}
+              classNameInput="bg-white"
             />
           </div>
         </div>
@@ -292,6 +290,7 @@ export const SubmitSlopForm = () => {
           nameKey={"name"}
           idKey={"name"}
           name={"Keywords"}
+          classNameCombo="bg-white"
         />
         {errors.keywords && <Form.Feedback message={errors.keywords.message} />}
         <Form.Submit
@@ -328,5 +327,4 @@ export const SubmitSlopForm = () => {
       )}
     </div>
   );
-  <Footer />;
 };

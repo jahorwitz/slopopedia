@@ -66,7 +66,7 @@ Header.Logo = () => {
   return (
     <Link to="/">
       <img
-        className="w-80 pt-4 xs:w-60 md:w-70 "
+        className="w-80 pt-4 xs:w-60 md:w-70"
         src={headerLogo}
         alt="slopopedia logo"
       />
@@ -95,7 +95,7 @@ Header.NavLinks = ({
     {
       title: "Slop Blog",
       src: headerBook,
-      link: "/blog",
+      link: "/articles",
     },
     {
       title: "I'm Feeling Sloppy",
@@ -132,7 +132,10 @@ Header.NavLinks = ({
             </Link>
           </div>
         ))}
-        <img src={headerNew} className="absolute right-[200px] bottom-[6px]" />
+        <img
+          src={headerNew}
+          className="absolute right-[200px] bottom-[6px] pointer-events-none"
+        />
       </div>
       {/* hamburger button */}
       <div className="xs: block sm:block  relative"></div>

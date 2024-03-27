@@ -66,6 +66,7 @@ Form.TextInput = ({
   onChange,
   isValid,
   placeholder,
+  classNameInput,
   ...rest
 }) => {
   return (
@@ -84,7 +85,7 @@ Form.TextInput = ({
           id={id}
           className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"
-          } `}
+          } ${classNameInput} `}
           type="text"
           placeholder={placeholder || "Type here"}
           onChange={onChange}
@@ -95,7 +96,15 @@ Form.TextInput = ({
   );
 };
 
-Form.TextArea = ({ className, labelText, id, register, isValid, ...rest }) => {
+Form.TextArea = ({
+  className,
+  labelText,
+  id,
+  register,
+  prefilledInputs,
+  classNameTextArea,
+  ...rest
+}) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
@@ -104,8 +113,10 @@ Form.TextArea = ({ className, labelText, id, register, isValid, ...rest }) => {
         </label>
 
         <textarea
+          defaultValue={prefilledInputs}
+          register={register}
           id={id}
-          className="font-normal bg-background py-4 px-4 border-solid rounded-none border border-black"
+          className={`font-normal bg-background py-4 px-4 border-solid rounded-none border border-black ${classNameTextArea}`}
           type="text"
           placeholder="Type"
           {...rest}

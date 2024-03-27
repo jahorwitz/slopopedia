@@ -4,7 +4,7 @@ import { ProtectedRoute, SubmitList } from "./components";
 import { useClient } from "./hooks";
 import {
   ArticleRoute,
-  BlogRoute,
+  ArticlesRoute,
   BrowseRoute,
   DraftRoute,
   FestDiscussion,
@@ -16,6 +16,7 @@ import {
   ProfileFestsRoute,
   ProfileRoute,
   ProfileSettingsRoute,
+  ReviewRoute,
   SearchRoute,
   SoundsRoute,
   SubmitRoute,
@@ -37,9 +38,10 @@ export const App = () => {
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />
-              <Route path="/blog" element={<BlogRoute />} />
               <Route path="/draft" element={<DraftRoute />} />
-              <Route path="/article" element={<ArticleRoute />} />
+              <Route path="/articles" element={<ArticlesRoute />} />
+              <Route exact path="/articles/create" element={<ArticleRoute />} />
+              <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
                 path="/profile"
                 element={
@@ -93,8 +95,12 @@ export const App = () => {
                 element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
               />
               <Route
-                path="/blog"
-                element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+                path="/articles/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <ArticleRoute />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/fests/:festId"
