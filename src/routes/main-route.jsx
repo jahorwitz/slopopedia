@@ -6,7 +6,11 @@ import image from "../images/main_image.svg";
 export function MainRoute() {
   const { loading, data, error } = useQuery(GET_MOVIES, {
     variables: {
-      where: {},
+      where: {
+        status: {
+          equals: "published",
+        },
+      },
     },
   });
 

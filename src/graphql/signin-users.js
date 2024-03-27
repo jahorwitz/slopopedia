@@ -12,6 +12,7 @@ export const SIGNIN = gql`
           email
           id
           username
+          isAdmin
         }
       }
       ... on UserAuthenticationWithPasswordFailure {
