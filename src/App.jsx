@@ -1,6 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ProtectedRoute, Submit, SubmitList } from "./components";
+import { ProtectedRoute, SubmitList } from "./components";
 import { useClient } from "./hooks";
 import {
   ArticleRoute,
@@ -19,6 +19,7 @@ import {
   ReviewRoute,
   SearchRoute,
   SoundsRoute,
+  SubmitRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
@@ -77,7 +78,7 @@ export const App = () => {
                 path="/submit"
                 element={
                   <ProtectedRoute>
-                    <Submit />
+                    <SubmitRoute />
                   </ProtectedRoute>
                 }
               />
