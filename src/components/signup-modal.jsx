@@ -113,6 +113,7 @@ export const SignupModal = ({ onClose }) => {
             validate: (value, formValues) =>
               value === formValues.password || "Passwords do not match",
           })}
+          type="password"
           labelText={"Confirm password"}
           onChange={(evt) => {
             setValue("confirmPassword", evt.target.value, {
