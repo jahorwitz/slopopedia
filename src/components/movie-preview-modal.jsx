@@ -63,7 +63,6 @@ export const MoviePreviewModal = ({
   const handleWantClick = () => {
     setIsWantClicked(!isWantClicked);
   };
-  console.log(selectedMovie);
 
   const movie = {
     photo: selectedMovie.photo?.url || purpleGoblin,

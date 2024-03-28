@@ -9,7 +9,6 @@ import {
   DraftRoute,
   FestDiscussion,
   FestRoute,
-  FestsRoute,
   MainRoute,
   MovieRoute,
   PreferencesRoute,
@@ -34,7 +33,6 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<MainRoute />} />
               <Route path="/browse" element={<BrowseRoute />} />
-              <Route path="/fests" element={<FestsRoute />} />
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />

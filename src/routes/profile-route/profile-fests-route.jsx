@@ -17,7 +17,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
@@ -42,6 +42,7 @@ export const ProfileFestsRoute = () => {
   function openSlopFestModal() {
     openModal(<SlopFestModal onClose={closeModal} />);
   }
+
   // - - - - - HANDLER
   const handleRSVPButtonClick = (fest, attendeestatus) => {
     if (attendeestatus === false) {
@@ -72,11 +73,6 @@ export const ProfileFestsRoute = () => {
       });
     }
   };
-
-  // - - - - - USE EFFECT
-  useEffect(() => {
-    registerModal("create", <SlopFestModal onClose={closeModal} />);
-  }, []);
 
   return (
     <div className="max-w-[1440px] mx-auto">

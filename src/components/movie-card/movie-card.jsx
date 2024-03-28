@@ -66,8 +66,7 @@ export function MovieCard({
           "flex flex-col relative",
           size === 1 && "col-span-1",
           size === 2 && "col-span-2",
-          size === 3 && "col-span-3",
-          className
+          size === 3 && "col-span-3"
         )}
         style={{ maxHeight: "80vh" }}
         onClick={onClick}
@@ -91,7 +90,7 @@ export function MovieCard({
         )}
         <img
           className={cx(
-            "mb-2.5 max-h-full overflow-hidden hover:cursor-pointer",
+            "mb-2.5 max-h-[80vh] overflow-hidden hover:cursor-pointer",
             containerSize === "small" &&
               "object-contain h-[120px] self-baseline xs:self-center"
           )}

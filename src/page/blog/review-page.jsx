@@ -35,7 +35,6 @@ export const Review = ({ id }) => {
 
   useEffect(() => {
     if (data) {
-      console.log(currentUser.id, data.post.author.id);
       setPost({
         title: data.post.title,
         content: data.post.content,
@@ -50,7 +49,6 @@ export const Review = ({ id }) => {
   }, [data]);
 
   const onEdit = () => {
-    console.log(currentUser, data);
     if (currentUser.id === data.post.author.id) {
       router(`/articles/${id}/edit`);
     }

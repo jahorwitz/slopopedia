@@ -28,7 +28,6 @@ export const Article = () => {
     },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
-  console.log(keywordsData);
   const { data: moviesData } = useQuery(GET_MOVIES);
   const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
@@ -46,7 +45,6 @@ export const Article = () => {
   const keywordsOptions = keywordsData?.keywords ?? [];
   const moviesOptions = moviesData?.movies ?? [];
 
-  console.log(data);
   const {
     register,
     handleSubmit,
@@ -62,7 +60,6 @@ export const Article = () => {
       movies: data?.post?.movies,
     },
   });
-  console.log(data?.post?.keywords, keywordsPrefills);
   // useEffect(() => {
   //   if (id) {
   //     console.log(data);
@@ -78,14 +75,11 @@ export const Article = () => {
   if (error) return `Submission error! ${error.message}`;
 
   const onSuccessful = () => {
-    console.log("notifying");
     setSuccessful(true);
   };
 
-  const onDraft = (e) => {
-    e.preventDefault();
+  const onDraft = handleSubmit(() => {
     const { title, content, keywords, movies } = getValues();
-    console.log(currentUser);
     createPost({
       variables: {
         data: {
@@ -112,13 +106,12 @@ export const Article = () => {
       .catch((err) => {
         console.error(err);
       });
-  };
+  });
 
-  const onPublish = (e) => {
+  const onPublish = handleSubmit(() => {
     const { title, content, keywords, movies } = getValues();
-    e.preventDefault();
+    console.log(title, content, keywords, movies);
 
-    console.log(currentUser);
     createPost({
       variables: {
         data: {
@@ -145,7 +138,7 @@ export const Article = () => {
       .catch((err) => {
         console.error(err);
       });
-  };
+  });
   // Should turn the onPublish and onDraft
   // into just one function that takes in a paramter
   // but I was having trouble with passing a variable into a
@@ -233,19 +226,23 @@ export const Article = () => {
             />
           </Form>
           <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
-            <Form onSubmit={(e) => handleSubmit(onDraft(e))}>
-              <Form.Submit
-                className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
-                title={"Save to drafts"}
-              />
-            </Form>
+            <Button
+              variant="primary"
+              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              type="button"
+              onClick={onDraft}
+            >
+              Save to Drafts
+            </Button>
 
-            <Form onSubmit={(e) => handleSubmit(onPublish(e))}>
-              <Form.Submit
-                className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
-                title={"Publish!"}
-              />
-            </Form>
+            <Button
+              variant="primary"
+              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              type="button"
+              onClick={onPublish}
+            >
+              Publish!
+            </Button>
           </div>
         </div>
       ) : (
