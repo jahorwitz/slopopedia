@@ -18,6 +18,7 @@ export const Post = ({
   keywords.forEach((word) => {
     keywordsList.push(
       <Keyword
+        key={word.id}
         keyword={`${word?.name}`}
         className="bg-yellow text-sm font-semibold p-2.5 h-8 w-30 text-black text-center items-center border-none mb-4 py-0 px-2"
       />

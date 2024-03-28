@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import {
@@ -18,7 +17,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
@@ -39,6 +38,10 @@ export const ProfileFestsRoute = () => {
   const [updateFest] = useMutation(UPDATE_FEST, {
     refetchQueries: [GET_USER_FESTS],
   });
+
+  function openSlopFestModal() {
+    openModal(<SlopFestModal onClose={closeModal} />);
+  }
 
   // - - - - - HANDLER
   const handleRSVPButtonClick = (fest, attendeestatus) => {
@@ -71,11 +74,6 @@ export const ProfileFestsRoute = () => {
     }
   };
 
-  // - - - - - USE EFFECT
-  useEffect(() => {
-    registerModal("create", <SlopFestModal onClose={closeModal} />);
-  }, []);
-
   return (
     <div className="max-w-[1440px] mx-auto">
       <Header>
@@ -95,9 +93,7 @@ export const ProfileFestsRoute = () => {
             <Button
               variant="primary"
               className="w-[224px]"
-              onClick={() => {
-                openModal("create");
-              }}
+              onClick={openSlopFestModal}
             >
               New Fest!
             </Button>

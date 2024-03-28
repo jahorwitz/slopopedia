@@ -12,6 +12,7 @@ export const GET_BLOG_POSTS = gql`
       id
       keywords {
         name
+        id
       }
       movies {
         title
@@ -33,6 +34,7 @@ export const GET_BLOG_POST = gql`
       }
       keywords {
         name
+        id
       }
       movies {
         title
