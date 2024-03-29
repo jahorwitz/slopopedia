@@ -46,15 +46,6 @@ export const GET_BLOG_POST = gql`
   }
 `;
 
-export const GET_KEYWORDS = gql`
-  query Query {
-    keywords {
-      id
-      name
-    }
-  }
-`;
-
 export const GET_DRAFT_POSTS = gql`
   query Query($where: PostWhereInput!) {
     posts(where: $where) {
@@ -72,7 +63,6 @@ const all = {
   GET_BLOG_POSTS,
   GET_BLOG_POST,
   GET_DRAFT_POSTS,
-  GET_KEYWORDS,
 };
 
 export default all;

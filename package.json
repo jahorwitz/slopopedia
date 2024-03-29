@@ -24,6 +24,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.17",
     "@headlessui/react": "^1.7.17",
+    "apollo-upload-client": "^18.0.1",
     "classnames": "^2.3.2",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.10",
@@ -37,6 +38,7 @@
     "react-date-picker": "^10.6.0",
     "react-datepicker": "^5.0.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.10.1",
     "react-responsive": "^9.0.2",

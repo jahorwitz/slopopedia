@@ -4,7 +4,7 @@ import { GET_MOVIES } from "../graphql/get-movies";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {
-  const { loading, data, error } = useQuery(GET_MOVIES, {
+  const { data, loading, error } = useQuery(GET_MOVIES, {
     variables: {
       where: {
         status: {
