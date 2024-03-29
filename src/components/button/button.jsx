@@ -27,6 +27,9 @@ export const Button = ({
           variant === "link" &&
           "border-b-2 border-black text-white-400 font-arialRegular",
         !disabled &&
+          variant === "link-secondary" &&
+          "hover:border-b-[3px] hover:border-black hover:text-black text-gray-500 text-lg font-arialBold h-6",
+        !disabled &&
           variant === "minus" &&
           "bg-minus absolute top-2.5 right-2.5",
         !disabled && variant === "plus" && "bg-plus absolute top-2.5 right-2.5",
@@ -34,6 +37,7 @@ export const Button = ({
         size === "md" && "p-3",
         size === "sm" && "p-2.5",
         size === "lg" && "py-4 w-full",
+        size === "link" && "p-0",
         className
       )}
     >

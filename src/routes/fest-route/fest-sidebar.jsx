@@ -1,7 +1,12 @@
 import { useMutation } from "@apollo/client";
 import { useNavigate, useParams } from "react-router";
-import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
-import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
+import {
+  Button,
+  DeleteConfirmationModal,
+  Sidebar,
+  SlopFestModal,
+} from "../../components";
+import { DELETE_FEST, GET_USER_FESTS } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {
@@ -24,10 +29,6 @@ export const FestSidebar = ({ festQuery }) => {
       title: "Discussion",
       link: `/fests/${festId}/discussion`,
     },
-    {
-      title: "Edit dates & guests",
-      link: "",
-    },
   ];
 
   // Function to remove a Fest from server when 'delete' button is clicked
@@ -45,6 +46,17 @@ export const FestSidebar = ({ festQuery }) => {
     openModal(<DeleteConfirmationModal confirmButtonAction={removeFest} />);
   }
 
+  function openEditModal() {
+    openModal(
+      <SlopFestModal
+        buttonTitle={"Save edits"}
+        location={location}
+        fest={festQuery}
+        onClose={closeModal}
+      />
+    );
+  }
+
   return (
     <div>
       <div className="ml-[-1.25rem]">
@@ -52,6 +64,14 @@ export const FestSidebar = ({ festQuery }) => {
           {sidebarItems.map((item, index) => (
             <Sidebar.Item key={index} link={item.link} title={item.title} />
           ))}
+          <Button
+            variant="link-secondary"
+            className={"ml-5"}
+            size="link"
+            onClick={openEditModal}
+          >
+            Edit dates & guests
+          </Button>
         </Sidebar>
       </div>
       {currentUser.id === festQuery.data.fest.creator.id ? (

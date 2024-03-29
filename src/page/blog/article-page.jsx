@@ -6,12 +6,12 @@ import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
-import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
 import {
+  CREATE_POST,
   GET_BLOG_POST,
   GET_KEYWORDS,
   GET_MOVIES,
-} from "../../graphql/queries/blog/posts.js";
+} from "../../graphql";
 import { useCurrentUser } from "../../hooks";
 
 export const Article = () => {

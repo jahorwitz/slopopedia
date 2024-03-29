@@ -55,15 +55,6 @@ export const GET_KEYWORDS = gql`
   }
 `;
 
-export const GET_MOVIES = gql`
-  query Query {
-    movies {
-      id
-      title
-    }
-  }
-`;
-
 export const GET_DRAFT_POSTS = gql`
   query Query($where: PostWhereInput!) {
     posts(where: $where) {
@@ -82,7 +73,6 @@ const all = {
   GET_BLOG_POST,
   GET_DRAFT_POSTS,
   GET_KEYWORDS,
-  GET_MOVIES,
 };
 
 export default all;
