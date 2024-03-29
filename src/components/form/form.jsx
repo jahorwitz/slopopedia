@@ -1,7 +1,8 @@
 import { Combobox } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDropzone } from "react-dropzone";
 import cross from "../../images/combo-box-cross.svg";
 import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
@@ -14,6 +15,46 @@ export const Form = ({ className, children, onSubmit, ...rest }) => {
   );
 };
 
+Form.FileDrop = ({ id, labelText, watch, onChange, children }) => {
+  const [file, setFile] = useState(null);
+
+  const onDrop = useCallback(([acceptedFile]) => {
+    setFile(acceptedFile);
+    // const reader = new FileReader();
+
+    // reader.onabort = () => console.log("file reading was aborted");
+    // reader.onerror = () => console.log("file reading has failed");
+    // reader.onload = () => {
+    //   const binaryStr = reader.result;
+    //   const blob = new Blob([binaryStr], { type: acceptedFile.type });
+    //   onChange(URL.createObjectURL(blob));
+    // };
+    // reader.readAsArrayBuffer(acceptedFile);
+    onChange(acceptedFile);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+  });
+
+  return (
+    <div className="flex font-arial flex-col py-3">
+      <label htmlFor={id} className="mb-1.5 text-lg font-bold text-start">
+        {labelText}
+      </label>
+
+      <div
+        {...getRootProps()}
+        className="w-full border border-black font-medium text-lg/4 py-3 px-4 bg-background border-solid flex justify-center items-center cursor-pointer"
+      >
+        <input {...getInputProps()} type="file" />
+        {file?.path ?? children}
+      </div>
+    </div>
+  );
+};
+
 Form.TextInput = ({
   className,
   labelText,
@@ -21,9 +62,11 @@ Form.TextInput = ({
   email,
   password,
   register,
+  prefilledInputs,
   onChange,
   isValid,
   placeholder,
+  classNameInput,
   ...rest
 }) => {
   return (
@@ -38,10 +81,11 @@ Form.TextInput = ({
 
         <input
           register={register}
+          defaultValue={prefilledInputs}
           id={id}
           className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"
-          } `}
+          } ${classNameInput} `}
           type="text"
           placeholder={placeholder || "Type here"}
           onChange={onChange}
@@ -52,7 +96,16 @@ Form.TextInput = ({
   );
 };
 
-Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
+Form.TextArea = ({
+  className,
+  labelText,
+  id,
+  register,
+  prefilledInputs,
+  classNameTextArea,
+  isValid,
+  ...rest
+}) => {
   return (
     <>
       <div className="flex font-bold font-arial flex-col py-3">
@@ -61,8 +114,10 @@ Form.TextArea = ({ className, labelText, id, register, ...rest }) => {
         </label>
 
         <textarea
+          defaultValue={prefilledInputs}
+          register={register}
           id={id}
-          className="font-normal bg-background py-4 px-4 border-solid rounded-none border border-black"
+          className={`font-normal bg-background py-4 px-4 border-solid rounded-none border border-black ${classNameTextArea}`}
           type="text"
           placeholder="Type"
           {...rest}
@@ -124,7 +179,23 @@ Form.Dropdown = ({
   );
 };
 
-Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
+Form.DateDropdown = ({
+  register,
+  className,
+  labelText,
+  id,
+  onChange,
+  setValue,
+  watch,
+  name,
+  ...rest
+}) => {
+  const selectedItem = watch(id);
+
+  useEffect(() => {
+    setValue(id, selectedItem, { shouldValidate: true });
+  }, []);
+
   return (
     <div
       className={`relative flex font-bold font-arial flex-col py-3 border-solid rounded-none border-black/[0.4] ${className}`}
@@ -133,12 +204,15 @@ Form.DateDropdown = ({ className, labelText, id, onChange, date, ...rest }) => {
         {labelText}
       </label>
       <DatePicker
+        name={name}
+        dateFormat={"MM/dd/yyyy"}
         className={
           "py-4 px-4 border-solid rounded-none border border-black w-44 h-12 flex bg-background"
         }
-        onChange={onChange}
-        selected={date}
+        onChange={(date) => setValue(id, date, { shouldValidate: true })}
+        selected={selectedItem}
         placeholderText="Select"
+        {...rest}
       />
       {/* <Button className="absolute right-0.5 flex top-12" variant="tertiary">
         <img src={down} className="h-2.5 w-2.5" />
@@ -190,7 +264,7 @@ Form.Combobox = ({
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setValue(id, selectedItems);
+    setValue(id, selectedItems, { shouldValidate: true });
   }, []);
 
   const filteredList =
@@ -206,14 +280,16 @@ Form.Combobox = ({
       </label>
       <Combobox
         value={selectedItems}
-        onChange={(data) => setValue(id, data)}
+        onChange={(data) => setValue(id, data, { shouldValidate: true })}
         multiple
         nullable
         name={name}
         id={id}
       >
-        <div className="relative">
-          <div className="relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 max-w-sm">
+        <div className={`relative ${className}`}>
+          <div
+            className={`relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 ${className}`}
+          >
             {selectedItems &&
               selectedItems?.length > 0 &&
               selectedItems?.map((item) => (

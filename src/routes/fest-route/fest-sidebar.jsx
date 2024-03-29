@@ -1,15 +1,17 @@
 import { useMutation } from "@apollo/client";
-import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
-import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
+import { useNavigate, useParams } from "react-router";
+import {
+  Button,
+  DeleteConfirmationModal,
+  Sidebar,
+  SlopFestModal,
+} from "../../components";
+import { DELETE_FEST, GET_USER_FESTS } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 
 export const FestSidebar = ({ festQuery }) => {
-  const { openModal, closeModal, registerModal } = useModals();
   const { currentUser } = useCurrentUser();
-
-  const location = useLocation();
+  const { openModal, closeModal } = useModals();
   const festId = useParams().festId;
   const navigate = useNavigate();
 
@@ -17,6 +19,17 @@ export const FestSidebar = ({ festQuery }) => {
   const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
     refetchQueries: [GET_USER_FESTS],
   });
+
+  const sidebarItems = [
+    {
+      title: "Slops to watch",
+      link: `/fests/${festId}`,
+    },
+    {
+      title: "Discussion",
+      link: `/fests/${festId}/discussion`,
+    },
+  ];
 
   // Function to remove a Fest from server when 'delete' button is clicked
   const removeFest = () => {
@@ -29,28 +42,20 @@ export const FestSidebar = ({ festQuery }) => {
     }
   };
 
-  const sidebarItems = [
-    {
-      title: "Slops to watch",
-      link: `/fests/${festId}`,
-    },
-    {
-      title: "Discussion",
-      link: `/fests/${festId}/discussion`,
-    },
-    {
-      title: "Edit dates & guests",
-      link: "",
-    },
-  ];
+  function openDeleteConfirmationModal() {
+    openModal(<DeleteConfirmationModal confirmButtonAction={removeFest} />);
+  }
 
-  // Load Delete Confirmation Modal on page load
-  useEffect(() => {
-    registerModal(
-      "confirmation",
-      <DeleteConfirmationModal confirmButtonAction={removeFest} />
+  function openEditModal() {
+    openModal(
+      <SlopFestModal
+        buttonTitle={"Save edits"}
+        location={location}
+        fest={festQuery}
+        onClose={closeModal}
+      />
     );
-  }, []);
+  }
 
   return (
     <div>
@@ -59,6 +64,14 @@ export const FestSidebar = ({ festQuery }) => {
           {sidebarItems.map((item, index) => (
             <Sidebar.Item key={index} link={item.link} title={item.title} />
           ))}
+          <Button
+            variant="link-secondary"
+            className={"ml-5"}
+            size="link"
+            onClick={openEditModal}
+          >
+            Edit dates & guests
+          </Button>
         </Sidebar>
       </div>
       {currentUser.id === festQuery.data.fest.creator.id ? (
@@ -67,9 +80,7 @@ export const FestSidebar = ({ festQuery }) => {
             type="button"
             variant="danger"
             className="pl-0 pt-16"
-            onClick={() => {
-              openModal("confirmation");
-            }}
+            onClick={openDeleteConfirmationModal}
           >
             Delete
           </Button>

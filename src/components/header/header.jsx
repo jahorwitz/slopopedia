@@ -19,17 +19,20 @@ export const Header = () => {
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
     useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
-  const { registerModal, openModal, closeModal } = useModals();
-  const [open, setOpen] = useState(false);
+  const { openModal, closeModal } = useModals();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function openLoginModal() {
+    openModal(<LoginModal onClose={closeModal} />);
+  }
+
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
 
   const handleMenu = () => {
-    setOpen((prev) => !prev);
+    setMenuOpen((prev) => !prev);
   };
-
-  useEffect(() => {
-    registerModal("signin", <LoginModal onClose={closeModal} />);
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-  }, []);
 
   useEffect(() => {
     if (!loading && data && data.authenticatedItem) {
@@ -49,14 +52,18 @@ export const Header = () => {
       <Header.NavLinks
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
-        openModal={openModal}
+        openSignUpModal={openSignUpModal}
+        openLoginModal={openLoginModal}
         handleMenu={handleMenu}
-        open={open}
+        menuOpen={menuOpen}
       />
       <Header.Profile
         isLoggedIn={isLoggedIn}
         currentUser={currentUser}
-        openModal={openModal}
+        openSignUpModal={openSignUpModal}
+        openLoginModal={openLoginModal}
+        setCurrentUser={setCurrentUser}
+        setIsLoggedIn={setIsLoggedIn}
       />
     </header>
   );
@@ -66,7 +73,7 @@ Header.Logo = () => {
   return (
     <Link to="/">
       <img
-        className="w-80 pt-4 xs:w-60 md:w-70 "
+        className="w-80 pt-4 xs:w-60 md:w-70"
         src={headerLogo}
         alt="slopopedia logo"
       />
@@ -77,9 +84,10 @@ Header.Logo = () => {
 Header.NavLinks = ({
   isLoggedIn,
   currentUser,
-  openModal,
-  open,
+  menuOpen,
   handleMenu,
+  openSignUpModal,
+  openLoginModal,
 }) => {
   const navLinks = [
     {
@@ -95,7 +103,7 @@ Header.NavLinks = ({
     {
       title: "Slop Blog",
       src: headerBook,
-      link: "/blog",
+      link: "/articles",
     },
     {
       title: "I'm Feeling Sloppy",
@@ -108,16 +116,12 @@ Header.NavLinks = ({
     {
       title: "Log In",
       src: headerSmile,
-      onClick: () => {
-        openModal("signin");
-      },
+      onClick: openLoginModal,
     },
     {
       title: "Sign Up",
       src: headerDoor,
-      onClick: () => {
-        openModal("signup");
-      },
+      onClick: openSignUpModal,
     },
   ];
 
@@ -132,11 +136,13 @@ Header.NavLinks = ({
             </Link>
           </div>
         ))}
-        <img src={headerNew} className="absolute right-[200px] bottom-[6px]" />
+        <img
+          src={headerNew}
+          className="absolute right-[200px] bottom-[6px] pointer-events-none"
+        />
       </div>
       {/* hamburger button */}
-      <div className="xs: block sm:block  relative"></div>
-      <div className="flex justify-end  pt-5 xs:pr-0 xs:pt-0 sm:pt-0 md:pt-0 ">
+      <div className="flex w-fit pt-5 xs:pr-0 xs:pt-0 sm:pt-0 md:pt-0 md:hidden">
         <button
           type="button"
           onClick={handleMenu}
@@ -145,11 +151,11 @@ Header.NavLinks = ({
                 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block  lg:hidden xl:hidden "
         >
           <span className="sr-only">Open Main Menu</span>
-          {open == true ? <FaTimes /> : <FaBars />}
+          {menuOpen == true ? <FaTimes /> : <FaBars />}
         </button>
       </div>
       {/* hamburger-menu */}
-      {open ? (
+      {menuOpen ? (
         <div className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden">
           <div className=" space-y-1  ">
             {navLinks.map((link) => (
@@ -213,17 +219,16 @@ Header.NavLinks = ({
   );
 };
 
-Header.Profile = () => {
+Header.Profile = ({
+  isLoggedIn,
+  currentUser,
+  openSignUpModal,
+  openLoginModal,
+  setCurrentUser,
+  setIsLoggedIn,
+}) => {
   const { setToken, token } = useClient();
-  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
-    useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
-  const { registerModal, openModal, closeModal } = useModals();
-
-  useEffect(() => {
-    registerModal("signin", <LoginModal onClose={closeModal} />);
-    registerModal("signup", <SignupModal closeModal={closeModal} />);
-  }, []);
 
   useEffect(() => {
     if (!loading && data && data.authenticatedItem) {
@@ -234,6 +239,7 @@ Header.Profile = () => {
     if (!loading && data && data.authenticatedItem === null) {
       localStorage.removeItem("jwt");
       setToken(null);
+      setIsLoggedIn(false);
     }
   }, [data]);
 
@@ -246,9 +252,7 @@ Header.Profile = () => {
             size="sm p-0"
             variant="secondary"
             children="Log In"
-            onClick={() => {
-              openModal("signin");
-            }}
+            onClick={() => openLoginModal()}
           ></Button>
           <p>/</p>
           <Button
@@ -256,9 +260,7 @@ Header.Profile = () => {
             size="sm p-0"
             variant="secondary"
             children="Sign Up"
-            onClick={() => {
-              openModal("signup");
-            }}
+            onClick={() => openSignUpModal()}
           ></Button>
           <img className="w-5 h-5 mt-1" src={headerDoor} alt="door icon" />
         </div>

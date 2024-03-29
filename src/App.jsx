@@ -1,22 +1,25 @@
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ProtectedRoute, Submit, SubmitList } from "./components";
+import { ProtectedRoute } from "./components";
 import { useClient } from "./hooks";
 import {
   ArticleRoute,
-  BlogRoute,
+  ArticlesRoute,
   BrowseRoute,
   DraftRoute,
   FestDiscussion,
   FestRoute,
-  FestsRoute,
   MainRoute,
   MovieRoute,
   PreferencesRoute,
   ProfileFestsRoute,
   ProfileRoute,
+  ProfileSettingsRoute,
+  ReviewRoute,
   SearchRoute,
   SoundsRoute,
+  SubmitRoute,
+  SubmittedSlopsRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
@@ -31,15 +34,15 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<MainRoute />} />
               <Route path="/browse" element={<BrowseRoute />} />
-              <Route path="/fests" element={<FestsRoute />} />
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />
-              <Route path="/blog" element={<BlogRoute />} />
               <Route path="/draft" element={<DraftRoute />} />
-              <Route path="/article" element={<ArticleRoute />} />
+              <Route path="/articles" element={<ArticlesRoute />} />
+              <Route exact path="/articles/create" element={<ArticleRoute />} />
+              <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={
                   <ProtectedRoute user={"user"}>
                     <ProfileRoute />
@@ -55,6 +58,14 @@ export const App = () => {
                 }
               />
               <Route
+                path="/profile/settings"
+                element={
+                  <ProtectedRoute>
+                    <ProfileSettingsRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/preferences/:value"
                 element={
                   <ProtectedRoute>
@@ -66,15 +77,15 @@ export const App = () => {
                 path="/submit"
                 element={
                   <ProtectedRoute>
-                    <Submit />
+                    <SubmitRoute />
                   </ProtectedRoute>
                 }
               />
               <Route
-                path="/submit-list"
+                path="/submitted-list"
                 element={
                   <ProtectedRoute>
-                    <SubmitList />
+                    <SubmittedSlopsRoute />
                   </ProtectedRoute>
                 }
               />
@@ -83,8 +94,12 @@ export const App = () => {
                 element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
               />
               <Route
-                path="/blog"
-                element={<ProtectedRoute>{/* <Blog /> */}</ProtectedRoute>}
+                path="/articles/:id/edit"
+                element={
+                  <ProtectedRoute>
+                    <ArticleRoute />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/fests/:festId"

@@ -11,9 +11,7 @@ export function ArticleRoute() {
           <Header.Profile />
         </Header>
       </div>
-      <div className="w-full max-w-[1440px] -top-5 mx-auto p-20 flex flex-row relative justify-center">
-        <ArticlePage />
-      </div>
+      <ArticlePage />
     </>
   );
 }
