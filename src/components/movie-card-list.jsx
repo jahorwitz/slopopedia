@@ -1,4 +1,4 @@
-import MovieCard from "./MovieCard";
+import MovieCard from "./movie-card/movie-card";
 
 export const MovieCardList = ({
   movies,
@@ -8,7 +8,6 @@ export const MovieCardList = ({
   plusButton,
   minusButtonClick,
   plusButtonClick,
-  renderButton,
 }) => {
   return (
     <>
@@ -23,7 +22,6 @@ export const MovieCardList = ({
             plusButton={plusButton}
             minusButtonClick={minusButtonClick}
             plusButtonClick={plusButtonClick}
-            renderButton={renderButton}
           />
         ))}
       </div>

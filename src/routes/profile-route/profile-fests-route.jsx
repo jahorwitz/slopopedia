@@ -1,17 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link, useLocation } from "react-router-dom";
-import {
-  Button,
-  Footer,
-  Header,
-  Keyword,
-  SlopFestModal,
-} from "../../components/index";
-import { GET_USER_FESTS } from "../../graphql";
-import { UPDATE_FEST } from "../../graphql/mutations/fest";
+import { Link } from "react-router-dom";
+import { Button, Header, Keyword, SlopFestModal } from "../../components/index";
+import { GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkBlack from "../../images/check-mark-dark.svg";
 import checkMarkWhite from "../../images/check-mark.svg";
@@ -19,8 +11,7 @@ import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileFestsRoute = () => {
   const { currentUser } = useCurrentUser();
-  const location = useLocation();
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
@@ -41,6 +32,10 @@ export const ProfileFestsRoute = () => {
   const [updateFest] = useMutation(UPDATE_FEST, {
     refetchQueries: [GET_USER_FESTS],
   });
+
+  function openSlopFestModal() {
+    openModal(<SlopFestModal onClose={closeModal} />);
+  }
 
   // - - - - - HANDLER
   const handleRSVPButtonClick = (fest, attendeestatus) => {
@@ -73,20 +68,8 @@ export const ProfileFestsRoute = () => {
     }
   };
 
-  // - - - - - USE EFFECT
-  useEffect(() => {
-    registerModal(
-      "create-fest",
-      <SlopFestModal
-        location={location}
-        buttonTitle={"Fest On!"}
-        onClose={closeModal}
-      />
-    );
-  }, []);
-
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="mx-auto">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -104,9 +87,7 @@ export const ProfileFestsRoute = () => {
             <Button
               variant="primary"
               className="w-[224px]"
-              onClick={() => {
-                openModal("create-fest");
-              }}
+              onClick={openSlopFestModal}
             >
               New Fest!
             </Button>
@@ -202,9 +183,6 @@ export const ProfileFestsRoute = () => {
           </div>
         </div>
       </section>
-      <div className="mt-32 ">
-        <Footer />
-      </div>
     </div>
   );
 };

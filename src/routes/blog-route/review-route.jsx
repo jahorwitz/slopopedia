@@ -5,8 +5,6 @@ import ReviewPage from "../../page/blog/review-page.jsx";
 export function ReviewRoute() {
   const { id } = useParams();
 
-  console.log(id);
-
   return (
     <>
       <div className="relative">

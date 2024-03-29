@@ -12,6 +12,7 @@ export const GET_BLOG_POSTS = gql`
       id
       keywords {
         name
+        id
       }
       movies {
         title
@@ -33,6 +34,7 @@ export const GET_BLOG_POST = gql`
       }
       keywords {
         name
+        id
       }
       movies {
         title
@@ -49,15 +51,6 @@ export const GET_KEYWORDS = gql`
     keywords {
       id
       name
-    }
-  }
-`;
-
-export const GET_MOVIES = gql`
-  query Query {
-    movies {
-      id
-      title
     }
   }
 `;
@@ -80,7 +73,6 @@ const all = {
   GET_BLOG_POST,
   GET_DRAFT_POSTS,
   GET_KEYWORDS,
-  GET_MOVIES,
 };
 
 export default all;

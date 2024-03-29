@@ -18,7 +18,7 @@ export const ProfileSettingsRoute = () => {
   const { currentUser, setCurrentUser } = useCurrentUser();
   const userId = currentUser.id;
 
-  const { registerModal, openModal, closeModal } = useModals();
+  const { openModal, closeModal } = useModals();
 
   const {
     data: userData,
@@ -43,7 +43,6 @@ export const ProfileSettingsRoute = () => {
   });
 
   const handleDeleteUserSubmit = () => {
-    console.log(userId);
     deleteUser({
       variables: {
         where: { id: userId },
@@ -74,16 +73,14 @@ export const ProfileSettingsRoute = () => {
     },
   });
 
-  // - - - - - - - - - - USE EFFECT - - - - - - - - - -
-  useEffect(() => {
-    registerModal(
-      "deleteUser",
+  function openDeleteConfirmationModal(closeModal, handleDeleteUserSubmit) {
+    openModal(
       <DeleteConfirmationModal
         onClose={closeModal}
         confirmButtonAction={handleDeleteUserSubmit}
       />
     );
-  }, []);
+  }
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -133,7 +130,7 @@ export const ProfileSettingsRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="mx-auto">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -148,14 +145,14 @@ export const ProfileSettingsRoute = () => {
               <Form.TextInput
                 id="username"
                 labelText={"Nickname"}
-                {...register("username", {
+                register={register("username", {
                   required: "Nickname is required",
                   pattern: {
                     value: /^\S/,
                     message: "Must not start with a space",
                   },
                 })}
-                autocomplete="username" //required per console error from React Hook Form
+                autoComplete="username" //required per console error from React Hook Form
                 onChange={(evt) => {
                   setValue("username", evt.target.value, {
                     shouldValidate: true,
@@ -171,14 +168,14 @@ export const ProfileSettingsRoute = () => {
 
               <Form.TextInput
                 labelText={"Email"}
-                {...register("email", {
+                register={register("email", {
                   required: "Email is required",
                   pattern: {
                     value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
                     message: "Invalid Email",
                   },
                 })}
-                autocomplete="username" //required per console error from React Hook Form
+                autoComplete="username" //required per console error from React Hook Form
                 onChange={(evt) => {
                   setValue("email", evt.target.value, {
                     shouldValidate: true,
@@ -194,14 +191,14 @@ export const ProfileSettingsRoute = () => {
 
               <Form.TextInput
                 labelText={"New Password"}
-                {...register("password", {
+                register={register("password", {
                   //required: "Password is required",
                   minLength: {
                     value: 10,
                     message: "Passwords must be at least 10 characters",
                   },
                 })}
-                autocomplete="new-password" //required per console error from React Hook Form
+                autoComplete="new-password" //required per console error from React Hook Form
                 type="password"
                 onChange={(evt) => {
                   setValue("password", evt.target.value, {
@@ -224,7 +221,7 @@ export const ProfileSettingsRoute = () => {
                     value === formValues.password ||
                     "Passwords do not match",
                 })}
-                autocomplete="confirm-new-password" //required per console error from React Hook Form
+                autoComplete="confirm-new-password" //required per console error from React Hook Form
                 type="password"
                 onChange={(evt) => {
                   setValue("confirmPassword", evt.target.value, {
@@ -244,7 +241,7 @@ export const ProfileSettingsRoute = () => {
               type="button"
               className="bg-transparent text-danger font-bold text-lg mt-10"
               onClick={() => {
-                openModal("deleteUser");
+                openDeleteConfirmationModal(closeModal, handleDeleteUserSubmit);
               }}
             >
               Delete Account

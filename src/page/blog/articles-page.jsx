@@ -14,7 +14,6 @@ export const Articles = () => {
       },
     },
   });
-  console.log(data);
   if (loading) return "Loading...";
   if (error) return <pre>{error.message}</pre>;
 
