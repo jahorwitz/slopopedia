@@ -41,7 +41,7 @@ export const App = () => {
               <Route exact path="/articles/create" element={<ArticleRoute />} />
               <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={
                   <ProtectedRoute user={"user"}>
                     <ProfileRoute />

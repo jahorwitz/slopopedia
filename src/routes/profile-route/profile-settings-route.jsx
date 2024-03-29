@@ -130,7 +130,7 @@ export const ProfileSettingsRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="mx-auto">
       <Header>
         <Header.Logo />
         <Header.NavLinks />

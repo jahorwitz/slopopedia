@@ -10,20 +10,19 @@ export const ProfileRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] bg-gray-background mx-auto min-h-screen relative">
+    <div className="bg-gray-background mx-auto min-h-screen relative">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className="flex">
+      <div className={isDesktopSize ? "flex" : "flex flex-col"}>
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
         <div className="w-[950px]">
           <WatchlistTabber />
         </div>
       </div>
-
-      <div className="mt-32 ">
+      <div className="absolute w-full bottom-0">
         <Footer />
       </div>
     </div>

@@ -2,13 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Footer,
-  Header,
-  Keyword,
-  SlopFestModal,
-} from "../../components/index";
+import { Button, Header, Keyword, SlopFestModal } from "../../components/index";
 import { GET_USER_FESTS, UPDATE_FEST } from "../../graphql";
 import { useCurrentUser, useModals } from "../../hooks";
 import checkMarkBlack from "../../images/check-mark-dark.svg";
@@ -75,7 +69,7 @@ export const ProfileFestsRoute = () => {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="mx-auto">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -189,9 +183,6 @@ export const ProfileFestsRoute = () => {
           </div>
         </div>
       </section>
-      <div className="mt-32 ">
-        <Footer />
-      </div>
     </div>
   );
 };
