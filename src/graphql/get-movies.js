@@ -22,6 +22,7 @@ export const GET_MOVIES = gql`
         isAdmin
         username
       }
+      status
     }
   }
 `;

@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useModals } from "../../hooks";
 import closeButton from "../../images/close-button.svg";
+import whiteCloseButton from "../../images/whiteCloseButton.svg";
 
 export function Modal({ children, title, whiteButton }) {
   let [isOpen, setIsOpen] = useState(true);
@@ -48,7 +49,10 @@ export function Modal({ children, title, whiteButton }) {
                       className="w-5 h-5 absolute top-10 right-10 z-50 xs:top-5 xs:right-5"
                       onClick={closeThisModal}
                     >
-                      <img src={closeButton} alt="close-button" />
+                      <img
+                        src={whiteButton ? whiteCloseButton : closeButton}
+                        alt="close-button"
+                      />
                     </button>
                     {title && (
                       <Dialog.Title

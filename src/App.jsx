@@ -1,6 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ProtectedRoute, SubmitList } from "./components";
+import { ProtectedRoute } from "./components";
 import { useClient } from "./hooks";
 import {
   ArticleRoute,
@@ -9,7 +9,6 @@ import {
   DraftRoute,
   FestDiscussion,
   FestRoute,
-  FestsRoute,
   MainRoute,
   MovieRoute,
   PreferencesRoute,
@@ -20,6 +19,7 @@ import {
   SearchRoute,
   SoundsRoute,
   SubmitRoute,
+  SubmittedSlopsRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 
@@ -34,7 +34,6 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<MainRoute />} />
               <Route path="/browse" element={<BrowseRoute />} />
-              <Route path="/fests" element={<FestsRoute />} />
               <Route path="/movie" element={<MovieRoute />} />
               <Route path="/search" element={<SearchRoute />} />
               <Route path="/sounds" element={<SoundsRoute />} />
@@ -43,7 +42,7 @@ export const App = () => {
               <Route exact path="/articles/create" element={<ArticleRoute />} />
               <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
-                path="/profile"
+                path="/profile/*"
                 element={
                   <ProtectedRoute user={"user"}>
                     <ProfileRoute />
@@ -83,10 +82,10 @@ export const App = () => {
                 }
               />
               <Route
-                path="/submit-list"
+                path="/submitted-list"
                 element={
                   <ProtectedRoute>
-                    <SubmitList />
+                    <SubmittedSlopsRoute />
                   </ProtectedRoute>
                 }
               />
