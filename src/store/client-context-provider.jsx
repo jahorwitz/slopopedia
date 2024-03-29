@@ -9,12 +9,7 @@ export const ClientContextProvider = ({ children }) => {
 
   useEffect(() => {
     const httpLink = createHttpLink({
-      uri:
-        //in Vite, use special object `import.meta.env` to access enviroment variables
-        import.meta.env.MODE === "production"
-          ? //created environment variables must be prefixed by VITE
-            import.meta.env.VITE_API_URI
-          : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -36,12 +31,7 @@ export const ClientContextProvider = ({ children }) => {
   useEffect(() => {
     if (client) {
       const httpLink = createHttpLink({
-        uri:
-          //in Vite, use special object `import.meta.env` to access enviroment variables
-          import.meta.env.MODE === "production"
-            ? //created environment variables must be prefixed by VITE
-              import.meta.env.VITE_API_URI
-            : "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+        uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
       });
 
       const authLink = setContext((_, { headers }) => {
