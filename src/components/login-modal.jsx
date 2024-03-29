@@ -1,21 +1,24 @@
 import { useMutation } from "@apollo/client";
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { SIGNIN } from "../graphql/signin-users";
+import { useClient, useCurrentUser, useModals } from "../hooks";
 import checkMark from "../images/check-mark-dark.svg";
-import { useModals } from "../store";
-import { CurrentUserContext } from "../store/current-user-context";
 import { Form, Modal, SignupModal } from "./index";
 
 export function LoginModal({ onClose }) {
   const [authenticateUserWithPassword, { username, password, error }] =
     useMutation(SIGNIN);
-  const { setCurrentUser } = useContext(CurrentUserContext);
 
-  const { registerModal, openModal, closeModal } = useModals();
+  const { setCurrentUser, setIsLoggedIn } = useCurrentUser();
 
-  if (error) console.error(error);
+  const { openModal, closeModal } = useModals();
+  const { setToken } = useClient();
+
+  function openSignUpModal() {
+    openModal(<SignupModal onClose={closeModal} />);
+  }
 
   const {
     register,
@@ -30,11 +33,6 @@ export function LoginModal({ onClose }) {
     },
   });
 
-  const adminInfo = {
-    name: "Contact",
-    description: "Contact an admin to reset your password",
-  };
-
   const onSubmit = () => {
     if (username !== "" || password !== "") {
       const { gobbId, password } = getValues();
@@ -46,24 +44,22 @@ export function LoginModal({ onClose }) {
           const userData = data.authenticateUserWithPassword.item;
           const sessionToken = data.authenticateUserWithPassword.sessionToken;
           localStorage.setItem("jwt", sessionToken);
+          setToken(sessionToken);
           setCurrentUser(userData);
-          closeModal("signin");
+          setIsLoggedIn(true);
+          closeModal();
         } else if (typename === "UserAuthenticationWithPasswordFailure") {
-          console.log("Something went wrong");
+          console.log("error with signin");
         }
       });
     }
   };
 
-  useEffect(() => {
-    registerModal("signup", <SignupModal onClose={onClose} />);
-  }, []);
-
   return (
     <Modal title="OH HEY GOBLIN">
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"flex flex-col items-center p-6"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background xs:px-5"}
       >
         <div className="flex flex-col">
           <Form.TextInput
@@ -74,7 +70,6 @@ export function LoginModal({ onClose }) {
             id={"gobb-id"}
             labelText={"Gobb ID"}
             isValid={!errors.gobbId}
-            className={`w-[373px]`}
             onChange={(evt) => {
               setValue("gobbId", evt.target.value, { shouldValidate: true });
             }}
@@ -86,19 +81,19 @@ export function LoginModal({ onClose }) {
             id={"password"}
             labelText={"Password"}
             isValid={!errors.password}
-            className={`w-[373px]`}
+            type="password"
             onChange={(evt) => {
               setValue("password", evt.target.value, { shouldValidate: true });
             }}
           />
         </div>
-        <div className="flex ml-auto mr-auto w-[373px] justify-between">
+        <div className="flex justify-between xs:flex xs:flex-col xs:items-center">
           <div className="flex">
             {/* Specific design for checkbox including checkMark */}
             {/* Logic for remembering user */}
             <input
               type="checkbox"
-              className={`w-[24px] h-[24px] mr-[16px] checked:bg-${checkMark}`}
+              className={`w-[24px] h-[24px] mr-[14px] checked:bg-${checkMark}`}
             />
             <h3 className="font-arialRegular text-lg">Remember Me</h3>
           </div>
@@ -126,7 +121,7 @@ export function LoginModal({ onClose }) {
                 >
                   <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
                     <div className="overflow-hidden bg-white rounded-lg shadow-lg ring-1 ring-black/5 border">
-                      <p className="p-5 font-arialRegular text-lg">
+                      <p className="p-4 font-arialRegular text-md/5 text-center xs:text-sm/5">
                         Please contact admin to reset password
                       </p>
                     </div>
@@ -136,24 +131,24 @@ export function LoginModal({ onClose }) {
             )}
           </Popover>
         </div>
-        <div className="flex flex-col items-center">
-          <Form.Submit
-            title={"Get to Sloppin'"}
-            className="w-[373px]"
-            disabled={!isValid}
-          />
+        <Form.Submit
+          title={"Get to Sloppin'"}
+          className="w-[373px] "
+          disabled={!isValid}
+        />
+        <div className="flex flex-col">
           {(errors.gobbId || errors.password) && (
             <Form.Feedback
               message={"Incorrect Username or Password"}
-              className="mb-5"
+              className="font-arialRegular text-lg self-center"
             />
           )}
-          <h3 className="font-arialRegular text-lg mt-5 mb-10">
+          <h3 className="font-arialRegular text-lg mt-5 mb-10 self-center">
             Don't have an account? {""}
             <button
               type="button"
               className="underline"
-              onClick={() => openModal("signup")}
+              onClick={openSignUpModal}
               onClose={onClose}
             >
               Sign Up!

@@ -7,6 +7,7 @@ export const GET_USER_AUTHENTICATION = gql`
         username
         id
         email
+        isAdmin
       }
     }
   }

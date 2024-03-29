@@ -5,10 +5,12 @@ export default {
     extend: {
       colors: {
         gray: "#CBCBCB",
+        lightGray: "#EFEFEF",
         green: "#48FF50",
         yellow: "#FFD913",
         danger: "#FF4040",
         dark: "#101010",
+        background: "#EFEFEF",
       },
       fontFamily: {
         arial: "Arial, sans-serif, Roboto",

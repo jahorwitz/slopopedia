@@ -1,13 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CREATE_USER } from "../graphql/create-user";
-import { useModals } from "../store";
+import { useModals } from "../hooks";
 import { Form, LoginModal, Modal } from "./index";
 
 export const SignupModal = ({ onClose }) => {
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
-  const { registerModal, openModal } = useModals();
+  const { openModal, closeModal } = useModals();
   const {
     register,
     handleSubmit,
@@ -22,16 +21,16 @@ export const SignupModal = ({ onClose }) => {
     },
   });
 
+  function openLoginModal() {
+    openModal(<LoginModal onClose={closeModal} />);
+  }
+
   const onSubmit = () => {
     const { username, email, password } = getValues();
     createUser({
       variables: { data: { username, email, password } },
     });
   };
-
-  useEffect(() => {
-    registerModal("signin", <LoginModal onClose={onClose} />);
-  }, []);
 
   if (data) {
     return (
@@ -42,7 +41,7 @@ export const SignupModal = ({ onClose }) => {
             <button
               type="button"
               className="underline"
-              onClick={() => openModal("signin")}
+              onClick={openLoginModal}
               onClose={() => onClose}
             >
               Login!
@@ -60,7 +59,7 @@ export const SignupModal = ({ onClose }) => {
       </div>
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
+        className={"w-full max-w-sm mx-auto p-1.5 bg-background xs:px-5"}
       >
         <Form.TextInput
           register={register("username", {
@@ -100,6 +99,7 @@ export const SignupModal = ({ onClose }) => {
             },
           })}
           labelText={"Password"}
+          type="password"
           onChange={(evt) => {
             setValue("password", evt.target.value, { shouldValidate: true });
           }}
@@ -112,6 +112,7 @@ export const SignupModal = ({ onClose }) => {
             validate: (value, formValues) =>
               value === formValues.password || "Passwords do not match",
           })}
+          type="password"
           labelText={"Confirm password"}
           onChange={(evt) => {
             setValue("confirmPassword", evt.target.value, {
@@ -134,7 +135,7 @@ export const SignupModal = ({ onClose }) => {
         <button
           type="button"
           className="underline"
-          onClick={() => openModal("signin")}
+          onClick={openLoginModal}
           onClose={() => onClose}
         >
           Login!

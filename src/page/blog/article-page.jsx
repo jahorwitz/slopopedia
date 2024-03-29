@@ -1,125 +1,291 @@
-import { useMutation } from "@apollo/client";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
+import { useMutation, useQuery } from "@apollo/client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router";
+import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
+import { Button } from "../../components/button";
+import { Footer } from "../../components/index.js";
 import { CREATE_POST } from "../../graphql/mutations/blog/post.js";
-import { CurrentUserContext } from "../../store/current-user-context.js";
+import {
+  GET_BLOG_POST,
+  GET_KEYWORDS,
+  GET_MOVIES,
+} from "../../graphql/queries/blog/posts.js";
+import { useCurrentUser } from "../../hooks";
 
 export const Article = () => {
+  const { id } = useParams();
   const router = useNavigate();
-  const [formState, setFormState] = useState({
-    title: "",
-    content: "",
-    status: "",
-    keywords: [],
-    movies: [],
-  });
+  const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
+  const { data } = useQuery(GET_BLOG_POST, {
+    variables: {
+      where: {
+        id: id,
+      },
+    },
+  });
+  const { data: keywordsData } = useQuery(GET_KEYWORDS);
+  const { data: moviesData } = useQuery(GET_MOVIES);
+  const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
+    name: keyword.name,
+  }));
+  const moviesPrefills = data?.post?.movies?.map((movie) => ({
+    title: movie.title,
+  }));
+  // const keywordsOptions = keywordsData?.keywords.map((keyword) => ({
+  //   name: keyword.name,
+  // }));
+  // const moviesOptions = moviesData?.movies.map((movie) => ({
+  //   title: movie.title,
+  // }));
+
+  const keywordsOptions = keywordsData?.keywords ?? [];
+  const moviesOptions = moviesData?.movies ?? [];
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, errors },
+    watch,
+    setValue,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      title: "",
+      content: "",
+      keywords: data?.post?.keywords,
+      movies: data?.post?.movies,
+    },
+  });
+  // useEffect(() => {
+  //   if (id) {
+  //     console.log(data);
+
+  //     setValue("keywords", data?.post?.keywords, { shouldValidate: true });
+  //     setValue("movies", data?.post?.movies, {
+  //       shouldValidate: true,
+  //     });
+  //   }
+  // }, [data]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
-  const notification = () => {
-    const notify = toast.info("Post successful!", {
-      theme: "dark",
-    });
-    if (notify) {
-      setTimeout(() => {
-        router("/blog");
-      }, 7000);
-    }
+  const onSuccessful = () => {
+    setSuccessful(true);
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await createPost({
-        variables: {
-          data: {
-            title: formState.title,
-            content: formState.content,
-            keywords: {
-              create: formState.keywords.map((item) => {
-                return { name: item };
-              }),
-            },
-            movies: {
-              create: formState.movies.map((item) => {
-                return { title: item };
-              }),
-            },
-            author: {
-              username: currentUser.username,
-            },
+  const onDraft = handleSubmit(() => {
+    const { title, content, keywords, movies } = getValues();
+    createPost({
+      variables: {
+        data: {
+          title: title,
+          content: content,
+          keywords: {
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
           },
+          movies: {
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
+          },
+          author: {
+            connect: { username: currentUser.username },
+          },
+          status: "draft",
         },
+      },
+    })
+      .then(() => onSuccessful())
+      .catch((err) => {
+        console.error(err);
       });
+  });
 
-      notification();
-    } catch (error) {
-      console.error("Error creating post: ", error);
-    }
+  const onPublish = handleSubmit(() => {
+    const { title, content, keywords, movies } = getValues();
+    console.log(title, content, keywords, movies);
+
+    createPost({
+      variables: {
+        data: {
+          title: title,
+          content: content,
+          keywords: {
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
+          },
+          movies: {
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
+          },
+          author: {
+            connect: { username: currentUser.username },
+          },
+          status: "published",
+        },
+      },
+    })
+      .then(() => onSuccessful())
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+  // Should turn the onPublish and onDraft
+  // into just one function that takes in a paramter
+  // but I was having trouble with passing a variable into a
+  // mutation
+
+  // redirects the user back to a new empty form after selecting submit another
+  const submitAnother = () => {
+    setSuccessful(false);
+    // setValue({
+    //   title: "",
+    //   content: "",
+    //   keywords: [],
+    //   movies: [],
+    // });
+    setValue("title", data?.post.title, { shouldValidate: true });
+    setValue("content", data?.post.content, {
+      shouldValidate: true,
+    });
   };
 
   return (
     <>
-      <ToastContainer />
-      <Form
-        onSubmit={onSubmit}
-        className={"w-full max-w-sm mx-auto p-1.5 bg-white"}
-      >
-        <Form.TextInput
-          value={formState.title}
-          onChange={(e) =>
-            setFormState({ ...formState, title: e.target.value })
-          }
-        />
-        <Form.TextArea
-          className="w-96"
-          labelText={"Body"}
-          placeholder={"Body"}
-          value={formState.content}
-          onChange={(e) =>
-            setFormState({ ...formState, content: e.target.value })
-          }
-        />
-        <Form.TextInput
-          className="max-w-[714] flex font-bold font-arial flex-col py-3"
-          labelText={"Slops"}
-          placeholder={"Add topical slops"}
-          value={formState.movies.join(", ")}
-          onChange={(e) =>
-            setFormState({
-              ...formState,
-              movies: e.target.value.split(",").map((item) => item.trim()),
-            })
-          }
-        />
-        <Form.TextInput
-          className="max-w-[714] flex font-bold font-arial flex-col py-3"
-          labelText={"Keywords"}
-          placeholder={"Add topical keywords"}
-          value={formState.keywords.join(", ")}
-          onChange={(e) =>
-            setFormState({
-              ...formState,
-              keywords: e.target.value.split(",").map((item) => item.trim()),
-            })
-          }
-        />
-      </Form>
-      <div className="relative top-96 right-80 md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
-        <Form.Submit
-          className="font-bold font-arial bg-white text-lg/4 text-black w-full border border-black py-4 px-4"
-          title={"Save to drafts"}
-          onClick={() => console.log("drafts...")}
-        />
-        <Form.Submit
-          className="font-bold font-arial bg-yellow-400  text-lg/4 text-black w-full border border-black py-4 px-4"
-          title={"Publish! "}
-        />
+      {!successful ? (
+        <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
+          <ToastContainer className={"absolute"} />
+          <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
+            <Form.TextInput
+              className="relative flex justify-center font-bold font-arial flex-col mt-3"
+              labelText={"Title"}
+              placeholder={`Title`}
+              id="title"
+              prefilledInputs={data?.post?.title}
+              onChange={(e) =>
+                setValue("title", e.target.value, { shouldValidate: true })
+              }
+              isValid={!errors.title}
+              register={register("title", {
+                required: true,
+                pattern: {
+                  value: /^\S/,
+                  message: "Must not start with a space",
+                },
+              })}
+            />
+            <Form.TextArea
+              labelText={"Body"}
+              placeholder={`Body`}
+              onChange={(e) =>
+                setValue("content", e.target.value, {
+                  shouldValidate: true,
+                })
+              }
+              prefilledInputs={data?.post?.content}
+              register={register("content", {
+                required: true,
+                pattern: {
+                  value: /^\S/,
+                  message: "Must not start with a space",
+                },
+              })}
+            />
+            <Form.Combobox
+              className="flex font-bold font-arial flex-col py-3"
+              labelText={"Keywords"}
+              placeholder={"Add topical keywords"}
+              list={keywordsOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"name"}
+              name={"keywords"}
+              idKey={"name"}
+              id={"keywords"}
+            />
+            <Form.Combobox
+              className="relative flex justify-center font-bold font-arial flex-col py-3"
+              labelText={"Slops"}
+              placeholder={"Add topical slops"}
+              list={moviesOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"title"}
+              name={"movies"}
+              idKey={"title"}
+              id={"movies"}
+            />
+          </Form>
+          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
+            <Button
+              variant="primary"
+              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              type="button"
+              onClick={onDraft}
+            >
+              Save to Drafts
+            </Button>
+
+            <Button
+              variant="primary"
+              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              type="button"
+              onClick={onPublish}
+            >
+              Publish!
+            </Button>
+          </div>
+        </div>
+      ) : (
+        // the ticket that will turn the following success display
+        // into a component doesn't seem to be done yet, so for now the
+        //  markup is just hard coded in
+
+        <div className="max-w-[1440px] mx-auto ">
+          <div className="flex flex-col justify-center items-center xs:px-5 sm:px-5">
+            <h1 className="mb-40 mt-10 Arial-NarrowBold text-5xl">SLOP BLOG</h1>
+            <p className="max-w-[627px] xs:text-sm sm:text-center md:text-center lg:text-center">
+              Thanks for submitting a slop to our platform, dear goblin!
+            </p>
+            <p className="max-w-[632px] xs:text-sm ">
+              Our team of professional slop goblins will review your submission
+              and publish it, if your slop is actually sloppy, and doesn't
+              repeat movies already published here.
+            </p>
+            <div className="flex gap-4 mt-40 xs:mt-16 ">
+              <Button
+                className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
+                title="Submit another one?"
+                onClick={submitAnother}
+              >
+                <label className="self-center">Submit another one?</label>
+              </Button>
+              <Button
+                className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
+                title="Submit another one?"
+                onClick={() => router(`/articles`)}
+              >
+                <label className="self-center">View published articles</label>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Footer needs to sit at bottom on the successfully submitted screen
+absolute bottom-0 does this, but then it clips through the form
+Would conditionally adding these CSS styles be the best approach, or does the footer component need work */}
+
+      <div className="w-full max-w-[989] mt-auto p-20">
+        <Footer></Footer>
       </div>
     </>
   );

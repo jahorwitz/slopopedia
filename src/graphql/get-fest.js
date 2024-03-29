@@ -1,9 +1,11 @@
 import { gql } from "@apollo/client";
 
+// 'attendees' is needed for the fest discussion board logic
 export const GET_FEST = gql`
   query GetFest($where: FestWhereUniqueInput!) {
     fest(where: $where) {
-      attendees {
+      id
+      invitees {
         id
         username
       }
@@ -31,6 +33,10 @@ export const GET_FEST = gql`
         movie {
           id
         }
+      }
+      attendees {
+        id
+        username
       }
     }
   }

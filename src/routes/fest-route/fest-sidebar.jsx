@@ -1,22 +1,49 @@
-import { useLocation } from "react-router";
-import { Button, Sidebar } from "../../components";
+import { useMutation } from "@apollo/client";
+import { useNavigate, useParams } from "react-router";
+import { Button, DeleteConfirmationModal, Sidebar } from "../../components";
+import { DELETE_FEST, GET_USER_FESTS } from "../../graphql/";
+import { useCurrentUser, useModals } from "../../hooks";
 
-export const FestSidebar = () => {
-  const location = useLocation();
+export const FestSidebar = ({ festQuery }) => {
+  const { currentUser } = useCurrentUser();
+  const { openModal, closeModal } = useModals();
+  const festId = useParams().festId;
+  const navigate = useNavigate();
+
+  // Mutation to remove fests from server
+  const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
+    refetchQueries: [GET_USER_FESTS],
+  });
+
   const sidebarItems = [
     {
       title: "Slops to watch",
-      link: `${location.pathname}`,
+      link: `/fests/${festId}`,
     },
     {
       title: "Discussion",
-      link: `${location.pathname}/discussion`,
+      link: `/fests/${festId}/discussion`,
     },
     {
       title: "Edit dates & guests",
       link: "",
     },
   ];
+
+  // Function to remove a Fest from server when 'delete' button is clicked
+  const removeFest = () => {
+    if (currentUser.id === festQuery.data.fest.creator.id) {
+      deleteFest({ variables: { where: { id: festId } } });
+      if (loading) return "Submitting...";
+      if (error) return `Submission error! ${error.message}`;
+      closeModal();
+      navigate("/profile/fests");
+    }
+  };
+
+  function openDeleteConfirmationModal() {
+    openModal(<DeleteConfirmationModal confirmButtonAction={removeFest} />);
+  }
 
   return (
     <div>
@@ -27,11 +54,20 @@ export const FestSidebar = () => {
           ))}
         </Sidebar>
       </div>
-      <div>
-        <Button variant="danger" className="pl-0 pt-16">
-          Delete
-        </Button>
-      </div>
+      {currentUser.id === festQuery.data.fest.creator.id ? (
+        <div>
+          <Button
+            type="button"
+            variant="danger"
+            className="pl-0 pt-16"
+            onClick={openDeleteConfirmationModal}
+          >
+            Delete
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
