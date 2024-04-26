@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -8,13 +8,15 @@ import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import {
   CREATE_POST,
+  DELETE_POST,
   GET_BLOG_POST,
   GET_KEYWORDS,
   GET_MOVIES,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
+import { ClientContext } from "../../store/client-context.js";
 
-export const Article = () => {
+export const Article = ({ isEdited }) => {
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -26,6 +28,10 @@ export const Article = () => {
         id: id,
       },
     },
+  });
+  const { client } = useContext(ClientContext);
+  const [deletePost, {}] = useMutation(DELETE_POST, {
+    refetchQueries: [GET_BLOG_POST],
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
   const { data: moviesData } = useQuery(GET_MOVIES);
@@ -159,10 +165,43 @@ export const Article = () => {
     });
   };
 
+  const onDelete = () => {
+    if (currentUser.id === data.post.author.id) {
+      // delete blog post from server
+      deletePost({
+        variables: {
+          where: {
+            id: id,
+          },
+        },
+      }).then(() => {
+        // delete blog post from cache
+        client.cache.modify({
+          fields: {
+            posts(existingPosts, { readField }) {
+              return existingPosts.filter(
+                (post) => id !== readField("id", post)
+              );
+            },
+          },
+        });
+        router(`/draft`);
+      });
+    }
+  };
+
   return (
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
+          {isEdited && (
+            <button
+              onClick={onDelete}
+              className=" absolute top-10 right-10 underline underline-offset-2 text-red-500"
+            >
+              Delete
+            </button>
+          )}
           <ToastContainer className={"absolute"} />
           <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
             <Form.TextInput
