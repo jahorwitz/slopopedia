@@ -42,7 +42,7 @@ export const App = () => {
               <Route
                 exact
                 path="/articles/create"
-                element={<ArticleRoute isEdited={false} />}
+                element={<ArticleRoute type={"new"} />}
               />
               <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
@@ -98,10 +98,18 @@ export const App = () => {
                 element={<ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>}
               />
               <Route
-                path="/articles/:id/edit"
+                path="/articles/:id/edit-published"
                 element={
                   <ProtectedRoute>
-                    <ArticleRoute isEdited={true} />
+                    <ArticleRoute type={"edit-published"} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/articles/:id/edit-draft"
+                element={
+                  <ProtectedRoute>
+                    <ArticleRoute type={"edit-draft"} />
                   </ProtectedRoute>
                 }
               />

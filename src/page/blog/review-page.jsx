@@ -50,7 +50,7 @@ export const Review = ({ id }) => {
 
   const onEdit = () => {
     if (currentUser.id === data.post.author.id) {
-      router(`/articles/${id}/edit`);
+      router(`/articles/${id}/edit-published`);
     }
   };
 

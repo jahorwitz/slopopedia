@@ -16,7 +16,7 @@ import {
 import { useCurrentUser } from "../../hooks";
 import { ClientContext } from "../../store/client-context.js";
 
-export const Article = ({ isEdited }) => {
+export const Article = ({ type }) => {
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -185,7 +185,11 @@ export const Article = ({ isEdited }) => {
             },
           },
         });
-        router(`/draft`);
+        if (type === "edit-published") {
+          router("/articles");
+        } else if (type === "edit-draft") {
+          router(`/draft`);
+        }
       });
     }
   };
@@ -194,7 +198,7 @@ export const Article = ({ isEdited }) => {
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
-          {isEdited && (
+          {(type === "edit-draft" || type === "edit-published") && (
             <button
               onClick={onDelete}
               className=" absolute top-10 right-10 underline underline-offset-2 text-red-500"
