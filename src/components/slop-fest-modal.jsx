@@ -19,7 +19,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
   useEffect(() => {
-    if (location.pathname === `/fests/${festId}`) {
+    if (location && location.pathname === `/fests/${festId}`) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
     }
@@ -77,7 +77,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
     const endDateISO = endDate.toISOString().substring(0, 10);
 
     if (
-      location.pathname === `/fests/${festId}` &&
+      /*location && location.pathname === `/fests/${festId}` &&*/
       fest?.data?.fest?.creator.id === currentUser.id
     ) {
       const inviteesData = inviteesBefore.map((invitee) => ({
