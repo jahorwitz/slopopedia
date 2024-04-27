@@ -77,7 +77,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
     const endDateISO = endDate.toISOString().substring(0, 10);
 
     if (
-      /*location && location.pathname === `/fests/${festId}` &&*/
+      location &&
+      location.pathname === `/fests/${festId}` &&
       fest?.data?.fest?.creator.id === currentUser.id
     ) {
       const inviteesData = inviteesBefore.map((invitee) => ({
