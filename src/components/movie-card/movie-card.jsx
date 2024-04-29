@@ -68,7 +68,7 @@ export function MovieCard({
           size === 2 && "col-span-2",
           size === 3 && "col-span-3"
         )}
-        style={{ maxHeight: "80vh" }}
+        style={{ position: "relative" }}
         onClick={onClick}
         {...rest}
       >
