@@ -34,7 +34,7 @@ export const ProfileFestsRoute = () => {
   });
 
   function openSlopFestModal() {
-    openModal(<SlopFestModal buttonTitle="Submit" onClose={closeModal} />);
+    openModal(<SlopFestModal onClose={closeModal} />);
   }
 
   // - - - - - HANDLER

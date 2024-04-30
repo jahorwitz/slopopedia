@@ -211,7 +211,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
             name={"invitees"}
           />
           <Form.Submit
-            title={buttonTitle}
+            title={"Fest on!"}
             className={"w-[373px] mb-5 mt-5"}
             disabled={!isValid}
           />
