@@ -201,7 +201,7 @@ export const Article = () => {
               })}
             />
             <Form.Combobox
-              className="flex font-bold font-arial flex-col py-3"
+              className="relative flex justify-center font-bold font-arial flex-col py-3 z-10"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
               list={keywordsOptions}
