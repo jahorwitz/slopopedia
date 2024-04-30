@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -14,7 +14,6 @@ import {
   GET_MOVIES,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
-import { ClientContext } from "../../store/client-context.js";
 
 export const Article = ({ type }) => {
   const { id } = useParams();
@@ -29,10 +28,19 @@ export const Article = ({ type }) => {
       },
     },
   });
-  const { client } = useContext(ClientContext);
   const [deletePost, {}] = useMutation(DELETE_POST, {
-    refetchQueries: [GET_BLOG_POST],
+    // delete blog post from cache
+    update(cache, {}) {
+      cache.modify({
+        fields: {
+          posts(existingPosts, { readField }) {
+            return existingPosts.filter((post) => id !== readField("id", post));
+          },
+        },
+      });
+    },
   });
+
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
   const { data: moviesData } = useQuery(GET_MOVIES);
   const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
@@ -159,8 +167,8 @@ export const Article = ({ type }) => {
     //   keywords: [],
     //   movies: [],
     // });
-    setValue("title", data?.post.title, { shouldValidate: true });
-    setValue("content", data?.post.content, {
+    setValue("title", data?.post?.title, { shouldValidate: true });
+    setValue("content", data?.post?.content, {
       shouldValidate: true,
     });
   };
@@ -175,19 +183,9 @@ export const Article = ({ type }) => {
           },
         },
       }).then(() => {
-        // delete blog post from cache
-        client.cache.modify({
-          fields: {
-            posts(existingPosts, { readField }) {
-              return existingPosts.filter(
-                (post) => id !== readField("id", post)
-              );
-            },
-          },
-        });
-        if (type === "edit-published") {
+        if (data?.post?.status === "published") {
           router("/articles");
-        } else if (type === "edit-draft") {
+        } else if (data?.post?.status === "draft") {
           router(`/draft`);
         }
       });
@@ -198,7 +196,7 @@ export const Article = ({ type }) => {
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
-          {(type === "edit-draft" || type === "edit-published") && (
+          {type === "edited" && (
             <button
               onClick={onDelete}
               className=" absolute top-10 right-10 underline underline-offset-2 text-red-500"

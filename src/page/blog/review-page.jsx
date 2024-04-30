@@ -46,11 +46,11 @@ export const Review = ({ id }) => {
         setAccessGranted(true);
       }
     }
-  }, [data]);
+  }, [data, currentUser]);
 
   const onEdit = () => {
     if (currentUser.id === data.post.author.id) {
-      router(`/articles/${id}/edit-published`);
+      router(`/articles/${id}/edit`);
     }
   };
 

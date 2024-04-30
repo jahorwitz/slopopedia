@@ -21,10 +21,7 @@ export const Draft = ({
 
   return (
     <div className={containerClass}>
-      <h2
-        onClick={() => router(`/articles/${id}/edit-draft`)}
-        className={titleClass}
-      >
+      <h2 onClick={() => router(`/articles/${id}/edit`)} className={titleClass}>
         {title}
       </h2>
       <div className={infoClass}>
