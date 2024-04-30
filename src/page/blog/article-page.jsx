@@ -11,10 +11,11 @@ import {
   GET_BLOG_POST,
   GET_KEYWORDS,
   GET_MOVIES,
+  MODIFY_POST,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
 
-export const Article = () => {
+export const Article = ({ type }) => {
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -25,6 +26,27 @@ export const Article = () => {
       where: {
         id: id,
       },
+    },
+  });
+  const [updatePost, {}] = useMutation(MODIFY_POST, {
+    refetchQueries: [GET_BLOG_POST],
+    update(cache, {}) {
+      cache.modify({
+        fields: {
+          post(existingPost) {
+            return data.post;
+          },
+          posts(existingPosts, { readField }) {
+            return existingPosts.map((cachedPost) => {
+              if (readField("id", cachedPost) === id) {
+                return data.post;
+              } else {
+                return cachedPost;
+              }
+            });
+          },
+        },
+      });
     },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
@@ -78,66 +100,76 @@ export const Article = () => {
     setSuccessful(true);
   };
 
-  const onDraft = handleSubmit(() => {
+  const handlePost = (status) => {
     const { title, content, keywords, movies } = getValues();
-    createPost({
-      variables: {
-        data: {
-          title: title,
-          content: content,
-          keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
+    if (type === "new") {
+      createPost({
+        variables: {
+          data: {
+            title: title,
+            content: content,
+            keywords: {
+              connect: keywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+            },
+            movies: {
+              connect: movies.map((movie) => ({
+                id: movie.id,
+              })),
+            },
+            author: {
+              connect: { username: currentUser.username },
+            },
+            status: `${status}`,
           },
-          movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
-          },
-          author: {
-            connect: { username: currentUser.username },
-          },
-          status: "draft",
         },
-      },
-    })
-      .then(() => onSuccessful())
-      .catch((err) => {
-        console.error(err);
+      })
+        .then(() => onSuccessful())
+        .catch((err) => {
+          console.error(err);
+        });
+    } else if (type === "edited") {
+      updatePost({
+        variables: {
+          where: {
+            id: id,
+          },
+          data: {
+            title: title || data?.post?.title,
+            content: content || data?.post?.content,
+            keywords: {
+              connect: keywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+            },
+            movies: {
+              connect: movies.map((movie) => ({
+                id: movie.id,
+              })),
+            },
+            author: {
+              connect: { username: currentUser.username },
+            },
+            status: `${status}`,
+          },
+        },
+      }).then(() => {
+        if (status === "published") {
+          router("/articles");
+        } else {
+          router("/draft");
+        }
       });
+    }
+  };
+
+  const onDraft = handleSubmit(() => {
+    handlePost("draft");
   });
 
   const onPublish = handleSubmit(() => {
-    const { title, content, keywords, movies } = getValues();
-    console.log(title, content, keywords, movies);
-
-    createPost({
-      variables: {
-        data: {
-          title: title,
-          content: content,
-          keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
-          },
-          movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
-          },
-          author: {
-            connect: { username: currentUser.username },
-          },
-          status: "published",
-        },
-      },
-    })
-      .then(() => onSuccessful())
-      .catch((err) => {
-        console.error(err);
-      });
+    handlePost("published");
   });
   // Should turn the onPublish and onDraft
   // into just one function that takes in a paramter
@@ -176,7 +208,7 @@ export const Article = () => {
               }
               isValid={!errors.title}
               register={register("title", {
-                required: true,
+                required: type === "new",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",
@@ -193,7 +225,7 @@ export const Article = () => {
               }
               prefilledInputs={data?.post?.content}
               register={register("content", {
-                required: true,
+                required: type === "new",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",

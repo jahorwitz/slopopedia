@@ -9,7 +9,7 @@ export const ClientContextProvider = ({ children }) => {
 
   useEffect(() => {
     const httpLink = createHttpLink({
-      uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      uri: "http://localhost:8080/api/graphql",
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -31,7 +31,7 @@ export const ClientContextProvider = ({ children }) => {
   useEffect(() => {
     if (client) {
       const httpLink = createHttpLink({
-        uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+        uri: "http://localhost:8080/api/graphql",
       });
 
       const authLink = setContext((_, { headers }) => {
