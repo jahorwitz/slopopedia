@@ -31,6 +31,7 @@ export const Article = ({ type }) => {
   const [updatePost, {}] = useMutation(MODIFY_POST, {
     refetchQueries: [GET_BLOG_POST],
     update(cache, {}) {
+      console.log("updating cache", data);
       cache.modify({
         fields: {
           post(existingPost) {
@@ -72,6 +73,7 @@ export const Article = ({ type }) => {
     handleSubmit,
     formState: { isValid, errors },
     watch,
+    value,
     setValue,
     getValues,
   } = useForm({
@@ -101,7 +103,12 @@ export const Article = ({ type }) => {
   };
 
   const handlePost = (status) => {
-    const { title, content, keywords, movies } = getValues();
+    const {
+      title,
+      content,
+      keywords: newKeywords,
+      movies: newMovies,
+    } = getValues();
     if (type === "new") {
       createPost({
         variables: {
@@ -109,19 +116,19 @@ export const Article = ({ type }) => {
             title: title,
             content: content,
             keywords: {
-              connect: keywords.map((keyword) => ({
+              connect: newKeywords.map((keyword) => ({
                 id: keyword.id,
               })),
             },
             movies: {
-              connect: movies.map((movie) => ({
+              connect: newMovies.map((movie) => ({
                 id: movie.id,
               })),
             },
             author: {
               connect: { username: currentUser.username },
             },
-            status: `${status}`,
+            status: status,
           },
         },
       })
@@ -130,6 +137,8 @@ export const Article = ({ type }) => {
           console.error(err);
         });
     } else if (type === "edited") {
+      const oldKeywords = data?.post?.keywords || [];
+      const oldMovies = data?.post?.movies || [];
       updatePost({
         variables: {
           where: {
@@ -139,19 +148,22 @@ export const Article = ({ type }) => {
             title: title || data?.post?.title,
             content: content || data?.post?.content,
             keywords: {
-              connect: keywords.map((keyword) => ({
+              disconnect: oldKeywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+              connect: newKeywords.map((keyword) => ({
                 id: keyword.id,
               })),
             },
             movies: {
-              connect: movies.map((movie) => ({
+              disconnect: oldMovies.map((keyword) => ({
+                id: keyword.id,
+              })),
+              connect: newMovies.map((movie) => ({
                 id: movie.id,
               })),
             },
-            author: {
-              connect: { username: currentUser.username },
-            },
-            status: `${status}`,
+            status: status,
           },
         },
       }).then(() => {
