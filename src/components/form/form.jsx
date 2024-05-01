@@ -260,27 +260,15 @@ Form.Combobox = ({
   setValue,
   ...rest
 }) => {
-  const selectedItems = watch(id) || [];
-  const [query, setQuery] = useState("");
-  const [selectedItemss, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  // useEffect(() => {
-  //   setValue(id, selectedItems, { shouldValidate: true });
-  // }, []);
-
-  // const filteredList =
-  //   query === ""
-  //     ? list
-  //     : list.filter((item) => {
-  //         return item[nameKey].toLowerCase().includes(query.toLowerCase());
-  //       });
   return (
     <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
       <label htmlFor={id} className={`mb-1.5 text-lg text-start `}>
         {labelText}
       </label>
       <Combobox
-        value={selectedItemss}
+        value={selectedItems}
         onChange={setSelectedItems}
         multiple
         nullable
@@ -291,30 +279,7 @@ Form.Combobox = ({
           <div
             className={`relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 ${className}`}
           >
-            {/* {selectedItems &&
-              selectedItems?.length > 0 &&
-              selectedItems?.map((item) => (
-                <div
-                  key={item[idKey]}
-                  className="flex gap-1.5 px-1.5 py-1 bg-neutral-950 bg-opacity-10"
-                >
-                  <span>{item[nameKey]}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValue(
-                        id,
-                        selectedItems.filter((element) => element !== item)
-                      );
-                    }}
-                  >
-                    <img src={cross} />
-                  </button>
-                </div>
-              ))} */}
             <Combobox.Input
-              //onChange={(evt) => setQuery(evt.target.value)}
-              //value={query}
               displayValue={(list) => list.map((item) => item.name).join(", ")}
               placeholder={placeholder}
               className="font-normal bg-background border-none focus:outline-none flex-grow flex-shrink-0 w-16"
@@ -333,7 +298,6 @@ Form.Combobox = ({
                     active ? "bg-neutral-200" : ""
                   } ${selected ? "text-black" : "text-neutral-400"}`
                 }
-                onClick={() => setQuery("")}
               >
                 {({ selected }) => (
                   <>
