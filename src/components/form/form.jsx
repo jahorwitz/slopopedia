@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDropzone } from "react-dropzone";
-import cross from "../../images/combo-box-cross.svg";
 import down from "../../images/form-down-triangle.svg";
 import { Button } from "../button";
 
@@ -251,6 +250,7 @@ Form.Combobox = ({
   id,
   register,
   labelText,
+  placeholder,
   className,
   list,
   name,
@@ -262,25 +262,26 @@ Form.Combobox = ({
 }) => {
   const selectedItems = watch(id) || [];
   const [query, setQuery] = useState("");
+  const [selectedItemss, setSelectedItems] = useState([]);
 
-  useEffect(() => {
-    setValue(id, selectedItems, { shouldValidate: true });
-  }, []);
+  // useEffect(() => {
+  //   setValue(id, selectedItems, { shouldValidate: true });
+  // }, []);
 
-  const filteredList =
-    query === ""
-      ? list
-      : list.filter((item) => {
-          return item[nameKey].toLowerCase().includes(query.toLowerCase());
-        });
+  // const filteredList =
+  //   query === ""
+  //     ? list
+  //     : list.filter((item) => {
+  //         return item[nameKey].toLowerCase().includes(query.toLowerCase());
+  //       });
   return (
     <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
       <label htmlFor={id} className={`mb-1.5 text-lg text-start `}>
         {labelText}
       </label>
       <Combobox
-        value={selectedItems}
-        onChange={(data) => setValue(id, data, { shouldValidate: true })}
+        value={selectedItemss}
+        onChange={setSelectedItems}
         multiple
         nullable
         name={name}
@@ -290,7 +291,7 @@ Form.Combobox = ({
           <div
             className={`relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 ${className}`}
           >
-            {selectedItems &&
+            {/* {selectedItems &&
               selectedItems?.length > 0 &&
               selectedItems?.map((item) => (
                 <div
@@ -310,11 +311,12 @@ Form.Combobox = ({
                     <img src={cross} />
                   </button>
                 </div>
-              ))}
+              ))} */}
             <Combobox.Input
-              onChange={(evt) => setQuery(evt.target.value)}
-              value={query}
-              placeholder="Select"
+              //onChange={(evt) => setQuery(evt.target.value)}
+              //value={query}
+              displayValue={(list) => list.map((item) => item.name).join(", ")}
+              placeholder={placeholder}
               className="font-normal bg-background border-none focus:outline-none flex-grow flex-shrink-0 w-16"
             />
             <Combobox.Button className="absolute right-5 flex top-4">
@@ -322,7 +324,7 @@ Form.Combobox = ({
             </Combobox.Button>
           </div>
           <Combobox.Options className="absolute bg-background top-full w-full max-h-36 overflow-y-scroll border-solid border border-black">
-            {filteredList?.map((item) => (
+            {list?.map((item) => (
               <Combobox.Option
                 key={item[idKey]}
                 value={item}
