@@ -280,12 +280,11 @@ export const SubmitSlopForm = () => {
           </div>
         </div>
         <Form.Combobox
-          list={movieKeywords.map((keyword) => ({
-            name: keyword.name,
-          }))}
+          list={movieKeywords}
           watch={watch}
           setValue={setValue}
           labelText={"Keywords"}
+          placeholder={"Choose Keywords"}
           id={"Keywords"}
           nameKey={"name"}
           idKey={"name"}
