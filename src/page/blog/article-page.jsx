@@ -42,7 +42,15 @@ export const Article = ({ type }) => {
   });
 
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
-  const { data: moviesData } = useQuery(GET_MOVIES);
+  const { data: moviesData } = useQuery(GET_MOVIES, {
+    variables: {
+      where: {
+        status: {
+          equals: "published",
+        },
+      },
+    },
+  });
   const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
   }));
@@ -295,7 +303,7 @@ export const Article = ({ type }) => {
           <div className="flex flex-col justify-center items-center xs:px-5 sm:px-5">
             <h1 className="mb-40 mt-10 Arial-NarrowBold text-5xl">SLOP BLOG</h1>
             <p className="max-w-[627px] xs:text-sm sm:text-center md:text-center lg:text-center">
-              Thanks for submitting a slop to our platform, dear goblin!
+              Thanks for submitting a blog post to our platform, dear goblin!
             </p>
             <p className="max-w-[632px] xs:text-sm ">
               Our team of professional slop goblins will review your submission
