@@ -26,7 +26,7 @@ export const ClientContextProvider = ({ children }) => {
         cache: new InMemoryCache(),
       })
     );
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (client) {
