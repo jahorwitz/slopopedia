@@ -28,7 +28,15 @@ export const Article = () => {
     },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
-  const { data: moviesData } = useQuery(GET_MOVIES);
+  const { data: moviesData } = useQuery(GET_MOVIES, {
+    variables: {
+      where: {
+        status: {
+          equals: "published",
+        },
+      },
+    },
+  });
   const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
   }));

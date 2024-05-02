@@ -19,7 +19,7 @@ export const Articles = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto">
-      <div className="flex mt-10 justify-end">
+      <div className="flex mt-10 justify-end mr-32">
         <a href="/draft" className="underline">
           Drafts
         </a>
