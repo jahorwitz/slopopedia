@@ -199,7 +199,7 @@ export const Article = ({ type }) => {
           {type === "edited" && (
             <button
               onClick={onDelete}
-              className=" absolute top-10 right-10 underline underline-offset-2 text-red-500"
+              className=" absolute top-10 right-10 bg-transparent text-danger font-bold text-lg mt-10"
             >
               Delete
             </button>
