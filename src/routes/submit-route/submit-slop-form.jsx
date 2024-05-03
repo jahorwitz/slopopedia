@@ -88,7 +88,7 @@ export const SubmitSlopForm = () => {
             //   upload: data.photo
             // },
             keywords: {
-              connect: movieKeywords.map((keyword) => ({
+              connect: keywords.map((keyword) => ({
                 id: keyword.id,
               })),
             },
@@ -282,11 +282,12 @@ export const SubmitSlopForm = () => {
         <Form.Combobox
           list={movieKeywords.map((keyword) => ({
             name: keyword.name,
+            id: keyword.id,
           }))}
           watch={watch}
           setValue={setValue}
           labelText={"Keywords"}
-          id={"Keywords"}
+          id={"keywords"}
           nameKey={"name"}
           idKey={"name"}
           name={"Keywords"}
