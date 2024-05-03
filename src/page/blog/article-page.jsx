@@ -53,6 +53,9 @@ export const Article = () => {
   const keywordsOptions = keywordsData?.keywords ?? [];
   const moviesOptions = moviesData?.movies ?? [];
 
+  console.log(moviesOptions);
+  console.log(keywordsOptions);
+
   const {
     register,
     handleSubmit,
@@ -64,8 +67,8 @@ export const Article = () => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: data?.post?.keywords,
-      movies: data?.post?.movies,
+      keywords: "",
+      movies: "",
     },
   });
   // useEffect(() => {
@@ -209,7 +212,7 @@ export const Article = () => {
               })}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3 z-10"
+              className="flex-grow z-10"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
               list={keywordsOptions}
@@ -221,7 +224,7 @@ export const Article = () => {
               id={"keywords"}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3"
+              //className="relative flex justify-center font-bold font-arial flex-col py-3"
               labelText={"Slops"}
               placeholder={"Add topical slops"}
               list={moviesOptions}
