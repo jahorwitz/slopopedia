@@ -7,9 +7,14 @@ export const ClientContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("jwt"));
   const [client, setClient] = useState(null);
 
+  const apiUri =
+    process.env.NODE_ENV === "production"
+      ? "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql"
+      : "http://localhost:8080/api/graphql";
+
   useEffect(() => {
     const httpLink = createHttpLink({
-      uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+      uri: apiUri,
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -31,7 +36,7 @@ export const ClientContextProvider = ({ children }) => {
   useEffect(() => {
     if (client) {
       const httpLink = createHttpLink({
-        uri: "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql",
+        uri: apiUri,
       });
 
       const authLink = setContext((_, { headers }) => {
