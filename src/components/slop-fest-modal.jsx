@@ -19,7 +19,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
   useEffect(() => {
-    if (location && location.pathname === `/fests/${festId}`) {
+    if (location?.pathname === `/fests/${festId}`) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
     }
@@ -77,8 +77,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
     const endDateISO = endDate.toISOString().substring(0, 10);
 
     if (
-      location &&
-      location.pathname === `/fests/${festId}` &&
+      location?.pathname === `/fests/${festId}` &&
       fest?.data?.fest?.creator.id === currentUser.id
     ) {
       const inviteesData = inviteesBefore.map((invitee) => ({
@@ -211,7 +210,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
             name={"invitees"}
           />
           <Form.Submit
-            title={"Fest on!"}
+            title={buttonTitle}
             className={"w-[373px] mb-5 mt-5"}
             disabled={!isValid}
           />
