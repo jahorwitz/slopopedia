@@ -53,9 +53,6 @@ export const Article = () => {
   const keywordsOptions = keywordsData?.keywords ?? [];
   const moviesOptions = moviesData?.movies ?? [];
 
-  console.log(moviesOptions);
-  console.log(keywordsOptions);
-
   const {
     register,
     handleSubmit,
@@ -67,8 +64,8 @@ export const Article = () => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: "",
-      movies: "",
+      keywords: [],
+      movies: [],
     },
   });
   // useEffect(() => {
@@ -97,14 +94,10 @@ export const Article = () => {
           title: title,
           content: content,
           keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
+            connect: keywords,
           },
           movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
+            connect: movies,
           },
           author: {
             connect: { username: currentUser.username },
@@ -121,22 +114,16 @@ export const Article = () => {
 
   const onPublish = handleSubmit(() => {
     const { title, content, keywords, movies } = getValues();
-    console.log(title, content, keywords, movies);
-
     createPost({
       variables: {
         data: {
           title: title,
           content: content,
           keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
+            connect: keywords,
           },
           movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
+            connect: movies,
           },
           author: {
             connect: { username: currentUser.username },
