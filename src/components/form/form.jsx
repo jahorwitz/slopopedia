@@ -258,9 +258,10 @@ Form.Combobox = ({
   idKey,
   watch,
   setValue,
+  defaultSelectedItems,
   ...rest
 }) => {
-  const selectedItems = watch(id) || [];
+  const selectedItems = watch(id) || defaultSelectedItems;
   const [query, setQuery] = useState("");
 
   useEffect(() => {

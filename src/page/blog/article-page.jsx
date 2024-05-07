@@ -28,19 +28,19 @@ export const Article = ({ type }) => {
       },
     },
   });
+  console.log(data);
   const [updatePost, {}] = useMutation(MODIFY_POST, {
     refetchQueries: [GET_BLOG_POST],
-    update(cache, {}) {
-      console.log("updating cache", data);
+    update(cache, { data: newData }) {
       cache.modify({
         fields: {
           post(existingPost) {
-            return data.post;
+            return newData.updatePost;
           },
           posts(existingPosts, { readField }) {
             return existingPosts.map((cachedPost) => {
               if (readField("id", cachedPost) === id) {
-                return data.post;
+                return newData.updatePost;
               } else {
                 return cachedPost;
               }
@@ -75,13 +75,18 @@ export const Article = ({ type }) => {
 
   const keywordsOptions = keywordsData?.keywords ?? [];
   const moviesOptions = moviesData?.movies ?? [];
+  console.log(
+    "keywords and movies",
+    keywordsOptions,
+    moviesOptions,
+    moviesData
+  );
 
   const {
     register,
     handleSubmit,
     formState: { isValid, errors },
     watch,
-    value,
     setValue,
     getValues,
   } = useForm({
@@ -91,7 +96,14 @@ export const Article = ({ type }) => {
       keywords: data?.post?.keywords,
       movies: data?.post?.movies,
     },
+    data,
   });
+  console.log("watch", watch());
+  console.log("data", {
+    keywords: data?.post?.keywords,
+    movies: data?.post?.movies,
+  });
+
   // useEffect(() => {
   //   if (id) {
   //     console.log(data);
@@ -164,8 +176,8 @@ export const Article = ({ type }) => {
               })),
             },
             movies: {
-              disconnect: oldMovies.map((keyword) => ({
-                id: keyword.id,
+              disconnect: oldMovies.map((movie) => ({
+                id: movie.id,
               })),
               connect: newMovies.map((movie) => ({
                 id: movie.id,
@@ -185,6 +197,7 @@ export const Article = ({ type }) => {
   };
 
   const onDraft = handleSubmit(() => {
+    debugger;
     handlePost("draft");
   });
 
@@ -205,8 +218,8 @@ export const Article = ({ type }) => {
     //   keywords: [],
     //   movies: [],
     // });
-    setValue("title", data?.post.title, { shouldValidate: true });
-    setValue("content", data?.post.content, {
+    setValue("title", data?.post?.title, { shouldValidate: true });
+    setValue("content", data?.post?.content, {
       shouldValidate: true,
     });
   };
@@ -263,6 +276,7 @@ export const Article = ({ type }) => {
               name={"keywords"}
               idKey={"name"}
               id={"keywords"}
+              defaultSelectedItems={data?.post?.keywords}
             />
             <Form.Combobox
               className="relative flex justify-center font-bold font-arial flex-col py-3"
@@ -275,6 +289,7 @@ export const Article = ({ type }) => {
               name={"movies"}
               idKey={"title"}
               id={"movies"}
+              defaultSelectedItems={data?.post?.movies}
             />
           </Form>
           <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">

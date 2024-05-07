@@ -38,6 +38,8 @@ export default function Drafts() {
               date={formatDateTime(createdAt)}
               author={author?.username}
               id={id}
+              keywords={keywords}
+              movies={movies}
             />
           );
         })}
