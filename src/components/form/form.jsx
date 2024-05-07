@@ -280,7 +280,9 @@ Form.Combobox = ({
             className={`relative font-normal py-3 px-4 flex gap-2.5 flex-wrap border-solid rounded-none border border-black focus-within:ring-black focus-within:ring-1 ${className}`}
           >
             <Combobox.Input
-              displayValue={(list) => list.map((item) => item.name).join(", ")}
+              displayValue={(list) =>
+                list.map((item) => item.name || item.title).join(", ")
+              }
               placeholder={placeholder}
               className="font-normal bg-background border-none focus:outline-none flex-grow flex-shrink-0 w-16"
             />
