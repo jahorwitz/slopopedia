@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -14,11 +14,8 @@ import {
   MODIFY_POST,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
-import { ClientContext } from "../../store/client-context.js";
 
 export const Article = ({ type }) => {
-  const { client } = useContext(ClientContext);
-  //console.log(client.cache.extract());
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -34,59 +31,6 @@ export const Article = ({ type }) => {
 
   const [updatePost, {}] = useMutation(MODIFY_POST, {
     refetchQueries: [GET_BLOG_POST],
-    update(cache, { data: newData }) {
-      cache.modify({
-        fields: {
-          post(existingPost) {
-            console.log({ existingPost, updatedPost: newData.updatePost });
-            return newData.updatePost;
-          },
-          posts(existingPosts, { readField, toReference }) {
-            let idFound = false;
-            const updatedPostId = id;
-            let removePost = false;
-            const postsStatus = readField("status", existingPosts[0]);
-            const updatedPostStatus = newData.updatePost.status;
-            const updatedPosts = existingPosts.map((cachedPost) => {
-              const currentCachedId = readField("id", cachedPost);
-              if (
-                currentCachedId === updatedPostId &&
-                updatedPostStatus === postsStatus
-              ) {
-                // update the post
-                idFound = true;
-                return toReference(newData.updatePost);
-              } else if (
-                currentCachedId === updatedPostId &&
-                updatedPostStatus !== postsStatus
-              ) {
-                // remove the post
-                idFound = true;
-                removePost = true;
-              } else {
-                return cachedPost;
-              }
-            });
-            //console.log({ existingPosts, updatedPosts });
-            if (idFound && !removePost) {
-              return updatedPosts;
-            } else if (idFound && removePost) {
-              // remove the post
-              return existingPosts.filter((post) => {
-                return updatedPostId !== readField("id", post);
-              });
-            }
-            if (!idFound && updatedPostStatus === postsStatus) {
-              // add the post
-              return [toReference(newData.updatePost), ...existingPosts];
-            } else {
-              // do nothing
-              return existingPosts;
-            }
-          },
-        },
-      });
-    },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
   const { data: moviesData } = useQuery(GET_MOVIES, {
@@ -113,12 +57,6 @@ export const Article = ({ type }) => {
 
   const keywordsOptions = keywordsData?.keywords ?? [];
   const moviesOptions = moviesData?.movies ?? [];
-  // console.log(
-  //   "keywords and movies",
-  //   keywordsOptions,
-  //   moviesOptions,
-  //   moviesData
-  // );
 
   const {
     register,
@@ -136,16 +74,11 @@ export const Article = ({ type }) => {
     },
   });
 
+  // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
   useEffect(() => {
     setValue("keywords", data?.post?.keywords || []);
     setValue("movies", data?.post?.movies || []);
   }, [data]);
-
-  // console.log("watch", watch());
-  // console.log("data", {
-  //   keywords: data?.post?.keywords,
-  //   movies: data?.post?.movies,
-  // });
 
   // useEffect(() => {
   //   if (id) {
@@ -161,15 +94,18 @@ export const Article = ({ type }) => {
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
+  // conditionally render the success display visible
   const onSuccessful = () => {
     setSuccessful(true);
   };
 
-  const handlePost = (status) => {
+  // handler for clicking the 'Save to Drafts' or 'Publish!' button
+  const onSubmit = (status) => {
     const { title, content, keywords, movies } = getValues();
     const newKeywords = keywords || data?.post?.keywords;
     const newMovies = movies || data?.post?.movies;
     if (type === "new") {
+      // create a blog using the form's inputs
       createPost({
         variables: {
           data: {
@@ -194,9 +130,10 @@ export const Article = ({ type }) => {
       })
         .then(() => onSuccessful())
         .catch((err) => {
-          console.error(err);
+          console.error(err, "Could not create blog.");
         });
     } else if (type === "edited") {
+      // edit and update a blog using the form's inputs
       const oldKeywords = data?.post?.keywords || [];
       const oldMovies = data?.post?.movies || [];
       updatePost({
@@ -228,6 +165,7 @@ export const Article = ({ type }) => {
         },
       })
         .then(() => {
+          // route to either the /articles or /draft endpoint
           if (status === "published") {
             router("/articles");
           } else {
@@ -241,16 +179,12 @@ export const Article = ({ type }) => {
   };
 
   const onDraft = handleSubmit(() => {
-    handlePost("draft");
+    onSubmit("draft");
   });
 
   const onPublish = handleSubmit(() => {
-    handlePost("published");
+    onSubmit("published");
   });
-  // Should turn the onPublish and onDraft
-  // into just one function that takes in a paramter
-  // but I was having trouble with passing a variable into a
-  // mutation
 
   // redirects the user back to a new empty form after selecting submit another
   const submitAnother = () => {
