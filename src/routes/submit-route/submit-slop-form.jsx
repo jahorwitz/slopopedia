@@ -225,11 +225,14 @@ export const SubmitSlopForm = () => {
           </div>
           <div className="flex flex-col">
             <Form.TextInput
+              maxLength={3}
               value={runtime}
               placeholder="Runtime"
               labelText="Runtime"
               onChange={(e) => {
-                setValue("runtime", e.target.value, { shouldValidate: true });
+                if (!isNaN(e.target.value) && e.target.value !== " ") {
+                  setValue("runtime", e.target.value, { shouldValidate: true });
+                }
               }}
               isValid={!errors.runtime}
               classNameInput="bg-white"
