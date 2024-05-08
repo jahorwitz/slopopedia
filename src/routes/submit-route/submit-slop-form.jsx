@@ -200,15 +200,21 @@ export const SubmitSlopForm = () => {
               register={register("releaseYear", {
                 minLength: {
                   value: 4,
-                  message: "Please enter 4 or more characters",
+                  message: "Please enter 4 digits",
+                },
+                maxLength: {
+                  value: 4,
+                  message: "Please do not enter more than 4 digits",
                 },
               })}
               placeholder="Release Year"
               labelText="Release Year"
               onChange={(e) => {
-                setValue("releaseYear", e.target.value, {
-                  shouldValidate: true,
-                });
+                if (!isNaN(e.target.value)) {
+                  setValue("releaseYear", e.target.value, {
+                    shouldValidate: true,
+                  });
+                }
               }}
               isValid={!errors.releaseYear}
               classNameInput="bg-white"
