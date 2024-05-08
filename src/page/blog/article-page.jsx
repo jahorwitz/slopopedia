@@ -18,7 +18,7 @@ import { ClientContext } from "../../store/client-context.js";
 
 export const Article = ({ type }) => {
   const { client } = useContext(ClientContext);
-  console.log(client.cache.extract());
+  //console.log(client.cache.extract());
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -137,8 +137,8 @@ export const Article = ({ type }) => {
   });
 
   useEffect(() => {
-    setValue("keywords", data?.post?.keywords);
-    setValue("movies", data?.post?.movies);
+    setValue("keywords", data?.post?.keywords || []);
+    setValue("movies", data?.post?.movies || []);
   }, [data]);
 
   // console.log("watch", watch());
@@ -226,13 +226,17 @@ export const Article = ({ type }) => {
             status: status,
           },
         },
-      }).then(() => {
-        if (status === "published") {
-          router("/articles");
-        } else {
-          router("/draft");
-        }
-      });
+      })
+        .then(() => {
+          if (status === "published") {
+            router("/articles");
+          } else {
+            router("/draft");
+          }
+        })
+        .catch((err) => {
+          console.error(err, "Could not update blog.");
+        });
     }
   };
 
@@ -251,16 +255,10 @@ export const Article = ({ type }) => {
   // redirects the user back to a new empty form after selecting submit another
   const submitAnother = () => {
     setSuccessful(false);
-    // setValue({
-    //   title: "",
-    //   content: "",
-    //   keywords: [],
-    //   movies: [],
-    // });
-    setValue("title", data?.post?.title, { shouldValidate: true });
-    setValue("content", data?.post?.content, {
-      shouldValidate: true,
-    });
+    setValue("title", "");
+    setValue("content", "");
+    setValue("keywords", []);
+    setValue("movies", []);
   };
 
   return (
