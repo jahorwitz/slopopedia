@@ -195,6 +195,7 @@ export const SubmitSlopForm = () => {
         <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between font-arialBold text-lg box-border ">
           <div className="flex flex-col">
             <Form.TextInput
+              maxLength={4}
               value={releaseYear}
               errors={errors}
               register={register("releaseYear", {
@@ -202,15 +203,11 @@ export const SubmitSlopForm = () => {
                   value: 4,
                   message: "Please enter 4 digits",
                 },
-                maxLength: {
-                  value: 4,
-                  message: "Please do not enter more than 4 digits",
-                },
               })}
               placeholder="Release Year"
               labelText="Release Year"
               onChange={(e) => {
-                if (!isNaN(e.target.value)) {
+                if (!isNaN(e.target.value) && e.target.value !== " ") {
                   setValue("releaseYear", e.target.value, {
                     shouldValidate: true,
                   });
