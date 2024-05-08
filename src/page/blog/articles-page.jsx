@@ -1,10 +1,14 @@
 import { useQuery } from "@apollo/client";
+import { useContext } from "react";
 import { Footer, Post } from "../../components/index.js";
 import { GET_BLOG_POSTS } from "../../graphql/queries/blog/posts.js";
 import purpleGoblin from "../../images/purple-goblin.png";
+import { ClientContext } from "../../store/client-context.js";
 import { formatDateTime } from "../../utils/constants.js";
 
 export const Articles = () => {
+  const { client } = useContext(ClientContext);
+  //client.cache.reset();
   const { data, loading, error } = useQuery(GET_BLOG_POSTS, {
     variables: {
       where: {

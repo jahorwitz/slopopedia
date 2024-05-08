@@ -258,10 +258,9 @@ Form.Combobox = ({
   idKey,
   watch,
   setValue,
-  defaultSelectedItems,
   ...rest
 }) => {
-  const selectedItems = watch(id) || defaultSelectedItems;
+  const selectedItems = watch(id);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -280,7 +279,7 @@ Form.Combobox = ({
         {labelText}
       </label>
       <Combobox
-        value={selectedItems}
+        value={selectedItems || []}
         onChange={(data) => setValue(id, data, { shouldValidate: true })}
         multiple
         nullable
