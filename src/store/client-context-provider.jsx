@@ -43,7 +43,7 @@ export const ClientContextProvider = ({ children }) => {
         }),
       })
     );
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (client) {
