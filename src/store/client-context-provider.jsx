@@ -28,7 +28,19 @@ export const ClientContextProvider = ({ children }) => {
     setClient(
       new ApolloClient({
         link: authLink.concat(httpLink),
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+          typePolicies: {
+            Fest: {
+              fields: {
+                attendees: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
+              },
+            },
+          },
+        }),
       })
     );
   }, []);
