@@ -33,6 +33,13 @@ export const FestHeader = ({ fest }) => {
       </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-wrap gap-2.5 max-w-lg">
+          {attendees.map((attendee, index) => (
+            <Keyword
+              className="bg-yellow"
+              key={index}
+              keyword={attendee.username}
+            />
+          ))}
           {invitees.map((invitee, index) => (
             <Keyword
               className="bg-gray"
