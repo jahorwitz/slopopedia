@@ -40,9 +40,9 @@ export const Post = ({
         ) : (
           <small className="text-gray font-semibold">{date}</small>
         )}
-        {author && (
-          <small className="text-gray font-semibold">{`By ${author}`}</small>
-        )}
+        <small className="text-gray font-semibold">
+          {author ? `By ${author}` : `User Deleted`}
+        </small>
       </div>
     </div>
   );
