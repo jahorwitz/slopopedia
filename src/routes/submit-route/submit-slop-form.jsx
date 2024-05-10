@@ -241,6 +241,9 @@ export const SubmitSlopForm = () => {
               isValid={!errors.runtime}
               classNameInput="bg-white"
             />
+            {errors.runtime && (
+              <Form.Feedback message={errors.runtime.message} />
+            )}
           </div>
         </div>
         {/* // For future use */}
