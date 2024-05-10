@@ -13,6 +13,8 @@ export const Articles = () => {
         },
       },
     },
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
   });
   if (loading) return "Loading...";
   if (error) return <pre>{error.message}</pre>;

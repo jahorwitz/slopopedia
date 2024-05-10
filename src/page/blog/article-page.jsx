@@ -31,64 +31,6 @@ export const Article = ({ type }) => {
 
   const [updatePost, {}] = useMutation(MODIFY_POST, {
     refetchQueries: [GET_BLOG_POST],
-    update(cache, { data: newData }) {
-      cache.modify({
-        fields: {
-          post(existingPost) {
-            console.log({ existingPost, updatedPost: newData.updatePost });
-            return newData.updatePost;
-          },
-          // Custom merge function to handle how 'posts' is updated in the cache.
-          // note: There are 2 separate 'posts' arrays that are stored in the cache:
-          // one for published posts, and the 2nd for draft posts.
-          // After a successful useMutation, this function is automatically called
-          // for both 'posts' arrays
-          posts(existingPosts, { readField, toReference }) {
-            let idFound = false;
-            const updatedPostId = id;
-            let removePost = false;
-            const postsStatus = readField("status", existingPosts[0]);
-            const updatedPostStatus = newData.updatePost.status;
-            const updatedPosts = existingPosts.map((cachedPost) => {
-              const currentCachedId = readField("id", cachedPost);
-              if (
-                currentCachedId === updatedPostId &&
-                updatedPostStatus === postsStatus
-              ) {
-                // update the post
-                idFound = true;
-                return toReference(newData.updatePost);
-              } else if (
-                currentCachedId === updatedPostId &&
-                updatedPostStatus !== postsStatus
-              ) {
-                // remove the post
-                idFound = true;
-                removePost = true;
-              } else {
-                return cachedPost;
-              }
-            });
-            //console.log({ existingPosts, updatedPosts });
-            if (idFound && !removePost) {
-              return updatedPosts;
-            } else if (idFound && removePost) {
-              // remove the post
-              return existingPosts.filter((post) => {
-                return updatedPostId !== readField("id", post);
-              });
-            }
-            if (!idFound && updatedPostStatus === postsStatus) {
-              // add the post
-              return [toReference(newData.updatePost), ...existingPosts];
-            } else {
-              // do nothing
-              return existingPosts;
-            }
-          },
-        },
-      });
-    },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
   const { data: moviesData } = useQuery(GET_MOVIES, {
