@@ -66,3 +66,13 @@ export const GET_USER_WATCHLIST = gql`
     }
   }
 `;
+
+export const MODIFY_USER = gql`
+  mutation ModifyUser($where: UserWhereUniqueInput!, $data: UserUpdateInput!) {
+    updateUser(where: $where, data: $data) {
+      id
+      username
+      email
+    }
+  }
+`;

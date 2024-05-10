@@ -1,7 +1,7 @@
-import { useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { GET_MOVIES } from "../graphql";
+import { GET_MOVIES, GET_USER_WATCHLIST, MODIFY_USER } from "../graphql";
 import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
 import backArrow from "../images/back-arrow.svg";
 import camera from "../images/camera.svg";
@@ -9,6 +9,7 @@ import checkMarkDark from "../images/check-mark-dark.svg";
 import heartDark from "../images/heart-dark.svg";
 import purpleGoblin from "../images/purple-goblin.png";
 import rottenTomato from "../images/rotten-tomatoes.svg";
+import { CurrentUserContext } from "../store";
 import { Badge } from "./badge";
 import { Button } from "./button";
 import { Keyword } from "./keyword";
@@ -40,12 +41,20 @@ export const MoviePreviewModal = ({
   selectedMovie,
   closeModal,
 }) => {
+  const { currentUser } = useContext(CurrentUserContext);
   const [isWatchedClicked, setIsWatchedClicked] = useState(false);
   const [isWantClicked, setIsWantClicked] = useState(false);
   const [updateMovieStatus, { data, loading, error }] = useMutation(
     UPDATE_MOVIE_STATUS,
     { refetchQueries: [GET_MOVIES] }
   );
+  const { data: userData, loading: userLoading } = useQuery(
+    GET_USER_WATCHLIST,
+    {
+      variables: { where: { id: currentUser.id } },
+    }
+  );
+  const [updateUser, {}] = useMutation(MODIFY_USER, {});
 
   const approveMovie = (movieId) => {
     updateMovieStatus({
@@ -55,8 +64,28 @@ export const MoviePreviewModal = ({
       },
     });
   };
+  console.log({ selectedMovie, userData, currentUser });
+
+  useEffect(() => {
+    if (userData?.user?.watched.includes(currentUser?.id)) {
+      setIsWatchedClicked(true);
+    } else setIsWatchedClicked(false);
+  }, [userData, currentUser]);
 
   const handleWatchedClick = () => {
+    // if user has not watched
+    if (!userData?.user?.watched.includes(currentUser?.id)) {
+      updateUser({
+        variables: {
+          where: {
+            id: currentUser.id,
+          },
+          data: {
+            watched: { connect: [{ id: selectedMovie.id }] },
+          },
+        },
+      });
+    }
     setIsWatchedClicked(!isWatchedClicked);
   };
 

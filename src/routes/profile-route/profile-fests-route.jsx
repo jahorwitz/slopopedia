@@ -44,7 +44,7 @@ export const ProfileFestsRoute = () => {
         variables: {
           data: {
             attendees: {
-              connect: [{ id: currentUser.id }],
+              connect: [...fest.attendees, { id: currentUser.id }],
             },
           },
           where: {
