@@ -72,7 +72,14 @@ export const MODIFY_USER = gql`
     updateUser(where: $where, data: $data) {
       id
       username
-      email
+      watched {
+        id
+        title
+      }
+      wishlist {
+        id
+        title
+      }
     }
   }
 `;

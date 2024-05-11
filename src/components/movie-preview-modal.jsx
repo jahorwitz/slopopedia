@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { GET_MOVIES, GET_USER_WATCHLIST, MODIFY_USER } from "../graphql";
 import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
@@ -41,20 +41,24 @@ export const MoviePreviewModal = ({
   selectedMovie,
   closeModal,
 }) => {
-  const { currentUser } = useContext(CurrentUserContext);
-  const [isWatchedClicked, setIsWatchedClicked] = useState(false);
-  const [isWantClicked, setIsWantClicked] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [updateMovieStatus, { data, loading, error }] = useMutation(
     UPDATE_MOVIE_STATUS,
     { refetchQueries: [GET_MOVIES] }
   );
-  const { data: userData, loading: userLoading } = useQuery(
-    GET_USER_WATCHLIST,
-    {
-      variables: { where: { id: currentUser.id } },
-    }
-  );
+  const { data: userWatchListData } = useQuery(GET_USER_WATCHLIST, {
+    variables: { where: { id: currentUser.id } },
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+  });
   const [updateUser, {}] = useMutation(MODIFY_USER, {});
+
+  const isWatchedClicked = currentUser?.watched?.some(
+    (movie) => movie.id === selectedMovie?.id
+  );
+  const isWantClicked = currentUser?.wishlist?.some(
+    (movie) => movie.id === selectedMovie?.id
+  );
 
   const approveMovie = (movieId) => {
     updateMovieStatus({
@@ -64,17 +68,29 @@ export const MoviePreviewModal = ({
       },
     });
   };
-  console.log({ selectedMovie, userData, currentUser });
+  // console.log({
+  //   selectedMovie,
+  //   userWatchListData,
+  //   currentUser,
+  //   isWatchedClicked,
+  // });
 
+  // set initial 'watched' and 'want' arrays in currentUser
   useEffect(() => {
-    if (userData?.user?.watched.includes(currentUser?.id)) {
-      setIsWatchedClicked(true);
-    } else setIsWatchedClicked(false);
-  }, [userData, currentUser]);
+    if (userWatchListData) {
+      setCurrentUser((prev) => {
+        return {
+          ...prev,
+          watched: userWatchListData.user.watched,
+          wishlist: userWatchListData.user.wishlist,
+        };
+      });
+    }
+  }, [userWatchListData, selectedMovie]);
 
   const handleWatchedClick = () => {
     // if user has not watched
-    if (!userData?.user?.watched.includes(currentUser?.id)) {
+    if (!isWatchedClicked) {
       updateUser({
         variables: {
           where: {
@@ -84,13 +100,93 @@ export const MoviePreviewModal = ({
             watched: { connect: [{ id: selectedMovie.id }] },
           },
         },
-      });
+      })
+        .then((res) => {
+          // set the currentUser’s watchlist to be what has been returned from the server
+          setCurrentUser((prev) => {
+            return { ...prev, watched: res.data.updateUser.watched };
+          });
+        })
+        .catch((err) => {
+          console.error(
+            err,
+            "Failed to add the movie to the user's watchlist."
+          );
+        });
+    } else {
+      // if user has watched
+      updateUser({
+        variables: {
+          where: {
+            id: currentUser.id,
+          },
+          data: {
+            watched: { disconnect: [{ id: selectedMovie.id }] },
+          },
+        },
+      })
+        .then((res) => {
+          // set the currentUser’s watchlist to be what has been returned from the server
+          setCurrentUser((prev) => {
+            return { ...prev, watched: res.data.updateUser.watched };
+          });
+        })
+        .catch((err) => {
+          console.error(
+            err,
+            "Failed to remove the movie from the user's watchlist."
+          );
+        });
     }
-    setIsWatchedClicked(!isWatchedClicked);
   };
 
   const handleWantClick = () => {
-    setIsWantClicked(!isWantClicked);
+    // if user does not want
+    if (!isWantClicked) {
+      updateUser({
+        variables: {
+          where: {
+            id: currentUser.id,
+          },
+          data: {
+            wishlist: { connect: [{ id: selectedMovie.id }] },
+          },
+        },
+      })
+        .then((res) => {
+          // set the currentUser’s wishlist to be what has been returned from the server
+          setCurrentUser((prev) => {
+            return { ...prev, wishlist: res.data.updateUser.wishlist };
+          });
+        })
+        .catch((err) => {
+          console.error(err, "Failed to add the movie to the user's wishlist.");
+        });
+    } else {
+      // if user wants
+      updateUser({
+        variables: {
+          where: {
+            id: currentUser.id,
+          },
+          data: {
+            wishlist: { disconnect: [{ id: selectedMovie.id }] },
+          },
+        },
+      })
+        .then((res) => {
+          // set the currentUser’s wishlist to be what has been returned from the server
+          setCurrentUser((prev) => {
+            return { ...prev, wishlist: res.data.updateUser.wishlist };
+          });
+        })
+        .catch((err) => {
+          console.error(
+            err,
+            "Failed to remove the movie from the user's wishlist."
+          );
+        });
+    }
   };
 
   const movie = {
