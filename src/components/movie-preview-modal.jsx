@@ -1,15 +1,15 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import { GET_MOVIES, GET_USER_WATCHLIST, MODIFY_USER } from "../graphql";
+import { GET_MOVIES, GET_USER_WATCHLIST, UPDATE_USER } from "../graphql";
 import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
+import { useCurrentUser } from "../hooks";
 import backArrow from "../images/back-arrow.svg";
 import camera from "../images/camera.svg";
 import checkMarkDark from "../images/check-mark-dark.svg";
 import heartDark from "../images/heart-dark.svg";
 import purpleGoblin from "../images/purple-goblin.png";
 import rottenTomato from "../images/rotten-tomatoes.svg";
-import { CurrentUserContext } from "../store";
 import { Badge } from "./badge";
 import { Button } from "./button";
 import { Keyword } from "./keyword";
@@ -41,17 +41,17 @@ export const MoviePreviewModal = ({
   selectedMovie,
   closeModal,
 }) => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useCurrentUser();
   const [updateMovieStatus, { data, loading, error }] = useMutation(
     UPDATE_MOVIE_STATUS,
     { refetchQueries: [GET_MOVIES] }
   );
   const { data: userWatchListData } = useQuery(GET_USER_WATCHLIST, {
-    variables: { where: { id: currentUser.id } },
+    variables: { where: { id: currentUser?.id } },
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
   });
-  const [updateUser, {}] = useMutation(MODIFY_USER, {});
+  const [updateUser, {}] = useMutation(UPDATE_USER, {});
 
   const isWatchedClicked = currentUser?.watched?.some(
     (movie) => movie.id === selectedMovie?.id
@@ -68,16 +68,10 @@ export const MoviePreviewModal = ({
       },
     });
   };
-  // console.log({
-  //   selectedMovie,
-  //   userWatchListData,
-  //   currentUser,
-  //   isWatchedClicked,
-  // });
 
   // set initial 'watched' and 'want' arrays in currentUser
   useEffect(() => {
-    if (userWatchListData) {
+    if (userWatchListData?.user) {
       setCurrentUser((prev) => {
         return {
           ...prev,
@@ -94,7 +88,7 @@ export const MoviePreviewModal = ({
       updateUser({
         variables: {
           where: {
-            id: currentUser.id,
+            id: currentUser?.id,
           },
           data: {
             watched: { connect: [{ id: selectedMovie.id }] },
@@ -118,7 +112,7 @@ export const MoviePreviewModal = ({
       updateUser({
         variables: {
           where: {
-            id: currentUser.id,
+            id: currentUser?.id,
           },
           data: {
             watched: { disconnect: [{ id: selectedMovie.id }] },
@@ -146,7 +140,7 @@ export const MoviePreviewModal = ({
       updateUser({
         variables: {
           where: {
-            id: currentUser.id,
+            id: currentUser?.id,
           },
           data: {
             wishlist: { connect: [{ id: selectedMovie.id }] },
@@ -167,7 +161,7 @@ export const MoviePreviewModal = ({
       updateUser({
         variables: {
           where: {
-            id: currentUser.id,
+            id: currentUser?.id,
           },
           data: {
             wishlist: { disconnect: [{ id: selectedMovie.id }] },
