@@ -37,6 +37,11 @@ export const ClientContextProvider = ({ children }) => {
                     return incoming;
                   },
                 },
+                invitees: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
               },
             },
           },
