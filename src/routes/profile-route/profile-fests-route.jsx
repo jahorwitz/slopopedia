@@ -120,34 +120,32 @@ export const ProfileFestsRoute = () => {
                       </p>
                       <div>
                         <div className="flex flex-row">
-                          {fest.invitees?.length <= 4
-                            ? fest.invitees?.map((invitee) => {
-                                return (
-                                  <Keyword
-                                    key={invitee.id}
-                                    className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                                    keyword={invitee.username}
-                                  />
-                                );
-                              })
-                            : fest.invitees?.slice(0, 4).map((invitee) => {
-                                // needs to have {+ invitees.length - 5} to show how many invitees after 5
-                                return (
-                                  <Keyword
-                                    key={invitee.id}
-                                    className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                                    keyword={invitee.username}
-                                  />
-                                );
-                              })}
-                          {fest.invitees?.length > 4 ? (
+                          {[...(fest.attendees ?? []), ...(fest.invitees ?? [])]
+                            .slice(0, 4)
+                            .map((person, index) => (
+                              <Keyword
+                                key={person.id}
+                                className={`h-31px space-x-2 space-y-2 ${
+                                  index < fest.attendees?.length
+                                    ? "bg-yellow"
+                                    : "bg-gray"
+                                } xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5`}
+                                keyword={person.username}
+                              />
+                            ))}
+
+                          {/* Additional Invitees Count */}
+                          {fest.attendees?.length + fest.invitees?.length >
+                            4 && (
                             <Keyword
-                              key={fest.id}
+                              key="additional-persons"
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
-                              keyword={`+ ${fest.invitees?.length - 4} more`}
+                              keyword={`+ ${
+                                fest.attendees?.length +
+                                fest.invitees?.length -
+                                4
+                              } more`}
                             />
-                          ) : (
-                            ""
                           )}
                         </div>
                       </div>
