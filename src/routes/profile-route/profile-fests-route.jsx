@@ -115,7 +115,7 @@ export const ProfileFestsRoute = () => {
                       <h3 className="font-arialBold mb-2.5">
                         <Link to={`/fests/${fest.id}`}>{fest.name}</Link>
                       </h3>
-                      <p className="font-arialRegular mb-2.5">
+                      <p className="font-arialRegular mb-2.5 opacity-60">
                         {startDate + " - " + endDate}
                       </p>
                       <div>
