@@ -112,10 +112,10 @@ export const ProfileFestsRoute = () => {
                     className="flex flex-row justify-between mb-5 border-b border-black"
                   >
                     <div className="mb-5">
-                      <h3 className="font-arialBold mb-2.5">
+                      <h3 className="font-arialBold mb-2.5 text-lg">
                         <Link to={`/fests/${fest.id}`}>{fest.name}</Link>
                       </h3>
-                      <p className="font-arialRegular mb-2.5 opacity-60">
+                      <p className="font-arialRegular mb-2.5 opacity-60 text-lg">
                         {startDate + " - " + endDate}
                       </p>
                       <div>
