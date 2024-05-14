@@ -74,7 +74,7 @@ export const FestSidebar = ({ festQuery }) => {
           </Button>
         </Sidebar>
       </div>
-      {currentUser.id === festQuery.data.fest.creator.id ? (
+      {currentUser.id === festQuery?.data?.fest?.creator?.id ? (
         <div>
           <Button
             type="button"
