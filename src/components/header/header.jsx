@@ -12,9 +12,9 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { Button, LoginModal, SignupModal } from "../index";
+import { Button, LoginModal, MoviePreviewModal, SignupModal } from "../index";
 
-export const Header = () => {
+export const Header = ({ movieData }) => {
   const { setToken } = useClient();
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
     useCurrentUser();
@@ -22,12 +22,37 @@ export const Header = () => {
   const { openModal, closeModal } = useModals();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  console.log(movieData);
+
+  function getRandomMovie(moviesArray) {
+    if (moviesArray.length === 0) return undefined;
+    const randomIndex = Math.floor(Math.random() * moviesArray.length);
+    return moviesArray[randomIndex];
+  }
+
+  useEffect(() => {
+    if (movieData) {
+      console.log("random movie:", getRandomMovie(movieData).title);
+    }
+  }, [movieData]);
+
   function openLoginModal() {
     openModal(<LoginModal onClose={closeModal} />);
   }
 
   function openSignUpModal() {
     openModal(<SignupModal onClose={closeModal} />);
+  }
+
+  function openMoviePreviewModal() {
+    openModal(
+      <MoviePreviewModal
+        closeModal={closeModal}
+        userButtons
+        whiteButton
+        selectedMovie={getRandomMovie(movieData)}
+      />
+    );
   }
 
   const handleMenu = () => {
@@ -54,6 +79,7 @@ export const Header = () => {
         currentUser={currentUser}
         openSignUpModal={openSignUpModal}
         openLoginModal={openLoginModal}
+        openMoviePreviewModal={openMoviePreviewModal}
         handleMenu={handleMenu}
         menuOpen={menuOpen}
       />
@@ -88,6 +114,7 @@ Header.NavLinks = ({
   handleMenu,
   openSignUpModal,
   openLoginModal,
+  openMoviePreviewModal,
 }) => {
   const navLinks = [
     {
@@ -108,7 +135,8 @@ Header.NavLinks = ({
     {
       title: "I'm Feeling Sloppy",
       src: headerStar,
-      link: "/sounds",
+      link: "/",
+      onClick: openMoviePreviewModal,
     },
   ];
 
@@ -131,7 +159,14 @@ Header.NavLinks = ({
         {navLinks.map((link, index) => (
           <div key={index} className="flex flex-row gap-2.5 ">
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <Link to={link.link} className="border-b-2 ">
+            <Link
+              to={link.link}
+              className="border-b-2 "
+              onClick={(e) => {
+                e.preventDefault();
+                link.onClick();
+              }}
+            >
               {link.title}
             </Link>
           </div>

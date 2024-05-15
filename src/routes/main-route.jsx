@@ -17,7 +17,7 @@ export function MainRoute() {
   return (
     <>
       <div className="relative">
-        <Header>
+        <Header movieData={data?.movies}>
           <Header.Logo />
           <Header.NavLinks />
           <Header.Profile />

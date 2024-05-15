@@ -46,7 +46,7 @@ export const MoviePreviewModal = ({
     UPDATE_MOVIE_STATUS,
     { refetchQueries: [GET_MOVIES] }
   );
-
+  console.log(selectedMovie);
   const approveMovie = (movieId) => {
     updateMovieStatus({
       variables: {
