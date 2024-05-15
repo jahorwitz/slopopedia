@@ -1,23 +1,15 @@
-import { useQuery } from "@apollo/client";
+import { useContext } from "react";
 import { Header, MovieCardList } from "../components";
-import { GET_MOVIES } from "../graphql/get-movies";
 import image from "../images/main_image.svg";
+import { MovieContext } from "../store/movie-context";
 
 export function MainRoute() {
-  const { data, loading, error } = useQuery(GET_MOVIES, {
-    variables: {
-      where: {
-        status: {
-          equals: "published",
-        },
-      },
-    },
-  });
+  const { movieData, moviesLoading } = useContext(MovieContext);
 
   return (
     <>
       <div className="relative">
-        <Header movieData={data?.movies}>
+        <Header>
           <Header.Logo />
           <Header.NavLinks />
           <Header.Profile />
@@ -32,7 +24,7 @@ export function MainRoute() {
           RECENTLY ADDED
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
-          {!loading && <MovieCardList movies={data?.movies} />}
+          {!moviesLoading && <MovieCardList movies={movieData?.movies} />}
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import { useClient, useCurrentUser, useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
@@ -12,29 +12,23 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
+import { MovieContext } from "../../store/movie-context";
 import { Button, LoginModal, MoviePreviewModal, SignupModal } from "../index";
 
-export const Header = ({ movieData }) => {
+export const Header = () => {
   const { setToken } = useClient();
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
     useCurrentUser();
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { openModal, closeModal } = useModals();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  console.log(movieData);
+  const { movieData } = useContext(MovieContext);
 
   function getRandomMovie(moviesArray) {
     if (moviesArray.length === 0) return undefined;
     const randomIndex = Math.floor(Math.random() * moviesArray.length);
     return moviesArray[randomIndex];
   }
-
-  useEffect(() => {
-    if (movieData) {
-      console.log("random movie:", getRandomMovie(movieData).title);
-    }
-  }, [movieData]);
 
   function openLoginModal() {
     openModal(<LoginModal onClose={closeModal} />);
@@ -50,7 +44,7 @@ export const Header = ({ movieData }) => {
         closeModal={closeModal}
         userButtons
         whiteButton
-        selectedMovie={getRandomMovie(movieData)}
+        selectedMovie={getRandomMovie(movieData?.movies)}
       />
     );
   }
@@ -116,27 +110,35 @@ Header.NavLinks = ({
   openLoginModal,
   openMoviePreviewModal,
 }) => {
+  const router = useNavigate();
   const navLinks = [
     {
       title: "Slop Search",
       src: headerMagnifyglass,
       link: "/search",
+      onClick: () => {},
     },
     {
       title: "Submit Slop",
       src: headerArrow,
       link: "/submit",
+      onClick: () => {},
     },
     {
       title: "Slop Blog",
       src: headerBook,
       link: "/articles",
+      onClick: () => {},
     },
     {
       title: "I'm Feeling Sloppy",
       src: headerStar,
       link: "/",
-      onClick: openMoviePreviewModal,
+      onClick: (e) => {
+        e.preventDefault();
+        router("/");
+        openMoviePreviewModal();
+      },
     },
   ];
 
@@ -163,8 +165,7 @@ Header.NavLinks = ({
               to={link.link}
               className="border-b-2 "
               onClick={(e) => {
-                e.preventDefault();
-                link.onClick();
+                link.onClick(e);
               }}
             >
               {link.title}
