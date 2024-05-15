@@ -268,8 +268,11 @@ Form.Combobox = ({
         {labelText}
       </label>
       <Combobox
-        value={selectedItems}
-        onChange={setSelectedItems}
+        value={selectedItems || []}
+        onChange={(data) => {
+          setSelectedItems(data);
+          setValue(id, data, { shouldValidate: true });
+        }}
         multiple
         nullable
         name={name}
