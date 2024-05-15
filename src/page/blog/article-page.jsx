@@ -64,8 +64,8 @@ export const Article = () => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: [],
-      movies: [],
+      keywords: data?.post?.keywords,
+      movies: data?.post?.movies,
     },
   });
   // useEffect(() => {
@@ -94,10 +94,14 @@ export const Article = () => {
           title: title,
           content: content,
           keywords: {
-            connect: keywords,
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
           },
           movies: {
-            connect: movies,
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
           },
           author: {
             connect: { username: currentUser.username },
@@ -114,16 +118,22 @@ export const Article = () => {
 
   const onPublish = handleSubmit(() => {
     const { title, content, keywords, movies } = getValues();
+    console.log(title, content, keywords, movies);
+
     createPost({
       variables: {
         data: {
           title: title,
           content: content,
           keywords: {
-            connect: keywords,
+            connect: keywords.map((keyword) => ({
+              id: keyword.id,
+            })),
           },
           movies: {
-            connect: movies,
+            connect: movies.map((movie) => ({
+              id: movie.id,
+            })),
           },
           author: {
             connect: { username: currentUser.username },
@@ -211,7 +221,6 @@ export const Article = () => {
               id={"keywords"}
             />
             <Form.Combobox
-              //className="relative flex justify-center font-bold font-arial flex-col py-3"
               labelText={"Slops"}
               placeholder={"Add topical slops"}
               list={moviesOptions}
