@@ -35,15 +35,25 @@ export const Review = ({ id }) => {
 
   useEffect(() => {
     if (data) {
-      setPost({
-        title: data.post.title,
-        content: data.post.content,
-        username: data.post.author.username,
-        keywords: data.post.keywords,
-        createdAt: data.post.createdAt,
-      });
-      if (currentUser.id === data.post.author.id) {
-        setAccessGranted(true);
+      if (data.post.author) {
+        setPost({
+          title: data.post.title,
+          content: data.post.content,
+          username: data.post.author.username,
+          keywords: data.post.keywords,
+          createdAt: data.post.createdAt,
+        });
+        if (currentUser.id === data.post.author.id) {
+          setAccessGranted(true);
+        }
+      } else {
+        setPost({
+          title: data.post.title,
+          content: data.post.content,
+          username: "User Deleted",
+          keywords: data.post.keywords,
+          createdAt: data.post.createdAt,
+        });
       }
     }
   }, [data]);
@@ -106,7 +116,11 @@ export const Review = ({ id }) => {
           <div className="my-0">{keywordsList}</div>
           <div className="flex gap-8">
             <p className="text-gray">{`${formatDateTime(post.createdAt)}`}</p>
-            <p className="text-gray">{`By ${post.username}`} </p>
+            <p className="text-gray">
+              {post.username === "User Deleted"
+                ? `User Deleted`
+                : `By ${post.username}`}{" "}
+            </p>
           </div>
         </div>
         <div className="space-y-2">

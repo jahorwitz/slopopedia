@@ -88,7 +88,7 @@ export const SubmitSlopForm = () => {
             //   upload: data.photo
             // },
             keywords: {
-              connect: movieKeywords.map((keyword) => ({
+              connect: keywords.map((keyword) => ({
                 id: keyword.id,
               })),
             },
