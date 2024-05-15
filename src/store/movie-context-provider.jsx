@@ -7,6 +7,7 @@ export const MovieContextProvider = ({ children }) => {
     data: movieData,
     loading: moviesLoading,
     error: moviesError,
+    refetch: refetchMovies,
   } = useQuery(GET_MOVIES, {
     variables: {
       where: {
@@ -18,7 +19,9 @@ export const MovieContextProvider = ({ children }) => {
   });
 
   return (
-    <MovieContext.Provider value={{ movieData, moviesLoading, moviesError }}>
+    <MovieContext.Provider
+      value={{ movieData, moviesLoading, moviesError, refetchMovies }}
+    >
       {children}
     </MovieContext.Provider>
   );

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import { useClient, useCurrentUser, useModals } from "../../hooks";
 import headerArrow from "../../images/global-header-arrow.svg";
@@ -110,7 +110,6 @@ Header.NavLinks = ({
   openLoginModal,
   openMoviePreviewModal,
 }) => {
-  const router = useNavigate();
   const navLinks = [
     {
       title: "Slop Search",
@@ -134,11 +133,7 @@ Header.NavLinks = ({
       title: "I'm Feeling Sloppy",
       src: headerStar,
       link: "/",
-      onClick: (e) => {
-        e.preventDefault();
-        router("/");
-        openMoviePreviewModal();
-      },
+      onClick: openMoviePreviewModal,
     },
   ];
 
@@ -161,13 +156,7 @@ Header.NavLinks = ({
         {navLinks.map((link, index) => (
           <div key={index} className="flex flex-row gap-2.5 ">
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <Link
-              to={link.link}
-              className="border-b-2 "
-              onClick={(e) => {
-                link.onClick(e);
-              }}
-            >
+            <Link to={link.link} className="border-b-2 " onClick={link.onClick}>
               {link.title}
             </Link>
           </div>
