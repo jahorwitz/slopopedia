@@ -22,8 +22,6 @@ import {
   SubmittedSlopsRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
-import { MovieContextProvider } from "./store/movie-context-provider";
-import { SoundContextProvider } from "./store/sound-context-provider";
 
 export const App = () => {
   const { client } = useClient();
@@ -46,7 +44,7 @@ export const App = () => {
                   <Route
                     exact
                     path="/articles/create"
-                    element={<ArticleRoute />}
+                    element={<ArticleRoute type={"new"} />}
                   />
                   <Route exact path="/articles/:id" element={<ReviewRoute />} />
                   <Route
@@ -107,7 +105,7 @@ export const App = () => {
                     path="/articles/:id/edit"
                     element={
                       <ProtectedRoute>
-                        <ArticleRoute />
+                        <ArticleRoute type={"edited"} />
                       </ProtectedRoute>
                     }
                   />

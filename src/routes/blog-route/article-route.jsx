@@ -1,7 +1,7 @@
 import { Header } from "../../components";
 import ArticlePage from "../../page/blog/article-page.jsx";
 
-export function ArticleRoute() {
+export function ArticleRoute({ type }) {
   return (
     <>
       <div className="relative">
@@ -11,7 +11,7 @@ export function ArticleRoute() {
           <Header.Profile />
         </Header>
       </div>
-      <ArticlePage />
+      <ArticlePage type={type} />
     </>
   );
 }
