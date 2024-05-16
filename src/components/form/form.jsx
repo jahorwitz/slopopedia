@@ -261,6 +261,16 @@ Form.Combobox = ({
   ...rest
 }) => {
   const [selectedItems, setSelectedItems] = useState([]);
+  // console.log(watch(id));
+  // console.log(selectedItems);
+
+  // useEffect(() => {
+  //   if (watch) {
+  //     const itemNames = watch(id);
+  //     console.log(itemNames);
+  //     setSelectedItems(itemNames);
+  //   }
+  // });
 
   return (
     <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
