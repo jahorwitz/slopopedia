@@ -39,7 +39,11 @@ export const App = () => {
               <Route path="/sounds" element={<SoundsRoute />} />
               <Route path="/draft" element={<DraftRoute />} />
               <Route path="/articles" element={<ArticlesRoute />} />
-              <Route exact path="/articles/create" element={<ArticleRoute />} />
+              <Route
+                exact
+                path="/articles/create"
+                element={<ArticleRoute type={"new"} />}
+              />
               <Route exact path="/articles/:id" element={<ReviewRoute />} />
               <Route
                 path="/profile/*"
@@ -97,7 +101,7 @@ export const App = () => {
                 path="/articles/:id/edit"
                 element={
                   <ProtectedRoute>
-                    <ArticleRoute />
+                    <ArticleRoute type={"edited"} />
                   </ProtectedRoute>
                 }
               />
