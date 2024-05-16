@@ -23,7 +23,7 @@ export function DraftRoute() {
       <div className="w-full max-w-[1440px] -top-5 mx-auto p-20 flex flex-row relative">
         <DraftPage />
       </div>
-      <div className="absolute bottom-0 w-full max-w-[989] mx-auto p-10">
+      <div className="-z-10 absolute bottom-0 w-full max-w-[989] mx-auto p-10">
         <Footer>{/* <Footer.Content></Footer.Content>{" "} */}</Footer>
       </div>
     </>

@@ -56,7 +56,7 @@ export const Review = ({ id }) => {
         });
       }
     }
-  }, [data]);
+  }, [data, currentUser]);
 
   const onEdit = () => {
     if (currentUser.id === data.post.author.id) {
