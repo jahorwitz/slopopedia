@@ -20,7 +20,7 @@ export const Article = () => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data } = useQuery(GET_BLOG_POST, {
+  const { data: postData } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
@@ -37,10 +37,10 @@ export const Article = () => {
       },
     },
   });
-  const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
+  const keywordsPrefills = postData?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
   }));
-  const moviesPrefills = data?.post?.movies?.map((movie) => ({
+  const moviesPrefills = postData?.post?.movies?.map((movie) => ({
     title: movie.title,
   }));
   // const keywordsOptions = keywordsData?.keywords.map((keyword) => ({
@@ -64,20 +64,10 @@ export const Article = () => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: data?.post?.keywords,
-      movies: data?.post?.movies,
+      keywords: [],
+      movies: [],
     },
   });
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log(data);
-
-  //     setValue("keywords", data?.post?.keywords, { shouldValidate: true });
-  //     setValue("movies", data?.post?.movies, {
-  //       shouldValidate: true,
-  //     });
-  //   }
-  // }, [data]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
@@ -167,6 +157,16 @@ export const Article = () => {
     });
   };
 
+  // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
+  // useEffect(() => {
+  //   if (postData?.post) {
+  //     const keywordNames = postData.post.keywords.map((item) => item.name);
+  //     const movieTitles = postData.post.movies.map((item) => item.title);
+  //     setValue("keywords", keywordNames || []);
+  //     setValue("movies", movieTitles || []);
+  //   }
+  // }, [postData]);
+
   return (
     <>
       {!successful ? (
@@ -178,7 +178,7 @@ export const Article = () => {
               labelText={"Title"}
               placeholder={`Title`}
               id="title"
-              prefilledInputs={data?.post?.title}
+              prefilledInputs={postData?.post?.title}
               onChange={(e) =>
                 setValue("title", e.target.value, { shouldValidate: true })
               }
@@ -199,7 +199,7 @@ export const Article = () => {
                   shouldValidate: true,
                 })
               }
-              prefilledInputs={data?.post?.content}
+              prefilledInputs={postData?.post?.content}
               register={register("content", {
                 required: true,
                 pattern: {
