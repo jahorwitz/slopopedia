@@ -1,9 +1,11 @@
 import { useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import { useClient, useCurrentUser, useModals } from "../../hooks";
+import { useMovies } from "../../hooks/use-movies";
+import { useSounds } from "../../hooks/use-sounds";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -12,7 +14,6 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { MovieContext } from "../../store/movie-context";
 import { Button, LoginModal, MoviePreviewModal, SignupModal } from "../index";
 
 export const Header = () => {
@@ -22,7 +23,7 @@ export const Header = () => {
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { openModal, closeModal } = useModals();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { movieData } = useContext(MovieContext);
+  const { movieData } = useMovies();
 
   function getRandomMovie(moviesArray) {
     if (moviesArray.length === 0) return undefined;
@@ -110,6 +111,7 @@ Header.NavLinks = ({
   openLoginModal,
   openMoviePreviewModal,
 }) => {
+  const { playSound } = useSounds();
   const navLinks = [
     {
       title: "Slop Search",
@@ -133,7 +135,13 @@ Header.NavLinks = ({
       title: "I'm Feeling Sloppy",
       src: headerStar,
       link: "/",
-      onClick: openMoviePreviewModal,
+      onClick: () => {
+        openMoviePreviewModal();
+        // currently hardcoding a sound. Replace with random sound, once sounds are set up.
+        playSound(
+          "https://s3.amazonaws.com/appforest_uf/f1651255945109x881367056603119500/ohmygod.m4a"
+        );
+      },
     },
   ];
 

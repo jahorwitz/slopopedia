@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { Header, MovieCardList } from "../components";
+import { useMovies } from "../hooks/use-movies";
 import image from "../images/main_image.svg";
-import { MovieContext } from "../store/movie-context";
 
 export function MainRoute() {
-  const { movieData, moviesLoading } = useContext(MovieContext);
+  const { movieData, moviesLoading } = useMovies();
 
   return (
     <>
