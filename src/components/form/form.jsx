@@ -260,7 +260,17 @@ Form.Combobox = ({
   setValue,
   ...rest
 }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(null);
+  const handleChange = (data) => {
+    const itemIds = data.map((item) => item.id);
+    const duplicateIds = itemIds.filter(
+      (item, index) => itemIds.indexOf(item) !== index
+    );
+    // removes all duplicate items from the data array
+    const filteredData = data.filter((item) => !duplicateIds.includes(item.id));
+    setSelectedItems(filteredData);
+    setValue(id, filteredData, { shouldValidate: true });
+  };
 
   return (
     <div className={`flex font-bold font-arial flex-col py-3 ${className}`}>
@@ -268,8 +278,8 @@ Form.Combobox = ({
         {labelText}
       </label>
       <Combobox
-        value={selectedItems}
-        onChange={setSelectedItems}
+        value={selectedItems || watch(id)}
+        onChange={handleChange}
         multiple
         nullable
         name={name}
