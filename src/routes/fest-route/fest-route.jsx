@@ -2,20 +2,32 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useMemo } from "react";
 import { useParams } from "react-router";
 import { Button, Header, Loading, MovieCardList } from "../../components";
+import { IdProtectedRoute } from "../../components/id-protected-route";
 import { GET_FEST, GET_MOVIES } from "../../graphql/";
 import { UPDATE_FEST } from "../../graphql/mutations/fest";
-import { useModals } from "../../hooks";
+import { useCurrentUser, useModals } from "../../hooks";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
   const { festId } = useParams();
   const { openModal, closeModal } = useModals();
+  const { currentUser } = useCurrentUser();
 
   // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
     variables: { where: { id: festId } },
   });
+  // an array of all attendees id's
+  const attendeeIds = festQuery?.data?.fest?.attendees.map(
+    (attendee) => attendee.id
+  );
+  // an array of all invitees id's
+  const inviteeIds = festQuery?.data?.fest?.invitees.map(
+    (attendee) => attendee.id
+  );
+  // attendees + invitees
+  const allowedUserIds = attendeeIds?.concat(inviteeIds);
 
   // Movie Query
   const moviesQuery = useQuery(GET_MOVIES, { variables: { where: {} } });
@@ -78,7 +90,10 @@ export const FestRoute = () => {
   }
 
   return (
-    <>
+    <IdProtectedRoute
+      allowedUserIds={allowedUserIds}
+      allowedUserIdsLoading={festQuery.loading}
+    >
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -152,6 +167,6 @@ export const FestRoute = () => {
           </div>
         </div>
       </div>
-    </>
+    </IdProtectedRoute>
   );
 };

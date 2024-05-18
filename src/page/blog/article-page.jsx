@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
+import { IdProtectedRoute } from "../../components/id-protected-route.jsx";
 import { Footer } from "../../components/index.js";
 import {
   CREATE_POST,
@@ -21,13 +22,14 @@ export const Article = ({ type }) => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data } = useQuery(GET_BLOG_POST, {
+  const { data, loading: loadingBlog } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
       },
     },
   });
+  console.log({ data });
   const [deletePost, {}] = useMutation(DELETE_POST, {
     // delete blog post from cache
     update(cache, {}) {
@@ -200,18 +202,10 @@ export const Article = ({ type }) => {
     }
   };
 
-  return (
+  const articleJsx = (
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
-          {type === "edited" && (
-            <button
-              onClick={onDelete}
-              className=" absolute top-10 right-10 bg-transparent text-danger font-bold text-lg mt-10"
-            >
-              Delete
-            </button>
-          )}
           <ToastContainer className={"absolute"} />
           <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
             <Form.TextInput
@@ -338,6 +332,18 @@ Would conditionally adding these CSS styles be the best approach, or does the fo
       </div>
     </>
   );
+  if (type === "new") {
+    return articleJsx;
+  } else {
+    return (
+      <IdProtectedRoute
+        allowedUserIdsLoading={loadingBlog}
+        allowedUserIds={[data?.post?.author?.id]}
+      >
+        {articleJsx}
+      </IdProtectedRoute>
+    );
+  }
 };
 
 export default Article;
