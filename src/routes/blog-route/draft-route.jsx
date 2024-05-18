@@ -13,9 +13,6 @@ export function DraftRoute() {
         </Header>
       </div>
       <div className="z-10 relative float-right -top-10left-3/4 mr-32 mt-10 flex">
-        <Link to={"/draft"} className="underline">
-          Drafts
-        </Link>
         <Link to={"/articles/create"} className="underline ml-5 cursor-pointer">
           + New Entry
         </Link>
