@@ -16,7 +16,7 @@ const Checkbox = forwardRef(({ name, label = undefined, ...rest }, ref) => {
         </label>
       )}
       <input
-        className="w-4 h-4 accent-black rounded-none shadow-sm border-black border-3"
+        className="w-6 h-6 accent-black rounded-none shadow-sm border-black border-3"
         type="checkbox"
         {...rest}
         name={name}

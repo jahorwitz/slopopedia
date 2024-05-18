@@ -44,9 +44,20 @@ export default function Dropdown({
           <Select
             inputRef={ref}
             value={val}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                borderColor: state.isFocused ? "black" : "black",
+                padding: ".75rem",
+                fontSize: "18px",
+                borderWidth: "2px",
+                borderRadius: 0,
+              }),
+            }}
             theme={(theme) => ({
               ...theme,
-              borderRadius: 0,
+              padding: 0,
+              borderWidth: 0,
               colors: {
                 ...theme.colors,
                 primary25: "#FFD913",
