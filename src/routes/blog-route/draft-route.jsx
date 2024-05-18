@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Footer, Header } from "../../components";
+import { useCurrentUser } from "../../hooks";
 import DraftPage from "../../page/blog/draft-page";
-import { CurrentUserContext } from "../../store";
 
 export function DraftRoute() {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn } = useCurrentUser();
   return (
     <>
       <div className="relative">
@@ -15,7 +14,7 @@ export function DraftRoute() {
           <Header.Profile />
         </Header>
       </div>
-      {"id" in currentUser && (
+      {isLoggedIn && (
         <div className="z-10 relative float-right -top-10left-3/4 mr-32 mt-10 flex">
           <Link to={"/draft"} className="underline">
             Drafts

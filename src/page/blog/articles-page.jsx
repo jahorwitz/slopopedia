@@ -1,13 +1,12 @@
 import { useQuery } from "@apollo/client";
-import { useContext } from "react";
 import { Footer, Post } from "../../components/index.js";
 import { GET_BLOG_POSTS } from "../../graphql/queries/blog/posts.js";
+import { useCurrentUser } from "../../hooks/use-current-user.js";
 import purpleGoblin from "../../images/purple-goblin.png";
-import { CurrentUserContext } from "../../store/current-user-context.js";
 import { formatDateTime } from "../../utils/constants.js";
 
 export const Articles = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn } = useCurrentUser();
   const { data, loading, error } = useQuery(GET_BLOG_POSTS, {
     variables: {
       where: {
@@ -22,7 +21,7 @@ export const Articles = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto">
-      {"id" in currentUser && (
+      {isLoggedIn && (
         <div className="flex mt-10 justify-end mr-32">
           <a href="/draft" className="underline">
             Drafts
