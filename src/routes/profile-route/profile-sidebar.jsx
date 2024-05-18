@@ -42,6 +42,7 @@ export const ProfileSidebar = () => {
     setToken(null);
     setIsLoggedIn(false);
     client.resetStore();
+    location.reload();
   };
 
   return (
