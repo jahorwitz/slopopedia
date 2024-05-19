@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import { GET_FEST, GET_MOVIES } from "../../graphql/";
@@ -13,7 +13,6 @@ export const FestRoute = () => {
   const { festId } = useParams();
   const { openModal, closeModal } = useModals();
   const router = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
   // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
@@ -27,23 +26,6 @@ export const FestRoute = () => {
     updateFest,
     { data: updateData, loading: updateLoading, error: updateError },
   ] = useMutation(UPDATE_FEST, { refetchQueries: [GET_FEST] });
-
-  // route a user away from /fest/:festId endpoint if they are not an attendee or invitee of the fest
-  // prevents user from typing in the url, and seeing a fest they don't belong to
-  useEffect(() => {
-    if (!festQuery.loading) {
-      const isAttendee = festQuery?.data?.fest?.attendees.some(
-        (user) => user.id === currentUser.id
-      );
-      const isInvitee = festQuery?.data?.fest?.invitees.some(
-        (user) => user.id === currentUser.id
-      );
-      setIsAuthorized(isAttendee || isInvitee);
-      if (!isAttendee && !isInvitee) {
-        router("/profile/fests");
-      }
-    }
-  }, [festQuery?.loading]);
 
   const addMovies = (movies) => {
     const movieIds = movies.map((movie) => {
@@ -103,7 +85,7 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      {isAuthorized && (
+      {
         <div className="max-w-[1200px] my-0 mx-auto box-border">
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestHeader fest={festQuery.data.fest} />
@@ -172,7 +154,7 @@ export const FestRoute = () => {
             </div>
           </div>
         </div>
-      )}
+      }
     </>
   );
 };
