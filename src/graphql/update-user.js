@@ -9,14 +9,38 @@ export const UPDATE_USER = gql`
       password {
         isSet
       }
-      watched {
-        id
-        title
-      }
       wishlist {
         id
         title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
       }
+      wishlistCount
+      watched {
+        id
+        title
+        runtime
+        releaseYear
+        keywords {
+          name
+        }
+        description
+        tomatoScore
+        photo {
+          url
+        }
+        howToWatch
+      }
+      watchedCount
     }
   }
 `;

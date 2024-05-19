@@ -1,7 +1,6 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useMutation } from "@apollo/client";
 import styled from "styled-components";
-import { GET_MOVIES, GET_USER_WATCHLIST, UPDATE_USER } from "../graphql";
+import { GET_MOVIES, UPDATE_USER } from "../graphql";
 import { UPDATE_MOVIE_STATUS } from "../graphql/mutations/";
 import { useCurrentUser } from "../hooks";
 import backArrow from "../images/back-arrow.svg";
@@ -46,11 +45,7 @@ export const MoviePreviewModal = ({
     UPDATE_MOVIE_STATUS,
     { refetchQueries: [GET_MOVIES] }
   );
-  const { data: userWatchListData } = useQuery(GET_USER_WATCHLIST, {
-    variables: { where: { id: currentUser?.id } },
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-  });
+
   const [updateUser, {}] = useMutation(UPDATE_USER, {});
 
   const isWatchedClicked = currentUser?.watched?.some(
@@ -68,19 +63,6 @@ export const MoviePreviewModal = ({
       },
     });
   };
-
-  // set initial 'watched' and 'want' arrays in currentUser
-  useEffect(() => {
-    if (userWatchListData?.user) {
-      setCurrentUser((prev) => {
-        return {
-          ...prev,
-          watched: userWatchListData.user.watched,
-          wishlist: userWatchListData.user.wishlist,
-        };
-      });
-    }
-  }, [userWatchListData, selectedMovie]);
 
   const handleWatchedClick = () => {
     // if user has not watched
@@ -222,7 +204,7 @@ export const MoviePreviewModal = ({
           <p className="text-lg/5">{movie.description}</p>
         </div>
         <div className="flex gap-x-2">
-          {movie.keywords.map((keyword, index) => (
+          {movie.keywords?.map((keyword, index) => (
             <Keyword
               className={"bg-yellow"}
               key={index}
