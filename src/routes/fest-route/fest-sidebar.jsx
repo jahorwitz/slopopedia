@@ -14,6 +14,8 @@ export const FestSidebar = ({ festQuery }) => {
   const { openModal, closeModal } = useModals();
   const festId = useParams().festId;
   const navigate = useNavigate();
+  const festCreatorId = festQuery?.data?.fest?.creator?.id;
+  const isFestCreator = currentUser.id === festCreatorId;
 
   // Mutation to remove fests from server
   const [deleteFest, { data, loading, error }] = useMutation(DELETE_FEST, {
@@ -64,17 +66,19 @@ export const FestSidebar = ({ festQuery }) => {
           {sidebarItems.map((item, index) => (
             <Sidebar.Item key={index} link={item.link} title={item.title} />
           ))}
-          <Button
-            variant="link-secondary"
-            className={"ml-5"}
-            size="link"
-            onClick={openEditModal}
-          >
-            Edit dates & guests
-          </Button>
+          {isFestCreator && (
+            <Button
+              variant="link-secondary"
+              className={"ml-5"}
+              size="link"
+              onClick={openEditModal}
+            >
+              Edit dates & guests
+            </Button>
+          )}
         </Sidebar>
       </div>
-      {currentUser.id === festQuery.data.fest.creator?.id ? (
+      {isFestCreator ? (
         <div>
           <Button
             type="button"
