@@ -1,10 +1,12 @@
 import { useQuery } from "@apollo/client";
 import { Footer, Post } from "../../components/index.js";
 import { GET_BLOG_POSTS } from "../../graphql/queries/blog/posts.js";
+import { useCurrentUser } from "../../hooks/use-current-user.js";
 import purpleGoblin from "../../images/purple-goblin.png";
 import { formatDateTime } from "../../utils/constants.js";
 
 export const Articles = () => {
+  const { isLoggedIn } = useCurrentUser();
   const { data, loading, error } = useQuery(GET_BLOG_POSTS, {
     variables: {
       where: {
@@ -19,14 +21,16 @@ export const Articles = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto">
-      <div className="flex mt-10 justify-end mr-32">
-        <a href="/draft" className="underline">
-          Drafts
-        </a>
-        <a href="/articles/create" className="underline ml-5">
-          + New Entry
-        </a>
-      </div>
+      {isLoggedIn && (
+        <div className="flex mt-10 justify-end mr-32">
+          <a href="/draft" className="underline">
+            Drafts
+          </a>
+          <a href="/articles/create" className="underline ml-5">
+            + New Entry
+          </a>
+        </div>
+      )}
       <div className="w-full mx-auto pt-10 pb-20 flex flex-col">
         <div>
           {data.posts.map((post, index) => {
