@@ -8,9 +8,11 @@ import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import {
   CREATE_POST,
+  DELETE_POST,
   GET_BLOG_POST,
   GET_KEYWORDS,
   GET_MOVIES,
+  MODIFY_POST,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
 
