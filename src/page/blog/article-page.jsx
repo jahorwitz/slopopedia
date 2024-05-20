@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -68,6 +68,12 @@ export const Article = () => {
       movies: [],
     },
   });
+
+  // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
+  useEffect(() => {
+    setValue("keywords", postData?.post?.keywords || []);
+    setValue("movies", postData?.post?.movies || []);
+  }, [postData]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
