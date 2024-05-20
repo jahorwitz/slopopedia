@@ -48,7 +48,7 @@ export const SubmitSlopForm = () => {
       runtime: "",
       tomatoScore: "",
       howToWatch: "",
-      keywords: "",
+      keywords: [],
     },
   });
 
@@ -285,7 +285,7 @@ export const SubmitSlopForm = () => {
           setValue={setValue}
           labelText={"Keywords"}
           placeholder={"Choose Keywords"}
-          id={"Keywords"}
+          id={"keywords"}
           nameKey={"name"}
           idKey={"name"}
           name={"Keywords"}
