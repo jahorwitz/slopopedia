@@ -274,6 +274,7 @@ Form.Combobox = ({
 
   const [selectedItems, setSelectedItems] = useState(null);
   const handleChange = (data) => {
+    console.log(data);
     const itemIds = data.map((item) => item.id);
     const duplicateIds = itemIds.filter(
       (item, index) => itemIds.indexOf(item) !== index
@@ -290,7 +291,7 @@ Form.Combobox = ({
         {labelText}
       </label>
       <Combobox
-        value={selectedItems || watch(id)}
+        value={selectedItems || watch(id) || []}
         onChange={handleChange}
         multiple
         nullable
