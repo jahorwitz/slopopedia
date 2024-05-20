@@ -57,7 +57,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       name: "",
       startDate: "",
       endDate: "",
-      invitees: fest?.data?.fest?.invitees || [],
+      invitees: [],
+      //invitees: fest?.data?.fest?.invitees || [],
     },
   });
 
@@ -70,6 +71,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const userOptions = users.map((user) => ({
     username: user.username,
   }));
+
+  console.log(userOptions);
 
   const onSubmit = () => {
     const { name, invitees, startDate, endDate } = getValues();
@@ -204,10 +207,12 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
             watch={watch}
             labelText={"Goblins Invited"}
             id={"invitees"}
-            list={userOptions}
+            placeholder={"Choose Invitees"}
+            list={users}
             nameKey={"username"}
             idKey={"username"}
             name={"invitees"}
+            multiple
           />
           <Form.Submit
             title={buttonTitle}

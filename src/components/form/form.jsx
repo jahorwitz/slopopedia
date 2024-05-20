@@ -261,7 +261,6 @@ Form.Combobox = ({
   ...rest
 }) => {
   //const [selectedItems, setSelectedItems] = useState([]);
-  // console.log(watch(id));
   // console.log(selectedItems);
 
   // useEffect(() => {
@@ -271,7 +270,6 @@ Form.Combobox = ({
   //     setSelectedItems(itemNames);
   //   }
   // });
-
   const [selectedItems, setSelectedItems] = useState(null);
   const handleChange = (data) => {
     console.log(data);
@@ -304,7 +302,9 @@ Form.Combobox = ({
           >
             <Combobox.Input
               displayValue={(list) =>
-                list.map((item) => item.name || item.title).join(", ")
+                list
+                  .map((item) => item.name || item.title || item.username)
+                  .join(", ")
               }
               placeholder={placeholder}
               className="font-normal bg-background border-none focus:outline-none flex-grow flex-shrink-0 w-16"
