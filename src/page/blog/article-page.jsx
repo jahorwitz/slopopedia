@@ -22,7 +22,7 @@ export const Article = ({ type }) => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data } = useQuery(GET_BLOG_POST, {
+  const { data: postData } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
@@ -55,10 +55,10 @@ export const Article = ({ type }) => {
       },
     },
   });
-  const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
+  const keywordsPrefills = postData?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
   }));
-  const moviesPrefills = data?.post?.movies?.map((movie) => ({
+  const moviesPrefills = postData?.post?.movies?.map((movie) => ({
     title: movie.title,
   }));
   // const keywordsOptions = keywordsData?.keywords.map((keyword) => ({
@@ -82,27 +82,16 @@ export const Article = ({ type }) => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: data?.post?.keywords,
-      movies: data?.post?.movies,
+      keywords: [],
+      movies: [],
     },
   });
 
   // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
   useEffect(() => {
-    setValue("keywords", data?.post?.keywords || []);
-    setValue("movies", data?.post?.movies || []);
-  }, [data]);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log(data);
-
-  //     setValue("keywords", data?.post?.keywords, { shouldValidate: true });
-  //     setValue("movies", data?.post?.movies, {
-  //       shouldValidate: true,
-  //     });
-  //   }
-  // }, [data]);
+    setValue("keywords", postData?.post?.keywords || []);
+    setValue("movies", postData?.post?.movies || []);
+  }, [postData]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
@@ -246,7 +235,7 @@ export const Article = ({ type }) => {
               labelText={"Title"}
               placeholder={`Title`}
               id="title"
-              prefilledInputs={data?.post?.title}
+              prefilledInputs={postData?.post?.title}
               onChange={(e) =>
                 setValue("title", e.target.value, { shouldValidate: true })
               }
@@ -267,7 +256,7 @@ export const Article = ({ type }) => {
                   shouldValidate: true,
                 })
               }
-              prefilledInputs={data?.post?.content}
+              prefilledInputs={postData?.post?.content}
               register={register("content", {
                 required: type === "new",
                 pattern: {
@@ -277,7 +266,7 @@ export const Article = ({ type }) => {
               })}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3 z-10"
+              className="flex-grow z-10"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
               list={keywordsOptions}
@@ -289,7 +278,6 @@ export const Article = ({ type }) => {
               id={"keywords"}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3"
               labelText={"Slops"}
               placeholder={"Add topical slops"}
               list={moviesOptions}
