@@ -260,19 +260,8 @@ Form.Combobox = ({
   setValue,
   ...rest
 }) => {
-  //const [selectedItems, setSelectedItems] = useState([]);
-  // console.log(selectedItems);
-
-  // useEffect(() => {
-  //   if (watch) {
-  //     const itemNames = watch(id);
-  //     console.log(itemNames);
-  //     setSelectedItems(itemNames);
-  //   }
-  // });
   const [selectedItems, setSelectedItems] = useState(null);
   const handleChange = (data) => {
-    console.log(data);
     const itemIds = data.map((item) => item.id);
     const duplicateIds = itemIds.filter(
       (item, index) => itemIds.indexOf(item) !== index

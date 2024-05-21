@@ -114,7 +114,6 @@ export const Article = () => {
 
   const onPublish = handleSubmit(() => {
     const { title, content, keywords, movies } = getValues();
-    console.log(title, content, keywords, movies);
 
     createPost({
       variables: {
@@ -162,16 +161,6 @@ export const Article = () => {
       shouldValidate: true,
     });
   };
-
-  // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
-  // useEffect(() => {
-  //   if (postData?.post) {
-  //     const keywordNames = postData.post.keywords.map((item) => item.name);
-  //     const movieTitles = postData.post.movies.map((item) => item.title);
-  //     setValue("keywords", keywordNames || []);
-  //     setValue("movies", movieTitles || []);
-  //   }
-  // }, [postData]);
 
   return (
     <>
