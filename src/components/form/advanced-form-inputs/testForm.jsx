@@ -21,11 +21,11 @@ function TestForm() {
       password: "",
     },
     /* 
-                                                        Criteria mode for error handling.
-                                                        When it is set to all, all errors thrown will be shown at the same time.
-                                                        can also be set to "firstError" which will only show the first 
-                                                        error that is thrown by the form
-                                                    */
+                                                                                                Criteria mode for error handling.
+                                                                                                When it is set to all, all errors thrown will be shown at the same time.
+                                                                                                can also be set to "firstError" which will only show the first 
+                                                                                                error that is thrown by the form
+                                                                                            */
     criteriaMode: "all",
   });
 
@@ -144,7 +144,7 @@ function TestForm() {
         step="1"
         watch={watch("age")}
       />
-      <Dropzone {...register("Files")} />
+      <Dropzone control={control} name="files" />
       <div className="flex flex-col gap-3">
         <span className="text-xl font-bold">Pick one...</span>
         <Radio value="foo" label="Foo" {...register("fooBarBuzz")} />
