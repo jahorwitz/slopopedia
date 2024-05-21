@@ -141,7 +141,13 @@ export const Article = ({ type }) => {
           },
         },
       })
-        .then(() => onSuccessful())
+        .then(() => {
+          if (status === "published") {
+            onSuccessful();
+          } else {
+            router("/draft");
+          }
+        })
         .catch((err) => {
           console.error(err, "Could not create blog.");
         });
