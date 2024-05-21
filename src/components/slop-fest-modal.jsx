@@ -14,9 +14,6 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const { closeModal } = useModals();
   const festId = fest?.data?.fest?.id;
   const inviteesBefore = fest?.data?.fest?.invitees;
-
-  console.log(fest);
-
   const festStart = new Date(fest?.data?.fest?.startDate);
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
@@ -75,8 +72,6 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const userOptions = users.map((user) => ({
     username: user.username,
   }));
-
-  console.log(userOptions);
 
   const onSubmit = () => {
     const { name, invitees, startDate, endDate } = getValues();
