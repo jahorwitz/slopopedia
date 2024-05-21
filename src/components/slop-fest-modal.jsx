@@ -22,6 +22,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
     if (location?.pathname === `/fests/${festId}`) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
+      setValue("name", fest?.data?.fest?.name);
     }
   }, [fest?.data]);
 
@@ -106,7 +107,6 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
           },
         }).then((e) => {
           closeModal("edit-fest");
-          e.preventDefault();
         });
       } catch (error) {
         console.log(`Error: ${error.message}`);
