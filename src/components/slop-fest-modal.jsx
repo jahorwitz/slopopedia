@@ -15,6 +15,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const festId = fest?.data?.fest?.id;
   const inviteesBefore = fest?.data?.fest?.invitees;
 
+  console.log(fest);
+
   const festStart = new Date(fest?.data?.fest?.startDate);
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
@@ -23,6 +25,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
       setValue("name", fest?.data?.fest?.name);
+      setValue("invitees", inviteesBefore);
     }
   }, [fest?.data]);
 
