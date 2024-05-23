@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
+import { DeleteConfirmationModal } from "../../components/index.js";
 import { Button } from "../../components/button";
 import { Footer } from "../../components/index.js";
 import {
@@ -14,9 +15,10 @@ import {
   GET_MOVIES,
   MODIFY_POST,
 } from "../../graphql";
-import { useCurrentUser } from "../../hooks";
+import { useCurrentUser, useModals } from "../../hooks";
 
 export const Article = ({ type }) => {
+  const {openModal, closeModal} = useModals();
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -208,6 +210,10 @@ export const Article = ({ type }) => {
     setValue("movies", []);
   };
 
+function openDeleteConfirmationModal() {
+    openModal(<DeleteConfirmationModal confirmButtonAction={onDelete} />);
+  }
+
   const onDelete = () => {
     if (currentUser.id === data.post.author.id) {
       // delete blog post from server
@@ -223,6 +229,7 @@ export const Article = ({ type }) => {
         } else if (data?.post?.status === "draft") {
           router(`/draft`);
         }
+        closeModal();
       });
     }
   };
@@ -233,7 +240,7 @@ export const Article = ({ type }) => {
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
           {type === "edited" && (
             <button
-              onClick={onDelete}
+              onClick={openDeleteConfirmationModal}
               className=" absolute top-10 right-10 bg-transparent text-danger font-bold text-lg mt-10"
             >
               Delete
