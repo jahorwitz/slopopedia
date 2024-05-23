@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
-import { DeleteConfirmationModal } from "../../components/index.js";
 import { Button } from "../../components/button";
-import { Footer } from "../../components/index.js";
+import { DeleteConfirmationModal, Footer } from "../../components/index.js";
 import {
   CREATE_POST,
   DELETE_POST,
@@ -18,7 +17,7 @@ import {
 import { useCurrentUser, useModals } from "../../hooks";
 
 export const Article = ({ type }) => {
-  const {openModal, closeModal} = useModals();
+  const { openModal, closeModal } = useModals();
   const { id } = useParams();
   const router = useNavigate();
   const [successful, setSuccessful] = useState(false);
@@ -210,7 +209,7 @@ export const Article = ({ type }) => {
     setValue("movies", []);
   };
 
-function openDeleteConfirmationModal() {
+  function openDeleteConfirmationModal() {
     openModal(<DeleteConfirmationModal confirmButtonAction={onDelete} />);
   }
 
