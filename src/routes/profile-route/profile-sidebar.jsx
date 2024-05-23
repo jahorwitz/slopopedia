@@ -25,7 +25,7 @@ export const ProfileSidebar = () => {
       link: "/profile/fests",
     },
     {
-      title: "Recommended-A-Slop",
+      title: "Recommend-A-Slop",
       src: sidebarHeart,
       link: "/profile/recommend",
     },
