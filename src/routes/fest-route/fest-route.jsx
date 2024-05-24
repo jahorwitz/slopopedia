@@ -1,18 +1,16 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useMemo } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Button, Header, Loading, MovieCardList } from "../../components";
 import { GET_FEST, GET_MOVIES } from "../../graphql/";
 import { UPDATE_FEST } from "../../graphql/mutations/fest";
-import { useCurrentUser, useModals } from "../../hooks";
+import { useModals } from "../../hooks";
 import magGlassDark from "../../images/mag-glass-black.svg";
 import { FestHeader, FestModal, FestSidebar } from "../fest-route";
 
 export const FestRoute = () => {
-  const { currentUser } = useCurrentUser();
   const { festId } = useParams();
   const { openModal, closeModal } = useModals();
-  const router = useNavigate();
 
   // Fest Query to pull fests from server
   const festQuery = useQuery(GET_FEST, {
