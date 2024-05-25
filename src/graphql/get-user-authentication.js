@@ -8,6 +8,38 @@ export const GET_USER_AUTHENTICATION = gql`
         id
         email
         isAdmin
+        wishlist {
+          id
+          title
+          runtime
+          releaseYear
+          keywords {
+            name
+          }
+          description
+          tomatoScore
+          photo {
+            url
+          }
+          howToWatch
+        }
+        wishlistCount
+        watched {
+          id
+          title
+          runtime
+          releaseYear
+          keywords {
+            name
+          }
+          description
+          tomatoScore
+          photo {
+            url
+          }
+          howToWatch
+        }
+        watchedCount
       }
     }
   }

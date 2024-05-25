@@ -18,13 +18,26 @@ export const ProfileFestsRoute = () => {
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
       where: {
-        invitees: {
-          some: {
-            id: {
-              equals: currentUser.id,
+        OR: [
+          {
+            invitees: {
+              some: {
+                id: {
+                  equals: currentUser.id,
+                },
+              },
             },
           },
-        },
+          {
+            attendees: {
+              some: {
+                id: {
+                  equals: currentUser.id,
+                },
+              },
+            },
+          },
+        ],
       },
     },
   });
@@ -46,6 +59,9 @@ export const ProfileFestsRoute = () => {
             attendees: {
               connect: [{ id: currentUser.id }],
             },
+            invitees: {
+              disconnect: [{ id: currentUser.id }],
+            },
           },
           where: {
             id: fest.id,
@@ -56,6 +72,9 @@ export const ProfileFestsRoute = () => {
       updateFest({
         variables: {
           data: {
+            invitees: {
+              connect: [{ id: currentUser.id }],
+            },
             attendees: {
               disconnect: [{ id: currentUser.id }],
             },
