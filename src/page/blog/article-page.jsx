@@ -105,8 +105,8 @@ export const Article = ({ type }) => {
   // handler for clicking the 'Save to Drafts' or 'Publish!' button
   const onSubmit = (status) => {
     const { title, content, keywords, movies } = getValues();
-    const newKeywords = keywords || data?.post?.keywords;
-    const newMovies = movies || data?.post?.movies;
+    const newKeywords = keywords || postData?.post?.keywords;
+    const newMovies = movies || postData?.post?.movies;
     if (type === "new") {
       // create a blog using the form's inputs
       createPost({
@@ -131,22 +131,28 @@ export const Article = ({ type }) => {
           },
         },
       })
-        .then(() => onSuccessful())
+        .then(() => {
+          if (status === "published") {
+            onSuccessful();
+          } else {
+            router("/draft");
+          }
+        })
         .catch((err) => {
           console.error(err, "Could not create blog.");
         });
     } else if (type === "edited") {
       // edit and update a blog using the form's inputs
-      const oldKeywords = data?.post?.keywords || [];
-      const oldMovies = data?.post?.movies || [];
+      const oldKeywords = postData?.post?.keywords || [];
+      const oldMovies = postData?.post?.movies || [];
       updatePost({
         variables: {
           where: {
             id: id,
           },
           data: {
-            title: title || data?.post?.title,
-            content: content || data?.post?.content,
+            title: title || postData?.post?.title,
+            content: content || postData?.post?.content,
             keywords: {
               disconnect: oldKeywords.map((keyword) => ({
                 id: keyword.id,
@@ -203,7 +209,7 @@ export const Article = ({ type }) => {
   }
 
   const onDelete = () => {
-    if (currentUser.id === data.post.author.id) {
+    if (currentUser.id === postData.post.author.id) {
       // delete blog post from server
       deletePost({
         variables: {
@@ -212,9 +218,9 @@ export const Article = ({ type }) => {
           },
         },
       }).then(() => {
-        if (data?.post?.status === "published") {
+        if (postData?.post?.status === "published") {
           router("/articles");
-        } else if (data?.post?.status === "draft") {
+        } else if (postData?.post?.status === "draft") {
           router(`/draft`);
         }
         closeModal();

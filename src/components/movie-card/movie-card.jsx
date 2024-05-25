@@ -29,7 +29,7 @@ export function MovieCard({
   const card = {
     image: movieInfo?.photo,
     title: movieInfo?.title,
-    keywords: movieInfo?.keywords,
+    keywords: movieInfo?.keywords || [],
     releaseYear: movieInfo?.releaseYear,
     runtimeInMinutes: movieInfo?.runtime,
     rottenTomatoesScore: movieInfo?.rottenTomatoesScore,
@@ -94,7 +94,7 @@ export function MovieCard({
             containerSize === "small" &&
               "object-contain h-[120px] self-baseline xs:self-center"
           )}
-          src={card.image === null ? purpleGoblin : card.image.url}
+          src={!card.image ? purpleGoblin : card.image?.url}
           onClick={() => handleMovieClick()}
         />
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
@@ -128,7 +128,7 @@ export function MovieCard({
             )}
           </>
         )}
-        {!!card.keywords && (
+        {card.keywords && (
           <div
             // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
             className={
