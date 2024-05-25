@@ -45,6 +45,20 @@ export const ClientContextProvider = ({ children }) => {
                 },
               },
             },
+            Fest: {
+              fields: {
+                attendees: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
+                invitees: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
+              },
+            },
           },
         }),
       })
