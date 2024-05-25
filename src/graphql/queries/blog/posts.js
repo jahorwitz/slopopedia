@@ -17,8 +17,10 @@ export const GET_BLOG_POSTS = gql`
       movies {
         title
         description
+        id
       }
       createdAt
+      status
     }
   }
 `;
@@ -39,6 +41,7 @@ export const GET_BLOG_POST = gql`
       movies {
         title
         description
+        id
       }
       createdAt
       status
@@ -52,9 +55,20 @@ export const GET_DRAFT_POSTS = gql`
       title
       author {
         username
+        id
+      }
+      keywords {
+        name
+        id
+      }
+      movies {
+        title
+        description
+        id
       }
       createdAt
       id
+      status
     }
   }
 `;

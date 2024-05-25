@@ -56,7 +56,7 @@ export const Review = ({ id }) => {
         });
       }
     }
-  }, [data]);
+  }, [data, currentUser]);
 
   const onEdit = () => {
     if (currentUser.id === data.post.author.id) {
@@ -81,7 +81,10 @@ export const Review = ({ id }) => {
 
   post.keywords.forEach((keyword) => {
     keywordsList.push(
-      <Button className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center mb-0 py-0 px-2">
+      <Button
+        key={keyword.id}
+        className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center mb-0 py-0 px-2"
+      >
         {`${keyword?.name}`}
       </Button>
     );
