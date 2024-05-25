@@ -61,3 +61,51 @@ export function formatDateTime(dateTimeString) {
   const formattedDateTime = date.toLocaleDateString("en-US", options);
   return formattedDateTime;
 }
+
+// Custom merge function
+export const mergeObject = {
+  typePolicies: {
+    Post: {
+      fields: {
+        keywords: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+        movies: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+    User: {
+      fields: {
+        watched: {
+          merge(existing, incoming, { mergeObjects }) {
+            return incoming;
+          },
+        },
+        wishlist: {
+          merge(existing, incoming, { mergeObjects }) {
+            return incoming;
+          },
+        },
+      },
+    },
+    Fest: {
+      fields: {
+        attendees: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+        invitees: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+};
