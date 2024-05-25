@@ -1,6 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { useEffect, useState } from "react";
+import { mergeObject } from "../utils/constants";
 import { ClientContext } from "./client-context";
 
 export const ClientContextProvider = ({ children }) => {
@@ -28,39 +29,7 @@ export const ClientContextProvider = ({ children }) => {
     setClient(
       new ApolloClient({
         link: authLink.concat(httpLink),
-        cache: new InMemoryCache({
-          // Custom merge function
-          typePolicies: {
-            Post: {
-              fields: {
-                keywords: {
-                  merge(existing, incoming) {
-                    return incoming;
-                  },
-                },
-                movies: {
-                  merge(existing, incoming) {
-                    return incoming;
-                  },
-                },
-              },
-            },
-            User: {
-              fields: {
-                watched: {
-                  merge(existing, incoming, { mergeObjects }) {
-                    return incoming;
-                  },
-                },
-                wishlist: {
-                  merge(existing, incoming, { mergeObjects }) {
-                    return incoming;
-                  },
-                },
-              },
-            },
-          },
-        }),
+        cache: new InMemoryCache(mergeObject),
       })
     );
   }, [token]);

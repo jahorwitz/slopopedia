@@ -8,7 +8,7 @@ import sidebarHeart from "../../images/sidebar-heart.svg";
 import sidebarWrench from "../../images/sidebar-wrench.svg";
 
 export const ProfileSidebar = () => {
-  const { setIsLoggedIn, setCurrentUser } = useCurrentUser();
+  const { setIsLoggedIn } = useCurrentUser();
   const { setToken, client } = useClient();
   const [endSession, { data, loading, error }] = useMutation(END_SESSION, {
     refetchQueries: [GET_USER_AUTHENTICATION],
