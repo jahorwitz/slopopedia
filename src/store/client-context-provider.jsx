@@ -29,7 +29,22 @@ export const ClientContextProvider = ({ children }) => {
       new ApolloClient({
         link: authLink.concat(httpLink),
         cache: new InMemoryCache({
+          // Custom merge function
           typePolicies: {
+            Post: {
+              fields: {
+                keywords: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
+                movies: {
+                  merge(existing, incoming) {
+                    return incoming;
+                  },
+                },
+              },
+            },
             User: {
               fields: {
                 watched: {
