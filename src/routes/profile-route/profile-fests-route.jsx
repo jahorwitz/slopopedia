@@ -128,7 +128,7 @@ export const ProfileFestsRoute = () => {
                 return (
                   <div
                     key={fest.id}
-                    className="flex flex-row justify-between mb-5 border-b border-black"
+                    className="flex flex-row justify-between mb-5 border-b border-black relative"
                   >
                     <div className="mb-5">
                       <h3 className="font-arialBold mb-2.5">
@@ -176,11 +176,11 @@ export const ProfileFestsRoute = () => {
                         variant={
                           attendeeStatus ? "secondary" : "outline-secondary"
                         }
-                        className={
+                        className={`absolute right-0 ${
                           festDateInFuture
                             ? "flex flex-row mb-5 h-10"
                             : "flex flex-row mb-5 h-10 cursor-auto"
-                        }
+                        }`}
                         size="sm"
                         onClick={
                           festDateInFuture
