@@ -94,7 +94,11 @@ export const ProfileFestsRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <section className="flex max-w-[1440px] min-h-[1023px] bg-gray-background">
+      <section
+        className={`flex  max-w-[1440px] min-h-[1023px] bg-gray-background ${
+          isDesktopSize ? "" : "items-center flex-col"
+        }`}
+      >
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
         <div className="flex flex-col w-[712px] mt-10">
           <div className="flex flex-row items-center justify-between pb-10">
