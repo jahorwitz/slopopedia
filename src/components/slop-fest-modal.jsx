@@ -14,7 +14,6 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
   const { closeModal } = useModals();
   const festId = fest?.data?.fest?.id;
   const inviteesBefore = fest?.data?.fest?.invitees;
-
   const festStart = new Date(fest?.data?.fest?.startDate);
   const festEnd = new Date(fest?.data?.fest?.endDate);
 
@@ -23,6 +22,7 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       setValue("startDate", festStart);
       setValue("endDate", festEnd);
       setValue("name", fest?.data?.fest?.name);
+      setValue("invitees", inviteesBefore);
     }
   }, [fest?.data]);
 
@@ -58,7 +58,8 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
       name: "",
       startDate: "",
       endDate: "",
-      invitees: fest?.data?.fest?.invitees || [],
+      invitees: [],
+      //invitees: fest?.data?.fest?.invitees || [],
     },
   });
 
@@ -204,10 +205,12 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
             watch={watch}
             labelText={"Goblins Invited"}
             id={"invitees"}
-            list={userOptions}
+            placeholder={"Choose Invitees"}
+            list={users}
             nameKey={"username"}
             idKey={"username"}
             name={"invitees"}
+            multiple
           />
           <Form.Submit
             title={buttonTitle}
