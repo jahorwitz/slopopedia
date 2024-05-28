@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -12,6 +12,7 @@ import {
   GET_BLOG_POST,
   GET_KEYWORDS,
   GET_MOVIES,
+  MODIFY_POST,
 } from "../../graphql";
 import { useCurrentUser } from "../../hooks";
 
@@ -21,7 +22,7 @@ export const Article = ({ type }) => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data } = useQuery(GET_BLOG_POST, {
+  const { data: postData } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
@@ -41,6 +42,9 @@ export const Article = ({ type }) => {
     },
   });
 
+  const [updatePost, {}] = useMutation(MODIFY_POST, {
+    refetchQueries: [GET_BLOG_POST],
+  });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
   const { data: moviesData } = useQuery(GET_MOVIES, {
     variables: {
@@ -51,10 +55,10 @@ export const Article = ({ type }) => {
       },
     },
   });
-  const keywordsPrefills = data?.post?.keywords?.map((keyword) => ({
+  const keywordsPrefills = postData?.post?.keywords?.map((keyword) => ({
     name: keyword.name,
   }));
-  const moviesPrefills = data?.post?.movies?.map((movie) => ({
+  const moviesPrefills = postData?.post?.movies?.map((movie) => ({
     title: movie.title,
   }));
   // const keywordsOptions = keywordsData?.keywords.map((keyword) => ({
@@ -78,111 +82,129 @@ export const Article = ({ type }) => {
     defaultValues: {
       title: "",
       content: "",
-      keywords: data?.post?.keywords,
-      movies: data?.post?.movies,
+      keywords: [],
+      movies: [],
     },
   });
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log(data);
 
-  //     setValue("keywords", data?.post?.keywords, { shouldValidate: true });
-  //     setValue("movies", data?.post?.movies, {
-  //       shouldValidate: true,
-  //     });
-  //   }
-  // }, [data]);
+  // fill in the values from the database for the 'keywords' and 'movies' dropdown boxes
+  useEffect(() => {
+    setValue("keywords", postData?.post?.keywords || []);
+    setValue("movies", postData?.post?.movies || []);
+  }, [postData]);
 
   if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
+  // conditionally render the success display visible
   const onSuccessful = () => {
     setSuccessful(true);
   };
 
-  const onDraft = handleSubmit(() => {
+  // handler for clicking the 'Save to Drafts' or 'Publish!' button
+  const onSubmit = (status) => {
     const { title, content, keywords, movies } = getValues();
-    createPost({
-      variables: {
-        data: {
-          title: title,
-          content: content,
-          keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
+    const newKeywords = keywords || postData?.post?.keywords;
+    const newMovies = movies || postData?.post?.movies;
+    if (type === "new") {
+      // create a blog using the form's inputs
+      createPost({
+        variables: {
+          data: {
+            title: title,
+            content: content,
+            keywords: {
+              connect: newKeywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+            },
+            movies: {
+              connect: newMovies.map((movie) => ({
+                id: movie.id,
+              })),
+            },
+            author: {
+              connect: { username: currentUser.username },
+            },
+            status: status,
           },
-          movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
-          },
-          author: {
-            connect: { username: currentUser.username },
-          },
-          status: "draft",
         },
-      },
-    })
-      .then(() => onSuccessful())
-      .catch((err) => {
-        console.error(err);
-      });
+      })
+        .then(() => {
+          if (status === "published") {
+            onSuccessful();
+          } else {
+            router("/draft");
+          }
+        })
+        .catch((err) => {
+          console.error(err, "Could not create blog.");
+        });
+    } else if (type === "edited") {
+      // edit and update a blog using the form's inputs
+      const oldKeywords = postData?.post?.keywords || [];
+      const oldMovies = postData?.post?.movies || [];
+      updatePost({
+        variables: {
+          where: {
+            id: id,
+          },
+          data: {
+            title: title || postData?.post?.title,
+            content: content || postData?.post?.content,
+            keywords: {
+              disconnect: oldKeywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+              connect: newKeywords.map((keyword) => ({
+                id: keyword.id,
+              })),
+            },
+            movies: {
+              disconnect: oldMovies.map((movie) => ({
+                id: movie.id,
+              })),
+              connect: newMovies.map((movie) => ({
+                id: movie.id,
+              })),
+            },
+            status: status,
+          },
+        },
+      })
+        .then(() => {
+          // route to either the /articles or /draft endpoint
+          if (status === "published") {
+            router("/articles");
+          } else {
+            router("/draft");
+          }
+        })
+        .catch((err) => {
+          console.error(err, "Could not update blog.");
+        });
+    }
+  };
+
+  const onDraft = handleSubmit(() => {
+    onSubmit("draft");
   });
 
   const onPublish = handleSubmit(() => {
-    const { title, content, keywords, movies } = getValues();
-    console.log(title, content, keywords, movies);
-
-    createPost({
-      variables: {
-        data: {
-          title: title,
-          content: content,
-          keywords: {
-            connect: keywords.map((keyword) => ({
-              id: keyword.id,
-            })),
-          },
-          movies: {
-            connect: movies.map((movie) => ({
-              id: movie.id,
-            })),
-          },
-          author: {
-            connect: { username: currentUser.username },
-          },
-          status: "published",
-        },
-      },
-    })
-      .then(() => onSuccessful())
-      .catch((err) => {
-        console.error(err);
-      });
+    onSubmit("published");
   });
-  // Should turn the onPublish and onDraft
-  // into just one function that takes in a paramter
-  // but I was having trouble with passing a variable into a
-  // mutation
 
   // redirects the user back to a new empty form after selecting submit another
   const submitAnother = () => {
     setSuccessful(false);
-    // setValue({
-    //   title: "",
-    //   content: "",
-    //   keywords: [],
-    //   movies: [],
-    // });
-    setValue("title", data?.post?.title, { shouldValidate: true });
-    setValue("content", data?.post?.content, {
-      shouldValidate: true,
-    });
+    setValue("title", "");
+    setValue("content", "");
+    setValue("keywords", []);
+    setValue("movies", []);
   };
 
   const onDelete = () => {
-    if (currentUser.id === data.post.author.id) {
+    if (currentUser.id === postData.post.author.id) {
       // delete blog post from server
       deletePost({
         variables: {
@@ -191,9 +213,9 @@ export const Article = ({ type }) => {
           },
         },
       }).then(() => {
-        if (data?.post?.status === "published") {
+        if (postData?.post?.status === "published") {
           router("/articles");
-        } else if (data?.post?.status === "draft") {
+        } else if (postData?.post?.status === "draft") {
           router(`/draft`);
         }
       });
@@ -219,13 +241,13 @@ export const Article = ({ type }) => {
               labelText={"Title"}
               placeholder={`Title`}
               id="title"
-              prefilledInputs={data?.post?.title}
+              prefilledInputs={postData?.post?.title}
               onChange={(e) =>
                 setValue("title", e.target.value, { shouldValidate: true })
               }
               isValid={!errors.title}
               register={register("title", {
-                required: true,
+                required: type === "new",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",
@@ -240,9 +262,9 @@ export const Article = ({ type }) => {
                   shouldValidate: true,
                 })
               }
-              prefilledInputs={data?.post?.content}
+              prefilledInputs={postData?.post?.content}
               register={register("content", {
-                required: true,
+                required: type === "new",
                 pattern: {
                   value: /^\S/,
                   message: "Must not start with a space",
@@ -250,7 +272,7 @@ export const Article = ({ type }) => {
               })}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3 z-10"
+              className="flex-grow z-10"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
               list={keywordsOptions}
@@ -262,7 +284,6 @@ export const Article = ({ type }) => {
               id={"keywords"}
             />
             <Form.Combobox
-              className="relative flex justify-center font-bold font-arial flex-col py-3"
               labelText={"Slops"}
               placeholder={"Add topical slops"}
               list={moviesOptions}
