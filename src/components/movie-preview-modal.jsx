@@ -176,7 +176,7 @@ export const MoviePreviewModal = ({
     howToWatch: selectedMovie.howToWatch,
   };
 
-console.log(selectedMovie)
+  console.log(selectedMovie);
 
   return (
     <Modal whiteButton={whiteButton}>
