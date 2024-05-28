@@ -45,3 +45,28 @@ export const DELETE_POST = gql`
     }
   }
 `;
+
+export const MODIFY_POST = gql`
+  mutation ModifyPost($where: PostWhereUniqueInput!, $data: PostUpdateInput!) {
+    updatePost(where: $where, data: $data) {
+      id
+      title
+      content
+      keywords {
+        name
+        id
+      }
+      movies {
+        title
+        description
+        id
+      }
+      author {
+        username
+        id
+      }
+      createdAt
+      status
+    }
+  }
+`;

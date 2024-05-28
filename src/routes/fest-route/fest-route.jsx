@@ -41,7 +41,6 @@ export const FestRoute = () => {
     const movieIds = movies.map((movie) => {
       return { id: movie.id };
     });
-
     updateFest({
       variables: {
         where: { id: festId },
@@ -99,74 +98,76 @@ export const FestRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className="max-w-[1200px] my-0 mx-auto box-border">
-        {!festQuery.loading && festQuery?.data?.fest && (
-          <FestHeader fest={festQuery.data.fest} />
-        )}
-        <div className="flex gap-x-24">
+      {
+        <div className="max-w-[1200px] my-0 mx-auto box-border">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar festQuery={festQuery} />
+            <FestHeader fest={festQuery.data.fest} />
           )}
-          <div className="w-full flex flex-col gap-y-8">
-            <div className="flex justify-between items-center">
-              {!festQuery.loading && movies && movies?.length > 0 && (
-                <h2 className="font-arial text-lg/4 font-bold">
-                  Slops for this fest
-                </h2>
-              )}
-              {!festQuery.loading && movies && movies?.length === 0 && (
-                <h2 className="font-arial text-lg/4 font-bold">
-                  {"No slops for this fest yet :("}
-                </h2>
-              )}
-              <Button
-                className="font-normal flex gap-x-2.5"
-                size="sm"
-                variant="outline-secondary"
-                onClick={openAddMovieModal}
-              >
-                <img
-                  className="w-5 h-5"
-                  src={magGlassDark}
-                  alt="black magnifying glass"
-                />
-                Search to add
-              </Button>
-            </div>
-            {!festQuery.loading && (
-              <MovieCardList
-                movies={movies}
-                colSpanOne
-                minusButton
-                minusButtonClick={removeMovie}
-              />
+          <div className="flex gap-x-24">
+            {!festQuery.loading && festQuery?.data?.fest && (
+              <FestSidebar festQuery={festQuery} />
             )}
-            <span className="w-full border-b-[1px] border-gray" />
-            {!moviesQuery.loading &&
-              !festQuery.loading &&
-              recommendedMovies?.length > 0 && (
-                <>
+            <div className="w-full flex flex-col gap-y-8">
+              <div className="flex justify-between items-center">
+                {!festQuery.loading && movies && movies?.length > 0 && (
                   <h2 className="font-arial text-lg/4 font-bold">
-                    Recommended Movies
+                    Slops for this fest
                   </h2>
-                  <MovieCardList
-                    movies={recommendedMovies}
-                    colSpanOne
-                    plusButton
-                    plusButtonClick={addMovies}
+                )}
+                {!festQuery.loading && movies && movies?.length === 0 && (
+                  <h2 className="font-arial text-lg/4 font-bold">
+                    {"No slops for this fest yet :("}
+                  </h2>
+                )}
+                <Button
+                  className="font-normal flex gap-x-2.5"
+                  size="sm"
+                  variant="outline-secondary"
+                  onClick={openAddMovieModal}
+                >
+                  <img
+                    className="w-5 h-5"
+                    src={magGlassDark}
+                    alt="black magnifying glass"
                   />
-                </>
+                  Search to add
+                </Button>
+              </div>
+              {!festQuery.loading && (
+                <MovieCardList
+                  movies={movies}
+                  colSpanOne
+                  minusButton
+                  minusButtonClick={removeMovie}
+                />
               )}
-            {!moviesQuery.loading &&
-              !festQuery.loading &&
-              recommendedMovies?.length === 0 && (
-                <h2 className="font-arial text-lg/4 font-bold">
-                  {"No movies to recommend :("}
-                </h2>
-              )}
+              <span className="w-full border-b-[1px] border-gray" />
+              {!moviesQuery.loading &&
+                !festQuery.loading &&
+                recommendedMovies?.length > 0 && (
+                  <>
+                    <h2 className="font-arial text-lg/4 font-bold">
+                      Recommended Movies
+                    </h2>
+                    <MovieCardList
+                      movies={recommendedMovies}
+                      colSpanOne
+                      plusButton
+                      plusButtonClick={addMovies}
+                    />
+                  </>
+                )}
+              {!moviesQuery.loading &&
+                !festQuery.loading &&
+                recommendedMovies?.length === 0 && (
+                  <h2 className="font-arial text-lg/4 font-bold">
+                    {"No movies to recommend :("}
+                  </h2>
+                )}
+            </div>
           </div>
         </div>
-      </div>
+      }
     </IdProtectedRoute>
   );
 };
