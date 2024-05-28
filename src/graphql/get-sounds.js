@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_SOUNDS = gql`
-  query GetMovies($where: SoundWhereInput!) {
-    sounds(where: $where) {
+  query GetSounds {
+    sounds {
       id
       title
       photo {

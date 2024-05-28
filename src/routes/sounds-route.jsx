@@ -1,17 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { Header } from "../components";
+import { Header, SoundCardList } from "../components";
 import { GET_SOUNDS } from "../graphql/get-sounds";
 
 export function SoundsRoute() {
-  const { data, loading, error } = useQuery(GET_SOUNDS, {
-    variables: {
-      where: {
-        status: {
-          equals: "published",
-        },
-      },
-    },
-  });
+  const { data, loading, error } = useQuery(GET_SOUNDS);
 
   return (
     <>
