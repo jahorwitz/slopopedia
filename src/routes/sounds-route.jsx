@@ -15,7 +15,7 @@ export function SoundsRoute() {
         </Header>
       </div>
       <div className="w-full p-[120px] xs:p-[20px] sm:p-[40px] md:p-[60px]">
-        <h1 className="flex w-full mb-8 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center sm:pt-[20px] md:pt-[15px]">
+        <h1 className="flex w-full mb-28 gap-12 text-xl scale-y-2 font-arialBold font-medium text-grey-900 text-center sm:pt-[20px] md:pt-[15px]">
           CHOOSE YOUR SOUND!
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5">
