@@ -4,7 +4,6 @@ export function SoundCard({
   children,
   onClick,
   soundInfo,
-  colSpanOne,
   containerSize = "full",
   ...rest
 }) {
@@ -19,7 +18,7 @@ export function SoundCard({
   };
 
   return (
-    <div className={colSpanOne ? "col-span-1" : colSpanClass}>
+    <div className={"col-span-1"}>
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
         className={"flex flex-col relative"}
