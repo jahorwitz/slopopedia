@@ -176,8 +176,6 @@ export const MoviePreviewModal = ({
     howToWatch: selectedMovie.howToWatch,
   };
 
-  console.log(selectedMovie);
-
   return (
     <Modal whiteButton={whiteButton}>
       <BlurredImage image={movie.photo}>
