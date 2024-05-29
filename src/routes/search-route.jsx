@@ -5,16 +5,15 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { Header, MovieCardList } from "../components";
 import Checkbox from "../components/form/advanced-form-inputs/checkbox";
-import Dropdown from "../components/form/advanced-form-inputs/dropdown";
 import Slider from "../components/form/advanced-form-inputs/slider";
 import TextInput from "../components/form/advanced-form-inputs/textInput";
 import { GET_KEYWORDS, GET_MOVIES } from "../graphql";
 import useDebounce from "../hooks/use-debounce";
 
 const decades = [
-  { label: "1980s", value: "1980s" },
-  { label: "1990s", value: "1990s" },
-  { label: "2000s", value: "2000s" },
+  { label: "1980s", value: "1980" },
+  { label: "1990s", value: "1990" },
+  { label: "2000s", value: "2000" },
 ];
 const sortingOptions = [
   { label: "Title", value: "title" },
@@ -29,10 +28,10 @@ export function SearchRoute() {
 
   const { register, control, watch, handleSubmit, setValue } = useForm({
     defaultValues: {
-      keywords: [],
       sortingCriteria: "title",
       rtMin: 20,
       rtMax: 90,
+      inclNoRt: true,
     },
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
@@ -53,6 +52,7 @@ export function SearchRoute() {
   const onSubmit = useDebounce(setCriteria, 300);
 
   console.log(criteria);
+
   return (
     <>
       <Header />
@@ -67,7 +67,6 @@ export function SearchRoute() {
                 name="keywords"
                 render={({ field: { onChange, value, ref } }) => {
                   const val = keywords.filter((c) => value.includes(c.value));
-                  console.log(val);
                   return (
                     <Select
                       inputRef={ref}
@@ -82,12 +81,11 @@ export function SearchRoute() {
                         },
                       })}
                       onChange={(val) => {
-                        setValue("keywords", val.value);
-                        onChange(val.map((c) => c.value));
-                        const keywordz = criteria?.keywords ?? [];
+                        const coolValue = val.map((c) => c.value);
+                        onChange(coolValue);
                         setCriteria({
                           ...criteria,
-                          keywords: [...keywordz, val.value],
+                          keywords: coolValue,
                         });
                       }}
                       options={keywords}
@@ -105,11 +103,38 @@ export function SearchRoute() {
             </div>
             <div className="w-1/3 flex flex-col gap-4">
               <span className="font-bold text-xl">Decades</span>
-              <Dropdown
-                options={decades}
+              <Controller
                 control={control}
+                defaultValue={[]}
                 name="decades"
-                isMulti
+                render={({ field: { onChange, value, ref } }) => {
+                  const val = decades.filter((c) => value.includes(c.value));
+                  return (
+                    <Select
+                      inputRef={ref}
+                      value={val}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 0,
+                        colors: {
+                          ...theme.colors,
+                          primary25: "#FFD913",
+                          primary: "black",
+                        },
+                      })}
+                      onChange={(val) => {
+                        const coolValue = val.map((c) => c.value);
+                        onChange(coolValue);
+                        setCriteria({
+                          ...criteria,
+                          decades: coolValue,
+                        });
+                      }}
+                      options={decades}
+                      isMulti={true}
+                    />
+                  );
+                }}
               />
             </div>
           </div>
@@ -206,7 +231,9 @@ function FindMovies({ criteria }) {
   });
   const rawMovies = Array.from(data?.movies ?? []);
   const sortedMovies = sortMovies(rawMovies, criteria);
-  const filteredByKeyword = keywordSearch(sortedMovies, criteria);
+  const tomatoesRemoved = removeTomatolessFilms(sortedMovies, criteria);
+  const filteredByDecades = filterDecades(tomatoesRemoved, criteria);
+  const filteredByKeyword = keywordSearch(filteredByDecades, criteria);
 
   if (loading) {
     return <p className="text-center text-3xl font-bold">Loading...</p>;
@@ -235,20 +262,43 @@ function sortMovies(movies, criteria) {
   return movies;
 }
 function keywordSearch(movies, criteria) {
-  const selectedKeywords = criteria?.keywords;
-  if (selectedKeywords === undefined) {
+  const selectedKeywords = criteria?.keywords ?? [];
+  if (selectedKeywords.length < 1) {
     return movies;
   }
   const filteredMovies = [];
   for (let i = 0; i < movies.length; i++) {
-    for (let j = 0; j < movies[i].keywords.length; j++) {
-      //console.log(movies[i].keywords[j]);
-      for (let k = 0; k < selectedKeywords.length; k++) {
-        if (movies[i].keywords[j].id == selectedKeywords[k]) {
+    for (let j = 0; j < movies[i]?.keywords.length; j++) {
+      for (let k = 0; k < selectedKeywords?.length; k++) {
+        if (movies[i].keywords[j]?.id == selectedKeywords[k]) {
           filteredMovies.push(movies[i]);
         }
       }
     }
   }
   return filteredMovies;
+}
+
+function removeTomatolessFilms(movies, criteria) {
+  if (criteria?.inclNoRt) {
+    return movies;
+  }
+  return movies.filter((movie) => typeof movie.tomatoScore === "number");
+}
+
+function filterDecades(movies, criteria) {
+  const selectedDecades = criteria?.decades ?? [];
+  if (selectedDecades.length < 1) {
+    return movies;
+  }
+  return movies.filter((movie) => {
+    for (let i = 0; i < selectedDecades.length; i++) {
+      if (
+        movie.releaseYear > selectedDecades[i] &&
+        movie.releaseYear < movie.releaseYear + 9
+      ) {
+        return movie;
+      }
+    }
+  });
 }
