@@ -40,12 +40,16 @@ export const Header = () => {
   }
 
   function openMoviePreviewModal() {
+    const randomMovie = getRandomMovie(movieData?.movies);
+    if (!randomMovie) {
+      return;
+    }
     openModal(
       <MoviePreviewModal
         closeModal={closeModal}
         userButtons
         whiteButton
-        selectedMovie={getRandomMovie(movieData?.movies)}
+        selectedMovie={randomMovie}
       />
     );
   }
@@ -117,19 +121,16 @@ Header.NavLinks = ({
       title: "Slop Search",
       src: headerMagnifyglass,
       link: "/search",
-      onClick: () => {},
     },
     {
       title: "Submit Slop",
       src: headerArrow,
       link: "/submit",
-      onClick: () => {},
     },
     {
       title: "Slop Blog",
       src: headerBook,
       link: "/articles",
-      onClick: () => {},
     },
     {
       title: "I'm Feeling Sloppy",
