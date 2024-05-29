@@ -4,16 +4,19 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { Header, MovieCardList } from "../components";
-import Checkbox from "../components/form/advanced-form-inputs/checkbox";
+import ControlledCheckbox from "../components/form/advanced-form-inputs/controlledCheckbox";
 import Slider from "../components/form/advanced-form-inputs/slider";
 import TextInput from "../components/form/advanced-form-inputs/textInput";
 import { GET_KEYWORDS, GET_MOVIES } from "../graphql";
 import useDebounce from "../hooks/use-debounce";
 
 const decades = [
+  { label: "1970s", value: "1970" },
   { label: "1980s", value: "1980" },
   { label: "1990s", value: "1990" },
   { label: "2000s", value: "2000" },
+  { label: "2010s", value: "2010" },
+  { label: "2020s", value: "2020" },
 ];
 const sortingOptions = [
   { label: "Title", value: "title" },
@@ -21,37 +24,32 @@ const sortingOptions = [
   { label: "Recently Added", value: "recentlyAdded" },
 ];
 
+/**
+ * Search route page
+ */
 export function SearchRoute() {
-  /**
-   */
-  const [criteria, setCriteria] = useState(null);
+  const criteriaInit = {
+    sortingCriteria: "title",
+    rtMin: "20",
+    rtMax: "90",
+    inclNoRt: false,
+  };
+  const [criteria, setCriteria] = useState(criteriaInit);
 
-  const { register, control, watch, handleSubmit, setValue } = useForm({
-    defaultValues: {
-      sortingCriteria: "title",
-      rtMin: 20,
-      rtMax: 90,
-      inclNoRt: true,
-    },
+  const { register, control, watch, handleSubmit } = useForm({
+    defaultValues: criteriaInit,
   });
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
+
   const keywords = [];
-  keywordsData?.keywords.forEach((item) => {
-    for (let i = 0; i < keywords.length; i++) {
-      if (item.name === keywords[i].label) {
-        return;
-      }
-    }
+  for (let i = 0; i < keywordsData?.keywords.length; i++) {
     const obj = {};
-    obj["label"] = item.name;
-    //obj["value"] = camelCase(item.name);
-    obj["value"] = item.id;
+    obj["label"] = keywordsData?.keywords[i].name;
+    obj["value"] = keywordsData?.keywords[i].id;
     keywords.push(obj);
-  });
+  }
 
   const onSubmit = useDebounce(setCriteria, 300);
-
-  console.log(criteria);
 
   return (
     <>
@@ -59,7 +57,7 @@ export function SearchRoute() {
       <main className="">
         <form onChange={handleSubmit(onSubmit)}>
           <div className="flex justify-between gap-4 mt-12 w-4/5 mx-auto">
-            <div className="w-1/3 flex flex-col gap-1 justify-between">
+            <div className="w-1/3 flex flex-col gap-4 justify-start">
               <span className="font-bold text-xl">Keywords</span>
               <Controller
                 control={control}
@@ -106,13 +104,13 @@ export function SearchRoute() {
                 }}
               />
             </div>
-            <div className="w-1/3 flex flex-col gap-4">
+            <div className="w-1/3 flex flex-col gap-4 justify-start">
               <span className="font-bold text-xl">
                 Title/Description Search
               </span>
               <TextInput {...register("titleDescription")} />
             </div>
-            <div className="w-1/3 flex flex-col gap-4">
+            <div className="w-1/3 flex flex-col gap-4 justify-start">
               <span className="font-bold text-xl">Decades</span>
               <Controller
                 control={control}
@@ -180,12 +178,27 @@ export function SearchRoute() {
                 {...register("rtMax")}
               />
             </div>
-            <div className="flex gap-3 w-1/4 items-center">
-              <Checkbox {...register("inclNoRt")} />
-              <label htmlFor="inclNoRt" className="text-xl">
-                Include movies with no Rotten Tomatoes Score
-              </label>
-            </div>
+            <Controller
+              control={control}
+              defaultValue="false"
+              name="inclNoRt"
+              render={({ field: { onChange, value, ref } }) => {
+                return (
+                  <ControlledCheckbox
+                    value={value}
+                    ref={ref}
+                    onChange={(e) => {
+                      onChange(e);
+                      setCriteria({
+                        ...criteria,
+                        inclNoRt: !criteria?.inclNoRt,
+                      });
+                    }}
+                    label="Include movies with no Rotten Tomatoes Score"
+                  />
+                );
+              }}
+            />
             <div className="w-1/4"></div>
             <div className="flex flex-col w-1/4 gap-3 ">
               <div className="flex justify-between items-center ">
@@ -193,8 +206,27 @@ export function SearchRoute() {
                   Sort By
                 </label>
                 <div className="flex items-center gap-2">
-                  <Checkbox {...register("sortDescending")} />
-                  <label htmlFor="sortDescending">Descending</label>
+                  <Controller
+                    control={control}
+                    defaultValue="false"
+                    name="sortDescending"
+                    render={({ field: { onChange, value, ref } }) => {
+                      return (
+                        <ControlledCheckbox
+                          value={value}
+                          ref={ref}
+                          onChange={(e) => {
+                            onChange(e);
+                            setCriteria({
+                              ...criteria,
+                              sortDescending: !criteria?.sortDescending,
+                            });
+                          }}
+                          label="Descending"
+                        />
+                      );
+                    }}
+                  />
                 </div>
               </div>
               <Controller
@@ -262,19 +294,20 @@ function FindMovies({ criteria }) {
       },
     },
   });
+  if (error) {
+    return (
+      <p className="text-center text-3xl font-bold bg-red-500">ERROR!!!</p>
+    );
+  }
   const rawMovies = Array.from(data?.movies ?? []);
-  const sortedMovies = sortMovies(rawMovies, criteria);
-  const tomatoesRemoved = removeTomatolessFilms(sortedMovies, criteria);
-  const filteredByTomatoScore = filterTomatoScore(tomatoesRemoved, criteria);
-  const filteredByDecades = filterDecades(filteredByTomatoScore, criteria);
-  const filteredByKeyword = keywordSearch(filteredByDecades, criteria);
+  const sortedMovies = handleMovieSort(rawMovies, criteria);
 
   if (loading) {
     return <p className="text-center text-3xl font-bold">Loading...</p>;
   }
 
   if (criteria?.titleDescription) {
-    const fuseMovieList = new Fuse(filteredByKeyword, {
+    const fuseMovieList = new Fuse(sortedMovies, {
       keys: ["title", "description"],
       threshold: 0.2,
     });
@@ -283,9 +316,28 @@ function FindMovies({ criteria }) {
     return <MovieCardList movies={searchedList} />;
   }
 
-  return <MovieCardList movies={filteredByKeyword} />;
+  return <MovieCardList movies={sortedMovies} />;
 }
 
+/**
+ * handleMovieSort - takes in movies and criteria and returns sorted/filtered list
+ * @param {Movie[]} - movies - list of movies
+ * @param {Object} - criteria - sorting criteria object set in the useState hook
+ * @returns {Movie[]} - returns sorted list of movies
+ */
+function handleMovieSort(movies, criteria) {
+  const sortedMovies = sortMovies(movies, criteria);
+  const tomatoesRemoved = removeTomatolessFilms(sortedMovies, criteria);
+  const filteredByTomatoScore = filterTomatoScore(tomatoesRemoved, criteria);
+  const filteredByDecades = filterDecades(filteredByTomatoScore, criteria);
+  const filteredByKeyword = keywordSearch(filteredByDecades, criteria);
+  const sortedDescending = sortDescending(filteredByKeyword, criteria);
+
+  return sortedDescending;
+}
+/*
+    Relevant functions for sorting movies
+    */
 function sortMovies(movies, criteria) {
   if (criteria?.sortingCriteria === "title") {
     return movies.sort((a, b) => a.title.localeCompare(b.title));
@@ -326,28 +378,36 @@ function filterDecades(movies, criteria) {
   if (selectedDecades.length < 1) {
     return movies;
   }
-  return movies.filter((movie) => {
-    for (let i = 0; i < selectedDecades.length; i++) {
+  const filteredMovies = [];
+  for (let i = 0; i < movies.length; i++) {
+    for (let j = 0; j < selectedDecades.length; j++) {
       if (
-        movie.releaseYear > selectedDecades[i] &&
-        movie.releaseYear < movie.releaseYear + 9
+        movies[i].releaseYear >= Number(selectedDecades[j]) &&
+        movies[i].releaseYear <= Number(selectedDecades[j]) + 9
       ) {
-        return movie;
+        filteredMovies.push(movies[i]);
       }
     }
-  });
+  }
+  return filteredMovies;
 }
 
 function filterTomatoScore(movies, criteria) {
   if (criteria?.inclNoRt) {
     return movies;
   }
-  return movies.filter((movie) => {
-    if (
-      movie.tomatoScore > criteria?.rtMin &&
-      movie.tomatoScore < criteria?.rtMax
-    ) {
-      return movie;
-    }
-  });
+  const aboveMin = movies.filter(
+    (movie) => movie.tomatoScore >= criteria?.rtMin
+  );
+  const belowMax = aboveMin.filter(
+    (movie) => movie.tomatoScore <= criteria?.rtMax
+  );
+  return belowMax;
+}
+
+function sortDescending(movies, criteria) {
+  if (!criteria?.sortDescending) {
+    return movies;
+  }
+  return movies.reverse();
 }
