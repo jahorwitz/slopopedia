@@ -59,7 +59,7 @@ export function SearchRoute() {
       <main className="">
         <form onChange={handleSubmit(onSubmit)}>
           <div className="flex justify-between gap-4 mt-12 w-4/5 mx-auto">
-            <div className="w-1/3 flex flex-col gap-1">
+            <div className="w-1/3 flex flex-col gap-1 justify-between">
               <span className="font-bold text-xl">Keywords</span>
               <Controller
                 control={control}
@@ -71,9 +71,20 @@ export function SearchRoute() {
                     <Select
                       inputRef={ref}
                       value={val}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused ? "black" : "black",
+                          padding: ".4rem",
+                          fontSize: "18px",
+                          borderWidth: "2px",
+                          borderRadius: 0,
+                        }),
+                      }}
                       theme={(theme) => ({
                         ...theme,
-                        borderRadius: 0,
+                        padding: 0,
+                        borderWidth: 0,
                         colors: {
                           ...theme.colors,
                           primary25: "#FFD913",
@@ -113,9 +124,20 @@ export function SearchRoute() {
                     <Select
                       inputRef={ref}
                       value={val}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused ? "black" : "black",
+                          padding: ".4rem",
+                          fontSize: "18px",
+                          borderWidth: "2px",
+                          borderRadius: 0,
+                        }),
+                      }}
                       theme={(theme) => ({
                         ...theme,
-                        borderRadius: 0,
+                        padding: 0,
+                        borderWidth: 0,
                         colors: {
                           ...theme.colors,
                           primary25: "#FFD913",
@@ -165,7 +187,7 @@ export function SearchRoute() {
               </label>
             </div>
             <div className="w-1/4"></div>
-            <div className="flex flex-col w-1/4 gap-3">
+            <div className="flex flex-col w-1/4 gap-3 ">
               <div className="flex justify-between items-center ">
                 <label htmlFor="sortingCriteria" className="font-bold">
                   Sort By
@@ -185,9 +207,20 @@ export function SearchRoute() {
                     <Select
                       inputRef={ref}
                       value={val}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor: state.isFocused ? "black" : "black",
+                          padding: ".5rem",
+                          fontSize: "18px",
+                          borderWidth: "2px",
+                          borderRadius: 0,
+                        }),
+                      }}
                       theme={(theme) => ({
                         ...theme,
-                        borderRadius: 0,
+                        padding: 0,
+                        borderWidth: 0,
                         colors: {
                           ...theme.colors,
                           primary25: "#FFD913",
@@ -232,12 +265,14 @@ function FindMovies({ criteria }) {
   const rawMovies = Array.from(data?.movies ?? []);
   const sortedMovies = sortMovies(rawMovies, criteria);
   const tomatoesRemoved = removeTomatolessFilms(sortedMovies, criteria);
-  const filteredByDecades = filterDecades(tomatoesRemoved, criteria);
+  const filteredByTomatoScore = filterTomatoScore(tomatoesRemoved, criteria);
+  const filteredByDecades = filterDecades(filteredByTomatoScore, criteria);
   const filteredByKeyword = keywordSearch(filteredByDecades, criteria);
 
   if (loading) {
     return <p className="text-center text-3xl font-bold">Loading...</p>;
   }
+
   if (criteria?.titleDescription) {
     const fuseMovieList = new Fuse(filteredByKeyword, {
       keys: ["title", "description"],
@@ -299,6 +334,20 @@ function filterDecades(movies, criteria) {
       ) {
         return movie;
       }
+    }
+  });
+}
+
+function filterTomatoScore(movies, criteria) {
+  if (criteria?.inclNoRt) {
+    return movies;
+  }
+  return movies.filter((movie) => {
+    if (
+      movie.tomatoScore > criteria?.rtMin &&
+      movie.tomatoScore < criteria?.rtMax
+    ) {
+      return movie;
     }
   });
 }
