@@ -11,7 +11,6 @@ export function SoundCard({ soundInfo }) {
   const { playSound } = useSounds();
 
   function handleSoundClick() {
-    console.log(card.audio);
     playSound("https://" + card.audio);
   }
 

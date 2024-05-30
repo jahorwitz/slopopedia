@@ -1,10 +1,27 @@
 import { useQuery } from "@apollo/client";
+import { random } from "lodash";
+import { useEffect } from "react";
 import { Header, SoundCardList } from "../components";
 import { GET_SOUNDS } from "../graphql/get-sounds";
+import { useSounds } from "../hooks";
 
 export function SoundsRoute() {
   const { data, loading, error } = useQuery(GET_SOUNDS);
+  const { sounds } = data ?? [];
+  const { playSound } = useSounds();
 
+  useEffect(() => {
+    async function playRandomSound() {
+      if (!loading) {
+        if (sounds.length > 1) {
+          const soundIdx = random(0, sounds.length);
+          console.log(soundIdx);
+          return await playSound("https://" + sounds[soundIdx].audio);
+        }
+      }
+    }
+    playRandomSound();
+  }, []);
   return (
     <>
       <div className="relative">
