@@ -15,7 +15,6 @@ export function SoundsRoute() {
       if (!loading) {
         if (sounds.length > 1) {
           const soundIdx = random(0, sounds.length);
-          console.log(soundIdx);
           return await playSound("https://" + sounds[soundIdx].audio);
         }
       }
