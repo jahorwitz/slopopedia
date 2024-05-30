@@ -226,7 +226,7 @@ export const MoviePreviewModal = ({
         )}
 
         {/* userButtons */}
-        {userButtons && (
+        {userButtons && selectedMovie.status === "published" && (
           <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
             <Button
               variant={isWatchedClicked ? "primary" : "outline-secondary"}
