@@ -1,12 +1,24 @@
 import cx from "classnames";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-export const SidebarItem = ({ link, title, className }) => {
+export const SidebarItem = ({ item, className }) => {
   return (
-    <Link to={link} className={cx("gap-5 ml-5", className)}>
-      <span className="hover:border-b-[3px] hover:border-black hover:text-black text-gray-500 text-lg font-arialBold">
-        {title}
-      </span>
-    </Link>
+    <NavLink
+      to={item.link}
+      end
+      className={({ isActive }) =>
+        cx(
+          "flex gap-5 text-lg font-arialBold decoration-solid decoration-2 hover:underline hover:opacity-100",
+          className,
+          {
+            "underline opacity-100 ": isActive,
+            "opacity-60": !isActive,
+          }
+        )
+      }
+    >
+      <img className="h-8 w-8 " src={item.src} alt={item.title} />
+      {item.title}
+    </NavLink>
   );
 };
