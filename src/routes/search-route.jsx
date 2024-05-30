@@ -3,7 +3,7 @@ import Fuse from "fuse.js";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
-import { Header, MovieCardList } from "../components";
+import { Footer, Header, Loading, MovieCardList } from "../components";
 import ControlledCheckbox from "../components/form/advanced-form-inputs/controlledCheckbox";
 import Slider from "../components/form/advanced-form-inputs/slider";
 import TextInput from "../components/form/advanced-form-inputs/textInput";
@@ -70,9 +70,9 @@ export function SearchRoute() {
                       inputRef={ref}
                       value={val}
                       styles={{
-                        control: (baseStyles, state) => ({
+                        control: (baseStyles) => ({
                           ...baseStyles,
-                          borderColor: state.isFocused ? "black" : "black",
+                          borderColor: "black",
                           padding: ".4rem",
                           fontSize: "18px",
                           borderWidth: "2px",
@@ -90,11 +90,11 @@ export function SearchRoute() {
                         },
                       })}
                       onChange={(val) => {
-                        const coolValue = val.map((c) => c.value);
-                        onChange(coolValue);
+                        const value = val.map((c) => c.value);
+                        onChange(value);
                         setCriteria({
                           ...criteria,
-                          keywords: coolValue,
+                          keywords: value,
                         });
                       }}
                       options={keywords}
@@ -123,9 +123,9 @@ export function SearchRoute() {
                       inputRef={ref}
                       value={val}
                       styles={{
-                        control: (baseStyles, state) => ({
+                        control: (baseStyles) => ({
                           ...baseStyles,
-                          borderColor: state.isFocused ? "black" : "black",
+                          borderColor: "black",
                           padding: ".4rem",
                           fontSize: "18px",
                           borderWidth: "2px",
@@ -143,11 +143,11 @@ export function SearchRoute() {
                         },
                       })}
                       onChange={(val) => {
-                        const coolValue = val.map((c) => c.value);
-                        onChange(coolValue);
+                        const value = val.map((c) => c.value);
+                        onChange(value);
                         setCriteria({
                           ...criteria,
-                          decades: coolValue,
+                          decades: value,
                         });
                       }}
                       options={decades}
@@ -242,7 +242,7 @@ export function SearchRoute() {
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderColor: state.isFocused ? "black" : "black",
+                          borderColor: "black",
                           padding: ".5rem",
                           fontSize: "18px",
                           borderWidth: "2px",
@@ -280,7 +280,7 @@ export function SearchRoute() {
         <p className="font-bold text-4xl">RESULTS</p>
         <FindMovies criteria={criteria} />
       </div>
-      {/*<Footer />*/}
+      <Footer />
     </>
   );
 }
@@ -303,7 +303,11 @@ function FindMovies({ criteria }) {
   const sortedMovies = handleMovieSort(rawMovies, criteria);
 
   if (loading) {
-    return <p className="text-center text-3xl font-bold">Loading...</p>;
+    return (
+      <div className="mx-auto py-10">
+        <Loading />
+      </div>
+    );
   }
 
   if (criteria?.titleDescription) {
@@ -396,13 +400,12 @@ function filterTomatoScore(movies, criteria) {
   if (criteria?.inclNoRt) {
     return movies;
   }
-  const aboveMin = movies.filter(
-    (movie) => movie.tomatoScore >= criteria?.rtMin
+  const filtered = movies.filter(
+    (movie) =>
+      movie.tomatoScore >= criteria?.rtMin &&
+      movie.tomatoScore <= criteria?.rtMax
   );
-  const belowMax = aboveMin.filter(
-    (movie) => movie.tomatoScore <= criteria?.rtMax
-  );
-  return belowMax;
+  return filtered;
 }
 
 function sortDescending(movies, criteria) {
