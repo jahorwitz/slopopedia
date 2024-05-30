@@ -257,15 +257,17 @@ export const MoviePreviewModal = ({
               <img src={backArrow} className="w-7 h-7" />
               {data ? "Exit" : "Back"}
             </Button>
-            <Button
-              variant={"outline-secondary"}
-              className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
-              onClick={() => approveMovie(selectedMovie.id)}
-              disabled={data ? true : false}
-            >
-              <img src={checkMarkDark} className="w-4 h-3" />
-              {data ? "Approved!" : "Publish"}
-            </Button>
+            {currentUser.isAdmin && (
+              <Button
+                variant={"outline-secondary"}
+                className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
+                onClick={() => approveMovie(selectedMovie.id)}
+                disabled={data ? true : false}
+              >
+                <img src={checkMarkDark} className="w-4 h-3" />
+                {data ? "Approved!" : "Publish"}
+              </Button>
+            )}
           </div>
         )}
       </div>
