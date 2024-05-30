@@ -276,7 +276,7 @@ export function SearchRoute() {
           </div>
         </form>
       </main>
-      <div className="flex flex-col mt-20 gap-6 mx-8">
+      <div className="flex flex-col mt-20 gap-6 mx-36">
         <p className="font-bold text-4xl">RESULTS</p>
         <FindMovies criteria={criteria} />
       </div>
