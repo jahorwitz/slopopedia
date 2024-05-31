@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
+import { IdProtectedRoute } from "../../components/id-protected-route.jsx";
 import { DeleteConfirmationModal, Footer } from "../../components/index.js";
 import {
   CREATE_POST,
@@ -23,7 +24,7 @@ export const Article = ({ type }) => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data: postData } = useQuery(GET_BLOG_POST, {
+  const { data: postData, loading: loadingPost } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
@@ -228,7 +229,7 @@ export const Article = ({ type }) => {
     }
   };
 
-  return (
+  const articleJsx = (
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
@@ -365,6 +366,18 @@ Would conditionally adding these CSS styles be the best approach, or does the fo
       </div>
     </>
   );
+  if (type === "new") {
+    return articleJsx;
+  } else {
+    return (
+      <IdProtectedRoute
+        allowedUserIdsLoading={loadingPost}
+        allowedUserIds={[postData?.post?.author?.id]}
+      >
+        {articleJsx}
+      </IdProtectedRoute>
+    );
+  }
 };
 
 export default Article;
