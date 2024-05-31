@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 
 /**
  * The following is a Radio component that is compatible with react-hook-form
@@ -9,10 +9,12 @@ import { forwardRef } from "react";
  * @param {*} ref - the ref passed by react-hook-form register function
  */
 const Radio = forwardRef(({ label, value, name, ...rest }, ref) => {
+  const id = useId();
   return (
     <label
       className="font-semibold text-sm flex justify-end flex-row-reverse gap-2"
       htmlFor={name}
+      id={id}
     >
       <span>{label}</span>
       <input
@@ -20,6 +22,7 @@ const Radio = forwardRef(({ label, value, name, ...rest }, ref) => {
         type="radio"
         ref={ref}
         value={value}
+        id={id}
         name={name}
         {...rest}
       />

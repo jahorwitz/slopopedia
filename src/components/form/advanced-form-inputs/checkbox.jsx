@@ -1,5 +1,5 @@
 /**
- * The following is a checkbox component that is compatible with react-hook-form
+ * The following is an uncontrolled checkbox component that is compatible with react-hook-form
  * @param {string} name - Should be set by the register function of react-hook-form
  * @param {string|undefined} label - Desired label for form input
  * @param {*} rest - Register props from react-hook-form
