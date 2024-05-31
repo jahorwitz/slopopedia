@@ -18,7 +18,7 @@ export function SoundCard({ soundInfo }) {
   return (
     <img
       className={
-        "overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
+        "flex-none overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
       }
       src={!card.image ? purpleGoblin : card.image?.url}
       onClick={() => handleSoundClick()}
