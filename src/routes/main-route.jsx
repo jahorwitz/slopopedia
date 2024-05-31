@@ -1,19 +1,9 @@
-import { useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
 import { Header, MovieCardList } from "../components";
-import { GET_MOVIES } from "../graphql/get-movies";
+import { useMovies } from "../hooks/use-movies";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {
-  const { data, loading, error } = useQuery(GET_MOVIES, {
-    variables: {
-      where: {
-        status: {
-          equals: "published",
-        },
-      },
-    },
-  });
+  const { movieData, moviesLoading } = useMovies();
 
   return (
     <>
@@ -35,7 +25,7 @@ export function MainRoute() {
           RECENTLY ADDED
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
-          {!loading && <MovieCardList movies={data?.movies} />}
+          {!moviesLoading && <MovieCardList movies={movieData?.movies} />}
         </div>
       </div>
     </>
