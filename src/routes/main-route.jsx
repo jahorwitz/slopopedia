@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Header, MovieCardList } from "../components";
 import { useMovies } from "../hooks/use-movies";
 import image from "../images/main_image.svg";

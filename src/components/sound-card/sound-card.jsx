@@ -16,19 +16,13 @@ export function SoundCard({ soundInfo }) {
   }
 
   return (
-    <div
-      // Parent div is relative to allow for elements and children to be positioned absolutely
-      className={"flex flex-col relative"}
-      style={{ position: "relative" }}
-    >
-      <img
-        className={
-          "max-h-[80vh] overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
-        }
-        src={!card.image ? purpleGoblin : card.image?.url}
-        onClick={() => handleSoundClick()}
-      />
-    </div>
+    <img
+      className={
+        "overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
+      }
+      src={!card.image ? purpleGoblin : card.image?.url}
+      onClick={() => handleSoundClick()}
+    />
   );
 }
 
