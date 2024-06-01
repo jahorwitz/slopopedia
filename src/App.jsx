@@ -22,6 +22,8 @@ import {
   SubmittedSlopsRoute,
 } from "./routes";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
+import { MovieContextProvider } from "./store/movie-context-provider";
+import { SoundContextProvider } from "./store/sound-context-provider";
 
 export const App = () => {
   const { client } = useClient();
