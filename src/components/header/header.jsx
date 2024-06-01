@@ -4,6 +4,8 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import { useClient, useCurrentUser, useModals } from "../../hooks";
+import { useMovies } from "../../hooks/use-movies";
+import { useSounds } from "../../hooks/use-sounds";
 import headerArrow from "../../images/global-header-arrow.svg";
 import headerBook from "../../images/global-header-book.svg";
 import headerDoor from "../../images/global-header-door.svg";
@@ -12,7 +14,7 @@ import headerMagnifyglass from "../../images/global-header-magnifyglass.svg";
 import headerNew from "../../images/global-header-new.svg";
 import headerSmile from "../../images/global-header-smile.svg";
 import headerStar from "../../images/global-header-star.svg";
-import { Button, LoginModal, SignupModal } from "../index";
+import { Button, LoginModal, MoviePreviewModal, SignupModal } from "../index";
 
 export const Header = () => {
   const { setToken } = useClient();
@@ -21,6 +23,13 @@ export const Header = () => {
   const { data, loading, error } = useQuery(GET_USER_AUTHENTICATION);
   const { openModal, closeModal } = useModals();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { movieData } = useMovies();
+
+  function getRandomMovie(moviesArray) {
+    if (moviesArray.length === 0) return undefined;
+    const randomIndex = Math.floor(Math.random() * moviesArray.length);
+    return moviesArray[randomIndex];
+  }
 
   function openLoginModal() {
     openModal(<LoginModal onClose={closeModal} />);
@@ -28,6 +37,21 @@ export const Header = () => {
 
   function openSignUpModal() {
     openModal(<SignupModal onClose={closeModal} />);
+  }
+
+  function openMoviePreviewModal() {
+    const randomMovie = getRandomMovie(movieData?.movies);
+    if (!randomMovie) {
+      return;
+    }
+    openModal(
+      <MoviePreviewModal
+        closeModal={closeModal}
+        userButtons
+        whiteButton
+        selectedMovie={randomMovie}
+      />
+    );
   }
 
   const handleMenu = () => {
@@ -54,6 +78,7 @@ export const Header = () => {
         currentUser={currentUser}
         openSignUpModal={openSignUpModal}
         openLoginModal={openLoginModal}
+        openMoviePreviewModal={openMoviePreviewModal}
         handleMenu={handleMenu}
         menuOpen={menuOpen}
       />
@@ -88,7 +113,9 @@ Header.NavLinks = ({
   handleMenu,
   openSignUpModal,
   openLoginModal,
+  openMoviePreviewModal,
 }) => {
+  const { playSound } = useSounds();
   const navLinks = [
     {
       title: "Slop Search",
@@ -108,7 +135,14 @@ Header.NavLinks = ({
     {
       title: "I'm Feeling Sloppy",
       src: headerStar,
-      link: "/sounds",
+      link: "/",
+      onClick: () => {
+        openMoviePreviewModal();
+        // currently hardcoding a sound. Replace with random sound, once sounds are set up.
+        playSound(
+          "https://s3.amazonaws.com/appforest_uf/f1651255945109x881367056603119500/ohmygod.m4a"
+        );
+      },
     },
   ];
 
@@ -131,7 +165,7 @@ Header.NavLinks = ({
         {navLinks.map((link, index) => (
           <div key={index} className="flex flex-row gap-2.5 ">
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <Link to={link.link} className="border-b-2 ">
+            <Link to={link.link} className="border-b-2 " onClick={link.onClick}>
               {link.title}
             </Link>
           </div>

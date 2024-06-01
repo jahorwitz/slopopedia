@@ -48,7 +48,7 @@ export const SubmitSlopForm = () => {
       runtime: "",
       tomatoScore: "",
       howToWatch: "",
-      keywords: "",
+      keywords: [],
     },
   });
 
@@ -296,13 +296,11 @@ export const SubmitSlopForm = () => {
           </div>
         </div>
         <Form.Combobox
-          list={movieKeywords.map((keyword) => ({
-            name: keyword.name,
-            id: keyword.id,
-          }))}
+          list={movieKeywords}
           watch={watch}
           setValue={setValue}
           labelText={"Keywords"}
+          placeholder={"Choose Keywords"}
           id={"keywords"}
           nameKey={"name"}
           idKey={"name"}
