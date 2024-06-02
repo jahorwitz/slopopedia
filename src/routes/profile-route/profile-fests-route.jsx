@@ -153,11 +153,10 @@ export const ProfileFestsRoute = () => {
                               />
                             ))}
 
-                          {/* Additional Invitees Count */}
                           {fest.attendees?.length + fest.invitees?.length >
                             4 && (
                             <Keyword
-                              key="additional-persons"
+                              key={fest.id}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                               keyword={`+ ${
                                 fest.attendees?.length +
