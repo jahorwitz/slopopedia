@@ -11,8 +11,9 @@ export function SoundCard({ soundInfo }) {
   const { playSound } = useSounds();
 
   function handleSoundClick() {
-    console.log(card.audio);
-    playSound("https://" + card.audio);
+    playSound(
+      `${card.audio.startsWith("http") ? card.audio : "https://" + card.audio}`
+    );
   }
 
   return (
@@ -20,7 +21,7 @@ export function SoundCard({ soundInfo }) {
       className={
         "flex-none overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
       }
-      src={!card.image ? purpleGoblin : card.image?.url}
+      src={card.image ? card.image?.url : purpleGoblin}
       onClick={() => handleSoundClick()}
     />
   );

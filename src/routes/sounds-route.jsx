@@ -1,9 +1,17 @@
 import { useQuery } from "@apollo/client";
-import { Header, SoundCardList } from "../components";
+import { Header, Loading, SoundCardList } from "../components";
 import { GET_SOUNDS } from "../graphql/get-sounds";
 
 export function SoundsRoute() {
-  const { data, loading, error } = useQuery(GET_SOUNDS);
+  const { data, loading } = useQuery(GET_SOUNDS);
+
+  if (loading) {
+    return (
+      <div className="mx-auto py-10">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -19,7 +27,7 @@ export function SoundsRoute() {
           CHOOSE YOUR SOUND!
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5">
-          {!loading && <SoundCardList sounds={data?.sounds} />}
+          <SoundCardList sounds={data?.sounds} />
         </div>
       </div>
     </>
