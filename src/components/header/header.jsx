@@ -149,7 +149,7 @@ Header.NavLinks = ({
   function playRandomSound() {
     if (!soundsLoading) {
       if (soundsData?.sounds.length > 1) {
-        const soundIdx = random(0, soundsData?.sounds.length);
+        const soundIdx = random(0, soundsData?.sounds.length - 1);
         playSound("https://" + soundsData?.sounds[soundIdx]?.audio);
       }
     }
