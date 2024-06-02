@@ -23,5 +23,7 @@ export * from "./protected-route";
 export * from "./sidebar";
 export * from "./signup-modal";
 export * from "./slop-fest-modal";
+export * from "./sound-card-list";
+export * from "./sound-card/sound-card";
 export * from "./Submit";
 export * from "./tabber";

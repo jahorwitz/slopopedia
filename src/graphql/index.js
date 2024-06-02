@@ -8,6 +8,7 @@ export * from "./get-fest";
 export * from "./get-fests";
 export * from "./get-keywords";
 export * from "./get-movies";
+export * from "./get-sounds";
 export * from "./get-user-authentication";
 export * from "./get-user-fests";
 export * from "./get-users";
