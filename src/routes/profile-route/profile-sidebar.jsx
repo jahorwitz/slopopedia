@@ -52,26 +52,24 @@ export const ProfileSidebar = () => {
           {menuItems.map((item, index) => {
             return (
               <div key={index} className="flex  ">
-                <img className="h-8 w-8 " src={item.src} alt={item.title} />
                 <div className="mt-1">
-                  <Sidebar.Item link={item.link} title={item.title} />
+                  <Sidebar.Item item={item} />
                 </div>
               </div>
             );
           })}
-          <div className="flex">
+
+          <button
+            onClick={handleLogout}
+            className="flex gap-5 font-arialBold text-lg hover:underline decoration-solid decoration-2 hover:opacity-100 opacity-60"
+          >
             <img
               src="/src/images/sidebar-arrow.svg"
               alt="sidebar arrow"
               className="h-8 w-8"
             ></img>
-
-            <button onClick={handleLogout} className="gap-5 ml-5">
-              <span className="font-arialBold text-lg hover:border-b-[3px] hover:border-black">
-                Logout
-              </span>
-            </button>
-          </div>
+            Logout
+          </button>
         </Sidebar>
       </div>
     </div>

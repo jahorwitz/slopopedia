@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { Form } from "../../../src/components/form";
 import { Button } from "../../components/button";
+import { IdProtectedRoute } from "../../components/id-protected-route.jsx";
 import { Footer } from "../../components/index.js";
 import {
   CREATE_POST,
@@ -22,7 +23,7 @@ export const Article = ({ type }) => {
   const [successful, setSuccessful] = useState(false);
   const [createPost, { loading, error }] = useMutation(CREATE_POST);
   const { currentUser } = useCurrentUser();
-  const { data: postData } = useQuery(GET_BLOG_POST, {
+  const { data: postData, loading: loadingPost } = useQuery(GET_BLOG_POST, {
     variables: {
       where: {
         id: id,
@@ -104,8 +105,8 @@ export const Article = ({ type }) => {
   // handler for clicking the 'Save to Drafts' or 'Publish!' button
   const onSubmit = (status) => {
     const { title, content, keywords, movies } = getValues();
-    const newKeywords = keywords || data?.post?.keywords;
-    const newMovies = movies || data?.post?.movies;
+    const newKeywords = keywords || postData?.post?.keywords;
+    const newMovies = movies || postData?.post?.movies;
     if (type === "new") {
       // create a blog using the form's inputs
       createPost({
@@ -130,22 +131,28 @@ export const Article = ({ type }) => {
           },
         },
       })
-        .then(() => onSuccessful())
+        .then(() => {
+          if (status === "published") {
+            onSuccessful();
+          } else {
+            router("/draft");
+          }
+        })
         .catch((err) => {
           console.error(err, "Could not create blog.");
         });
     } else if (type === "edited") {
       // edit and update a blog using the form's inputs
-      const oldKeywords = data?.post?.keywords || [];
-      const oldMovies = data?.post?.movies || [];
+      const oldKeywords = postData?.post?.keywords || [];
+      const oldMovies = postData?.post?.movies || [];
       updatePost({
         variables: {
           where: {
             id: id,
           },
           data: {
-            title: title || data?.post?.title,
-            content: content || data?.post?.content,
+            title: title || postData?.post?.title,
+            content: content || postData?.post?.content,
             keywords: {
               disconnect: oldKeywords.map((keyword) => ({
                 id: keyword.id,
@@ -198,7 +205,7 @@ export const Article = ({ type }) => {
   };
 
   const onDelete = () => {
-    if (currentUser.id === data.post.author.id) {
+    if (currentUser.id === postData.post.author.id) {
       // delete blog post from server
       deletePost({
         variables: {
@@ -207,27 +214,19 @@ export const Article = ({ type }) => {
           },
         },
       }).then(() => {
-        if (data?.post?.status === "published") {
+        if (postData?.post?.status === "published") {
           router("/articles");
-        } else if (data?.post?.status === "draft") {
+        } else if (postData?.post?.status === "draft") {
           router(`/draft`);
         }
       });
     }
   };
 
-  return (
+  const articleJsx = (
     <>
       {!successful ? (
         <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
-          {type === "edited" && (
-            <button
-              onClick={onDelete}
-              className=" absolute top-10 right-10 bg-transparent text-danger font-bold text-lg mt-10"
-            >
-              Delete
-            </button>
-          )}
           <ToastContainer className={"absolute"} />
           <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
             <Form.TextInput
@@ -353,6 +352,18 @@ Would conditionally adding these CSS styles be the best approach, or does the fo
       </div>
     </>
   );
+  if (type === "new") {
+    return articleJsx;
+  } else {
+    return (
+      <IdProtectedRoute
+        allowedUserIdsLoading={loadingPost}
+        allowedUserIds={[postData?.post?.author?.id]}
+      >
+        {articleJsx}
+      </IdProtectedRoute>
+    );
+  }
 };
 
 export default Article;

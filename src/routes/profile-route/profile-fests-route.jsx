@@ -18,13 +18,26 @@ export const ProfileFestsRoute = () => {
   const { loading, data } = useQuery(GET_USER_FESTS, {
     variables: {
       where: {
-        invitees: {
-          some: {
-            id: {
-              equals: currentUser.id,
+        OR: [
+          {
+            invitees: {
+              some: {
+                id: {
+                  equals: currentUser.id,
+                },
+              },
             },
           },
-        },
+          {
+            attendees: {
+              some: {
+                id: {
+                  equals: currentUser.id,
+                },
+              },
+            },
+          },
+        ],
       },
     },
   });
@@ -46,6 +59,9 @@ export const ProfileFestsRoute = () => {
             attendees: {
               connect: [{ id: currentUser.id }],
             },
+            invitees: {
+              disconnect: [{ id: currentUser.id }],
+            },
           },
           where: {
             id: fest.id,
@@ -56,6 +72,9 @@ export const ProfileFestsRoute = () => {
       updateFest({
         variables: {
           data: {
+            invitees: {
+              connect: [{ id: currentUser.id }],
+            },
             attendees: {
               disconnect: [{ id: currentUser.id }],
             },
@@ -75,9 +94,13 @@ export const ProfileFestsRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <section className="flex max-w-[1440px] min-h-[1023px] bg-gray-background">
+      <section
+        className={`flex max-w-[1440px] min-h-[1023px] bg-gray-background ${
+          isDesktopSize ? "" : "items-center flex-col"
+        }`}
+      >
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
-        <div className="flex flex-col w-[712px] mt-10">
+        <div className="flex mr-auto ml-auto flex-col w-[712px] mt-10">
           <div className="flex flex-row items-center justify-between pb-10">
             <h2 className="scale-y-2 font-arialBold w-[250px] text-xl">
               {!loading && data?.fests?.length === 0
@@ -109,7 +132,7 @@ export const ProfileFestsRoute = () => {
                 return (
                   <div
                     key={fest.id}
-                    className="flex flex-row justify-between mb-5 border-b border-black"
+                    className="flex flex-row justify-between mb-5 border-b border-black relative"
                   >
                     <div className="mb-5">
                       <h3 className="font-arialBold mb-2.5">
@@ -157,11 +180,11 @@ export const ProfileFestsRoute = () => {
                         variant={
                           attendeeStatus ? "secondary" : "outline-secondary"
                         }
-                        className={
+                        className={`absolute right-0 ${
                           festDateInFuture
                             ? "flex flex-row mb-5 h-10"
                             : "flex flex-row mb-5 h-10 cursor-auto"
-                        }
+                        }`}
                         size="sm"
                         onClick={
                           festDateInFuture

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { Button, DiscussionCard, Header, Loading } from "../../components";
+import { IdProtectedRoute } from "../../components/id-protected-route.jsx";
 import {
   CREATE_DISCUSSION,
   GET_DISCUSSIONS,
@@ -26,6 +27,12 @@ export const FestDiscussion = ({}) => {
   const attendeesList = festQuery?.data?.fest?.attendees?.map(
     (person) => person?.id
   );
+  // Create an array of all invitees to later check if the current user is in list
+  const inviteesList = festQuery?.data?.fest?.invitees?.map(
+    (person) => person?.id
+  );
+  // attendees + invitees
+  const allowedUserIds = attendeesList?.concat(inviteesList);
 
   // Discussion Query to pull all discussions from server
   const discussionQuery = useQuery(GET_DISCUSSIONS, {
@@ -62,7 +69,10 @@ export const FestDiscussion = ({}) => {
   }
 
   return (
-    <>
+    <IdProtectedRoute
+      allowedUserIds={allowedUserIds}
+      allowedUserIdsLoading={festQuery.loading}
+    >
       <Header>
         <Header.Logo />
         <Header.NavLinks />
@@ -134,6 +144,6 @@ export const FestDiscussion = ({}) => {
           </div>
         </div>
       </div>
-    </>
+    </IdProtectedRoute>
   );
 };

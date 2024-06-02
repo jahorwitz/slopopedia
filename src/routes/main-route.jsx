@@ -1,18 +1,10 @@
-import { useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 import { Header, MovieCardList } from "../components";
-import { GET_MOVIES } from "../graphql/get-movies";
+import { useMovies } from "../hooks/use-movies";
 import image from "../images/main_image.svg";
 
 export function MainRoute() {
-  const { data, loading, error } = useQuery(GET_MOVIES, {
-    variables: {
-      where: {
-        status: {
-          equals: "published",
-        },
-      },
-    },
-  });
+  const { movieData, moviesLoading } = useMovies();
 
   return (
     <>
@@ -22,9 +14,11 @@ export function MainRoute() {
           <Header.NavLinks />
           <Header.Profile />
         </Header>
-        <div className="flex  flex-row w-full h-[120px] mt-[-30px] bg-no-repeat bg-cover bg-center mx-auto items-center content-center md:text-md ">
-          <img className={"w-full"} src={image} alt="actors" />
-        </div>
+        <Link to="/sounds">
+          <div className="flex  flex-row w-full h-[120px] mt-[-30px] bg-no-repeat bg-cover bg-center mx-auto items-center content-center md:text-md ">
+            <img className={"w-full"} src={image} alt="actors" />
+          </div>
+        </Link>
         {/* The above div is the mainpage banner */}
       </div>
       <div className="w-full p-[120px] xs:p-[20px] sm:p-[40px] md:p-[60px]">
@@ -32,7 +26,7 @@ export function MainRoute() {
           RECENTLY ADDED
         </h1>
         <div className="flex flex-wrap md:flex-wrap xs:flex-wrap gap-5 mb-10">
-          {!loading && <MovieCardList movies={data?.movies} />}
+          {!moviesLoading && <MovieCardList movies={movieData?.movies} />}
         </div>
       </div>
     </>
