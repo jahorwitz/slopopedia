@@ -300,9 +300,9 @@ Header.Profile = ({
         </div>
       ) : (
         <div className="flex flex-row h-[24px] gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex sm:hidden xs:hidden">
-          <a href="/profile" className="border-b-2">
+          <Link to="/profile" className="border-b-2">
             {currentUser.username}
-          </a>
+          </Link>
           <img className="w-6 h-6 mt-0.5" src={headerSmile} />
         </div>
       )}
