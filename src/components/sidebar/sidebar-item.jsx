@@ -2,7 +2,6 @@ import cx from "classnames";
 import { NavLink } from "react-router-dom";
 
 export const SidebarItem = ({ item, className }) => {
-  console.log(item);
   return (
     <NavLink
       to={item.link}

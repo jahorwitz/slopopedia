@@ -1,6 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 import { NavLink } from "react-router-dom";
 import { Header } from "../../components/index";
+
 import imgPreferences from "../../images/slop-pref-icon.svg";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
