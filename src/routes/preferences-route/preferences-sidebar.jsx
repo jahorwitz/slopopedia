@@ -32,13 +32,13 @@ export const PreferencesSidebar = () => {
     <div className="flex flex-row mt-10 ">
       <div className=" xs:hidden sm:hidden md:block lg:block xl:block">
         <Sidebar>
-          {sidebarItems.map((item) => {
+          {sidebarItems.map((item, index) => {
             return (
-              <Sidebar.Item
-                key={item.title}
-                link={item.value}
-                title={item.title}
-              />
+              <div key={index} className="flex  ">
+                <div className="mt-1">
+                  <Sidebar.Item item={item} />
+                </div>
+              </div>
             );
           })}
         </Sidebar>

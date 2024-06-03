@@ -13,6 +13,7 @@ import {
   MovieRoute,
   PreferencesRoute,
   ProfileFestsRoute,
+  ProfileRecommendRoute,
   ProfileRoute,
   ProfileSettingsRoute,
   ReviewRoute,
@@ -73,6 +74,14 @@ export const App = () => {
                     }
                   />
                   <Route
+                    path="/profile/recommend"
+                    element={
+                      <ProtectedRoute>
+                        <ProfileRecommendRoute />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/profile/settings"
                     element={
                       <ProtectedRoute>
@@ -80,8 +89,9 @@ export const App = () => {
                       </ProtectedRoute>
                     }
                   />
+
                   <Route
-                    path="/preferences/:value"
+                    path="/profile/preferences"
                     element={
                       <ProtectedRoute>
                         <PreferencesRoute />
@@ -104,12 +114,7 @@ export const App = () => {
                       </ProtectedRoute>
                     }
                   />
-                  <Route
-                    path="/recommend"
-                    element={
-                      <ProtectedRoute>{/* <Recommend /> */}</ProtectedRoute>
-                    }
-                  />
+
                   <Route
                     path="/articles/:id/edit"
                     element={

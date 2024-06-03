@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { Footer, Header } from "../../components";
-import { PreferencesHorizontalMenu } from "./preferences-horizontal-menu";
+// import { PreferencesHorizontalMenu } from "./preferences-horizontal-menu";
 import { PreferencesSidebar } from "./preferences-sidebar";
 
 export const PreferencesRoute = () => {
@@ -15,7 +15,8 @@ export const PreferencesRoute = () => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      {isDesktopSize ? <PreferencesSidebar /> : <PreferencesHorizontalMenu />}
+      <PreferencesSidebar />
+      {/* {isDesktopSize ? <PreferencesSidebar /> : <PreferencesHorizontalMenu />} */}
       <div className="mt-32">
         <Footer />
       </div>
