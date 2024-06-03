@@ -1,16 +1,22 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Footer } from "../../components/index.js";
+import {
+  Button,
+  DeleteConfirmationModal,
+  Footer,
+} from "../../components/index.js";
 import { DELETE_POST } from "../../graphql/mutations/blog/post.js";
 import {
   GET_BLOG_POST,
   GET_BLOG_POSTS,
 } from "../../graphql/queries/blog/posts.js";
+import { useModals } from "../../hooks/use-modals.js";
 import { CurrentUserContext } from "../../store/current-user-context.js";
 import { formatDateTime } from "../../utils/constants.js";
 
 export const Review = ({ id }) => {
+  const { openModal, closeModal } = useModals();
   const router = useNavigate();
   const { currentUser } = useContext(CurrentUserContext);
   const [post, setPost] = useState({
@@ -64,6 +70,10 @@ export const Review = ({ id }) => {
     }
   };
 
+  function openDeleteConfirmationModal() {
+    openModal(<DeleteConfirmationModal confirmButtonAction={onDelete} />);
+  }
+
   const onDelete = () => {
     router(`/articles`);
     if (currentUser.id === data.post.author.id) {
@@ -74,6 +84,7 @@ export const Review = ({ id }) => {
           },
         },
       });
+      closeModal();
     }
   };
 
@@ -104,7 +115,7 @@ export const Review = ({ id }) => {
                 Edit
               </button>
               <button
-                onClick={onDelete}
+                onClick={openDeleteConfirmationModal}
                 className=" underline underline-offset-2 text-red-500"
               >
                 Delete
