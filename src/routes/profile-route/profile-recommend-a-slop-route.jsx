@@ -1,14 +1,17 @@
 import { useMediaQuery } from "react-responsive";
 import { Header } from "../../components/index";
-import { useCurrentUser } from "../../hooks";
 import { ProfileHorizontalMenu, ProfileSidebar } from "./index";
 
 export const ProfileRecommendRoute = () => {
-  const { currentUser } = useCurrentUser();
-
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
+
+  //   const preferencesLink = {
+  //     title: "Slop Preferences",
+  //     src: undefined,
+  //     link: "/profile/preferences",
+  //   };
 
   return (
     <div className="mx-auto">
@@ -31,6 +34,7 @@ export const ProfileRecommendRoute = () => {
           </div>
           <div className="flex flex-col"></div>
         </div>
+        {/* <Sidebar.Item item={preferencesLink} /> */}
       </section>
     </div>
   );

@@ -2,6 +2,7 @@ import cx from "classnames";
 import { NavLink } from "react-router-dom";
 
 export const SidebarItem = ({ item, className }) => {
+  console.log(item);
   return (
     <NavLink
       to={item.link}
@@ -17,7 +18,11 @@ export const SidebarItem = ({ item, className }) => {
         )
       }
     >
-      <img className="h-8 w-8 " src={item.src} alt={item.title} />
+      {item.src ? (
+        <img className="h-8 w-8 " src={item.src} alt={item.title} />
+      ) : (
+        <div className="h-8 w-12"></div>
+      )}
       {item.title}
     </NavLink>
   );
