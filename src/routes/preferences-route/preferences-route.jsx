@@ -9,7 +9,7 @@ export const PreferencesRoute = () => {
   });
 
   return (
-    <div className="max-w-[1440px] min-h-[1023px] bg-gray-background mx-auto">
+    <div className="mx-auto">
       <Header>
         <Header.Logo />
         <Header.NavLinks />
