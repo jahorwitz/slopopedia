@@ -1,4 +1,4 @@
-import { Button, Sidebar } from "../../components";
+import { Sidebar } from "../../components";
 
 export const PreferencesSidebar = () => {
   const sidebarItems = [
@@ -29,32 +29,16 @@ export const PreferencesSidebar = () => {
   ];
 
   return (
-    <div className="flex flex-row mt-10 ">
-      <div className=" xs:hidden sm:hidden md:block lg:block xl:block">
-        <Sidebar>
-          {sidebarItems.map((item, index) => {
-            return (
-              <div key={index} className="flex  ">
-                <div className="mt-1">
-                  <Sidebar.Item item={item} />
-                </div>
-              </div>
-            );
-          })}
-        </Sidebar>
-      </div>
-      <div className="flex flex-col pl-36">
-        <h1 className=" font-arialBold text-lg scale-y-[2.0]">
-          SLOP PREFERENCES
-        </h1>
-        <div className="min-w-[600px]  mt-10 ">
-          {/*insert Advanced Form Here*/}
-        </div>
-      </div>
-      <Button
-        title="Save"
-        className="bg-yellow-button w-56 h-12 font-arialBold ml-32 mt-[696px] text-lg mr-10"
-      />
-    </div>
+    <Sidebar>
+      {sidebarItems.map((item, index) => {
+        return (
+          <div key={index} className="flex  ">
+            <div className="mt-1">
+              <Sidebar.Item item={item} />
+            </div>
+          </div>
+        );
+      })}
+    </Sidebar>
   );
 };
