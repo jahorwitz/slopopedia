@@ -14,8 +14,8 @@ import { useCurrentUser } from "../../hooks";
 
 export default function SubmitSlopForm() {
   const defaultFormValues = {
-    title: "",
-    description: "",
+    title: "2038423487289347",
+    description: "293847239847",
     releaseYear: "",
     runtime: "",
     howToWatch: "",
@@ -41,16 +41,26 @@ export default function SubmitSlopForm() {
     obj["value"] = keywordsData?.keywords[i].id;
     keywords.push(obj);
   }
-  function onSubmit(data) {
+  async function handleImageUpload(data) {
+    const formData = new FormData();
+    formData.append("movieTitle", data.title);
+    formData.append("movieImage", data.image);
+    formData.append("userId", currentUser.id);
+    const res = await fetch("http://localhost:8080/api/movie", {
+      method: "POST",
+      body: formData,
+    });
+    return res.json();
+  }
+  async function onSubmit(data) {
     if (data.keywords.length <= 0) {
       return alert("Please select at least one keyword.");
     }
     const releaseYearInt = parseInt(data.releaseYear);
     const runTimeInt = parseInt(data.runtime);
     const tomatoScoreInt = parseInt(data.tomatoScore);
-    /*
-              photo stuff still needs to be handled
-              */
+    const imageData = await handleImageUpload(data);
+    console.log(imageData.uniqueKey);
     try {
       createMovie({
         variables: {
@@ -66,6 +76,11 @@ export default function SubmitSlopForm() {
             runtime: runTimeInt,
             tomatoScore: tomatoScoreInt,
             howToWatch: data.howToWatch,
+            /*
+                                                photo: {
+                                                    url: `http://localhost:3000/api/movie/${imageData.uniqueKey}`,
+                                                },
+                                                */
             keywords: {
               connect: data.keywords.map((keyword) => ({
                 id: keyword,
