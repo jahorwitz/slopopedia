@@ -72,23 +72,31 @@ export const PreferencesRoute = () => {
           <h1 className=" font-arialBold text-lg scale-y-[2.0]">
             SLOP PREFERENCES
           </h1>
-          <div className="min-w-[600px] mt-10 flex flex-col gap-4">
-            {/* this implementation is rendering keyword types instead of kewords */}
-            {/* todo: create a new component kewordType that goes through the array of kewords. */}
+          <div>
+            {/* this mostrosity renders all kewords groupped by keword types */}
             {data.keywordTypes.map((keywordType) => {
               return (
-                <div className="flex gap-1 flex-col" key={keywordType.id}>
-                  <h3 className="font-normal">{keywordType.name}</h3>
-                  <div className="flex justify-between pb-2 border-b border-slate-400">
-                    {values.map((item, index) => {
+                <div>
+                  <h2>{keywordType.name}</h2>
+                  <div className="min-w-[600px] mt-10 flex flex-col gap-4">
+                    {keywordType.keywords.map((keyword) => {
                       return (
-                        <div key={index} className="flex  ">
-                          <div className="mt-1">
-                            <Radio
-                              label={item.label}
-                              value={item.value}
-                              title={keywordType.name}
-                            />
+                        <div className="flex gap-1 flex-col" key={keyword.id}>
+                          <h3 className="font-normal">{keyword.name}</h3>
+                          <div className="flex justify-between pb-2 border-b border-slate-400">
+                            {values.map((item, index) => {
+                              return (
+                                <div key={index} className="flex  ">
+                                  <div className="mt-1">
+                                    <Radio
+                                      label={item.label}
+                                      value={item.value}
+                                      title={keyword.name}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       );
@@ -98,6 +106,7 @@ export const PreferencesRoute = () => {
               );
             })}
           </div>
+          <div className="min-w-[600px] mt-10 flex flex-col gap-4"></div>
         </div>
         <Button
           title="Save"
