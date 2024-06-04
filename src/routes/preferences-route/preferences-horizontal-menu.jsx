@@ -43,18 +43,6 @@ export const PreferencesHorizontalMenu = () => {
           })}
         </HorizontalMenu>
       </div>
-      <div className="flex flex-col pt-12 justify-center  pl-2">
-        <h1 className="sm:text-md xs:text-sm font-arialBold text-lg scale-y-[2.0]  ">
-          SLOP PREFERENCES
-        </h1>
-        <div className=" mt-10 ml-2 mr-12 xs:mr-12">
-          {/*insert Advanced Form Here*/}
-        </div>
-        <Button
-          title="Save"
-          className=" bg-yellow-button w-56 h-12 font-arialBold  mt-12 text-lg "
-        />
-      </div>
     </div>
   );
 };

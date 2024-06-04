@@ -8,16 +8,20 @@ export const SidebarItem = ({ item, className }) => {
       end
       className={({ isActive }) =>
         cx(
-          "flex gap-5 text-lg font-arialBold decoration-solid decoration-2 hover:underline hover:opacity-100",
+          "opacity-60 flex gap-5 text-lg font-arialBold decoration-solid decoration-2 hover:underline hover:opacity-100",
           className,
-          {
-            "underline opacity-100 ": isActive,
+          item.link && {
+            "underline !opacity-100 ": isActive,
             "opacity-60": !isActive,
           }
         )
       }
     >
-      <img className="h-8 w-8 " src={item.src} alt={item.title} />
+      {item.src ? (
+        <img className="h-8 w-8 " src={item.src} alt={item.title} />
+      ) : (
+        <div className="h-8 w-12"></div>
+      )}
       {item.title}
     </NavLink>
   );

@@ -18,7 +18,7 @@ export const ProfileRoute = () => {
       </Header>
       <div className={isDesktopSize ? "flex" : "flex flex-col"}>
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
-        <div className="w-[950px]">
+        <div className="w-[950px] mt-10">
           <WatchlistTabber />
         </div>
       </div>
