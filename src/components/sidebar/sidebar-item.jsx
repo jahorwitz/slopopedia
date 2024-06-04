@@ -8,10 +8,10 @@ export const SidebarItem = ({ item, className }) => {
       end
       className={({ isActive }) =>
         cx(
-          "flex gap-5 text-lg font-arialBold decoration-solid decoration-2 hover:underline hover:opacity-100",
+          "opacity-60 flex gap-5 text-lg font-arialBold decoration-solid decoration-2 hover:underline hover:opacity-100",
           className,
-          {
-            "underline opacity-100 ": isActive,
+          item.link && {
+            "underline !opacity-100 ": isActive,
             "opacity-60": !isActive,
           }
         )
