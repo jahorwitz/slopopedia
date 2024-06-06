@@ -1,3 +1,5 @@
+import TestForm from "../components/form/advanced-form-inputs/testForm";
+
 export function BrowseRoute() {
-  return <>{/* <Browse /> */}This is the browse page</>;
+  return <TestForm />;
 }

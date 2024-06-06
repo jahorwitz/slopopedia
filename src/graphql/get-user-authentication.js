@@ -18,9 +18,7 @@ export const GET_USER_AUTHENTICATION = gql`
           }
           description
           tomatoScore
-          photo {
-            url
-          }
+          imageUrl
           howToWatch
         }
         wishlistCount
@@ -34,9 +32,7 @@ export const GET_USER_AUTHENTICATION = gql`
           }
           description
           tomatoScore
-          photo {
-            url
-          }
+          imageUrl
           howToWatch
         }
         watchedCount

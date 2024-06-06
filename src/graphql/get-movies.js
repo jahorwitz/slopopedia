@@ -13,9 +13,7 @@ export const GET_MOVIES = gql`
       }
       description
       tomatoScore
-      photo {
-        url
-      }
+      imageUrl
       howToWatch
       author {
         id
