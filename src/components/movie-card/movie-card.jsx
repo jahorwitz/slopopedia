@@ -27,7 +27,7 @@ export function MovieCard({
   const { class: colSpanClass, size } = colSpan;
 
   const card = {
-    image: movieInfo?.photo,
+    image: movieInfo?.imageUrl,
     title: movieInfo?.title,
     keywords: movieInfo?.keywords || [],
     releaseYear: movieInfo?.releaseYear,
@@ -94,7 +94,7 @@ export function MovieCard({
             containerSize === "small" &&
               "object-contain h-[120px] self-baseline xs:self-center"
           )}
-          src={!card.image ? purpleGoblin : card.image?.url}
+          src={!card.image ? purpleGoblin : card.image}
           onClick={() => handleMovieClick()}
         />
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}

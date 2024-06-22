@@ -9,9 +9,7 @@ export const EDIT_MOVIE = gql`
       keywords {
         name
       }
-      photo {
-        url
-      }
+      imageUrl
       releaseYear
       runtime
       tomatoScore

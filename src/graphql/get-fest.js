@@ -15,9 +15,7 @@ export const GET_FEST = gql`
         keywords {
           name
         }
-        photo {
-          url
-        }
+        imageUrl
         runtime
         releaseYear
         title

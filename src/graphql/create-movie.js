@@ -15,9 +15,7 @@ export const CREATE_MOVIE = gql`
         name
       }
       tomatoScore
-      photo {
-        url
-      }
+      imageKey
       howToWatch
     }
   }

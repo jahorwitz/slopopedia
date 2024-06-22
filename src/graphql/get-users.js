@@ -41,9 +41,7 @@ export const GET_USER_WATCHLIST = gql`
         }
         description
         tomatoScore
-        photo {
-          url
-        }
+        imageUrl
         howToWatch
       }
       wishlistCount
@@ -57,9 +55,7 @@ export const GET_USER_WATCHLIST = gql`
         }
         description
         tomatoScore
-        photo {
-          url
-        }
+        imageUrl
         howToWatch
       }
       watchedCount

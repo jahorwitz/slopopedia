@@ -166,7 +166,7 @@ export const MoviePreviewModal = ({
   };
 
   const movie = {
-    photo: selectedMovie.photo?.url || purpleGoblin,
+    photo: selectedMovie.imageUrl || purpleGoblin,
     title: selectedMovie.title,
     releaseYear: selectedMovie.releaseYear,
     runtime: selectedMovie.runtime,
