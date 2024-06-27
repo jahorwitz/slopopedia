@@ -37,7 +37,7 @@ export function MovieCard({
     description: movieInfo?.description,
   };
 
-  // Functionality for opening movie preview modal
+  // functionality for opening movie preview modal
   const { closeModal, openModal } = useModals();
   const [columnSpan, setColumnSpan] = useState(null);
 
@@ -52,13 +52,13 @@ export function MovieCard({
     );
   };
 
-  // This provides random values to each movie size once on render for main route
+  // this provides random values to each movie size once on render for main route
   useEffect(() => {
     const randomColumnValue = getRandomColumns();
     setColumnSpan(randomColumnValue);
   }, []);
 
-  // Sets the size of the container for image and subsection text
+  // sets the size of the container for image and subsection text
   const getContainerStyle = () => {
     switch (size) {
       case 1:
@@ -72,7 +72,7 @@ export function MovieCard({
     }
   };
 
-  // Sets the max sizes of the images
+  // sets the max sizes of the images
   const getImageStyle = () => {
     switch (size) {
       case 1:
@@ -86,32 +86,32 @@ export function MovieCard({
     }
   };
 
-  // Sets the classes for the card type being rendered
+  // sets the classes for the card type being rendered
   const cardClasses = cx(
     "flex flex-col relative overflow-hidden",
     colSpanOne ? "col-span-1" : colSpanClass
   );
 
-  // Ensures image covers the container
+  // ensures image covers the container
   const imageClasses = cx(
     "w-full object-cover ",
     containerSize === "small" &&
       "object-contain h-[120px] self-baseline xs:self-center"
   );
 
-  // Sets style for titles of movies
+  // sets style for titles of movies
   const titleClasses = cx(
     "text-lg font-bold font-arial leading-none hover:cursor-pointer",
     size === 1 && "mb-2.5 mt-2.5"
   );
 
-  // Sets style for the runtime of movies
+  // sets style for the runtime of movies
   const runtimeClasses = cx(
     "text-lg font-arial leading-none text-dark opacity-60 hover:cursor-pointer",
     size === 1 && "mb-2.5"
   );
 
-  // Renders the html for the runtime, title, and year text
+  // renders the html for the runtime, title, and year text
   const renderTitleAndRuntime = () => (
     <>
       <h2
@@ -200,7 +200,7 @@ export function MovieCard({
         )}
         {card.keywords && (
           <div
-            // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
+            // keywords are positioned absolutely on the image of the card if the size is equal or equal to two
             className={
               "flex flex-wrap gap-2 " +
               (size === 1
