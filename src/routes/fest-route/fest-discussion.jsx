@@ -78,15 +78,21 @@ export const FestDiscussion = ({}) => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className="max-w-[1200px] my-0 mx-auto box-border">
+      <div
+        className="max-w-[1200px] my-0 mx-auto box-border"
+        data-test-id="fest-header"
+      >
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} />
         )}
-        <div className="flex gap-x-24">
+        <div className="flex gap-x-24" data-test-id="fest-sidebar">
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestSidebar festQuery={festQuery} />
           )}
-          <div className="w-3/5 sm:w-1/2">
+          <div
+            className="w-3/5 sm:w-1/2"
+            data-test-id="fest-discussion-placeholder-h2"
+          >
             <div>
               {/* If discussionQuery is loading or the length is 0, show "no notes here yet" */}
               {!discussionQuery?.loading &&
@@ -97,7 +103,10 @@ export const FestDiscussion = ({}) => {
                 </h2>
               ) : (
                 // otherwise show the posts coming from the backend
-                <div className="h-96 overflow-y-scroll">
+                <div
+                  className="h-96 overflow-y-scroll"
+                  data-test-id="fest-discussion-posts"
+                >
                   {discussionQuery?.data?.fest?.festNotes
                     .map((discussion) => (
                       // Map each item onto the DiscussionCard template
