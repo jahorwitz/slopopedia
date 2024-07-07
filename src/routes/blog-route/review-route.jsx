@@ -7,14 +7,14 @@ export function ReviewRoute() {
 
   return (
     <>
-      <div className="relative">
-        <Header>
-          <Header.Logo />
-          <Header.NavLinks />
-          <Header.Profile />
+      <div className="relative" data-test-id="review-header">
+        <Header data-test-id="review-header">
+          <Header.Logo data-test-id="review-header-logo" />
+          <Header.NavLinks data-test-id="review-header-navLinks" />
+          <Header.Profile data-test-id="review-header-profile" />
         </Header>
       </div>
-      <ReviewPage id={id} />
+      <ReviewPage id={id} data-test-id="review-reviewPage" />
     </>
   );
 }

@@ -4,14 +4,14 @@ import ArticlePage from "../../page/blog/article-page.jsx";
 export function ArticleRoute({ type }) {
   return (
     <>
-      <div className="relative">
-        <Header>
-          <Header.Logo />
-          <Header.NavLinks />
-          <Header.Profile />
+      <div className="relative" data-test-id="article-header">
+        <Header data-test-id="article-header">
+          <Header.Logo data-test-id="article-header-logo" />
+          <Header.NavLinks data-test-id="article-header-navlinks" />
+          <Header.Profile data-test-id="article-header-profile" />
         </Header>
       </div>
-      <ArticlePage type={type} />
+      <ArticlePage type={type} data-test-id="article-articlePage" />
     </>
   );
 }
