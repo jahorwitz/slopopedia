@@ -1,7 +1,9 @@
 import { useQuery } from "@apollo/client";
+import { random } from "lodash";
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { GET_SOUNDS } from "../../graphql/get-sounds";
 import { GET_USER_AUTHENTICATION } from "../../graphql/get-user-authentication";
 import { useClient, useCurrentUser, useModals } from "../../hooks";
 import { useMovies } from "../../hooks/use-movies";
@@ -138,13 +140,20 @@ Header.NavLinks = ({
       link: "/",
       onClick: () => {
         openMoviePreviewModal();
-        // currently hardcoding a sound. Replace with random sound, once sounds are set up.
-        playSound(
-          "https://s3.amazonaws.com/appforest_uf/f1651255945109x881367056603119500/ohmygod.m4a"
-        );
+        playRandomSound();
       },
     },
   ];
+  const { data: soundsData, loading: soundsLoading } = useQuery(GET_SOUNDS);
+
+  function playRandomSound() {
+    if (!soundsLoading) {
+      if (soundsData?.sounds.length > 1) {
+        const soundIdx = random(0, soundsData?.sounds.length - 1);
+        playSound("https://" + soundsData?.sounds[soundIdx]?.audio);
+      }
+    }
+  }
 
   const buttons = [
     {
