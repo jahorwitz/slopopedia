@@ -30,12 +30,16 @@ export default function Drafts() {
 
   return (
     <>
-      <div className="w-full max-auto max-w-2xl h-40 left-60 relative">
+      <div
+        className="w-full max-auto max-w-2xl h-40 left-60 relative"
+        data-test-id="articles-page-draft"
+      >
         {isLoggedIn &&
           data.posts.map((post, idx) => {
             const { title, author, createdAt, id } = post;
             return (
               <Draft
+                data-test-id="draft-page-draft"
                 key={idx}
                 title={title}
                 date={formatDateTime(createdAt)}
