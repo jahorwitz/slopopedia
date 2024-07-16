@@ -98,11 +98,12 @@ export const Header = () => {
 
 Header.Logo = () => {
   return (
-    <Link to="/">
+    <Link to="/" data-test-id="header-logo-link">
       <img
         className="w-80 pt-4 xs:w-60 md:w-70"
         src={headerLogo}
         alt="slopopedia logo"
+        data-test-id="header-logo-img"
       />
     </Link>
   );
@@ -169,12 +170,21 @@ Header.NavLinks = ({
   ];
 
   return (
-    <div className="h-[24px] ">
-      <div className="flex flex-row h-[24px] gap-8 md:gap-4 xs:hidden sm:hidden relative ">
+    <div className="h-[24px]">
+      <div
+        className="flex flex-row h-[24px] gap-8 md:gap-4 xs:hidden sm:hidden relative"
+        data-test-id="header-link-div"
+      >
         {navLinks.map((link, index) => (
-          <div key={index} className="flex flex-row gap-2.5 ">
+          <div
+            key={index}
+            className="flex flex-row gap-2.5"
+            data-test-id={`header-link-${link.title
+              .replace(" ", "-")
+              .toLowerCase()}`}
+          >
             <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <Link to={link.link} className="border-b-2 " onClick={link.onClick}>
+            <Link to={link.link} className="border-b-2" onClick={link.onClick}>
               {link.title}
             </Link>
           </div>
@@ -182,6 +192,7 @@ Header.NavLinks = ({
         <img
           src={headerNew}
           className="absolute right-[200px] bottom-[6px] pointer-events-none"
+          data-test-id="header-new-img"
         />
       </div>
       {/* hamburger button */}
@@ -189,27 +200,31 @@ Header.NavLinks = ({
         <button
           type="button"
           onClick={handleMenu}
-          className=" inline-flex items-center justify-center p-2  
-                text-white-400 hover:text-grey hover:bg-gray-700 focus:ring-2 
-                focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block  lg:hidden xl:hidden "
+          className="inline-flex items-center justify-center p-2 text-white-400 hover:text-grey hover:bg-gray-700 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white xs:block sm:block lg:hidden xl:hidden"
+          data-test-id="header-hamburger-button"
         >
           <span className="sr-only">Open Main Menu</span>
-          {menuOpen == true ? <FaTimes /> : <FaBars />}
+          {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
       {/* hamburger-menu */}
       {menuOpen ? (
-        <div className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden">
-          <div className=" space-y-1  ">
+        <div
+          className="pt-5 right-0.5 absolute xs:block sm:block lg:hidden xl:hidden"
+          data-test-id="hamburger-menu-div"
+        >
+          <div className="space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.title}
-                className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white
-                                block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
+                className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
                 to={link.link}
+                data-test-id={`hamburger-nav-link-${link.title
+                  .replace(" ", "-")
+                  .toLowerCase()}`}
               >
                 <img
-                  className="w-5 h-5 inline-block mr-1 "
+                  className="w-5 h-5 inline-block mr-1"
                   src={link.src}
                   alt={link.title}
                 />
@@ -221,6 +236,9 @@ Header.NavLinks = ({
                 <div
                   key={button.title}
                   className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                  data-test-id={`hamburger-button-${button.title
+                    .replace(" ", "-")
+                    .toLowerCase()}`}
                 >
                   <img
                     className="w-5 h-5 mt-2 ml-1"
@@ -230,31 +248,27 @@ Header.NavLinks = ({
                   <Button
                     variant="link"
                     onClick={button.onClick}
-                    className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 "
+                    className="justify-self-start bg-black py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5"
                   >
                     {button.title}
                   </Button>
                 </div>
               ))
             ) : (
-              <div className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
+              <div
+                className="flex bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2"
+                data-test-id="hamburger-loggedin-div"
+              >
                 <img
                   className="w-5 h-5 mt-2 ml-1 mr-1"
                   src={headerSmile}
                   alt={currentUser.username}
                 />
-                <div className="flex flex-row h-[24px] mt-1 gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex ">
+                <div className="flex flex-row h-[24px] mt-1 gap-2.5 md:gap-1 md:pl-4 md:flex lg:flex xl:flex">
                   <a href="/profile">{currentUser.username}</a>
                 </div>
               </div>
             )}
-            {/* this code below needs functionality added to it when a user is logged in this should show in the hamburger menu. similar to the header.profile section below*/}
-            {/* {buttons.slice(2, 3).map((button, index) => (
-                <div key={index} className="flex  bg-black h-[37px] text-grey-300 hover:bg-gray-700 hover:text-white border-b-2">
-                <img className="w-5 h-5  mt-2 ml-1  " src={button.src} alt={button.title} />
-                <Button variant="link" title={button.title}  className="justify-self-start bg-black  py-2 text-base font-medium hover:bg-gray-700 hover:text-white gap-2.5 w-[163px] h-[37px] " />
-              </div>
-              ))} */}
           </div>
         </div>
       ) : null}
