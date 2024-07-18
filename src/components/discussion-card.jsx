@@ -26,7 +26,7 @@ export function DiscussionCard({ discussion }) {
 
   return (
     // Use API reponse to insert data
-    <div className="flex flex-col" data-test-id={"discussion-card-"+discussion.id}>
+    <div className="flex flex-col" data-test-id={ "discussion-card-" + discussion.id }>
       <p
         className="text-dark text-lg font-arialBold opacity-60"
         data-test-id="discussion-card-name-p"
