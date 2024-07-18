@@ -59,9 +59,15 @@ export function MovieCard({
   }, []);
 
   return (
-    <div className={colSpanOne ? "col-span-1" : colSpanClass}>
+    <div
+      className={colSpanOne ? "col-span-1" : colSpanClass}
+      data-test-id={`moviecard-wrapper-div${
+        card.title ? "-" + card.title : ""
+      }`}
+    >
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
+        data-test-id="moviecard-movieclick-div"
         className={cx(
           "flex flex-col relative",
           size === 1 && "col-span-1",
@@ -89,6 +95,7 @@ export function MovieCard({
           />
         )}
         <img
+          data-test-id="moviecard-openmodal-img"
           className={cx(
             "mb-2.5 max-h-[80vh] overflow-hidden hover:cursor-pointer",
             containerSize === "small" &&
@@ -100,6 +107,7 @@ export function MovieCard({
         {/* title and year + runtime are beside each other if the size is equal or greater than two */}
         {size >= 2 ? (
           <div
+            data-test-id="moviecard-openmodal-div"
             className="flex flex-row col-span-2 justify-between hover:cursor-pointer"
             onClick={() => handleMovieClick()}
           >
@@ -113,6 +121,7 @@ export function MovieCard({
         ) : (
           <>
             <h2
+              data-test-id="moviecard-openmodal-h2"
               className="text-lg mb-2.5 font-bold font-arial leading-none hover:cursor-pointer"
               onClick={() => handleMovieClick()}
             >
@@ -120,6 +129,7 @@ export function MovieCard({
             </h2>
             {card.runtimeInMinutes && (
               <p
+                data-test-id="moviecard-openmodal-p"
                 className="text-lg mb-2.5 font-arial leading-none text-dark opacity-60 hover:cursor-pointer"
                 onClick={() => handleMovieClick()}
               >
