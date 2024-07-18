@@ -61,7 +61,9 @@ export function MovieCard({
   return (
     <div
       className={colSpanOne ? "col-span-1" : colSpanClass}
-      data-test-id="moviecard-wrapper-div"
+      data-test-id={`moviecard-wrapper-div${
+        card.title ? "-" + card.title : ""
+      }`}
     >
       <div
         // Parent div is relative to allow for elements and children to be positioned absolutely
