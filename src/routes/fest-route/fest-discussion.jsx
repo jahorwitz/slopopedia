@@ -155,7 +155,7 @@ export const FestDiscussion = ({}) => {
                     size="sm"
                     className="px-6 h-11 max-h-11"
                     onClick={handleDiscussionSubmit}
-                    data-test-id="fest-discussion-textarea-button"
+                    data-test-id="fest-discussion-textarea-submit-button"
                   >
                     Send
                   </Button>
