@@ -87,7 +87,7 @@ export const FestDiscussion = ({}) => {
         )}
         <div className="flex gap-x-24" data-test-id="FestSidebar">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar festQuery={festQuery} data-test-id="FestSidebar" />
+            <FestSidebar festQuery={festQuery} data-test-id="fest-sidebar" />
           )}
           <div
             className="w-3/5 sm:w-1/2"
