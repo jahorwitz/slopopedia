@@ -146,7 +146,7 @@ export const FestDiscussion = ({}) => {
                 ></textarea>
                 <div
                   className=""
-                  data-test-id="fest-discussion-textarea-button"
+                  data-test-id="fest-discussion-textarea-submit"
                 >
                   <Button
                     disabled={!isValid} // prevent users from being able to submit blank posts
