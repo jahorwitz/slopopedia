@@ -150,7 +150,7 @@ export const Review = ({ id }) => {
             </p>
           </div>
         </div>
-        <div className="space-y-2" data-test-id="review-page-post.content">
+        <div className="space-y-2" data-test-id="review-page-post-content">
           {post.content.split(/(?:\r?\n)+/).map((paragraph, index) => (
             <p key={index} className="text-black-700 text-base ">
               {`${paragraph}\n\n`}
