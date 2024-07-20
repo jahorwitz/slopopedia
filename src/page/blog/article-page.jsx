@@ -296,7 +296,6 @@ export const Article = ({ type }) => {
               placeholder={"Add topical keywords"}
               list={keywordsOptions}
               watch={watch}
-              data-test-id="article-page-form-combobox"
               setValue={setValue}
               nameKey={"name"}
               name={"keywords"}
