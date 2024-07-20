@@ -141,7 +141,7 @@ export const Review = ({ id }) => {
           <div className="flex gap-8">
             <p
               className="text-gray"
-              data-test-id="review-page-post.created-at"
+              data-test-id="review-page-post-created-at"
             >{`${formatDateTime(post.createdAt)}`}</p>
             <p className="text-gray" data-test-id="review-page-post.username">
               {post.username === "User Deleted"
