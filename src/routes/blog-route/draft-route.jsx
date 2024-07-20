@@ -9,9 +9,9 @@ export function DraftRoute() {
     <>
       <div className="relative" data-test-id="draft-header">
         <Header data-test-id="draft-header">
-          <Header.Logo data-test-id="draft-header-logo" />
-          <Header.NavLinks data-test-id="draft-header-navlink" />
-          <Header.Profile data-test-id="draft-header-profile" />
+          <Header.Logo />
+          <Header.NavLinks />
+          <Header.Profile />
         </Header>
       </div>
       {isLoggedIn && (
