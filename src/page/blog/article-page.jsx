@@ -258,7 +258,6 @@ export const Article = ({ type }) => {
               labelText={"Title"}
               placeholder={`Title`}
               id="title"
-              data-test-id="article-page-form-text-input"
               prefilledInputs={postData?.post?.title}
               onChange={(e) =>
                 setValue("title", e.target.value, { shouldValidate: true })
