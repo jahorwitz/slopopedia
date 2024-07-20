@@ -31,7 +31,7 @@ export const Articles = () => {
           <a
             href="/draft"
             className="underline"
-            data-test-id="articles-page-navbar.loggedin-drafts"
+            data-test-id="articles-page-navbar-loggedin-drafts"
           >
             Drafts
           </a>
