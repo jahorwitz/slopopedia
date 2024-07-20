@@ -274,7 +274,6 @@ export const Article = ({ type }) => {
             />
             <Form.TextArea
               labelText={"Body"}
-              data-test-id="article-page-form-text-area"
               placeholder={`Body`}
               onChange={(e) =>
                 setValue("content", e.target.value, {
