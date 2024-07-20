@@ -80,7 +80,7 @@ export const FestDiscussion = ({}) => {
       </Header>
       <div
         className="max-w-[1200px] my-0 mx-auto box-border"
-        data-test-id="FestHeader"
+        data-test-id="fest-header-container"
       >
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} data-test-id="FestHeader" />
