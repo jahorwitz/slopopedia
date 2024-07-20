@@ -116,7 +116,7 @@ export const FestDiscussion = ({}) => {
                       <DiscussionCard
                         discussion={discussion}
                         key={discussion?.id ?? discussion._id}
-                        data-test-id="DiscussionCard"
+                        data-test-id={discussion?.id ?? "discussion-card-id-"+ discussion._id : "discussion-card-no-id"}
                       />
                     ))
                     .sort((a, b) => {
