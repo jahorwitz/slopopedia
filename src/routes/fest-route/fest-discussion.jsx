@@ -85,7 +85,7 @@ export const FestDiscussion = ({}) => {
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} data-test-id="fest-header" />
         )}
-        <div className="flex gap-x-24" data-test-id="FestSidebar">
+        <div className="flex gap-x-24" data-test-id="fest-sidebar-container">
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestSidebar festQuery={festQuery} data-test-id="fest-sidebar" />
           )}
