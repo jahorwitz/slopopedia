@@ -234,7 +234,7 @@ export const Article = ({ type }) => {
       {!successful ? (
         <div
           className="relative flex flex-row justify-center mx-auto -top-5 pt-20"
-          data-test-id="article-page-button-delete"
+          data-test-id="article-page-button-delete-container"
         >
           {type === "edited" && (
             <button
