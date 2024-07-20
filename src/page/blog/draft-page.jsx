@@ -39,7 +39,6 @@ export default function Drafts() {
             const { title, author, createdAt, id } = post;
             return (
               <Draft
-                data-test-id="draft-page-draft"
                 key={idx}
                 title={title}
                 date={formatDateTime(createdAt)}
