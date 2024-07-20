@@ -38,7 +38,7 @@ export const Articles = () => {
           <a
             href="/articles/create"
             className="underline ml-5"
-            data-test-id="articles-page-navbar.loggedin-new-entry"
+            data-test-id="articles-page-navbar-loggedin-new-entry"
           >
             + New Entry
           </a>
