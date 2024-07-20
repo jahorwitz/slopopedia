@@ -26,7 +26,7 @@ export const Articles = () => {
       {isLoggedIn && (
         <div
           className="flex mt-10 justify-end mr-32"
-          data-test-id="articles-page-navbar.loggedin"
+          data-test-id="articles-page-navbar-loggedin"
         >
           <a
             href="/draft"
