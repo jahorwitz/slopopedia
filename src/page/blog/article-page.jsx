@@ -308,7 +308,6 @@ export const Article = ({ type }) => {
               placeholder={"Add topical slops"}
               list={moviesOptions}
               watch={watch}
-              data-test-id="article-page-form-combobox"
               setValue={setValue}
               nameKey={"title"}
               name={"movies"}
