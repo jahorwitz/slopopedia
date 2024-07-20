@@ -386,7 +386,7 @@ Would conditionally adding these CSS styles be the best approach, or does the fo
         className="w-full max-w-[989] mt-auto p-20"
         data-test-id="article-page-footer"
       >
-        <Footer data-test-id="article-page-footer"></Footer>
+        <Footer></Footer>
       </div>
     </>
   );
