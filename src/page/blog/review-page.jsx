@@ -143,7 +143,7 @@ export const Review = ({ id }) => {
               className="text-gray"
               data-test-id="review-page-post-created-at"
             >{`${formatDateTime(post.createdAt)}`}</p>
-            <p className="text-gray" data-test-id="review-page-post.username">
+            <p className="text-gray" data-test-id="review-page-post-username">
               {post.username === "User Deleted"
                 ? `User Deleted`
                 : `By ${post.username}`}{" "}
