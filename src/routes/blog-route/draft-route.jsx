@@ -45,7 +45,7 @@ export function DraftRoute() {
         className="-z-10 absolute bottom-0 w-full max-w-[989] mx-auto p-10"
         data-test-id="draft-Footer"
       >
-        <Footer data-test-id="draft-Footer">
+        <Footer data-test-id="draft-footer">
           {/* <Footer.Content></Footer.Content>{" "} */}
         </Footer>
       </div>
