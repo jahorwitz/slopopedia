@@ -32,7 +32,7 @@ export default function Drafts() {
     <>
       <div
         className="w-full max-auto max-w-2xl h-40 left-60 relative"
-        data-test-id="articles-page-draft"
+        data-test-id="articles-page-drafts"
       >
         {isLoggedIn &&
           data.posts.map((post, idx) => {
