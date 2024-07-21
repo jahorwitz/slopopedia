@@ -137,9 +137,15 @@ export function MovieCard({
 
   return (
     <div
+     
       className={colSpanOne ? "col-span-1" : colSpanClass}
+    
+      data-test-id={`moviecard-wrapper-div${
+        card.title ? "-" + card.title : ""
+      }`}
     >
       <div
+        data-test-id="moviecard-movieclick-div"
         className={cardClasses}
         style={{
           width: "100%",
@@ -167,7 +173,8 @@ export function MovieCard({
         )}
         <div style={{ width: "100%", height: getImageStyle().maxHeight }}>
           <img
-            className={imageClasses}
+            data-test-id="moviecard-openmodal-img"
+          className={imageClasses}
             src={!card.image ? purpleGoblin : card.image?.url}
             style={{ height: "100%" }}
             onClick={() => handleMovieClick()}
@@ -175,6 +182,7 @@ export function MovieCard({
         </div>
         {size >= 2 ? (
           <div
+            data-test-id="moviecard-openmodal-div"
             className="flex flex-row col-span-2 justify-between hover:cursor-pointer mt-2.5"
             style={{ width: "100%" }}
             onClick={() => handleMovieClick()}
@@ -182,7 +190,24 @@ export function MovieCard({
             {renderTitleAndRuntime()}
           </div>
         ) : (
-          renderTitleAndRuntime()
+          <>
+            <h2
+              data-test-id="moviecard-openmodal-h2"
+              className="text-lg mb-2.5 font-bold font-arial leading-none hover:cursor-pointer"
+              onClick={() => handleMovieClick()}
+            >
+              {card.title}
+            </h2>
+            {card.runtimeInMinutes && (
+              <p
+                data-test-id="moviecard-openmodal-p"
+                className="text-lg mb-2.5 font-arial leading-none text-dark opacity-60 hover:cursor-pointer"
+                onClick={() => handleMovieClick()}
+              >
+                {card.releaseYear}, {card.runtimeInMinutes} minutes
+              </p>
+            )}
+          </>
         )}
         {card.keywords && (
           <div
