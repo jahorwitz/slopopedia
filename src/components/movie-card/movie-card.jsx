@@ -151,7 +151,6 @@ export function MovieCard({
   return (
     <div
       className={colSpanOne ? "col-span-1" : colSpanClass}
-      style={getContainerStyle()}
     >
       <div
         className={cardClasses}
