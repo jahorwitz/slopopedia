@@ -58,7 +58,6 @@ export function MovieCard({
     setColumnSpan(randomColumnValue);
   }, []);
 
-
   // sets the max sizes of the images
   const getImageStyle = () => {
     switch (size) {
@@ -137,9 +136,7 @@ export function MovieCard({
 
   return (
     <div
-     
       className={colSpanOne ? "col-span-1" : colSpanClass}
-    
       data-test-id={`moviecard-wrapper-div${
         card.title ? "-" + card.title : ""
       }`}
@@ -174,7 +171,7 @@ export function MovieCard({
         <div style={{ width: "100%", height: getImageStyle().maxHeight }}>
           <img
             data-test-id="moviecard-openmodal-img"
-          className={imageClasses}
+            className={imageClasses}
             src={!card.image ? purpleGoblin : card.image?.url}
             style={{ height: "100%" }}
             onClick={() => handleMovieClick()}
