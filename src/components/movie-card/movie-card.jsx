@@ -58,19 +58,6 @@ export function MovieCard({
     setColumnSpan(randomColumnValue);
   }, []);
 
-  // sets the size of the container for image and subsection text
-  const getContainerStyle = () => {
-    switch (size) {
-      case 1:
-        return { maxWidth: "224px", maxHeight: "324px" };
-      case 2:
-        return { maxWidth: "468px", maxHeight: "694px" };
-      case 3:
-        return { maxWidth: "712px", maxHeight: "545px" };
-      default:
-        return {};
-    }
-  };
 
   // sets the max sizes of the images
   const getImageStyle = () => {
