@@ -63,6 +63,8 @@ export const SubmittedList = ({ currentUser }) => {
     );
   }
 
+  console.log("this is me hahahahah", data);
+
   return (
     <div className="w-fit h-fit">
       {!loading && (
