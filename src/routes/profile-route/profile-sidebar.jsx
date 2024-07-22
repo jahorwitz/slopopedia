@@ -46,12 +46,19 @@ export const ProfileSidebar = () => {
   };
 
   return (
-    <div className="flex flex-row mt-10">
+    <div
+      className="flex flex-row mt-10"
+      data-test-id="profil-sidebar-container"
+    >
       <div className="mr-32 ml-5 ">
-        <Sidebar>
+        <Sidebar data-test-id="profil-sidebar">
           {menuItems.map((item, index) => {
             return (
-              <div key={index} className="flex  ">
+              <div
+                key={index}
+                className="flex  "
+                data-test-id="profil-sidebar-item"
+              >
                 <div className="mt-1">
                   <Sidebar.Item item={item} />
                 </div>
@@ -60,6 +67,7 @@ export const ProfileSidebar = () => {
           })}
 
           <button
+            data-test-id="profil-sidebar-button-logout"
             onClick={handleLogout}
             className="flex gap-5 font-arialBold text-lg hover:underline decoration-solid decoration-2 hover:opacity-100 opacity-60"
           >

@@ -111,11 +111,15 @@ export const ProfileFestsRoute = () => {
               variant="primary"
               className="w-[224px]"
               onClick={openSlopFestModal}
+              data-test-id="profil-fests-route-button-new-fest"
             >
               New Fest!
             </Button>
           </div>
-          <div className="flex flex-col">
+          <div
+            className="flex flex-col"
+            data-test-id="profil-fests-route-date-container"
+          >
             {!loading &&
               data?.fests?.map((fest) => {
                 const startDate = new Intl.DateTimeFormat("en-US").format(
@@ -133,16 +137,26 @@ export const ProfileFestsRoute = () => {
                   <div
                     key={fest.id}
                     className="flex flex-row justify-between mb-5 border-b border-black relative"
+                    data-test-id="profil-fests-route-fest-id"
                   >
                     <div className="mb-5">
-                      <h3 className="font-arialBold mb-2.5 text-lg">
+                      <h3
+                        className="font-arialBold mb-2.5 text-lg"
+                        data-test-id="profil-fests-route-link-fest-id-h3"
+                      >
                         <Link to={`/fests/${fest.id}`}>{fest.name}</Link>
                       </h3>
-                      <p className="font-arialRegular mb-2.5 opacity-60 text-lg">
+                      <p
+                        className="font-arialRegular mb-2.5 opacity-60 text-lg"
+                        data-test-id="profil-fests-route-start-date-end-date"
+                      >
                         {startDate + " - " + endDate}
                       </p>
                       <div>
-                        <div className="flex flex-row">
+                        <div
+                          className="flex flex-row"
+                          data-test-id="profil-fests-route-fest-attendees-container"
+                        >
                           {[...(fest.attendees ?? []), ...(fest.invitees ?? [])]
                             .slice(0, 4)
                             .map((person, index) => (
@@ -160,6 +174,7 @@ export const ProfileFestsRoute = () => {
                           {fest.attendees?.length + fest.invitees?.length >
                             4 && (
                             <Keyword
+                              data-test-id="profil-fests-route-fest-attendees-keyword"
                               key={fest.id}
                               className="h-31px space-x-2 space-y-2 bg-gray xs:space-x-2 xs:space-y-2 text-black text-center mr-2.5"
                               keyword={`+ ${
@@ -174,6 +189,7 @@ export const ProfileFestsRoute = () => {
                     </div>
                     {(attendeeStatus || festDateInFuture) && (
                       <Button
+                        data-test-id="profil-fests-route-fest-attendees-button"
                         variant={
                           attendeeStatus ? "secondary" : "outline-secondary"
                         }
