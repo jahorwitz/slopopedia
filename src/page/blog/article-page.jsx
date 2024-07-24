@@ -302,9 +302,9 @@ export const Article = ({ type }) => {
               id={"movies"}
             />
           </Form>
-          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
+          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80 flex flex-col gap-5 ">
             <Button
-              variant="primary"
+              variant="tertiary"
               className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
               type="button"
               onClick={onDraft}
