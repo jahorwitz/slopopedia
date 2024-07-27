@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom"; // added this
 import {
   Button,
   DeleteMovieModal,
@@ -13,6 +14,8 @@ import deleteIcon from "../../../images/red-x-button.svg";
 
 export const SubmittedList = ({ currentUser }) => {
   const { openModal, closeModal } = useModals();
+
+  const navigate = useNavigate(); // added this
 
   // Determine the data query based on the user's admin status
   const queryVariables =
@@ -63,7 +66,10 @@ export const SubmittedList = ({ currentUser }) => {
     );
   }
 
-  console.log("this is me hahahahah", data);
+  //this is where i am adding function for the editing part of the process
+  function handleEditClick(slopId) {
+    navigate(`/edit-slop/${slopId}`); // needed this function to be able to navigate to the correct route
+  }
 
   return (
     <div className="w-fit h-fit">
@@ -83,7 +89,11 @@ export const SubmittedList = ({ currentUser }) => {
                 <Button
                   variant="outline-secondary"
                   className="text-lg font-bold flex gap-2.5 h-10 w-51 w-full"
-                  onClick={() => handleApproveClick(movie)}
+                  onClick={
+                    currentUser.isAdmin
+                      ? () => handleApproveClick(movie)
+                      : () => handleEditClick(movie.id) // added this so that edit click works if current user is not admin
+                  }
                 >
                   <img src={currentUser.isAdmin ? checkIcon : pencilIcon} />
                   {currentUser.isAdmin ? "Accept & Publish" : "Edit"}
