@@ -232,17 +232,27 @@ export const Article = ({ type }) => {
   const articleJsx = (
     <>
       {!successful ? (
-        <div className="relative flex flex-row justify-center mx-auto -top-5 pt-20">
+        <div
+          className="relative flex flex-row justify-center mx-auto -top-5 pt-20"
+          data-test-id="article-page-button-delete-container"
+        >
           {type === "edited" && (
             <button
               onClick={openDeleteConfirmationModal}
               className=" absolute top-10 right-10 bg-transparent text-danger font-bold text-lg mt-10"
+              data-test-id="article-page-button-delete"
             >
               Delete
             </button>
           )}
-          <ToastContainer className={"absolute"} />
-          <Form className={"w-[700px] ml-[224px] p-5 bg-white"}>
+          <ToastContainer
+            className={"absolute"}
+            data-test-id="article-page-toast-container"
+          />
+          <Form
+            className={"w-[700px] ml-[224px] p-5 bg-white"}
+            data-test-id="article-page-form"
+          >
             <Form.TextInput
               className="relative flex justify-center font-bold font-arial flex-col mt-3"
               labelText={"Title"}
@@ -308,6 +318,7 @@ export const Article = ({ type }) => {
               className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
               type="button"
               onClick={onDraft}
+              data-test-id="article-page-button-save-to-drafts"
             >
               Save to Drafts
             </Button>
@@ -317,6 +328,7 @@ export const Article = ({ type }) => {
               className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
               type="button"
               onClick={onPublish}
+              data-test-id="article-page-button-publish"
             >
               Publish!
             </Button>
@@ -327,7 +339,10 @@ export const Article = ({ type }) => {
         // into a component doesn't seem to be done yet, so for now the
         //  markup is just hard coded in
 
-        <div className="max-w-[1440px] mx-auto ">
+        <div
+          className="max-w-[1440px] mx-auto "
+          data-test-id="article-page-success-display"
+        >
           <div className="flex flex-col justify-center items-center xs:px-5 sm:px-5">
             <h1 className="mb-40 mt-10 Arial-NarrowBold text-5xl">SLOP BLOG</h1>
             <p className="max-w-[627px] xs:text-sm sm:text-center md:text-center lg:text-center">
@@ -343,6 +358,7 @@ export const Article = ({ type }) => {
                 className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
                 title="Submit another one?"
                 onClick={submitAnother}
+                data-test-id="article-page-success-display-button-submit-another"
               >
                 <label className="self-center">Submit another one?</label>
               </Button>
@@ -350,6 +366,7 @@ export const Article = ({ type }) => {
                 className="w-[400px] h-10 bg-yellow text-lg font-arialBold xs:text-sm xs:w-[285px] flex justify-center"
                 title="Submit another one?"
                 onClick={() => router(`/articles`)}
+                data-test-id="article-page-success-display-button-view-published-articles"
               >
                 <label className="self-center">View published articles</label>
               </Button>
@@ -361,7 +378,10 @@ export const Article = ({ type }) => {
 absolute bottom-0 does this, but then it clips through the form
 Would conditionally adding these CSS styles be the best approach, or does the footer component need work */}
 
-      <div className="w-full max-w-[989] mt-auto p-20">
+      <div
+        className="w-full max-w-[989] mt-auto p-20"
+        data-test-id="article-page-footer"
+      >
         <Footer></Footer>
       </div>
     </>
@@ -373,6 +393,7 @@ Would conditionally adding these CSS styles be the best approach, or does the fo
       <IdProtectedRoute
         allowedUserIdsLoading={loadingPost}
         allowedUserIds={[postData?.post?.author?.id]}
+        data-test-id="article-page-id-protected-route"
       >
         {articleJsx}
       </IdProtectedRoute>
