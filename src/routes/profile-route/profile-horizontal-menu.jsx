@@ -29,8 +29,8 @@ export const ProfileHorizontalMenu = () => {
   ];
 
   return (
-    <div data-test-id="profil-horizontal-menue-container">
-      <HorizontalMenu data-test-id="profil-horizontal-menue">
+    <div data-test-id="profile-horizontal-menue-container">
+      <HorizontalMenu data-test-id="profile-horizontal-menu">
         {menuItems.map((item) => {
           return (
             <HorizontalMenu.Item
