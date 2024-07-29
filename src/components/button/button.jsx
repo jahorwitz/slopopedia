@@ -14,6 +14,7 @@ export const Button = ({
       disabled={disabled}
       className={cx(
         "text-lg font-bold leading-4",
+        !disabled && variant === "tertiary" && "bg-transparent text-black",
         !disabled && variant === "primary" && "bg-yellow text-black",
         !disabled && variant === "secondary" && "bg-black text-white",
         !disabled &&
