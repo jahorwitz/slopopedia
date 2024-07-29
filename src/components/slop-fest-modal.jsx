@@ -110,6 +110,9 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
         console.log(`Error: ${error.message}`);
       }
     } else {
+      const inviteesUpdate = invitees.map((invitee) => ({
+        username: invitee.username,
+      }));
       try {
         createFest({
           variables: {
@@ -118,7 +121,10 @@ export function SlopFestModal({ buttonTitle, location, fest }) {
               startDate: startDateISO,
               endDate: endDateISO,
               invitees: {
-                connect: [...invitees, { username: currentUser.username }],
+                connect: [
+                  ...inviteesUpdate,
+                  { username: currentUser.username },
+                ],
               },
               creator: {
                 connect: { id: currentUser.id },
