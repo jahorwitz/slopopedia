@@ -1,16 +1,78 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Button, Footer, Header, Loading } from "../../components";
 import Radio from "../../components/form/advanced-form-inputs/radio";
 import { GET_KW_TYPES } from "../../graphql";
+import { CREATE_USER_KEYWORD } from "../../graphql/create-user-keywords";
+import { CurrentUserContext } from "../../store";
 import { PreferencesSidebar } from "./preferences-sidebar";
 
 export const PreferencesRoute = () => {
+  const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
+    useContext(CurrentUserContext);
+
+  const [preferencList, setPreferenceList] = useState([]);
+
+  const [createUserKeyword] = useMutation(CREATE_USER_KEYWORD);
+
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
 
   const { loading, data } = useQuery(GET_KW_TYPES);
+
+  const onSubmit = async () => {
+    console.log(preferencList);
+
+    preferencList.forEach((item) => {
+      // console log left in until final code review is complete and can then be deleted
+      // console.log(item);
+      // console.log(currentUser.id);
+      // const userId = currentUser.id;
+      // console.log(userId);
+
+      try {
+        createUserKeyword({
+          variables: {
+            data: {
+              user: {
+                connect: { id: userId },
+              },
+              keyword: { connect: { name: item.name } },
+              value: parseInt(item.value),
+            },
+          },
+        });
+      } catch (err) {
+        console.error("Error in createUserKeyword request", err);
+      }
+      // A finaly block can be added here to clear the react state but is not necisary as the react state clears on refresh
+    });
+  };
+
+  // selecting a radio button in the preference list updates the preferenceList react state which is an
+  // array of objects that has the keyword and their associated values that can be used to make a graphQL call
+  const onChangeValue = (event) => {
+    const { name, value } = event.target;
+    console.log(value);
+    console.log(name);
+    console.log(event.target);
+
+    const currentList = preferencList;
+
+    // updates the object in the array if the keyword object already exists
+    const updatedList = currentList.map((item) =>
+      item.name === name ? { name, value } : item
+    );
+
+    // adds the keyword object to the array if it does not already exist
+    if (!currentList.some((item) => item.name === name)) {
+      updatedList.push({ name, value });
+    }
+
+    setPreferenceList(updatedList);
+  };
 
   if (loading) {
     return (
@@ -92,6 +154,7 @@ export const PreferencesRoute = () => {
                                       label={item.label}
                                       value={item.value}
                                       title={keyword.name}
+                                      onChange={onChangeValue}
                                     />
                                   </div>
                                 </div>
@@ -111,6 +174,7 @@ export const PreferencesRoute = () => {
         <Button
           title="Save"
           className="bg-yellow-button w-56 h-12 font-arialBold ml-32 mt-[696px] text-lg mr-10"
+          onClick={onSubmit}
         >
           Save
         </Button>
