@@ -29,7 +29,7 @@ export const PreferencesRoute = () => {
       // console log left in until final code review is complete and can then be deleted
       // console.log(item);
       // console.log(currentUser.id);
-      // const userId = currentUser.id;
+      const userId = currentUser.id;
       // console.log(userId);
 
       try {
