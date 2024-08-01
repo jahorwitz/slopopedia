@@ -26,11 +26,7 @@ export const PreferencesRoute = () => {
     console.log(preferencList);
 
     preferencList.forEach((item) => {
-      // console log left in until final code review is complete and can then be deleted
-      // console.log(item);
-      // console.log(currentUser.id);
       const userId = currentUser.id;
-      // console.log(userId);
 
       try {
         createUserKeyword({
@@ -55,9 +51,6 @@ export const PreferencesRoute = () => {
   // array of objects that has the keyword and their associated values that can be used to make a graphQL call
   const onChangeValue = (event) => {
     const { name, value } = event.target;
-    console.log(value);
-    console.log(name);
-    console.log(event.target);
 
     const currentList = preferencList;
 
