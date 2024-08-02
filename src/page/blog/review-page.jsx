@@ -159,9 +159,10 @@ export const Review = ({ id }) => {
         </div>
       </div>
       <div
-        className="absolute bottom-0 w-full max-w-[989] mx-auto mt-auto p-10"
+        className="w-full max-w-[989] p-10 mt-auto"
         data-test-id="review-page-footer"
       >
+        {/* ^ removing absolute positioning to footer sits UNDER review page content */}
         <Footer data-test-id="review-page-footer">
           {/* <Footer.Content></Footer.Content>{" "} */}
         </Footer>
