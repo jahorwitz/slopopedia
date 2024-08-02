@@ -25,7 +25,8 @@ export const Post = ({
     );
   });
   return (
-    <div className={`${className} w-96`}>
+    <div className={`${className} w-96 max-h-50`}>
+      {/* ^ setting max height to the parent post container */}
       <h2
         onClick={() => router(`/articles/${id}`)}
         className="font-semibold text-2xl tracking-tighter mb-4 cursor-pointer"
@@ -33,8 +34,10 @@ export const Post = ({
         {title}
       </h2>
       {keywordsList}
-      <p className="break-word text-sm font-normal mb-4">{content}</p>
-      <div className="flex justify-between">
+      <p className="break-word text-sm font-normal mb-4 text-clip h-20 line-clamp-4">
+        {content}
+      </p>
+      <div className="flex justify-between max-h-20">
         {date === null ? (
           <small>"no published date"</small>
         ) : (
