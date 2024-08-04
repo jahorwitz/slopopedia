@@ -12,13 +12,13 @@ export const MovieCardList = ({
   plusButton,
   minusButtonClick,
   plusButtonClick,
+  propMovies,
 }) => {
   // hooks for pagination mechanism
   const [movies, setMovies] = useState([]);
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
-  // runs on initial page load grabbing first ten movies
   const {
     data: movieData,
     loading: moviesLoading,
@@ -34,13 +34,15 @@ export const MovieCardList = ({
         },
       },
     },
+    // if rendering props from search route, skip query
+    skip: !!propMovies,
     onCompleted: (data) => {
       setMovies(data.movies);
     },
   });
 
   const loadMoreMovies = () => {
-    if (!hasMore) return;
+    if (!hasMore || propMovies) return;
 
     fetchMore({
       variables: {
@@ -48,12 +50,9 @@ export const MovieCardList = ({
         take: moviesPerPage,
       },
     }).then((fetchMoreResult) => {
-      // if no more movies to fetch, set hasMore to false
       if (fetchMoreResult.data.movies.length < moviesPerPage) {
         setHasMore(false);
       }
-      // create new array combining previous movies and
-      // movies just fetched
       setMovies((prevMovies) => [
         ...prevMovies,
         ...fetchMoreResult.data.movies,
@@ -63,36 +62,44 @@ export const MovieCardList = ({
   };
 
   useEffect(() => {
-    if (movieData) {
+    if (movieData && !propMovies) {
       setMovies(movieData.movies);
+    } else if (propMovies) {
+      setMovies(propMovies);
     }
-  }, [movieData]);
+  }, [movieData, propMovies]);
 
   const handleScroll = () => {
+    if (propMovies) {
+      return;
+    }
     if (
-      // checks to see if user has reached the bottom of the page
-      // if so, load more movies
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 20
     ) {
       loadMoreMovies();
-    } else {
-      return;
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [movies]);
+    if (!propMovies) {
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [movies, propMovies]);
 
-  if (moviesLoading) return <p className="text-dark arialBold">Loading...</p>;
+  if (moviesLoading)
+    return <p className="text-dark arialBold">Loading More Movies ...</p>;
   if (moviesError) return <p>Error loading movies: {moviesError.message}</p>;
 
+  const movieIds = movies.map((movie) => movie.id);
+  const uniqueMovieIds = new Set(movieIds);
+
   return (
-    <>
-      <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-4 xs:grid-cols-3 gap-5">
-        {movies?.map((movie) => (
+    <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-4 xs:grid-cols-3 gap-5">
+      {Array.from(uniqueMovieIds).map((id) => {
+        const movie = movies.find((movie) => movie.id === id);
+        return (
           <MovieCard
             key={movie.id}
             movieInfo={movie}
@@ -103,19 +110,9 @@ export const MovieCardList = ({
             minusButtonClick={minusButtonClick}
             plusButtonClick={plusButtonClick}
           />
-        ))}
-      </div>
-      {hasMore && (
-        <div className="flex justify-center items-center mt-5 mb-5 mx-auto">
-          <button
-            className="bg-dark arialBold text-white font-bold py-2 px-4 rounded z-99 cursor-pointer"
-            onClick={loadMoreMovies}
-          >
-            Load More Movies
-          </button>
-        </div>
-      )}
-    </>
+        );
+      })}
+    </div>
   );
 };
 
