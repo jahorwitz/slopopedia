@@ -23,7 +23,6 @@ export const PreferencesRoute = () => {
   const { loading, data } = useQuery(GET_KW_TYPES);
 
   const onSubmit = async () => {
-    console.log(preferencList);
 
     preferencList.forEach((item) => {
       const userId = currentUser.id;
