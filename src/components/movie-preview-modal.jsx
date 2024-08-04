@@ -203,7 +203,7 @@ export const MoviePreviewModal = ({
         <div>
           <p className="text-lg/5">{movie.description}</p>
         </div>
-        <div className="flex gap-x-2">
+        <div className="flex gap-2 flex-wrap">
           {movie.keywords?.map((keyword, index) => (
             <Keyword
               className={"bg-yellow"}

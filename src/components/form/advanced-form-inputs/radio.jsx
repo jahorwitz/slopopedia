@@ -8,22 +8,22 @@ import { forwardRef, useId } from "react";
  * @param {*} rest - Register props from react-hook-form
  * @param {*} ref - the ref passed by react-hook-form register function
  */
-const Radio = forwardRef(({ label, value, name, ...rest }, ref) => {
+const Radio = forwardRef(({ title, label, value, name, ...rest }, ref) => {
   const id = useId();
   return (
     <label
-      className="font-semibold text-sm flex justify-end flex-row-reverse gap-2"
+      className="font-normal text-base flex justify-end flex-row-reverse gap-2"
       htmlFor={name}
       id={id}
     >
       <span>{label}</span>
       <input
-        className="shrink-0 mt-0.5 border-gray-200 rounded-full text-black checked:ring-black  disabled:opacity-50 disabled:pointer-events-none"
+        className="accent-black shrink-0 mt-0.5 border-gray-200 rounded-full text-black checked:ring-black  disabled:opacity-50 disabled:pointer-events-none"
         type="radio"
         ref={ref}
         value={value}
-        id={id}
-        name={name}
+        id={name}
+        name={title}
         {...rest}
       />
     </label>
