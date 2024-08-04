@@ -18,6 +18,7 @@ export function SoundCard({ soundInfo }) {
 
   return (
     <img
+      data-test-id={`soundcard-audio-img${card.title ? "-" + card.title : ""}`}
       className={
         "flex-none overflow-hidden hover:cursor-pointer object-cover h-[130px] w-[130px] self-baseline xs:self-center"
       }

@@ -227,13 +227,21 @@ export const MoviePreviewModal = ({
 
         {/* userButtons */}
         {userButtons && selectedMovie.status === "published" && (
-          <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
+          <div
+            className="flex gap-x-5 mt-10 font-bold text-lg/4"
+            data-test-id="moviepreview-userbuttons-div"
+          >
             <Button
               variant={isWatchedClicked ? "primary" : "outline-secondary"}
               className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
               onClick={handleWatchedClick}
             >
-              <img src={checkMarkDark} className="w-4 h-3" />I watched it!
+              <img
+                src={checkMarkDark}
+                className="w-4 h-3"
+                data-text-id="moviepreview-watched-img"
+              />
+              I watched it!
             </Button>
             <Button
               size="sm"
@@ -241,20 +249,32 @@ export const MoviePreviewModal = ({
               className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
               onClick={handleWantClick}
             >
-              <img src={heartDark} className="w-4 h-3" />I want it!
+              <img
+                src={heartDark}
+                className="w-4 h-3"
+                data-text-id="moviepreview-want-img"
+              />
+              I want it!
             </Button>
           </div>
         )}
 
         {/* buttons for publishing drafts in submit route */}
         {publishButtons && (
-          <div className="flex gap-x-5 mt-10 font-bold text-lg/4">
+          <div
+            className="flex gap-x-5 mt-10 font-bold text-lg/4"
+            data-test-id="moviepreview-publishbuttons-div"
+          >
             <Button
               variant={"outline-secondary"}
               className="flex items-center gap-x-2.5 border border-solid border-black p-2.5"
               onClick={closeModal}
             >
-              <img src={backArrow} className="w-7 h-7" />
+              <img
+                src={backArrow}
+                className="w-7 h-7"
+                data-text-id="moviepreview-exit-img"
+              />
               {data ? "Exit" : "Back"}
             </Button>
             {currentUser.isAdmin && (
@@ -264,7 +284,11 @@ export const MoviePreviewModal = ({
                 onClick={() => approveMovie(selectedMovie.id)}
                 disabled={data ? true : false}
               >
-                <img src={checkMarkDark} className="w-4 h-3" />
+                <img
+                  src={checkMarkDark}
+                  className="w-4 h-3"
+                  data-text-id="moviepreview-approve-img"
+                />
                 {data ? "Approved!" : "Publish"}
               </Button>
             )}
