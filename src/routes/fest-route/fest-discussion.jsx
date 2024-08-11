@@ -80,18 +80,18 @@ export const FestDiscussion = ({}) => {
       </Header>
       <div
         className="max-w-[1200px] my-0 mx-auto box-border"
-        data-test-id="fest-header-container"
+        data-test-id="fest-header"
       >
         {!festQuery.loading && festQuery?.data?.fest && (
           <FestHeader fest={festQuery.data.fest} data-test-id="fest-header" />
         )}
-        <div className="flex gap-x-24" data-test-id="fest-sidebar-container">
+        <div className="flex gap-x-24" data-test-id="fest-sidebar">
           {!festQuery.loading && festQuery?.data?.fest && (
             <FestSidebar festQuery={festQuery} data-test-id="fest-sidebar" />
           )}
           <div
             className="w-3/5 sm:w-1/2"
-            data-test-id="fest-discussion-place-holder-h2"
+            data-test-id="fest-discussion-placeholder-h2"
           >
             <div>
               {/* If discussionQuery is loading or the length is 0, show "no notes here yet" */}
@@ -108,7 +108,7 @@ export const FestDiscussion = ({}) => {
                 // otherwise show the posts coming from the backend
                 <div
                   className="h-96 overflow-y-scroll"
-                  data-test-id="DiscussionCard"
+                  data-test-id="fest-discussion-posts"
                 >
                   {discussionQuery?.data?.fest?.festNotes
                     .map((discussion) => (

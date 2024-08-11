@@ -130,18 +130,27 @@ export const ProfileSettingsRoute = () => {
   });
 
   return (
-    <div className="mx-auto">
-      <Header>
+    <div className="mx-auto" data-test-id="profile-settings-route-container">
+      <Header data-test-id="profile-settings-route-header">
         <Header.Logo />
         <Header.NavLinks />
         <Header.Profile />
       </Header>
 
-      <section className="flex flex-colmax-w-[1440px] h-[900px] bg-gray-background">
+      <section
+        className="flex flex-colmax-w-[1440px] h-[900px] bg-gray-background"
+        data-test-id="profile-settings-route-sesction-container"
+      >
         {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
         {!userLoading.loading && (
-          <section className="mt-9">
-            <Form onSubmit={handleSubmit(onSubmit)}>
+          <section
+            className="mt-9"
+            data-test-id="profile-settings-route-form-section-container"
+          >
+            <Form
+              onSubmit={handleSubmit(onSubmit)}
+              data-test-id="profile-settings-route-form"
+            >
               <Form.TextInput
                 id="username"
                 labelText={"Nickname"}
@@ -238,6 +247,7 @@ export const ProfileSettingsRoute = () => {
               <Form.Submit className="w-[373px]" title={"Save"} />
             </Form>
             <button
+              data-test-id="profile-settings-route-button-delete-account"
               type="button"
               className="bg-transparent text-danger font-bold text-lg mt-10"
               onClick={() => {
@@ -251,7 +261,7 @@ export const ProfileSettingsRoute = () => {
       </section>
 
       <footer className="mt-5">
-        <Footer></Footer>
+        <Footer data-test-id="profile-settings-route-footer"></Footer>
       </footer>
     </div>
   );
