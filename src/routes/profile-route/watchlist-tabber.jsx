@@ -11,9 +11,17 @@ export const WatchlistTabber = () => {
   const watchedList = currentUser?.watched;
 
   return (
-    <Tabber>
-      <WatchlistTabList wishList={wishList} watchedList={watchedList} />
-      <WatchlistTabPanels wishList={wishList} watchedList={watchedList} />
+    <Tabber data-test-id="watchlist-tabber">
+      <WatchlistTabList
+        wishList={wishList}
+        watchedList={watchedList}
+        data-test-id="watchlist-tabber-tab-list"
+      />
+      <WatchlistTabPanels
+        wishList={wishList}
+        watchedList={watchedList}
+        data-test-id="watchlist-tabber-tab-panels"
+      />
     </Tabber>
   );
 };
