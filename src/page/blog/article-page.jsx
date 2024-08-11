@@ -325,7 +325,8 @@ export const Article = ({ type }) => {
 
             <Button
               variant="primary"
-              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              // className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              className={`font-bold font-arial text-lg/4 py-4 px-4 bg-white text-black w-full`}
               type="button"
               onClick={onPublish}
               data-test-id="article-page-button-publish"
