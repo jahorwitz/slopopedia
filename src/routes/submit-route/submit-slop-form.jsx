@@ -212,7 +212,10 @@ export const SubmitSlopForm = () => {
                 const value = e.target.value;
                 if (
                   value === "" ||
-                  (!isNaN(value) && /^\d+$/.test(value) && value.length <= 3)
+                  (!isNaN(value) &&
+                    /^\d+$/.test(value) &&
+                    !/^0+$/.test(value) &&
+                    value.length <= 4)
                 ) {
                   setValue("releaseYear", value, {
                     shouldValidate: true,
@@ -242,7 +245,10 @@ export const SubmitSlopForm = () => {
                 const value = e.target.value;
                 if (
                   value === "" ||
-                  (!isNaN(value) && /^\d+$/.test(value) && value.length <= 3)
+                  (!isNaN(value) &&
+                    /^\d+$/.test(value) &&
+                    !/^0+$/.test(value) &&
+                    value.length <= 3)
                 ) {
                   setValue("runtime", value, { shouldValidate: true });
                 }
