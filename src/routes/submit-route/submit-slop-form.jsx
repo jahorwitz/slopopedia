@@ -209,8 +209,12 @@ export const SubmitSlopForm = () => {
               placeholder="Release Year"
               labelText="Release Year *"
               onChange={(e) => {
-                if (!isNaN(e.target.value) && e.target.value !== " ") {
-                  setValue("releaseYear", e.target.value, {
+                const value = e.target.value;
+                if (
+                  value === "" ||
+                  (!isNaN(value) && /^\d+$/.test(value) && value.length <= 3)
+                ) {
+                  setValue("releaseYear", value, {
                     shouldValidate: true,
                   });
                 }
@@ -228,14 +232,19 @@ export const SubmitSlopForm = () => {
               maxLength={3}
               value={runtime}
               errors={errors}
+              type="number"
               register={register("runtime", {
                 required: "Runtime is required",
               })}
               placeholder="Runtime"
               labelText="Runtime *"
               onChange={(e) => {
-                if (!isNaN(e.target.value) && e.target.value !== " ") {
-                  setValue("runtime", e.target.value, { shouldValidate: true });
+                const value = e.target.value;
+                if (
+                  value === "" ||
+                  (!isNaN(value) && /^\d+$/.test(value) && value.length <= 3)
+                ) {
+                  setValue("runtime", value, { shouldValidate: true });
                 }
               }}
               isValid={!errors.runtime}
