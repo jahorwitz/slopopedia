@@ -25,7 +25,7 @@ export const ProfileRoute = () => {
         ) : (
           <ProfileHorizontalMenu data-test-id="profile-route-profile-horizantal-menue" />
         )}
-        <div className="w-[950px]">
+        <div className="w-[950px] mt-10">
           <WatchlistTabber data-test-id="profile-route-watchlist-tabber" />
         </div>
       </div>
