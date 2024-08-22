@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"; // kept getting uncaught error for 'watch' on Form.Combobox
 import { useNavigate, useParams } from "react-router-dom";
+import { Footer } from "../../components";
 import { Form } from "../../components/form/form";
 import { Header } from "../../components/header/header";
 import { EDIT_MOVIE } from "../../graphql/mutations/edit-slop-submission";
@@ -157,7 +158,7 @@ export const EditSlop = () => {
           <Form.Submit title="Save Changes" />
         </form>
       </div>
-      <div className="mb-10 mt-24">//add footer component here//</div>
+      <Footer />
     </>
   );
 };
