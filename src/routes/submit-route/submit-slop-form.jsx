@@ -10,10 +10,67 @@ import titleImage from "../../images/Submit a slop.png";
 
 export const SubmitSlopForm = () => {
   const { currentUser } = useCurrentUser();
-  const [createMovie] = useMutation(CREATE_MOVIE);
   const [submitted, setSubmitted] = useState(false);
   const [movieKeywords, setMovieKeywords] = useState([]);
   const [movieSubmitted, setMovieSubmitted] = useState(false);
+
+  ///////////// i added this for making sure movie gets updated ///////////////////////////////////////////
+  //const [createMovie] = useMutation(CREATE_MOVIE);
+
+  // Querying movies and adding the needed, variables. Setting the author id to the user.id
+  const { loading, error, data } = useQuery(GET_MOVIES, {
+    variables: { where: { author: { id: { equals: currentUser.id } } } },
+  });
+
+  const [createMovie] = useMutation(CREATE_MOVIE, {
+    // everytime we use createMovie we want it to update the cache right away so that its ready
+    // for the edit slop to show this new update rather than having to depend on refresh
+    // gets existing movies from cache to update
+    update(cache, { data: { createMovie } }) {
+      try {
+        // Ensure createMovie contains all required fields
+        if (!createMovie || !createMovie.id) {
+          throw new Error("createMovie result is missing essential fields.");
+        }
+
+        // Get existing movies from cache
+        const existingMovies = cache.readQuery({
+          query: GET_MOVIES,
+          variables: { where: { author: { id: { equals: currentUser.id } } } },
+        });
+        // Update the cache with the new movie
+        if (existingMovies) {
+          cache.writeQuery({
+            query: GET_MOVIES,
+            variables: {
+              where: { author: { id: { equals: currentUser.id } } },
+            },
+            data: {
+              movies: [...existingMovies.movies, createMovie], //...existingMovies.movies,
+            },
+          });
+        } else {
+          // Handle the case where no existing movies are found
+          cache.writeQuery({
+            query: GET_MOVIES,
+            variables: {
+              where: { author: { id: { equals: currentUser.id } } },
+            },
+            data: {
+              movies: [createMovie],
+            },
+          });
+        }
+      } catch (err) {
+        console.error("Error updating cache", err);
+      }
+    },
+    onError: (err) => {
+      // Shows error if something goes wrong and outputs it to console
+      console.error("Error in createMovie request", err);
+    },
+  });
+  /////////////////////////////////////everything in this block i added ////////////////////////////////
 
   // Grab the keywords from the database
   const { data: keywordsData } = useQuery(GET_KEYWORDS);
@@ -117,10 +174,12 @@ export const SubmitSlopForm = () => {
     }
   }, [isSubmitSuccessful]);
 
-  // Querying movies and adding the needed, variables. Setting the author id to the user.id
-  const { loading, error, data } = useQuery(GET_MOVIES, {
-    variables: { where: { author: { id: { equals: currentUser.id } } } },
-  });
+  // // Querying movies and adding the needed, variables. Setting the author id to the user.id
+  // const { loading, error, data } = useQuery(GET_MOVIES, {
+  //   variables: { where: { author: { id: { equals: currentUser.id } } } },
+  // });
+
+  // console.log("this is me trying to figure otu data on submit form", data);
 
   // If there is data or movies, call the hasSubmittedMovies function
   useEffect(() => {
