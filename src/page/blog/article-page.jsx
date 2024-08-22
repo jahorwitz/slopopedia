@@ -289,6 +289,17 @@ export const Article = ({ type }) => {
               })}
             />
             <Form.Combobox
+              labelText={"Slops"}
+              placeholder={"Add topical slops"}
+              list={moviesOptions}
+              watch={watch}
+              setValue={setValue}
+              nameKey={"title"}
+              name={"movies"}
+              idKey={"title"}
+              id={"movies"}
+            />
+            <Form.Combobox
               className="flex-grow z-10"
               labelText={"Keywords"}
               placeholder={"Add topical keywords"}
@@ -300,21 +311,10 @@ export const Article = ({ type }) => {
               idKey={"name"}
               id={"keywords"}
             />
-            <Form.Combobox
-              labelText={"Slops"}
-              placeholder={"Add topical slops"}
-              list={moviesOptions}
-              watch={watch}
-              setValue={setValue}
-              nameKey={"title"}
-              name={"movies"}
-              idKey={"title"}
-              id={"movies"}
-            />
           </Form>
-          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80">
+          <div className="self-center mt-32 h-[49px] min-w-[224px] md:absolute md:bottom-0 md:left-0 md:right-0 md:top-96 xs:absolute xs:bottom-0 xs:left-0 xs:right-0 xs:top-80 flex flex-col gap-5 ">
             <Button
-              variant="primary"
+              variant="tertiary"
               className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
               type="button"
               onClick={onDraft}
@@ -325,7 +325,8 @@ export const Article = ({ type }) => {
 
             <Button
               variant="primary"
-              className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              // className={`font-bold font-arial text-lg/4 border py-4 px-4 bg-white text-black w-full border-black`}
+              className={`font-bold font-arial text-lg/4 py-4 px-4 bg-white text-black w-full`}
               type="button"
               onClick={onPublish}
               data-test-id="article-page-button-publish"
