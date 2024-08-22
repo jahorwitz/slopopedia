@@ -64,7 +64,7 @@ export const FestSidebar = ({ festQuery }) => {
       <div className="ml-[-1.25rem]">
         <Sidebar>
           {sidebarItems.map((item, index) => (
-            <Sidebar.Item key={index} link={item.link} title={item.title} />
+            <Sidebar.Item key={index} item={item} />
           ))}
           {isFestCreator && (
             <Button

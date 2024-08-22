@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form"; // kept getting uncaught error for 'watch' on Form.Combobox
 import { useNavigate, useParams } from "react-router-dom";
+import { Footer } from "../../components";
 import { Form } from "../../components/form/form";
 import { Header } from "../../components/header/header";
 import { EDIT_MOVIE } from "../../graphql/mutations/edit-slop-submission";
@@ -9,6 +11,7 @@ import { GET_MOVIE } from "../../graphql/queries/get-movie-by-id";
 export const EditSlop = () => {
   const { slopId } = useParams();
   const navigate = useNavigate();
+  const { watch } = useForm(); // added this to get rid of the uncaught error i kept getting for 'watch'
 
   //set slopData to be empty as that was causing my form to error when loading
   const [slopData, setSlopData] = useState({
@@ -40,6 +43,7 @@ export const EditSlop = () => {
   );
 
   //this use effect hook pulls the movie data and keywords and sets them into the edit form.
+
   useEffect(() => {
     if (data && data.movie) {
       setSlopData(data.movie);
@@ -84,7 +88,7 @@ export const EditSlop = () => {
           data: updatedMovieData,
         },
       });
-      navigate("/submit-list");
+      navigate("/submitted-list"); //updatted this from "submit-list" to "submitted-list"
     } catch (e) {
       console.error("Error updating movie", e);
     }
@@ -149,11 +153,12 @@ export const EditSlop = () => {
             onSelectionChange={handleKeywordChange}
             nameKey="name"
             idKey="name"
+            watch={watch} // added this to get rid of error it was causing
           />
           <Form.Submit title="Save Changes" />
         </form>
       </div>
-      <div className="mb-10 mt-24">//add footer component here//</div>
+      <Footer />
     </>
   );
 };

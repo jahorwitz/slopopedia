@@ -22,13 +22,24 @@ export const Articles = () => {
   if (error) return <pre>{error.message}</pre>;
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-[1440px] mx-auto" data-test-id="articles-page">
       {isLoggedIn && (
-        <div className="flex mt-10 justify-end mr-32">
-          <a href="/draft" className="underline">
+        <div
+          className="flex mt-10 justify-end mr-32"
+          data-test-id="articles-page-navbar-loggedin"
+        >
+          <a
+            href="/draft"
+            className="underline"
+            data-test-id="articles-page-navbar-loggedin-drafts"
+          >
             Drafts
           </a>
-          <a href="/articles/create" className="underline ml-5">
+          <a
+            href="/articles/create"
+            className="underline ml-5"
+            data-test-id="articles-page-navbar-loggedin-new-entry"
+          >
             + New Entry
           </a>
         </div>
@@ -50,6 +61,7 @@ export const Articles = () => {
                     keywords={keywords}
                     movies={movies}
                     className={``}
+                    data-test-id="articles-page-post"
                   />
                   <img className="mx-40" src={purpleGoblin} />
                 </div>
@@ -67,6 +79,7 @@ export const Articles = () => {
                     id={id}
                     keywords={keywords}
                     className={``}
+                    data-test-id="articles-page-post"
                   />
                 </div>
               );
@@ -74,8 +87,11 @@ export const Articles = () => {
           })}
         </div>
       </div>
-      <div className="w-full max-w-[989] mx-auto p-10">
-        <Footer></Footer>
+      <div
+        className="w-full max-w-[989] mx-auto p-10"
+        data-test-id="articles-page-footer"
+      >
+        <Footer data-test-id="articles-page-footer"></Footer>
       </div>
     </div>
   );
