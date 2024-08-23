@@ -27,7 +27,7 @@ export function MovieCard({
   const { class: colSpanClass, size } = colSpan;
 
   const card = {
-    image: movieInfo?.photo,
+    image: movieInfo?.imageUrl,
     title: movieInfo?.title,
     keywords: movieInfo?.keywords || [],
     releaseYear: movieInfo?.releaseYear,
@@ -172,7 +172,7 @@ export function MovieCard({
           <img
             data-test-id="moviecard-openmodal-img"
             className={imageClasses}
-            src={!card.image ? purpleGoblin : card.image?.url}
+            src={!card.image ? purpleGoblin : card.image}
             style={{ height: "100%" }}
             onClick={() => handleMovieClick()}
           />

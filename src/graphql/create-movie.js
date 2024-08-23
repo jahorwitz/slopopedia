@@ -36,9 +36,7 @@ export const CREATE_MOVIE = gql`
       }
       description
       tomatoScore
-      photo {
-        url
-      }
+      imageKey
       howToWatch
       author {
         id

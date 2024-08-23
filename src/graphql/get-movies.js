@@ -13,9 +13,7 @@ export const GET_MOVIES = gql`
       }
       description
       tomatoScore
-      photo {
-        url
-      }
+      imageUrl
       howToWatch
       author {
         id
@@ -44,9 +42,7 @@ export const GET_PAGINATED_MOVIES = gql`
       }
       description
       tomatoScore
-      photo {
-        url
-      }
+      imageUrl
       howToWatch
       author {
         id
