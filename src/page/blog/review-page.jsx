@@ -93,6 +93,7 @@ export const Review = ({ id }) => {
   post.keywords.forEach((keyword) => {
     keywordsList.push(
       <Button
+        data-test-id="review-page-button"
         key={keyword.id}
         className="bg-yellow-button text-sm h-8 w-30 text-black text-center items-center mb-0 py-0 px-2"
       >
@@ -109,6 +110,7 @@ export const Review = ({ id }) => {
           {accessGranted ? (
             <div className="flex flex-row relative left-28 gap-5">
               <button
+                data-test-id="review-page-button-edit"
                 onClick={onEdit}
                 className=" underline underline-offset-2 text-black-500"
               >
@@ -117,6 +119,7 @@ export const Review = ({ id }) => {
               <button
                 onClick={openDeleteConfirmationModal}
                 className=" underline underline-offset-2 text-red-500"
+                data-test-id="review-page-button-delete"
               >
                 Delete
               </button>
@@ -126,18 +129,28 @@ export const Review = ({ id }) => {
           )}
         </div>
         <div className="mb-4 flex flex-col gap-4 h-full">
-          <h2 className="text-3xl Arial-NarrowBold">{post.title}</h2>
-          <div className="my-0">{keywordsList}</div>
+          <h2
+            className="text-3xl Arial-NarrowBold"
+            data-test-id="review-page-post.title"
+          >
+            {post.title}
+          </h2>
+          <div className="my-0" data-test-id="review-page-keywords-list">
+            {keywordsList}
+          </div>
           <div className="flex gap-8">
-            <p className="text-gray">{`${formatDateTime(post.createdAt)}`}</p>
-            <p className="text-gray">
+            <p
+              className="text-gray"
+              data-test-id="review-page-post-created-at"
+            >{`${formatDateTime(post.createdAt)}`}</p>
+            <p className="text-gray" data-test-id="review-page-post-username">
               {post.username === "User Deleted"
                 ? `User Deleted`
                 : `By ${post.username}`}{" "}
             </p>
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2" data-test-id="review-page-post-content">
           {post.content.split(/(?:\r?\n)+/).map((paragraph, index) => (
             <p key={index} className="text-black-700 text-base ">
               {`${paragraph}\n\n`}
@@ -145,8 +158,14 @@ export const Review = ({ id }) => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 w-full max-w-[989] mx-auto mt-auto p-10">
-        <Footer>{/* <Footer.Content></Footer.Content>{" "} */}</Footer>
+      <div
+        className="w-full max-w-[989] p-10 mt-auto"
+        data-test-id="review-page-footer"
+      >
+        {/* ^ removing absolute positioning to footer sits UNDER review page content */}
+        <Footer data-test-id="review-page-footer">
+          {/* <Footer.Content></Footer.Content>{" "} */}
+        </Footer>
       </div>
     </div>
   );

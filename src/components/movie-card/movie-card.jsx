@@ -37,7 +37,7 @@ export function MovieCard({
     description: movieInfo?.description,
   };
 
-  //functionality for opening movie preview modal
+  // functionality for opening movie preview modal
   const { closeModal, openModal } = useModals();
   const [columnSpan, setColumnSpan] = useState(null);
 
@@ -52,23 +52,103 @@ export function MovieCard({
     );
   };
 
-  //this provides random values to each movie size once on render for main route
+  // this provides random values to each movie size once on render for main route
   useEffect(() => {
     const randomColumnValue = getRandomColumns();
     setColumnSpan(randomColumnValue);
   }, []);
 
+  // sets the max sizes of the images
+  const getImageStyle = () => {
+    switch (size) {
+      case 1:
+        return { maxHeight: "190px" };
+      case 2:
+        return { maxHeight: "665px" };
+      case 3:
+        return { maxHeight: "518px" };
+      default:
+        return {};
+    }
+  };
+
+  // sets the classes for the card type being rendered
+  const cardClasses = cx(
+    "flex flex-col relative overflow-hidden",
+    colSpanOne ? "col-span-1" : colSpanClass
+  );
+
+  // ensures image covers the container
+  const imageClasses = cx(
+    "w-full object-cover ",
+    containerSize === "small" &&
+      "object-contain h-[120px] self-baseline xs:self-center"
+  );
+
+  // sets style for titles of movies
+  const titleClasses = cx(
+    "text-lg font-bold font-arial leading-none hover:cursor-pointer",
+    size === 1 && "mb-2.5 mt-2.5"
+  );
+
+  // sets style for the runtime of movies
+  const runtimeClasses = cx(
+    "text-lg font-arial leading-none text-dark opacity-60 hover:cursor-pointer",
+    size === 1 && "mb-2.5"
+  );
+
+  // renders the html for the runtime, title, and year text
+  const renderTitleAndRuntime = () => (
+    <>
+      <h2
+        className={titleClasses}
+        onClick={() => handleMovieClick()}
+        style={{
+          fontFamily: "Arial",
+          fontSize: "18px",
+          fontWeight: 700,
+          lineHeight: "16.74px",
+          letterSpacing: "-0.01em",
+          textAlign: "left",
+        }}
+      >
+        {card.title}
+      </h2>
+      {card.runtimeInMinutes && (
+        <p
+          className={runtimeClasses}
+          onClick={() => handleMovieClick()}
+          style={{
+            fontFamily: "Arial",
+            fontSize: "18px",
+            fontWeight: 400,
+            lineHeight: "16.74px",
+            letterSpacing: "-0.01em",
+            textAlign: size >= 2 ? "right" : "left",
+          }}
+        >
+          {card.releaseYear}, {card.runtimeInMinutes}
+          {size === 1 ? " minutes" : ""}
+        </p>
+      )}
+    </>
+  );
+
   return (
-    <div className={colSpanOne ? "col-span-1" : colSpanClass}>
+    <div
+      className={colSpanOne ? "col-span-1" : colSpanClass}
+      data-test-id={`moviecard-wrapper-div${
+        card.title ? "-" + card.title : ""
+      }`}
+    >
       <div
-        // Parent div is relative to allow for elements and children to be positioned absolutely
-        className={cx(
-          "flex flex-col relative",
-          size === 1 && "col-span-1",
-          size === 2 && "col-span-2",
-          size === 3 && "col-span-3"
-        )}
-        style={{ position: "relative" }}
+        data-test-id="moviecard-movieclick-div"
+        className={cardClasses}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+        }}
         onClick={onClick}
         {...rest}
       >
@@ -88,31 +168,28 @@ export function MovieCard({
             }}
           />
         )}
-        <img
-          className={cx(
-            "mb-2.5 max-h-[80vh] overflow-hidden hover:cursor-pointer",
-            containerSize === "small" &&
-              "object-contain h-[120px] self-baseline xs:self-center"
-          )}
-          src={!card.image ? purpleGoblin : card.image}
-          onClick={() => handleMovieClick()}
-        />
-        {/* title and year + runtime are beside each other if the size is equal or greater than two */}
+        <div style={{ width: "100%", height: getImageStyle().maxHeight }}>
+          <img
+            data-test-id="moviecard-openmodal-img"
+            className={imageClasses}
+            src={!card.image ? purpleGoblin : card.image}
+            style={{ height: "100%" }}
+            onClick={() => handleMovieClick()}
+          />
+        </div>
         {size >= 2 ? (
           <div
-            className="flex flex-row col-span-2 justify-between hover:cursor-pointer"
+            data-test-id="moviecard-openmodal-div"
+            className="flex flex-row col-span-2 justify-between hover:cursor-pointer mt-2.5"
+            style={{ width: "100%" }}
             onClick={() => handleMovieClick()}
           >
-            <h2 className="text-lg mb-2.5 font-bold font-arial">
-              {card.title}
-            </h2>
-            <p className="text-lg mb-2.5 text-gray-400 font-arial">
-              {card.releaseYear}, {card.runtimeInMinutes}
-            </p>
+            {renderTitleAndRuntime()}
           </div>
         ) : (
           <>
             <h2
+              data-test-id="moviecard-openmodal-h2"
               className="text-lg mb-2.5 font-bold font-arial leading-none hover:cursor-pointer"
               onClick={() => handleMovieClick()}
             >
@@ -120,6 +197,7 @@ export function MovieCard({
             </h2>
             {card.runtimeInMinutes && (
               <p
+                data-test-id="moviecard-openmodal-p"
                 className="text-lg mb-2.5 font-arial leading-none text-dark opacity-60 hover:cursor-pointer"
                 onClick={() => handleMovieClick()}
               >
@@ -130,7 +208,7 @@ export function MovieCard({
         )}
         {card.keywords && (
           <div
-            // Keywords are positioned absolutely on the image of the card if the size is equal or equal to two
+            // keywords are positioned absolutely on the image of the card if the size is equal or equal to two
             className={
               "flex flex-wrap gap-2 " +
               (size === 1
