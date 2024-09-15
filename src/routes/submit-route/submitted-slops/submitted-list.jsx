@@ -84,6 +84,7 @@ export const SubmittedList = ({ currentUser }) => {
                 movieInfo={movie}
                 size={movie.size}
                 containerSize="small"
+                isInSubmittedList={true}
               />
               <div className="w-[204px] flex flex-col gap-y-5 xs:w-[224px]">
                 <Button
