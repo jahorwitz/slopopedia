@@ -105,8 +105,9 @@ export const ProfileSettingsRoute = () => {
         },
       })
         .then((res) => {
-          setValue("username", res.data.username);
-          setValue("email", res.data.email);
+          console.log(res);
+          setValue("username", res.data.updateUser.username);
+          setValue("email", res.data.updateUser.email);
         })
         .catch(error);
     } else {
