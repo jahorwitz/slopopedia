@@ -32,6 +32,17 @@ export const SignupModal = ({ onClose }) => {
     });
   };
 
+  // Function to handle and customize error messages
+  const getFriendlyErrorMessage = (error) => {
+    if (error.message.includes("User_username_key")) {
+      return "Gobb ID already exists. Please choose another.";
+    }
+    if (error.message.includes("User_email_key")) {
+      return "Email already exists. Please use a different email address.";
+    }
+    return error.message; // Default to the original error message for other cases
+  };
+
   if (data) {
     return (
       <Modal title="HEY YOU GOBLIN">
@@ -55,7 +66,11 @@ export const SignupModal = ({ onClose }) => {
   return (
     <Modal title="HEY YOU GOBLIN">
       <div className="text-center">
-        {error && <Form.Feedback message={error.message} />}
+        {error && (
+          <div className="text-red-500 font-medium text-sm mt-2">
+            {getFriendlyErrorMessage(error)}
+          </div>
+        )}
       </div>
       <Form
         onSubmit={handleSubmit(onSubmit)}
@@ -78,7 +93,7 @@ export const SignupModal = ({ onClose }) => {
             required: "Email is required",
             pattern: {
               value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
-              message: "Invalid Email",
+              message: "Please use correct email",
             },
           })}
           labelText={"Email"}
@@ -95,7 +110,7 @@ export const SignupModal = ({ onClose }) => {
             required: "Password is required",
             minLength: {
               value: 10,
-              message: "Passwords must be at least 10 characters",
+              message: "Passwords have to atleast 10 characters long",
             },
           })}
           labelText={"Password"}
@@ -110,7 +125,7 @@ export const SignupModal = ({ onClose }) => {
           register={register("confirmPassword", {
             required: "You must confirm the password",
             validate: (value, formValues) =>
-              value === formValues.password || "Passwords do not match",
+              value === formValues.password || "Passwords don't match",
           })}
           type="password"
           labelText={"Confirm password"}
