@@ -21,9 +21,7 @@ export const UPDATE_FEST = gql`
         keywords {
           name
         }
-        photo {
-          url
-        }
+        imageUrl
         runtime
         releaseYear
         tomatoScore

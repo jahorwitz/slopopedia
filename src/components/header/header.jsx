@@ -119,6 +119,7 @@ Header.NavLinks = ({
   openMoviePreviewModal,
 }) => {
   const { playSound } = useSounds();
+  console.log(isLoggedIn); //take out after done debugging
   const navLinks = [
     {
       title: "Slop Search",
@@ -175,20 +176,30 @@ Header.NavLinks = ({
         className="flex flex-row h-[24px] gap-8 md:gap-4 xs:hidden sm:hidden relative"
         data-test-id="header-link-div"
       >
-        {navLinks.map((link, index) => (
-          <div
-            key={index}
-            className="flex flex-row gap-2.5"
-            data-test-id={`header-link-${link.title
-              .replace(" ", "-")
-              .toLowerCase()}`}
-          >
-            <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
-            <Link to={link.link} className="border-b-2" onClick={link.onClick}>
-              {link.title}
-            </Link>
-          </div>
-        ))}
+        {navLinks.map((link, index) => {
+          console.log(link);
+          if (link.title === "Submit Slop" && isLoggedIn === false) {
+            return null;
+          }
+          return (
+            <div
+              key={index}
+              className="flex flex-row gap-2.5"
+              data-test-id={`header-link-${link.title
+                .replace(" ", "-")
+                .toLowerCase()}`}
+            >
+              <img className="w-6 h-5 mt-1.5" src={link.src} alt={link.title} />
+              <Link
+                to={link.link}
+                className="border-b-2"
+                onClick={link.onClick}
+              >
+                {link.title}
+              </Link>
+            </div>
+          );
+        })}
         <img
           src={headerNew}
           className="absolute right-[200px] bottom-[6px] pointer-events-none"
@@ -214,23 +225,28 @@ Header.NavLinks = ({
           data-test-id="hamburger-menu-div"
         >
           <div className="space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.title}
-                className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
-                to={link.link}
-                data-test-id={`hamburger-nav-link-${link.title
-                  .replace(" ", "-")
-                  .toLowerCase()}`}
-              >
-                <img
-                  className="w-5 h-5 inline-block mr-1"
-                  src={link.src}
-                  alt={link.title}
-                />
-                {link.title}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              if (link.title === "Submit Slop" && isLoggedIn === false) {
+                return null;
+              }
+              return (
+                <Link
+                  key={link.title}
+                  className="text-grey-300 bg-black hover:bg-gray-700 hover:text-white block px-1 py-2 text-base font-medium border-b-2 gap-2.5"
+                  to={link.link}
+                  data-test-id={`hamburger-nav-link-${link.title
+                    .replace(" ", "-")
+                    .toLowerCase()}`}
+                >
+                  <img
+                    className="w-5 h-5 inline-block mr-1"
+                    src={link.src}
+                    alt={link.title}
+                  />
+                  {link.title}
+                </Link>
+              );
+            })}
             {isLoggedIn === false ? (
               buttons.map((button) => (
                 <div

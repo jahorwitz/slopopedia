@@ -7,7 +7,7 @@ import { Footer, Header, Loading, MovieCardList } from "../components";
 import ControlledCheckbox from "../components/form/advanced-form-inputs/controlledCheckbox";
 import Slider from "../components/form/advanced-form-inputs/slider";
 import TextInput from "../components/form/advanced-form-inputs/textInput";
-import { GET_KEYWORDS, GET_MOVIES } from "../graphql";
+import { GET_KEYWORDS, GET_PAGINATED_MOVIES } from "../graphql";
 import useDebounce from "../hooks/use-debounce";
 
 const decades = [
@@ -285,7 +285,7 @@ export function SearchRoute() {
   );
 }
 function FindMovies({ criteria }) {
-  const { data, loading, error } = useQuery(GET_MOVIES, {
+  const { data, loading, error } = useQuery(GET_PAGINATED_MOVIES, {
     variables: {
       where: {
         status: {
@@ -317,10 +317,10 @@ function FindMovies({ criteria }) {
     });
     const searchArr = fuseMovieList.search(criteria?.titleDescription);
     const searchedList = searchArr.map((item) => item.item);
-    return <MovieCardList movies={searchedList} />;
+    return <MovieCardList propMovies={searchedList} />;
   }
 
-  return <MovieCardList movies={sortedMovies} />;
+  return <MovieCardList propMovies={sortedMovies} />;
 }
 
 /**
