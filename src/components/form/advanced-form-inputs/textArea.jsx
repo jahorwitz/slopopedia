@@ -1,18 +1,16 @@
 import { forwardRef } from "react";
 
 /**
- * Text input component
+ * Text area input component
  * @param {string|undefined} name - text for label (optional)
- * @param {"text"|"password"|"email"|"number"} type - html input type
- * @param {string} label - label for the text input
+ * @param {string} label - label for the text area input
+ * @param{string} rows - number of rows
+ * @param{string} cols - number of columns
  * @param {Object} rest - remaining props from react-hook-form register function
  */
 
-const TextInput = forwardRef(
-  (
-    { name, type = "text", label = undefined, minLength, maxLength, ...rest },
-    ref
-  ) => {
+const TextArea = forwardRef(
+  ({ name, label = undefined, rows = "5", cols = "33", ...rest }, ref) => {
     return (
       <>
         {label && (
@@ -20,11 +18,11 @@ const TextInput = forwardRef(
             {label}
           </label>
         )}
-        <input
-          type={type}
+        <textarea
+          id={name}
+          rows={rows}
+          cols={cols}
           name={name}
-          minLength={minLength}
-          maxLength={maxLength}
           className="border-black border-2 p-3 text-[18px] shadow-sm w-full"
           placeholder="Type Here"
           ref={ref}
@@ -36,4 +34,4 @@ const TextInput = forwardRef(
   }
 );
 
-export default TextInput;
+export default TextArea;

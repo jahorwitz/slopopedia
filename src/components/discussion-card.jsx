@@ -26,12 +26,23 @@ export function DiscussionCard({ discussion }) {
 
   return (
     // Use API reponse to insert data
-    <div className="flex flex-col">
-      <p className="text-dark text-lg font-arialBold opacity-60">
+    <div
+      className="flex flex-col"
+      data-test-id={"discussion-card-" + discussion.id}
+    >
+      <p
+        className="text-dark text-lg font-arialBold opacity-60"
+        data-test-id="discussion-card-name-p"
+      >
         {discussion.user.username} notes:
       </p>
-      <p className="pt-2.5 text-base">{discussion.content}</p>
-      <p className="border-b border-black/[0.2] pb-5 pt-2 mb-5 opacity-60">
+      <p className="pt-2.5 text-base" data-test-id="discussion-card-content-p">
+        {discussion.content}
+      </p>
+      <p
+        className="border-b border-black/[0.2] pb-5 pt-2 mb-5 opacity-60"
+        data-test-id="discussion-card-date-p"
+      >
         {formatDiscussionDay(discussion.createdAt)}
       </p>
     </div>

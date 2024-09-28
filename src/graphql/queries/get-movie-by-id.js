@@ -10,9 +10,7 @@ export const GET_MOVIE = gql`
       runtime
       tomatoScore
       howToWatch
-      photo {
-        url
-      }
+      imageUrl
       keywords {
         name
         id

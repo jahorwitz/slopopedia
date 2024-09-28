@@ -19,9 +19,7 @@ export const UPDATE_USER = gql`
         }
         description
         tomatoScore
-        photo {
-          url
-        }
+        imageUrl
         howToWatch
       }
       wishlistCount
@@ -35,9 +33,7 @@ export const UPDATE_USER = gql`
         }
         description
         tomatoScore
-        photo {
-          url
-        }
+        imageUrl
         howToWatch
       }
       watchedCount

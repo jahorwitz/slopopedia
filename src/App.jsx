@@ -22,6 +22,7 @@ import {
   SubmitRoute,
   SubmittedSlopsRoute,
 } from "./routes";
+import { EditSlop } from "./routes/slop-route/edit-submitted-slop-route";
 import { CurrentUserContextProvider, ModalContextProvider } from "./store";
 import { MovieContextProvider } from "./store/movie-context-provider";
 import { SoundContextProvider } from "./store/sound-context-provider";
@@ -110,6 +111,14 @@ export const App = () => {
                     element={
                       <ProtectedRoute>
                         <SubmittedSlopsRoute />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route // added this for the route to work to navigate to edit the slop
+                    path="/edit-slop/:slopId" //do not know if this route name is ok but will check
+                    element={
+                      <ProtectedRoute>
+                        <EditSlop />
                       </ProtectedRoute>
                     }
                   />

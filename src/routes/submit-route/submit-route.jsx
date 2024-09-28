@@ -1,5 +1,6 @@
-import { Footer, SubmitSlopForm } from "../../components";
+import { Footer } from "../../components";
 import { Header } from "../../components/header";
+import SubmitSlopForm from "./submit-slop-form";
 
 export const SubmitRoute = () => {
   return (

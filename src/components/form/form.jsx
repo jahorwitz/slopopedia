@@ -82,6 +82,7 @@ Form.TextInput = ({
           register={register}
           defaultValue={prefilledInputs}
           id={id}
+          maxLength="30"
           className={`font-normal bg-background py-3 px-4 border-solid rounded-none border ${
             isValid ? "border-black" : "border-danger focus:outline-danger"
           } ${classNameInput} `}

@@ -10,20 +10,30 @@ export const ProfileRoute = () => {
   });
 
   return (
-    <div className="bg-gray-background mx-auto min-h-screen relative">
-      <Header>
+    <div
+      className="bg-gray-background mx-auto min-h-screen relative"
+      data-test-id="profile-route-container"
+    >
+      <Header data-test-id="profile-route-header">
         <Header.Logo />
         <Header.NavLinks />
         <Header.Profile />
       </Header>
       <div className={isDesktopSize ? "flex" : "flex flex-col"}>
-        {isDesktopSize ? <ProfileSidebar /> : <ProfileHorizontalMenu />}
+        {isDesktopSize ? (
+          <ProfileSidebar data-test-id="profile-route-sidebar" />
+        ) : (
+          <ProfileHorizontalMenu data-test-id="profile-route-profile-horizantal-menue" />
+        )}
         <div className="w-[950px]">
-          <WatchlistTabber />
+          <WatchlistTabber data-test-id="profile-route-watchlist-tabber" />
         </div>
       </div>
-      <div className="absolute w-full bottom-0">
-        <Footer />
+      <div
+        className="absolute w-full bottom-0"
+        data-test-id="profile-route-footer-container"
+      >
+        <Footer data-test-id="profile-route-footer" />
       </div>
     </div>
   );

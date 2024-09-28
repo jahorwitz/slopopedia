@@ -78,32 +78,49 @@ export const FestDiscussion = ({}) => {
         <Header.NavLinks />
         <Header.Profile />
       </Header>
-      <div className="max-w-[1200px] my-0 mx-auto box-border">
+      <div
+        className="max-w-[1200px] my-0 mx-auto box-border"
+        data-test-id="fest-header"
+      >
         {!festQuery.loading && festQuery?.data?.fest && (
-          <FestHeader fest={festQuery.data.fest} />
+          <FestHeader fest={festQuery.data.fest} data-test-id="fest-header" />
         )}
-        <div className="flex gap-x-24">
+        <div className="flex gap-x-24" data-test-id="fest-sidebar">
           {!festQuery.loading && festQuery?.data?.fest && (
-            <FestSidebar festQuery={festQuery} />
+            <FestSidebar festQuery={festQuery} data-test-id="fest-sidebar" />
           )}
-          <div className="w-3/5 sm:w-1/2">
+          <div
+            className="w-3/5 sm:w-1/2"
+            data-test-id="fest-discussion-placeholder-h2"
+          >
             <div>
               {/* If discussionQuery is loading or the length is 0, show "no notes here yet" */}
               {!discussionQuery?.loading &&
               discussionQuery &&
               discussionQuery?.data?.fest?.festNotes?.length === 0 ? (
-                <h2 className="font-arial text-lg/4 m-auto text-center pb-96">
+                <h2
+                  className="font-arial text-lg/4 m-auto text-center pb-96"
+                  data-test-id="fest-discussion-place-holder-h2"
+                >
                   No notes here yet
                 </h2>
               ) : (
                 // otherwise show the posts coming from the backend
-                <div className="h-96 overflow-y-scroll">
+                <div
+                  className="h-96 overflow-y-scroll"
+                  data-test-id="fest-discussion-posts"
+                >
                   {discussionQuery?.data?.fest?.festNotes
                     .map((discussion) => (
                       // Map each item onto the DiscussionCard template
                       <DiscussionCard
                         discussion={discussion}
                         key={discussion?.id ?? discussion._id}
+                        data-test-id={
+                          discussion?.id
+                            ? "discussion-card-id-" + discussion._id
+                            : "discussion-card-no-id"
+                        }
                       />
                     ))
                     .sort((a, b) => {
@@ -118,7 +135,10 @@ export const FestDiscussion = ({}) => {
             </div>
             {/* Check for the userId is in attendees list (only attendees can write comments); if not hide option to write discussion */}
             {attendeesList?.includes(userId) && (
-              <div className="flex gap-x-10 mt-6">
+              <div
+                className="flex gap-x-10 mt-6"
+                data-test-id="fest-discussion-textarea"
+              >
                 <textarea
                   className="w-5/6 h-11 max-h-20 min-h-11 text-left outline-0 border text-dark px-2.5 py-2 border-black/[0.5]"
                   placeholder="Type your message here"
@@ -126,8 +146,12 @@ export const FestDiscussion = ({}) => {
                   name="discussion-content"
                   value={discussionContent}
                   onChange={(evt) => setDiscussionContent(evt.target.value)}
+                  data-test-id="fest-discussion-textarea"
                 ></textarea>
-                <div className="">
+                <div
+                  className=""
+                  data-test-id="fest-discussion-textarea-submit"
+                >
                   <Button
                     disabled={!isValid} // prevent users from being able to submit blank posts
                     variant="secondary"
@@ -135,6 +159,7 @@ export const FestDiscussion = ({}) => {
                     size="sm"
                     className="px-6 h-11 max-h-11"
                     onClick={handleDiscussionSubmit}
+                    data-test-id="fest-discussion-textarea-submit-button"
                   >
                     Send
                   </Button>
