@@ -2,12 +2,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button } from "../../components/button/button";
-import Dropdown from "../../components/form/advanced-form-inputs/dropdown";
-import Dropzone from "../../components/form/advanced-form-inputs/dropzone";
-import FormError from "../../components/form/advanced-form-inputs/formError";
-import TextArea from "../../components/form/advanced-form-inputs/textArea";
-import TextInput from "../../components/form/advanced-form-inputs/textInput";
 import { CREATE_MOVIE } from "../../graphql";
 import { GET_KEYWORDS } from "../../graphql/get-keywords";
 import { useCurrentUser } from "../../hooks";
@@ -104,121 +98,120 @@ export default function SubmitSlopForm() {
         >
           View submitted
         </Link>
-      )}
-      <img src={titleImage} className="m-auto mt-10 mb-10"></img>
-      <Form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className={
-          submitted
-            ? `hidden`
-            : ` xs:w-[300px] sm:w-[453px] md:w-[453px] lg:w-[453px] xl:w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10`
-        }
-      >
-        <Form.TextInput
-          value={title}
-          errors={errors}
-          register={register("title", {
-            required: "Title is required",
-          })}
-          name="title"
-          placeholder="Title"
-          labelText="Title *"
-          required
-          onChange={(e) => {
-            setValue("title", e.target.value, { shouldValidate: true });
-          }}
-          isValid={!errors.title}
-          classNameInput="bg-white"
-        />
-        {errors.title && <Form.Feedback message={errors.title.message} />}
-        <Form.TextArea
-          value={description}
-          errors={errors}
-          register={register("description", {
-            required: "Description is required",
-          })}
-          placeholder="Descritpion"
-          labelText="Description *"
-          onChange={(e) => {
-            setValue("description", e.target.value, { shouldValidate: true });
-          }}
-          isValid={!errors.description}
-          classNameTextArea="bg-white"
-        />
-        {errors.description && (
-          <Form.Feedback message={errors.description.message} />
-        )}
-        <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between font-arialBold text-lg box-border ">
-          <div className="flex flex-col">
-            <Form.TextInput
-              required
-              maxLength={4}
-              value={releaseYear}
-              errors={errors}
-              register={register("releaseYear", {
-                required: "Release Year is required",
-                minLength: {
-                  value: 4,
-                  message: "Please enter 4 digits",
-                },
-              })}
-              placeholder="Release Year"
-              labelText="Release Year *"
-              onChange={(e) => {
-                const value = e.target.value;
-                if (
-                  value === "" ||
-                  (!isNaN(value) &&
-                    /^\d+$/.test(value) &&
-                    !/^0+$/.test(value) &&
-                    value.length <= 4)
-                ) {
-                  setValue("releaseYear", value, {
-                    shouldValidate: true,
-                  });
-                }
-              }}
-              isValid={!errors.releaseYear}
-              classNameInput="bg-white"
-            />
-            {errors.releaseYear && (
-              <Form.Feedback message={errors.releaseYear.message} />
-            )}
+        <img src={titleImage} className="m-auto mt-10 mb-10"></img>
+        <Form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className={
+            submitted
+              ? `hidden`
+              : ` xs:w-[300px] sm:w-[453px] md:w-[453px] lg:w-[453px] xl:w-[453px] m-auto flex flex-col font-arialBold text-lg mb-10`
+          }
+        >
+          <Form.TextInput
+            value={title}
+            errors={errors}
+            register={register("title", {
+              required: "Title is required",
+            })}
+            name="title"
+            placeholder="Title"
+            labelText="Title *"
+            required
+            onChange={(e) => {
+              setValue("title", e.target.value, { shouldValidate: true });
+            }}
+            isValid={!errors.title}
+            classNameInput="bg-white"
+          />
+          {errors.title && <Form.Feedback message={errors.title.message} />}
+          <Form.TextArea
+            value={description}
+            errors={errors}
+            register={register("description", {
+              required: "Description is required",
+            })}
+            placeholder="Descritpion"
+            labelText="Description *"
+            onChange={(e) => {
+              setValue("description", e.target.value, { shouldValidate: true });
+            }}
+            isValid={!errors.description}
+            classNameTextArea="bg-white"
+          />
+          {errors.description && (
+            <Form.Feedback message={errors.description.message} />
+          )}
+          <div className="xs:flex-col sm:flex md:flex lg:flex xl:flex justify-between font-arialBold text-lg box-border ">
+            <div className="flex flex-col">
+              <Form.TextInput
+                required
+                maxLength={4}
+                value={releaseYear}
+                errors={errors}
+                register={register("releaseYear", {
+                  required: "Release Year is required",
+                  minLength: {
+                    value: 4,
+                    message: "Please enter 4 digits",
+                  },
+                })}
+                placeholder="Release Year"
+                labelText="Release Year *"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (
+                    value === "" ||
+                    (!isNaN(value) &&
+                      /^\d+$/.test(value) &&
+                      !/^0+$/.test(value) &&
+                      value.length <= 4)
+                  ) {
+                    setValue("releaseYear", value, {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
+                isValid={!errors.releaseYear}
+                classNameInput="bg-white"
+              />
+              {errors.releaseYear && (
+                <Form.Feedback message={errors.releaseYear.message} />
+              )}
+            </div>
+            <div className="flex flex-col">
+              <Form.TextInput
+                required
+                maxLength={3}
+                value={runtime}
+                errors={errors}
+                type="number"
+                register={register("runtime", {
+                  required: "Runtime is required",
+                })}
+                placeholder="Runtime"
+                labelText="Runtime *"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (
+                    value === "" ||
+                    (!isNaN(value) &&
+                      /^\d+$/.test(value) &&
+                      !/^0+$/.test(value) &&
+                      value.length <= 3)
+                  ) {
+                    setValue("runtime", value, { shouldValidate: true });
+                  }
+                }}
+                isValid={!errors.runtime}
+                classNameInput="bg-white"
+              />
+              {errors.runtime && (
+                <Form.Feedback message={errors.runtime.message} />
+              )}
+            </div>
           </div>
-          <div className="flex flex-col">
-            <Form.TextInput
-              required
-              maxLength={3}
-              value={runtime}
-              errors={errors}
-              type="number"
-              register={register("runtime", {
-                required: "Runtime is required",
-              })}
-              placeholder="Runtime"
-              labelText="Runtime *"
-              onChange={(e) => {
-                const value = e.target.value;
-                if (
-                  value === "" ||
-                  (!isNaN(value) &&
-                    /^\d+$/.test(value) &&
-                    !/^0+$/.test(value) &&
-                    value.length <= 3)
-                ) {
-                  setValue("runtime", value, { shouldValidate: true });
-                }
-              }}
-              isValid={!errors.runtime}
-              classNameInput="bg-white"
-            />
-            {errors.runtime && (
-              <Form.Feedback message={errors.runtime.message} />
-            )}
-          </div>
-        </div>
-        {/* // For future use */}
-        {/* <Form.FileDrop
+          {/* // For future use */}
+          {/* <Form.FileDrop
           id="photo"
           labelText="Image"
           watch={watch}
@@ -354,4 +347,9 @@ export default function SubmitSlopForm() {
       </button>
     </main>
   );
+*/}
+        </Form>
+      </main>
+    );
+  }
 }
