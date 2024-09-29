@@ -93,7 +93,7 @@ export const SignupModal = ({ onClose }) => {
             required: "Email is required",
             pattern: {
               value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
-              message: "Please use correct email",
+              message: "Invalid email",
             },
           })}
           labelText={"Email"}
@@ -110,7 +110,7 @@ export const SignupModal = ({ onClose }) => {
             required: "Password is required",
             minLength: {
               value: 10,
-              message: "Passwords have to atleast 10 characters long",
+              message: "Passwords must be at least 10 characters",
             },
           })}
           labelText={"Password"}
@@ -125,7 +125,7 @@ export const SignupModal = ({ onClose }) => {
           register={register("confirmPassword", {
             required: "You must confirm the password",
             validate: (value, formValues) =>
-              value === formValues.password || "Passwords don't match",
+              value === formValues.password || "Passwords do not match",
           })}
           type="password"
           labelText={"Confirm password"}
