@@ -14,9 +14,9 @@ export const Footer = () => {
       <div className="font-arial text-dark/60 text-sm xs:mb-4 sm:mb-4">
         <p className="">Terms & Conditions</p>
       </div>
-      <div className="font-arial text-dark/60 text-sm xs:mb-4 sm:mb-4">
+      {/* <div className="font-arial text-dark/60 text-sm xs:mb-4 sm:mb-4">
         <p className="">Cookies</p>
-      </div>
+      </div> */}
     </footer>
   );
 };

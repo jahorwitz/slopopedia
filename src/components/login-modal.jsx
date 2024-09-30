@@ -47,7 +47,7 @@ export function LoginModal({ onClose }) {
         setIsLoggedIn(true);
         closeModal();
       } else if (typename === "UserAuthenticationWithPasswordFailure") {
-        console.log("Error with signin");
+        console.log("Error with signup");
         setError("gobbId", { message: "Incorrect Username or Password" });
         setError("password", { message: "Incorrect Username or Password" });
       }
