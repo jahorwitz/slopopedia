@@ -17,11 +17,12 @@ export function MovieCard({
   minusButtonClick,
   plusButtonClick,
   containerSize = "full",
+  isInSubmittedList,
   ...rest
 }) {
   const [colSpan, setColSpan] = useState({ class: "col-span-1", size: 1 });
   useEffect(() => {
-    setColSpan(getRandomColumns());
+    !isInSubmittedList ? setColSpan(getRandomColumns()) : colSpan;
   }, []);
 
   const { class: colSpanClass, size } = colSpan;
@@ -145,7 +146,7 @@ export function MovieCard({
         data-test-id="moviecard-movieclick-div"
         className={cardClasses}
         style={{
-          width: "100%",
+          width: isInSubmittedList ? 224 : "100%",
           height: "100%",
           position: "relative",
         }}
@@ -212,7 +213,7 @@ export function MovieCard({
             className={
               "flex flex-wrap gap-2 " +
               (size === 1
-                ? "flex flex-row relative col-span-1 justify-around "
+                ? "flex flex-row relative col-span-1 justify-start"
                 : "flex flex-row flex-wrap w-64 ") +
               (size >= 2
                 ? "absolute top-2 left-2 max-w-[calc(100%-24px)] "
