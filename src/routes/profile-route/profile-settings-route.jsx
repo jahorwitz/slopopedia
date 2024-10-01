@@ -121,6 +121,7 @@ export const ProfileSettingsRoute = () => {
           setValue("username", res.data.username);
           setValue("email", res.data.email);
           setValue("password", "");
+          location.reload();
         })
         .catch(error);
     }
