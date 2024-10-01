@@ -7,6 +7,7 @@ export const GET_MOVIES = gql`
       title
       runtime
       releaseYear
+      handicap
       keywords {
         name
         id
@@ -21,6 +22,7 @@ export const GET_MOVIES = gql`
         username
       }
       status
+      handicap
     }
   }
 `;
@@ -49,6 +51,7 @@ export const GET_PAGINATED_MOVIES = gql`
         isAdmin
         username
       }
+      handicap
       status
     }
   }
@@ -56,8 +59,3 @@ export const GET_PAGINATED_MOVIES = gql`
 
 // knowing the total movie count helps the pagination mechanism keep track
 // of where it is and when to stop requesting new movies from db
-export const GET_MOVIES_COUNT = gql`
-  query GetMoviesCount($where: MovieWhereInput) {
-    moviesCount(where: $where)
-  }
-`;

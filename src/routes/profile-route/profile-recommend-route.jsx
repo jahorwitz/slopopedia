@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Header, Loading, MovieCardList } from "../../components";
 import { GET_MOVIES } from "../../graphql";
@@ -74,45 +74,95 @@ function SlopPreferences() {
   );
 }
 
-// Function to get My Top watched Slops
-const getTopSlops = (watchedMovies = []) => {
-  return [...watchedMovies]
-    .sort((a, b) => (b.tomatoScore || 0) - (a.tomatoScore || 0)) 
-    .slice(0, 10); 
-};
-
-// Function to get My Bottom 10 watched Slops
-const getBottomSlops = (watchedMovies = []) => {
-  return [...watchedMovies] 
-    .sort((a, b) => (a.tomatoScore || 0) - (b.tomatoScore || 0)) 
-    .slice(0, 10); 
-};
-
 //Profile Recommend Route Component
 
 export const ProfileRecommendRoute = () => {
   const { currentUser } = useCurrentUser();
   const [listSelection, setListSelection] = useState(options[0]);
+  const [displayedMovies, setDisplayedMovies] = useState([]);
   const isDesktopSize = useMediaQuery({
     query: "(min-width: 1170px)",
   });
   const { data, loading, error } = useQuery(GET_MOVIES, {
-    variables: { where: {} }, 
+    variables: { where: {} },
   });
 
   // Extract watched movies from the currentUser data
-  const watchedMovies = currentUser?.watched || [];
-  
-  console.log(watchedMovies);
 
+  const watchedMovies = currentUser?.watched || [];
+  const wishlistedMovies = currentUser?.wishlist || [];
+  function determineMovies(fn, arg) {
+    const movies = fn(arg);
+    setDisplayedMovies(movies);
+    return;
+  }
   // Determine which movies to display based on list selection
-  let displayedMovies = data?.movies || [];
-  if (listSelection === "Top 10 watched") {
-    displayedMovies = getTopSlops(watchedMovies);
-  }
-  if (listSelection === "Bottom 10 watched") {
-    displayedMovies = getBottomSlops(watchedMovies);
-  }
+  console.log({ watchedMovies });
+  console.log({ wishlistedMovies });
+  // Function to get My Top watched Slops
+  const getTopWatched = (watchedMovies) => {
+    return [...watchedMovies]
+      .sort((a, b) => (b.handicap || 0) - (a.handicap || 0))
+      .slice(0, 10);
+  };
+
+  // Function to get My Bottom 10 watched
+  const getBottomWatched = (watchedMovies = []) => {
+    return [...watchedMovies]
+      .sort((a, b) => (a.handicap || 0) - (b.handicap || 0))
+      .slice(0, 10);
+  };
+
+  const getTopWished = (wishlistedMovies = []) => {
+    return [...wishlistedMovies]
+      .sort((a, b) => (a.handicap || 0) - (b.handicap || 0))
+      .slice(0, 10);
+  };
+
+  const getNotWished = (wishlistedMovies = []) => {
+    const wishlistMovieIds = new Set(wishlistedMovies.map((movie) => movie.id));
+    const movies = data.movies;
+    const notWished = movies.filter((movie) => !wishlistMovieIds.has(movie.id));
+    return [...notWished]
+      .sort((a, b) => (a.handicap || 0) - (b.handicap || 0))
+      .slice(0, 10);
+  };
+
+  const getTopEasy = (movies = []) => {
+    return [...movies]
+      .sort((a, b) => (a.handicap || 0) - (b.handicap || 0))
+      .slice(0, 10);
+  };
+
+  const getBotEasy = (movies = []) => {
+    return [...movies]
+      .sort((a, b) => (b.handicap || 0) - (a.handicap || 0))
+      .slice(0, 10);
+  };
+
+  useEffect(() => {
+    if (listSelection === "Top 10 from wishlist") {
+      return determineMovies(getTopWished, wishlistedMovies);
+    }
+    if (listSelection === "Top 10 not in wishlist") {
+      return determineMovies(getNotWished, wishlistedMovies);
+    }
+    if (listSelection === "Top 10 watched") {
+      return determineMovies(getTopWatched, watchedMovies);
+    }
+    if (listSelection === "Bottom 10 watched") {
+      return determineMovies(getBottomWatched, watchedMovies);
+    }
+    if (listSelection === "Top 10 easy (all-time)") {
+      return determineMovies(getTopEasy, data?.movies);
+    }
+    if (listSelection === "Bottom 10 easy (all-time)") {
+      return determineMovies(getBotEasy, data?.movies);
+    }
+    if (data?.movies) {
+      return setDisplayedMovies(watchedMovies);
+    }
+  }, [listSelection, data]);
 
   return (
     <div className="">
@@ -132,7 +182,13 @@ export const ProfileRecommendRoute = () => {
             <SlopPreferences />
           </div>
           <div className="pt-10">
-            {loading ? <Loading /> : <MovieCardList movies={displayedMovies} />}
+            {loading ? (
+              <Loading />
+            ) : displayedMovies.length === 0 ? (
+              <p>No slops here!</p>
+            ) : (
+              <MovieCardList propMovies={displayedMovies} />
+            )}
           </div>
         </div>
       </section>

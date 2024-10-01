@@ -20,6 +20,7 @@ export const GET_USER_AUTHENTICATION = gql`
           tomatoScore
           imageUrl
           howToWatch
+          handicap
         }
         wishlistCount
         watched {
@@ -34,6 +35,7 @@ export const GET_USER_AUTHENTICATION = gql`
           tomatoScore
           imageUrl
           howToWatch
+          handicap
         }
         watchedCount
       }
