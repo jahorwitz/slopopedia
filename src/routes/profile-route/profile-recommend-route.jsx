@@ -84,7 +84,16 @@ export const ProfileRecommendRoute = () => {
     query: "(min-width: 1170px)",
   });
   const { data, loading, error } = useQuery(GET_MOVIES, {
-    variables: { where: {} },
+    variables: {
+      where: {},
+      whereUser: {
+        user: {
+          id: {
+            equals: currentUser?.id,
+          },
+        },
+      },
+    },
   });
 
   // Extract watched movies from the currentUser data
@@ -130,13 +139,49 @@ export const ProfileRecommendRoute = () => {
 
   const getTopEasy = (movies = []) => {
     return [...movies]
-      .sort((a, b) => (a.handicap || 0) - (b.handicap || 0))
+      .sort(
+        (a, b) =>
+          (a.keywords.reduce(
+            (val, key) =>
+              val +
+              key.userKeyword.reduce((key, int) => {
+                return int.value + key;
+              }, 0),
+            0
+          ) || 0) -
+          (b.keywords.reduce(
+            (val, key) =>
+              val +
+              key.userKeyword.reduce((key, int) => {
+                return int.value + key;
+              }, 0),
+            0
+          ) || 0)
+      )
       .slice(0, 10);
   };
 
   const getBotEasy = (movies = []) => {
     return [...movies]
-      .sort((a, b) => (b.handicap || 0) - (a.handicap || 0))
+      .sort(
+        (a, b) =>
+          (b.keywords.reduce(
+            (val, key) =>
+              val +
+              key.userKeyword.reduce((key, int) => {
+                return int.value + key;
+              }, 0),
+            0
+          ) || 0) -
+          (a.keywords.reduce(
+            (val, key) =>
+              val +
+              key.userKeyword.reduce((key, int) => {
+                return int.value + key;
+              }, 0),
+            0
+          ) || 0)
+      )
       .slice(0, 10);
   };
 

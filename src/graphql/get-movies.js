@@ -1,7 +1,10 @@
 import { gql } from "@apollo/client";
 
 export const GET_MOVIES = gql`
-  query GetMovies($where: MovieWhereInput!) {
+  query GetMovies(
+    $where: MovieWhereInput!
+    $whereUser: UserKeywordWhereInput!
+  ) {
     movies(where: $where) {
       id
       title
@@ -11,6 +14,9 @@ export const GET_MOVIES = gql`
       keywords {
         name
         id
+        userKeyword(where: $whereUser) {
+          value
+        }
       }
       description
       tomatoScore
