@@ -43,6 +43,7 @@ export const GET_USER_WATCHLIST = gql`
         tomatoScore
         imageUrl
         howToWatch
+        handicap
       }
       wishlistCount
       watched {
