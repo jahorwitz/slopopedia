@@ -28,5 +28,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - run: aws s3 sync --delete ./dist s3://slopopedia
+      - run: aws s3 sync --delete ./dist s3://slop.entroponics.com 
       - run: aws cloudfront create-invalidation --distribution-id E2OQLTSLYFEHDN --paths "/index.html"
