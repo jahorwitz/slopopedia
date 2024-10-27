@@ -29,4 +29,4 @@ jobs:
           aws-region: us-east-1
 
       - run: aws s3 sync --delete ./dist s3://slopopedia
-      - run: aws cloudfront create-invalidation --distribution-id E16MTT9D74755D --paths "/index.html"
+      - run: aws cloudfront create-invalidation --distribution-id E2OQLTSLYFEHDN --paths "/index.html"
