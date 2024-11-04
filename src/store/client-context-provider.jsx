@@ -10,7 +10,7 @@ export const ClientContextProvider = ({ children }) => {
 
   const apiUri =
     process.env.NODE_ENV === "production"
-      ? "https://slopopedia-api-a5fe9aef64e8.herokuapp.com/api/graphql"
+      ? "https://slop-2940447738f1.herokuapp.com/api/graphql"
       : "http://localhost:8080/api/graphql";
 
   useEffect(() => {

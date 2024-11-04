@@ -46,7 +46,7 @@ export default function SubmitSlopForm() {
     formData.append("movieTitle", data.title);
     formData.append("movieImage", data.image);
     formData.append("userId", currentUser.id);
-    const res = await fetch("http://localhost:8080/api/movie", {
+    const res = await fetch("https://slop-2940447738f1.herokuapp.com/api/movie", {
       method: "POST",
       body: formData,
     });
