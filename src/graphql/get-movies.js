@@ -1,15 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const GET_MOVIES = gql`
-  query GetMovies($where: MovieWhereInput!) {
+  query GetMovies(
+    $where: MovieWhereInput!
+    $whereUser: UserKeywordWhereInput!
+  ) {
     movies(where: $where) {
       id
       title
       runtime
       releaseYear
+      handicap
       keywords {
         name
         id
+        userKeyword(where: $whereUser) {
+          value
+        }
       }
       description
       tomatoScore
@@ -21,6 +28,7 @@ export const GET_MOVIES = gql`
         username
       }
       status
+      handicap
     }
   }
 `;
@@ -49,6 +57,7 @@ export const GET_PAGINATED_MOVIES = gql`
         isAdmin
         username
       }
+      handicap
       status
     }
   }
